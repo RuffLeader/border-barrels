@@ -43,11 +43,20 @@ footer {
   text-align: center;
 }
 
+#beer-table-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 1em;
+}
+
 .beer-table {
   width: 100%;
+  max-width: 1200px;
   border-collapse: collapse;
   font-size: 0.9em;
-  margin-top: 1em;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .beer-table thead {
@@ -57,8 +66,9 @@ footer {
 
 .beer-table th, .beer-table td {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 8px 12px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .beer-table tr:nth-child(even) {
@@ -66,9 +76,12 @@ footer {
 }
 
 #beer-search {
-  margin: 1em 0;
+  margin: 1em auto;
   padding: 0.5em;
   width: 100%;
   max-width: 400px;
+  display: block;
   font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
