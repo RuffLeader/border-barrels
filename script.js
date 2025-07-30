@@ -1,17 +1,14 @@
 console.log("Border Barrels site loaded!");
 
-const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y"; // Your SheetDB API
+const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y";
 let allBeers = [];
 
 const headers = [
   "Brewery", "Beer Name", "ABV", "Parent Style", "Style",
-  "BBBRS Score", "BBBRS Simon", "BBBRS Zach", "BBBRS Hudson",
-  "Untappd Score", "Untappd Simon", "Untappd Zach", "Untappd Hudson",
-  "Can Art Score", "Can Art Simon", "Can Art Zach", "Can Art Hudson",
+  "BBBRS Score", "Untappd Score", "Can Art Score",
   "Episode No.", "Supplier", "Brewery City", "Brewery State", "Year Reviewed"
 ];
 
-// Define column widths (you can tweak these if needed)
 const columnWidths = {
   "Brewery": "200px",
   "Beer Name": "200px",
@@ -19,17 +16,8 @@ const columnWidths = {
   "Parent Style": "140px",
   "Style": "140px",
   "BBBRS Score": "90px",
-  "BBBRS Simon": "70px",
-  "BBBRS Zach": "70px",
-  "BBBRS Hudson": "70px",
   "Untappd Score": "90px",
-  "Untappd Simon": "70px",
-  "Untappd Zach": "70px",
-  "Untappd Hudson": "70px",
   "Can Art Score": "160px",
-  "Can Art Simon": "100px",
-  "Can Art Zach": "100px",
-  "Can Art Hudson": "100px",
   "Episode No.": "90px",
   "Supplier": "140px",
   "Brewery City": "140px",
@@ -37,21 +25,42 @@ const columnWidths = {
   "Year Reviewed": "100px"
 };
 
+const ratingColumns = ["BBBRS Score", "Untappd Score", "Can Art Score"];
+let topScores = {
+  "BBBRS Score": [],
+  "Untappd Score": [],
+  "Can Art Score": []
+};
+
+function calculateTopScores(beers) {
+  ratingColumns.forEach(col => {
+    const values = beers
+      .map(b => parseFloat(b[col]))
+      .filter(v => !isNaN(v))
+      .sort((a, b) => b - a)
+      .slice(0, 5)
+      .map(v => v.toFixed(2)); // maintain consistent format
+
+    topScores[col] = values;
+  });
+}
+
 function renderTable(beers) {
+  calculateTopScores(beers);
+
   const table = document.createElement("table");
   table.classList.add("beer-table");
-  table.id = "beer-table";
 
   // Table Head
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
-
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
+    th.style.width = columnWidths[header] || "100px";
+    th.style.textAlign = "center";
     headRow.appendChild(th);
   });
-
   thead.appendChild(headRow);
   table.appendChild(thead);
 
@@ -61,7 +70,28 @@ function renderTable(beers) {
     const row = document.createElement("tr");
     headers.forEach(header => {
       const td = document.createElement("td");
-      td.textContent = beer[header] || "";
+      let cellValue = beer[header] || "";
+      td.style.width = columnWidths[header] || "100px";
+      td.style.textAlign = "center";
+
+      if (ratingColumns.includes(header)) {
+        td.style.fontWeight = "bold";
+        const numericVal = parseFloat(cellValue);
+        if (!isNaN(numericVal)) {
+          const formattedVal = numericVal.toFixed(2);
+          if (topScores[header].includes(formattedVal)) {
+            td.style.color = "#FFD700"; // gold
+            td.innerHTML = `⭐ ${formattedVal}`;
+          } else {
+            td.textContent = formattedVal;
+          }
+        } else {
+          td.textContent = cellValue;
+        }
+      } else {
+        td.textContent = cellValue;
+      }
+
       row.appendChild(td);
     });
     tbody.appendChild(row);
@@ -82,7 +112,6 @@ function filterBeers(query) {
   renderTable(filtered);
 }
 
-// Fetch and render beers
 fetch(apiURL)
   .then(response => response.json())
   .then(data => {
