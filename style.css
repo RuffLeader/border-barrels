@@ -77,8 +77,9 @@ footer {
 #beer-table th,
 #beer-table td {
   border: 1px solid #ccc;
-  padding: 0.5em;
+  padding: 0.5em 1em;         /* Added horizontal padding for spacing */
   text-align: left;
+  white-space: nowrap;        /* Prevent wrapping */
 }
 
 #beer-table th {
@@ -86,7 +87,14 @@ footer {
   color: #ffffff;
   position: sticky;
   top: 0;
+  white-space: nowrap;        /* Prevent header wrapping */
+  /* Optional: Set min-widths to keep headers wide enough */
+  min-width: 100px;
 }
+
+/* You can add specific widths for certain columns if needed, for example: */
+#beer-table th:nth-child(1) { min-width: 150px; }  /* Brewery */
+#beer-table th:nth-child(2) { min-width: 180px; }  /* Beer Name */
 
 #beer-search {
   margin: 1em auto;
