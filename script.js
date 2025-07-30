@@ -4,7 +4,7 @@ const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y"; // Replace with your r
 
 function renderBeerCard(beer) {
   return `
-    <div class="beer-card">
+    <div class="beer-container">
       <h3>${beer["Beer Name"]} (${beer.ABV}%)</h3>
       <p><strong>Brewery:</strong> ${beer.Brewery} (${beer["Brewery City"]}, ${beer["Brewery State"]})</p>
       <p><strong>Style:</strong> ${beer["Style"]} (${beer["Parent Style"]})</p>
