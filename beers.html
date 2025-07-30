@@ -2,108 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Border Barrels - Beers Reviewed</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #002157;
-    }
-
-    header {
-      background-color: #002157;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    nav a {
-      margin: 0 10px;
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    nav a:hover {
-      color: #ffb400;
-    }
-
-    main {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    footer {
-      background-color: #002157;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-
-    #beer-table-container {
-      position: relative;
-      left: 50%;
-      right: 50%;
-      margin-left: -50vw;
-      margin-right: -50vw;
-      width: 100vw;
-      max-width: 100vw;
-      box-sizing: border-box;
-      padding: 1rem 2rem;
-      background: white;
-      z-index: 10;
-      overflow-x: auto;
-    }
-
-    #beer-table {
-      width: 100%;
-      border-collapse: collapse;
-      max-width: 1200px;
-      background-color: #ffffff;
-      color: #002157;
-      margin: 0 auto;
-    }
-
-    #beer-table th,
-    #beer-table td {
-      border: 1px solid #ccc;
-      padding: 0.5em 1em;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    #beer-table th {
-      background-color: #002157;
-      color: #ffffff;
-      position: sticky;
-      top: 0;
-      white-space: nowrap;
-      min-width: 100px;
-    }
-
-    #beer-table th:nth-child(1) { min-width: 150px; }
-    #beer-table th:nth-child(2) { min-width: 180px; }
-
-    #beer-search {
-      margin: 1em auto;
-      padding: 0.5em;
-      width: 100%;
-      max-width: 400px;
-      display: block;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beers Reviewed</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
-    <h1>Border Barrels</h1>
+    <h1>Beers We've Reviewed</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="beers.html">Beers</a>
@@ -113,84 +19,12 @@
   </header>
 
   <main>
-    <input type="text" id="beer-search" placeholder="Search beers..." />
-
-    <div id="beer-table-container">
-      <table id="beer-table" aria-label="Beers Reviewed">
-        <thead>
-          <tr>
-            <th>Brewery</th>
-            <th>Beer Name</th>
-            <th>ABV</th>
-            <th>Parent Style</th>
-            <th>Style</th>
-            <th>BBBRS Score</th>
-            <th>Simon</th>
-            <th>Zach</th>
-            <th>Hudson</th>
-            <th>Untappd Score</th>
-            <th>Simon</th>
-            <th>Zach</th>
-            <th>Hudson</th>
-            <th>Can Art Score</th>
-            <th>Simon</th>
-            <th>Zach</th>
-            <th>Hudson</th>
-            <th>Episode No.</th>
-            <th>Supplier</th>
-            <th>Brewery City</th>
-            <th>Brewery State</th>
-            <th>Year Reviewed</th>
-          </tr>
-        </thead>
-        <tbody id="beer-table-body">
-          <tr>
-            <td>Sunday Road Brewing</td>
-            <td>Off-Roadie</td>
-            <td>5.0</td>
-            <td>Ale</td>
-            <td>IPA</td>
-            <td>20.50</td>
-            <td>20.25</td>
-            <td>20.25</td>
-            <td>21</td>
-            <td>4.1</td>
-            <td>4.0</td>
-            <td>4.2</td>
-            <td>4.1</td>
-            <td>22</td>
-            <td>21</td>
-            <td>23</td>
-            <td>22</td>
-            <td>23</td>
-            <td>Zach</td>
-            <td>Melbourne</td>
-            <td>VIC</td>
-            <td>2025</td>
-          </tr>
-          <!-- Add more rows as needed -->
-        </tbody>
-      </table>
-    </div>
-  </main>
+  <input type="text" id="beer-search" placeholder="Search beers..." />
+  <div id="beer-table-container">Loading beers...</div>
+</main>
 
   <footer>
     <p>© 2025 Border Barrels</p>
   </footer>
-
-  <script>
-    const searchInput = document.getElementById('beer-search');
-    const tableBody = document.getElementById('beer-table-body');
-
-    searchInput.addEventListener('input', () => {
-      const filter = searchInput.value.toLowerCase();
-      const rows = tableBody.getElementsByTagName('tr');
-
-      for (let i = 0; i < rows.length; i++) {
-        const rowText = rows[i].textContent.toLowerCase();
-        rows[i].style.display = rowText.includes(filter) ? '' : 'none';
-      }
-    });
-  </script>
 </body>
 </html>
