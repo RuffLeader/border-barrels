@@ -86,7 +86,7 @@ const headers = [
   "BBBRS Score",
   "Untappd Score",
   "Can Art Score",
-  "Ep No.", "Supplier", "Brewery State", "Year"
+  "Episode No.", "Supplier", "Brewery State", "Year Reviewed"
 ];
 
 // Set all column widths to fit-content
