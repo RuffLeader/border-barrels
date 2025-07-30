@@ -103,17 +103,6 @@ const columnWidths = {
   "Year Reviewed": "fit-content"
 };
 
-headers.forEach(header => {
-  const th = document.createElement("th");
-  th.textContent = header;
-
-  if (columnWidths[header]) {
-    th.style.width = columnWidths[header];  // Accepts "fit-content" too
-  }
-
-  headRow.appendChild(th);
-});
-
 const ratingColumns = ["BBBRS Score", "Untappd Score", "Can Art Score"];
 let topScores = {
   "BBBRS Score": [],
