@@ -82,13 +82,11 @@ footer {
   top: 0;
 }
 
-#beer-search {
-  margin: 1em auto;
-  padding: 0.5em;
+#search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5em auto;
   width: 100%;
-  max-width: 400px;
-  display: block;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  box-sizing: border-box;
+  padding: 0 1em;
 }
