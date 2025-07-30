@@ -31,9 +31,10 @@ nav a:hover {
 }
 
 main {
+  display: flex;
+  justify-content: center;
   padding: 2rem;
-  max-width: 800px;
-  margin: auto;
+  width: 100%;
 }
 
 footer {
@@ -55,11 +56,12 @@ footer {
   overflow-x: auto;
   padding: 1em;
   box-sizing: border-box;
+  max-width: 100%;
 }
 
 #beer-table {
   border-collapse: collapse;
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   background-color: #ffffff;
   color: #002157;
