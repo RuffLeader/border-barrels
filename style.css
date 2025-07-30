@@ -112,12 +112,11 @@ footer {
   background-color: #ffffff;
 }
 
-.full-width-heading {
-  width: 100vw;
-  margin-left: -50vw;
-  left: 50%;
-  position: relative;
+#beer-heading {
   background-color: #f2f4f8;
-  text-align: center;
+  color: #002157;
   padding: 1rem 2rem;
+  width: 100vw;
+  margin: 0;
+  text-align: center;
 }
