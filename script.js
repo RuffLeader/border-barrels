@@ -11,18 +11,51 @@ const headers = [
   "Episode No.", "Supplier", "Brewery City", "Brewery State", "Year Reviewed"
 ];
 
+// Define column widths (you can tweak these if needed)
+const columnWidths = {
+  "Brewery": "200px",
+  "Beer Name": "200px",
+  "ABV": "60px",
+  "Parent Style": "140px",
+  "Style": "140px",
+  "BBBRS Score": "90px",
+  "BBBRS Simon": "70px",
+  "BBBRS Zach": "70px",
+  "BBBRS Hudson": "70px",
+  "Untappd Score": "90px",
+  "Untappd Simon": "70px",
+  "Untappd Zach": "70px",
+  "Untappd Hudson": "70px",
+  "Can Art Score": "160px",
+  "Can Art Simon": "100px",
+  "Can Art Zach": "100px",
+  "Can Art Hudson": "100px",
+  "Episode No.": "90px",
+  "Supplier": "140px",
+  "Brewery City": "140px",
+  "Brewery State": "100px",
+  "Year Reviewed": "100px"
+};
+
 function renderTable(beers) {
   const table = document.createElement("table");
+  table.id = "beer-table";
   table.classList.add("beer-table");
 
   // Table Head
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
+
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
+    th.style.textAlign = "center";
+    th.style.verticalAlign = "middle";
+    th.style.whiteSpace = "nowrap";
+    th.style.width = columnWidths[header] || "120px";
     headRow.appendChild(th);
   });
+
   thead.appendChild(headRow);
   table.appendChild(thead);
 
@@ -33,6 +66,10 @@ function renderTable(beers) {
     headers.forEach(header => {
       const td = document.createElement("td");
       td.textContent = beer[header] || "";
+      td.style.textAlign = "center";
+      td.style.verticalAlign = "middle";
+      td.style.whiteSpace = "nowrap";
+      td.style.width = columnWidths[header] || "120px";
       row.appendChild(td);
     });
     tbody.appendChild(row);
