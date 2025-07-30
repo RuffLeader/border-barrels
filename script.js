@@ -85,7 +85,7 @@ const headers = [
   "BBBRS Score",
   "Untappd Score",
   "Can Art Score",
-  "Ep No.", "Supplier", "Brewery City", "Brewery State", "Year"
+  "Ep No.", "Supplier", "Brewery State", "Year"
 ];
 
 const columnWidths = {};
