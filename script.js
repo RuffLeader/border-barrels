@@ -1,37 +1,47 @@
+// Border Barrels Beer Viewer
 console.log("Border Barrels site loaded!");
 const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y";
 
-function renderBeerCard(beer) {
+function renderBeerCard(beer, index) {
   return `
     <div class="beer-card">
-      <h3>${beer["Beer Name"]} (${beer.ABV}%)</h3>
-      <p><strong>Brewery:</strong> ${beer.Brewery} (${beer["Brewery City"]}, ${beer["Brewery State"]})</p>
-      <p><strong>Style:</strong> ${beer["Style"]} (${beer["Parent Style"]})</p>
-      <p><strong>Reviewed in Episode:</strong> ${beer["Episode No."]} (${beer["Year Reviewed"]})</p>
-      <p><strong>Supplier:</strong> ${beer.Supplier}</p>
+      <button class="beer-header" onclick="toggleBeerDetails(${index})">
+        ${beer["Beer Name"]} (${beer.ABV}%) – ${beer.Brewery}
+      </button>
+      <div class="beer-details" id="beer-details-${index}" style="display: none;">
+        <p><strong>Brewery:</strong> ${beer.Brewery} (${beer["Brewery City"]}, ${beer["Brewery State"]})</p>
+        <p><strong>Style:</strong> ${beer["Style"]} (${beer["Parent Style"]})</p>
+        <p><strong>Reviewed in Episode:</strong> ${beer["Episode No."]} (${beer["Year Reviewed"]})</p>
+        <p><strong>Supplier:</strong> ${beer.Supplier}</p>
 
-      <h4>🧪 BBBRS Score: ${beer["BBBRS Score"]}</h4>
-      <ul>
-        <li>Simon: ${beer["BBBRS Simon"]}</li>
-        <li>Zach: ${beer["BBBRS Zach"]}</li>
-        <li>Hudson: ${beer["BBBRS Hudson"]}</li>
-      </ul>
+        <h4>🧪 BBBRS Score: ${beer["BBBRS Score"]}</h4>
+        <ul>
+          <li>Simon: ${beer["BBBRS Simon"]}</li>
+          <li>Zach: ${beer["BBBRS Zach"]}</li>
+          <li>Hudson: ${beer["BBBRS Hudson"]}</li>
+        </ul>
 
-      <h4>📊 Untappd Score: ${beer["Untappd Score"]}</h4>
-      <ul>
-        <li>Simon: ${beer["Untappd Simon"]}</li>
-        <li>Zach: ${beer["Untappd Zach"]}</li>
-        <li>Hudson: ${beer["Untappd Hudson"]}</li>
-      </ul>
+        <h4>📊 Untappd Score: ${beer["Untappd Score"]}</h4>
+        <ul>
+          <li>Simon: ${beer["Untappd Simon"]}</li>
+          <li>Zach: ${beer["Untappd Zach"]}</li>
+          <li>Hudson: ${beer["Untappd Hudson"]}</li>
+        </ul>
 
-      <h4>🎨 Can Art Score: ${beer["Can Art Score"]}</h4>
-      <ul>
-        <li>Simon: ${beer["Can Art Simon"]}</li>
-        <li>Zach: ${beer["Can Art Zach"]}</li>
-        <li>Hudson: ${beer["Can Art Hudson"]}</li>
-      </ul>
+        <h4>🎨 Can Art Score: ${beer["Can Art Score"]}</h4>
+        <ul>
+          <li>Simon: ${beer["Can Art Simon"]}</li>
+          <li>Zach: ${beer["Can Art Zach"]}</li>
+          <li>Hudson: ${beer["Can Art Hudson"]}</li>
+        </ul>
+      </div>
     </div>
   `;
+}
+
+function toggleBeerDetails(index) {
+  const details = document.getElementById(`beer-details-${index}`);
+  details.style.display = details.style.display === "none" ? "block" : "none";
 }
 
 function loadBeers() {
@@ -39,13 +49,29 @@ function loadBeers() {
     .then(response => response.json())
     .then(data => {
       const container = document.getElementById("beer-container");
-      if (!data || data.length === 0) {
-        container.innerHTML = "<p>No beers found.</p>";
-        return;
+      const searchInput = document.getElementById("beer-search");
+
+      function displayBeers(filteredData) {
+        if (!filteredData || filteredData.length === 0) {
+          container.innerHTML = "<p>No beers found.</p>";
+          return;
+        }
+        const cardsHTML = filteredData.map((beer, i) => renderBeerCard(beer, i)).join("");
+        container.innerHTML = cardsHTML;
       }
 
-      const cardsHTML = data.map(renderBeerCard).join("");
-      container.innerHTML = cardsHTML;
+      displayBeers(data);
+
+      searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filtered = data.filter(beer =>
+          beer["Beer Name"].toLowerCase().includes(searchTerm) ||
+          beer.Brewery.toLowerCase().includes(searchTerm) ||
+          beer["Style"].toLowerCase().includes(searchTerm) ||
+          beer.Supplier.toLowerCase().includes(searchTerm)
+        );
+        displayBeers(filtered);
+      });
     })
     .catch(error => {
       console.error("Error fetching beers:", error);
@@ -53,5 +79,5 @@ function loadBeers() {
     });
 }
 
-// Run once the page is fully loaded
 document.addEventListener("DOMContentLoaded", loadBeers);
+
