@@ -7,13 +7,12 @@ body {
 }
 
 header {
-  width: 100vw;
-  margin-left: -50vw;
-  left: 50%;
-  position: relative;
-  background-color: #f2f4f8;
+  background-color: #002157;
+  color: white;
+  padding: 1rem;
   text-align: center;
-  padding: 1rem 2rem;
+  width: 100vw;
+  margin: 0;
 }
 
 nav a {
