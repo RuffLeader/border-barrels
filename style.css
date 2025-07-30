@@ -52,16 +52,22 @@ footer {
 }
 
 #beer-table-container {
-  display: flex;
-  justify-content: center;
-  overflow-x: auto;
-  padding: 1em;
+  position: relative;     /* needed for z-index and positioning */
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;    /* pull container to the very left of viewport */
+  margin-right: -50vw;   /* pull container to the very right of viewport */
+  width: 100vw;          /* full viewport width */
+  max-width: 100vw;
   box-sizing: border-box;
+  padding: 1rem 2rem;    /* optional padding */
+  background: white;     /* optional, to separate visually */
+  z-index: 10;           /* makes sure it floats above other content */
 }
 
 #beer-table {
+  width: 100%;
   border-collapse: collapse;
-  width: 90%;
   max-width: 1200px;
   background-color: #ffffff;
   color: #002157;
