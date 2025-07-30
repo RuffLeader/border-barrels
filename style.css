@@ -25,10 +25,9 @@ nav a:hover {
 }
 
 main {
-  display: flex;
-  justify-content: center;
   padding: 2rem;
-  width: 100%;
+  max-width: 800px;
+  margin: auto;
 }
 
 footer {
@@ -37,6 +36,14 @@ footer {
   text-align: center;
   padding: 1rem;
   margin-top: 2rem;
+}
+
+.beer-card {
+  border: 1px solid #002157;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f2f4f8;
 }
 
 .video-wrapper {
