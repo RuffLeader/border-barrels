@@ -83,30 +83,20 @@ let allBeers = [];
 
 const headers = [
   "Brewery", "Beer Name", "ABV", "Parent Style", "Style",
-  "BBBRS Score", "Untappd Score", "Can Art Score",
+  "BBBRS Score",
+  "Untappd Score",
+  "Can Art Score",
   "Episode No.", "Supplier", "Brewery City", "Brewery State", "Year Reviewed"
 ];
 
-const columnWidths = {
-  "Brewery": "fit-content",
-  "Beer Name": "fit-content",
-  "ABV": "fit-content",
-  "Parent Style": "fit-content",
-  "Style": "fit-content",
-  "BBBRS Score": "fit-content",
-  "Untappd Score": "fit-content",
-  "Can Art Score": "fit-content",
-  "Episode No.": "fit-content",
-  "Supplier": "fit-content",
-  "Brewery City": "fit-content",
-  "Brewery State": "fit-content",
-  "Year Reviewed": "fit-content"
-};
+// Set all column widths to fit-content
+const columnWidths = {};
+headers.forEach(header => {
+  columnWidths[header] = "fit-content";
+});
 
-// Define the emoji ranks
 const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
-// Determine top 5 scores in each category
 function getTopScores(field) {
   return [...allBeers]
     .filter(beer => !isNaN(parseFloat(beer[field])))
@@ -115,11 +105,10 @@ function getTopScores(field) {
     .map(beer => beer[field]);
 }
 
-// Store top scores for use in renderTable
-const topScores = {
-  "BBBRS Score": getTopScores("BBBRS Score"),
-  "Untappd Score": getTopScores("Untappd Score"),
-  "Can Art Score": getTopScores("Can Art Score"),
+let topScores = {
+  "BBBRS Score": [],
+  "Untappd Score": [],
+  "Can Art Score": [],
 };
 
 function renderTable(beers) {
@@ -145,7 +134,6 @@ function renderTable(beers) {
   beers.forEach(beer => {
     const row = document.createElement("tr");
 
-    // Add row click behavior if applicable (e.g. linking to episode)
     const episodeNum = beer["Episode No."];
     if (episodeLinks[episodeNum]) {
       row.style.cursor = "pointer";
@@ -158,11 +146,9 @@ function renderTable(beers) {
       const td = document.createElement("td");
       let text = beer[header] || "";
 
-      // Bold numeric scores
       if (["BBBRS Score", "Untappd Score", "Can Art Score"].includes(header)) {
         td.style.fontWeight = "bold";
 
-        // Check for rank and add emoji
         const rankIndex = topScores[header].indexOf(text);
         if (rankIndex >= 0 && rankIndex < 5) {
           text += ` ${rankEmojis[rankIndex]}`;
@@ -171,6 +157,7 @@ function renderTable(beers) {
       }
 
       td.textContent = text;
+      td.style.textAlign = "center";
       row.appendChild(td);
     });
 
@@ -179,7 +166,6 @@ function renderTable(beers) {
 
   table.appendChild(tbody);
 
-  // Inject into page
   const container = document.getElementById("beer-table-container");
   container.innerHTML = "";
   container.appendChild(table);
@@ -188,7 +174,7 @@ function renderTable(beers) {
 function filterBeers(query) {
   const q = query.toLowerCase();
   const filtered = allBeers.filter(beer =>
-    headers.some(header => (beer[header] || "").toLowerCase().includes(q))
+    headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q))
   );
   renderTable(filtered);
 }
@@ -197,12 +183,21 @@ fetch(apiURL)
   .then(response => response.json())
   .then(data => {
     allBeers = data;
+
+    topScores = {
+      "BBBRS Score": getTopScores("BBBRS Score"),
+      "Untappd Score": getTopScores("Untappd Score"),
+      "Can Art Score": getTopScores("Can Art Score"),
+    };
+
     renderTable(allBeers);
 
     const searchInput = document.getElementById("beer-search");
-    searchInput.addEventListener("input", () => {
-      filterBeers(searchInput.value);
-    });
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        filterBeers(searchInput.value);
+      });
+    }
   })
   .catch(error => {
     const container = document.getElementById("beer-table-container");
