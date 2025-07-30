@@ -45,3 +45,25 @@ axios.get(apiURL)
     console.error("Error loading beers:", error);
     document.getElementById("beer-container").innerHTML = "<p>Failed to load beers.</p>";
   });
+
+const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y"; // replace this
+
+function renderBeerCard(beer) {
+  return `<div class="beer-card">
+    <h3>${beer["Beer Name"]} (${beer.ABV}%)</h3>
+    <p><strong>Brewery:</strong> ${beer.Brewery}</p>
+    <!-- more fields here if needed -->
+  </div>`;
+}
+
+axios.get(apiURL)
+  .then(response => {
+    console.log("✅ API response received:", response.data);
+    const beers = response.data;
+    const container = document.getElementById("beer-container");
+    container.innerHTML = beers.map(renderBeerCard).join("");
+  })
+  .catch(error => {
+    console.error("❌ Error loading beers:", error);
+    document.getElementById("beer-container").innerHTML = "<p>⚠️ Failed to load beers.</p>";
+  });
