@@ -88,20 +88,31 @@ const headers = [
 ];
 
 const columnWidths = {
-  "Brewery": "200px",
-  "Beer Name": "200px",
-  "ABV": "60px",
-  "Parent Style": "140px",
-  "Style": "140px",
-  "BBBRS Score": "90px",
-  "Untappd Score": "90px",
-  "Can Art Score": "160px",
-  "Episode No.": "90px",
-  "Supplier": "140px",
-  "Brewery City": "140px",
-  "Brewery State": "100px",
-  "Year Reviewed": "100px"
+  "Brewery": "fit-content",
+  "Beer Name": "fit-content",
+  "ABV": "fit-content",
+  "Parent Style": "fit-content",
+  "Style": "fit-content",
+  "BBBRS Score": "fit-content",
+  "Untappd Score": "fit-content",
+  "Can Art Score": "fit-content",
+  "Episode No.": "fit-content",
+  "Supplier": "fit-content",
+  "Brewery City": "fit-content",
+  "Brewery State": "fit-content",
+  "Year Reviewed": "fit-content"
 };
+
+headers.forEach(header => {
+  const th = document.createElement("th");
+  th.textContent = header;
+
+  if (columnWidths[header]) {
+    th.style.width = columnWidths[header];  // Accepts "fit-content" too
+  }
+
+  headRow.appendChild(th);
+});
 
 const ratingColumns = ["BBBRS Score", "Untappd Score", "Can Art Score"];
 let topScores = {
