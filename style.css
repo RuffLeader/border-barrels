@@ -51,39 +51,32 @@ footer {
   text-align: center;
 }
 
-.beer-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin: 1em 0;
-  padding: 0.5em;
-  background: #fff;
-}
-
-.beer-toggle {
-  background: #002157;
-  color: white;
+.beer-table {
   width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  margin-top: 1em;
+}
+
+.beer-table thead {
+  background-color: #002157;
+  color: white;
+}
+
+.beer-table th, .beer-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
   text-align: left;
-  border: none;
-  padding: 1em;
-  font-size: 1.1em;
-  cursor: pointer;
 }
 
-.beer-toggle.active {
-  background: #003a8c;
-}
-
-.beer-content {
-  display: none;
-  padding: 1em;
-  background: #f9f9f9;
+.beer-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 #beer-search {
   margin: 1em 0;
   padding: 0.5em;
-  font-size: 1em;
   width: 100%;
   max-width: 400px;
+  font-size: 1em;
 }
