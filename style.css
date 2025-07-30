@@ -68,7 +68,7 @@ footer {
 #beer-table {
   width: 100%;
   border-collapse: collapse;
-  max-width: auto;
+  max-width: 1200px;
   background-color: #ffffff;
   color: #002157;
   margin: 0 auto;
