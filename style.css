@@ -104,7 +104,7 @@ footer {
 #beer-table th:nth-child(11),
 #beer-table th:nth-child(12),
 #beer-table th:nth-child(13) { width: 60px; }  /* Simon, Zach, Hudson Untappd */
-#beer-table th:nth-child(14) { width: 90px; }  /* Can Art Score */
+#beer-table th:nth-child(14) { width: 200px; }  /* Can Art Score */
 #beer-table th:nth-child(15),
 #beer-table th:nth-child(16),
 #beer-table th:nth-child(17) { width: 60px; }  /* Simon, Zach, Hudson Can Art */
