@@ -35,6 +35,12 @@ main {
   margin: auto;
 }
 
+.main-beers {
+  padding: 2rem;
+  max-width: 2000px;
+  margin: auto;
+}
+
 footer {
   background-color: #002157;
   color: white;
