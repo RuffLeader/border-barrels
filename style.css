@@ -13,6 +13,7 @@ header {
   text-align: center;
   width: 100vw;
   margin: 0;
+  box-sizing: border-box;
 }
 
 nav a {
@@ -20,6 +21,8 @@ nav a {
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 
 nav a:hover {
@@ -37,7 +40,9 @@ footer {
   color: white;
   text-align: center;
   padding: 1rem;
-  margin-top: 2rem;
+  width: 100vw;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .beer-card {
