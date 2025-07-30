@@ -36,9 +36,13 @@ main {
 }
 
 #header-beers {
-  padding: 2rem;
-  max-width: 500px;
-  margin: auto;
+  background-color: #002157;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  width: 2000px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 footer {
