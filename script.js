@@ -83,81 +83,79 @@ let allBeers = [];
 
 const headers = [
   "Brewery", "Beer Name", "ABV", "Parent Style", "Style",
-  "BBBRS Score",
-  "Untappd Score",
-  "Can Art Score",
-  "Ep No.", "Supplier", "Brewery State", "Year"
+  "BBBRS Score", "Untappd Score", "Can Art Score",
+  "Episode No.", "Supplier", "Brewery City", "Brewery State", "Year Reviewed"
 ];
 
-// Set all column widths to fit-content
-const columnWidths = {};
-headers.forEach(header => {
-  columnWidths[header] = "fit-content";
-});
-
-const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
-
-function getTopScores(field) {
-  return [...allBeers]
-    .filter(beer => !isNaN(parseFloat(beer[field])))
-    .sort((a, b) => parseFloat(b[field]) - parseFloat(a[field]))
+const highlightTopScores = (beers, key) => {
+  return [...beers]
+    .filter(b => b[key] && !isNaN(parseFloat(b[key])))
+    .sort((a, b) => parseFloat(b[key]) - parseFloat(a[key]))
     .slice(0, 5)
-    .map(beer => beer[field]);
-}
-
-let topScores = {
-  "BBBRS Score": [],
-  "Untappd Score": [],
-  "Can Art Score": [],
+    .map(b => b[key]);
 };
 
 function renderTable(beers) {
+  const topBBBRS = highlightTopScores(beers, "BBBRS Score");
+  const topUntappd = highlightTopScores(beers, "Untappd Score");
+  const topCanArt = highlightTopScores(beers, "Can Art Score");
+
   const table = document.createElement("table");
   table.classList.add("beer-table");
 
-  // Table Head
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
-    if (columnWidths[header]) {
-      th.style.width = columnWidths[header];
-    }
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
   table.appendChild(thead);
 
-  // Table Body
   const tbody = document.createElement("tbody");
+
   beers.forEach(beer => {
     const row = document.createElement("tr");
 
-    const episodeNum = beer["Episode No."];
-    if (episodeLinks[episodeNum]) {
-      row.style.cursor = "pointer";
-      row.addEventListener("click", () => {
-        window.open(episodeLinks[episodeNum], "_blank");
-      });
-    }
+    const episodeNumber = beer["Episode No."];
+    const episodeURL = `https://www.youtube.com/playlist?list=PLy6JHMIQuCvumbbbzNcfVz3UFIWYMSAGU&playnext=1&index=${episodeNumber}`;
+    row.style.cursor = "pointer";
+    row.addEventListener("click", () => {
+      window.open(episodeURL, "_blank");
+    });
 
     headers.forEach(header => {
       const td = document.createElement("td");
-      let text = beer[header] || "";
+      let content = beer[header] || "";
 
+      // Bold numeric ratings
       if (["BBBRS Score", "Untappd Score", "Can Art Score"].includes(header)) {
         td.style.fontWeight = "bold";
 
-        const rankIndex = topScores[header].indexOf(text);
-        if (rankIndex >= 0 && rankIndex < 5) {
-          text += ` ${rankEmojis[rankIndex]}`;
-          td.style.color = "gold";
-        }
+        // Add ranking emojis
+        if (content === topBBBRS[0] && header === "BBBRS Score") content += " 🥇";
+        else if (content === topBBBRS[1] && header === "BBBRS Score") content += " 🥈";
+        else if (content === topBBBRS[2] && header === "BBBRS Score") content += " 🥉";
+        else if (content === topBBBRS[3] && header === "BBBRS Score") content += " 4️⃣";
+        else if (content === topBBBRS[4] && header === "BBBRS Score") content += " 5️⃣";
+
+        if (content === topUntappd[0] && header === "Untappd Score") content += " 🥇";
+        else if (content === topUntappd[1] && header === "Untappd Score") content += " 🥈";
+        else if (content === topUntappd[2] && header === "Untappd Score") content += " 🥉";
+        else if (content === topUntappd[3] && header === "Untappd Score") content += " 4️⃣";
+        else if (content === topUntappd[4] && header === "Untappd Score") content += " 5️⃣";
+
+        if (content === topCanArt[0] && header === "Can Art Score") content += " 🥇";
+        else if (content === topCanArt[1] && header === "Can Art Score") content += " 🥈";
+        else if (content === topCanArt[2] && header === "Can Art Score") content += " 🥉";
+        else if (content === topCanArt[3] && header === "Can Art Score") content += " 4️⃣";
+        else if (content === topCanArt[4] && header === "Can Art Score") content += " 5️⃣";
+
+        td.style.color = topBBBRS.includes(content) || topUntappd.includes(content) || topCanArt.includes(content) ? "goldenrod" : "inherit";
       }
 
-      td.textContent = text;
-      td.style.textAlign = "center";
+      td.textContent = content;
       row.appendChild(td);
     });
 
@@ -174,7 +172,7 @@ function renderTable(beers) {
 function filterBeers(query) {
   const q = query.toLowerCase();
   const filtered = allBeers.filter(beer =>
-    headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q))
+    headers.some(header => (beer[header] || "").toLowerCase().includes(q))
   );
   renderTable(filtered);
 }
@@ -183,21 +181,12 @@ fetch(apiURL)
   .then(response => response.json())
   .then(data => {
     allBeers = data;
-
-    topScores = {
-      "BBBRS Score": getTopScores("BBBRS Score"),
-      "Untappd Score": getTopScores("Untappd Score"),
-      "Can Art Score": getTopScores("Can Art Score"),
-    };
-
     renderTable(allBeers);
 
     const searchInput = document.getElementById("beer-search");
-    if (searchInput) {
-      searchInput.addEventListener("input", () => {
-        filterBeers(searchInput.value);
-      });
-    }
+    searchInput.addEventListener("input", () => {
+      filterBeers(searchInput.value);
+    });
   })
   .catch(error => {
     const container = document.getElementById("beer-table-container");
