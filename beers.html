@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Beers Reviewed</title>
   <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
   <header>
@@ -18,19 +19,10 @@
   </header>
 
   <main>
-    <div class="beer-card">
-      <h3>Off-Roadie</h3>
-      <p><strong>Brewery:</strong> Sunday Road Brewing</p>
-      <p><strong>Episode:</strong> 23</p>
-      <p><strong>Overall Score:</strong> 20.50 / 25</p>
-      <ul>
-        <li>Hudson: 20.25</li>
-        <li>Zach: 20.25</li>
-        <li>Simon: 21</li>
-        <li>Provided by: Zach</li>
-      </ul>
-    </div>
-  </main>
+  <div id="beer-container">
+    <p>Loading beers...</p>
+  </div>
+</main>
 
   <footer>
     <p>© 2025 Border Barrels</p>
