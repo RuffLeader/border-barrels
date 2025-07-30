@@ -1,7 +1,7 @@
 console.log("Border Barrels site loaded!");
 
 const episodeLinks = {
-  "1": "riVK2nrD4Kk",
+  "1": "https://www.youtube.com/watch?v=riVK2nrD4Kk",
   "2": "aOvtCZfrJJI",
   "3": "M7W_ge0fVcY",
   "4": "ey0GZJLnq1k",
@@ -27,7 +27,7 @@ const episodeLinks = {
   "24": "VBDh24dLM4Q",
   "25": "yP3oivpb__0",
   "26": "2oqHKAKaPSI",
-  "27": "9hyrgLzZveY",
+  "27": "https://www.youtube.com/watch?v=9hyrgLzZveY",
   "28": "MGrB867FyCA",
   "29": "7rhoG6FbNCY",
   "30": "WYmqGiAMR6A",
