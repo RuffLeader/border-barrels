@@ -39,8 +39,8 @@ const columnWidths = {
 
 function renderTable(beers) {
   const table = document.createElement("table");
-  table.id = "beer-table";
   table.classList.add("beer-table");
+  table.id = "beer-table";
 
   // Table Head
   const thead = document.createElement("thead");
@@ -49,10 +49,6 @@ function renderTable(beers) {
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
-    th.style.textAlign = "center";
-    th.style.verticalAlign = "middle";
-    th.style.whiteSpace = "nowrap";
-    th.style.width = columnWidths[header] || "120px";
     headRow.appendChild(th);
   });
 
@@ -66,10 +62,6 @@ function renderTable(beers) {
     headers.forEach(header => {
       const td = document.createElement("td");
       td.textContent = beer[header] || "";
-      td.style.textAlign = "center";
-      td.style.verticalAlign = "middle";
-      td.style.whiteSpace = "nowrap";
-      td.style.width = columnWidths[header] || "120px";
       row.appendChild(td);
     });
     tbody.appendChild(row);
@@ -77,7 +69,6 @@ function renderTable(beers) {
 
   table.appendChild(tbody);
 
-  // Inject into page
   const container = document.getElementById("beer-table-container");
   container.innerHTML = "";
   container.appendChild(table);
