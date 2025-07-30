@@ -55,7 +55,7 @@ footer {
   position: relative;     /* needed for z-index and positioning */
   left: 50%;
   right: 50%;
-  margin-left: calc(-50vw + 50%);    /* center the container, ignoring page margins */
+  margin-left: -50vw;    /* center the container, ignoring page margins */
   margin-right: -50vw;   /* pull container to the very right of viewport */
   width: 100vw;          /* full viewport width */
   overflow-x: auto;           /* horizontal scroll if needed */
