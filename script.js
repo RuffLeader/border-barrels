@@ -85,13 +85,13 @@ const headers = [
   "BBBRS Score",
   "Untappd Score",
   "Can Art Score",
-  "Episode No.", "Supplier", "Brewery City", "Brewery State", "Year Reviewed"
+  "Ep No.", "Supplier", "Brewery City", "Brewery State", "Year"
 ];
 
 const columnWidths = {};
 headers.forEach(h => columnWidths[h] = "fit-content");
 
-const rankEmojis = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"];
+const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
 let allBeers = [];
 
