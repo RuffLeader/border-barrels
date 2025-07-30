@@ -76,12 +76,10 @@ footer {
 }
 
 #beer-table th,
-#beer-table td,
-#beer-table th * ,
-#beer-table td * {
-  text-align: center !important;
-  margin: 0 auto !important;
-  display: inline-block; /* helps inline elements center */
+#beer-table td {
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 #beer-table th {
