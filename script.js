@@ -103,90 +103,74 @@ const columnWidths = {
   "Year Reviewed": "fit-content"
 };
 
-const ratingColumns = ["BBBRS Score", "Untappd Score", "Can Art Score"];
-let topScores = {
-  "BBBRS Score": [],
-  "Untappd Score": [],
-  "Can Art Score": []
-};
+// Define the emoji ranks
+const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
-function calculateTopScores(beers) {
-  ratingColumns.forEach(col => {
-    const values = beers
-      .map(b => parseFloat(b[col]))
-      .filter(v => !isNaN(v))
-      .sort((a, b) => b - a);
-
-    topScores[col] = values.slice(0, 5).map(v => v.toFixed(2));
-  });
+// Determine top 5 scores in each category
+function getTopScores(field) {
+  return [...allBeers]
+    .filter(beer => !isNaN(parseFloat(beer[field])))
+    .sort((a, b) => parseFloat(b[field]) - parseFloat(a[field]))
+    .slice(0, 5)
+    .map(beer => beer[field]);
 }
 
-function renderTable(beers) {
-  calculateTopScores(beers);
+// Store top scores for use in renderTable
+const topScores = {
+  "BBBRS Score": getTopScores("BBBRS Score"),
+  "Untappd Score": getTopScores("Untappd Score"),
+  "Can Art Score": getTopScores("Can Art Score"),
+};
 
+function renderTable(beers) {
   const table = document.createElement("table");
   table.classList.add("beer-table");
 
-  // Table head
+  // Table Head
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
-    th.style.width = columnWidths[header] || "100px";
-    th.style.textAlign = "center";
+    if (columnWidths[header]) {
+      th.style.width = columnWidths[header];
+    }
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
   table.appendChild(thead);
 
-  // Table body
+  // Table Body
   const tbody = document.createElement("tbody");
   beers.forEach(beer => {
     const row = document.createElement("tr");
 
-    // Add click event if Episode No. has a matching YouTube ID
-    const episodeId = episodeLinks[beer["Episode No."]];
-    if (episodeId) {
+    // Add row click behavior if applicable (e.g. linking to episode)
+    const episodeNum = beer["Episode No."];
+    if (episodeLinks[episodeNum]) {
       row.style.cursor = "pointer";
       row.addEventListener("click", () => {
-        window.open(`https://www.youtube.com/watch?v=${episodeId}`, "_blank");
+        window.open(episodeLinks[episodeNum], "_blank");
       });
     }
 
     headers.forEach(header => {
       const td = document.createElement("td");
-      let cellValue = beer[header] || "";
-      td.style.width = columnWidths[header] || "100px";
-      td.style.textAlign = "center";
+      let text = beer[header] || "";
 
-      if (ratingColumns.includes(header)) {
+      // Bold numeric scores
+      if (["BBBRS Score", "Untappd Score", "Can Art Score"].includes(header)) {
         td.style.fontWeight = "bold";
-        const numericVal = parseFloat(cellValue);
-        if (!isNaN(numericVal)) {
-          const formattedVal = numericVal.toFixed(2);
-          const topVals = topScores[header];
 
-          const medalIndex = topVals.indexOf(formattedVal);
-          if (medalIndex >= 0 && medalIndex < 5) {
-            td.style.color = "#FFD700"; // highlight
-
-            let medal = "";
-            if (medalIndex === 0) medal = "🥇 ";
-            else if (medalIndex === 1) medal = "🥈 ";
-            else if (medalIndex === 2) medal = "🥉 ";
-
-            td.innerHTML = `${medal}${formattedVal}`;
-          } else {
-            td.textContent = formattedVal;
-          }
-        } else {
-          td.textContent = cellValue;
+        // Check for rank and add emoji
+        const rankIndex = topScores[header].indexOf(text);
+        if (rankIndex >= 0 && rankIndex < 5) {
+          text += ` ${rankEmojis[rankIndex]}`;
+          td.style.color = "gold";
         }
-      } else {
-        td.textContent = cellValue;
       }
 
+      td.textContent = text;
       row.appendChild(td);
     });
 
@@ -195,6 +179,7 @@ function renderTable(beers) {
 
   table.appendChild(tbody);
 
+  // Inject into page
   const container = document.getElementById("beer-table-container");
   container.innerHTML = "";
   container.appendChild(table);
