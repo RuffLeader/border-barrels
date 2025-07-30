@@ -79,8 +79,9 @@ footer {
 #beer-table td {
   border: 1px solid #ccc;
   padding: 0.5em 1em;
-  text-align: center;
+  text-align: center !important;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 #beer-table th {
