@@ -11,7 +11,7 @@ header {
   color: white;
   padding: 1rem;
   text-align: center;
-  width: 100vw;
+  width: 110vw;
   margin: 0;
   box-sizing: border-box;
 }
@@ -45,7 +45,7 @@ footer {
   color: white;
   text-align: center;
   padding: 1rem;
-  width: 100vw;
+  width: 110vw;
   margin: 0;
   box-sizing: border-box;
 }
