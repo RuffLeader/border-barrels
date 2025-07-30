@@ -111,3 +111,13 @@ footer {
 .beer-table tbody tr:nth-child(odd) {
   background-color: #ffffff;
 }
+
+.full-width-heading {
+  width: 100vw;
+  margin-left: -50vw;
+  left: 50%;
+  position: relative;
+  background-color: #f2f4f8;
+  text-align: center;
+  padding: 1rem 2rem;
+}
