@@ -44,10 +44,10 @@ footer {
 }
 
 #beer-table-container {
-  display: flex;
-  justify-content: center;
+  width: 100vw;
   overflow-x: auto;
-  padding: 1em;
+  padding: 1em 0;
+  box-sizing: border-box;
 }
 
 .beer-table {
