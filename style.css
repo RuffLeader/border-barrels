@@ -92,9 +92,28 @@ footer {
   min-width: 100px;
 }
 
-/* You can add specific widths for certain columns if needed, for example: */
-#beer-table th:nth-child(1) { min-width: 150px; }  /* Brewery */
-#beer-table th:nth-child(2) { min-width: 180px; }  /* Beer Name */
+#beer-table th:nth-child(1) { width: 180px; }  /* Brewery */
+#beer-table th:nth-child(2) { width: 180px; }  /* Beer Name */
+#beer-table th:nth-child(3) { width: 50px; }   /* ABV */
+#beer-table th:nth-child(4) { width: 120px; }  /* Parent Style */
+#beer-table th:nth-child(5) { width: 120px; }  /* Style */
+#beer-table th:nth-child(6) { width: 90px; }   /* BBBRS Score */
+#beer-table th:nth-child(7),
+#beer-table th:nth-child(8),
+#beer-table th:nth-child(9) { width: 60px; }    /* Simon, Zach, Hudson BBBRS */
+#beer-table th:nth-child(10) { width: 90px; }  /* Untappd Score */
+#beer-table th:nth-child(11),
+#beer-table th:nth-child(12),
+#beer-table th:nth-child(13) { width: 60px; }  /* Simon, Zach, Hudson Untappd */
+#beer-table th:nth-child(14) { width: 90px; }  /* Can Art Score */
+#beer-table th:nth-child(15),
+#beer-table th:nth-child(16),
+#beer-table th:nth-child(17) { width: 60px; }  /* Simon, Zach, Hudson Can Art */
+#beer-table th:nth-child(18) { width: 80px; }  /* Episode No. */
+#beer-table th:nth-child(19) { width: 120px; } /* Supplier */
+#beer-table th:nth-child(20) { width: 120px; } /* Brewery City */
+#beer-table th:nth-child(21) { width: 80px; }  /* Brewery State */
+#beer-table th:nth-child(22) { width: 80px; }  /* Year Reviewed */
 
 #beer-search {
   margin: 1em auto;
