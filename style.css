@@ -44,35 +44,34 @@ footer {
 }
 
 #beer-table-container {
-  width: 100vw;
+  display: flex;
+  justify-content: center;
   overflow-x: auto;
-  padding: 1em 0;
+  padding: 1em;
   box-sizing: border-box;
 }
 
-.beer-table {
-  width: 100%;
-  max-width: 1200px;
+#beer-table {
   border-collapse: collapse;
-  font-size: 0.9em;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 1200px;
+  background-color: #ffffff;
+  color: #002157;
+  margin: 0 auto;
 }
 
-.beer-table thead {
-  background-color: #002157;
-  color: white;
-}
-
-.beer-table th, .beer-table td {
-  border: 1px solid #ddd;
-  padding: 8px 12px;
+#beer-table th,
+#beer-table td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
   text-align: left;
-  white-space: nowrap;
 }
 
-.beer-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+#beer-table th {
+  background-color: #002157;
+  color: #ffffff;
+  position: sticky;
+  top: 0;
 }
 
 #beer-search {
