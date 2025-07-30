@@ -1,6 +1,5 @@
-// Placeholder for future JS functionality
 console.log("Border Barrels site loaded!");
-const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y"; // Replace with your real SheetDB API URL
+const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y";
 
 function renderBeerCard(beer) {
   return `
@@ -34,3 +33,25 @@ function renderBeerCard(beer) {
     </div>
   `;
 }
+
+function loadBeers() {
+  fetch(apiURL)
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById("beer-container");
+      if (!data || data.length === 0) {
+        container.innerHTML = "<p>No beers found.</p>";
+        return;
+      }
+
+      const cardsHTML = data.map(renderBeerCard).join("");
+      container.innerHTML = cardsHTML;
+    })
+    .catch(error => {
+      console.error("Error fetching beers:", error);
+      document.getElementById("beer-container").innerHTML = "<p>Failed to load beers.</p>";
+    });
+}
+
+// Run once the page is fully loaded
+document.addEventListener("DOMContentLoaded", loadBeers);
