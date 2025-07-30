@@ -35,7 +35,7 @@ main {
   margin: auto;
 }
 
-#main-beers {
+.main-beers {
   padding: 2rem;
   max-width: 2000px;
   margin: auto;
