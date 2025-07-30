@@ -87,9 +87,8 @@ footer {
   color: #ffffff;
   position: sticky;
   top: 0;
-  white-space: nowrap;        /* Prevent header wrapping */
-  /* Optional: Set min-widths to keep headers wide enough */
-  min-width: 100px;
+  white-space: nowrap;
+  padding: 0.5em 1em;
 }
 
 #beer-table th:nth-child(1) { width: 180px; }  /* Brewery */
