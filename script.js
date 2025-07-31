@@ -1,7 +1,7 @@
 console.log("Border Barrels site loaded!");
 
 const episodeLinks = {
-    "1": "https://www.youtube.com/watch?v=riVK2nrD4Kk",
+  "1": "https://www.youtube.com/watch?v=riVK2nrD4Kk",
   "2": "https://www.youtube.com/watch?v=aOvtCZfrJJI",
   "3": "https://www.youtube.com/watch?v=M7W_ge0fVcY",
   "4": "https://www.youtube.com/watch?v=ey0GZJLnq1k",
