@@ -91,7 +91,7 @@ const headers = [
 const columnWidths = {};
 headers.forEach(h => columnWidths[h] = "fit-content");
 
-const rankEmojis = ["1", "2", "3", "4", "5"]; // changed to numeric 1–5
+const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]; // changed to numeric 1–5
 
 let allBeers = [];
 
