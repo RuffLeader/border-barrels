@@ -1,6 +1,7 @@
 console.log("Border Barrels site loaded!");
 
 const episodeLinks = {
+  // ... your episode links here (same as before) ...
   "1": "https://www.youtube.com/watch?v=riVK2nrD4Kk",
   "2": "https://www.youtube.com/watch?v=aOvtCZfrJJI",
   "3": "https://www.youtube.com/watch?v=M7W_ge0fVcY",
@@ -91,7 +92,8 @@ const headers = [
 const columnWidths = {};
 headers.forEach(h => columnWidths[h] = "fit-content");
 
-const rankEmojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]; // changed to numeric 1–5
+// Changed from emojis to simple numbers 1 to 5 as strings
+const rankNumbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
 let allBeers = [];
 
@@ -116,43 +118,20 @@ function createTable(beers) {
   const table = document.createElement("table");
   table.classList.add("beer-table");
 
-  // Header
+  // Header row
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
   headers.forEach(header => {
     const th = document.createElement("th");
     th.textContent = header;
     th.style.width = columnWidths[header];
+    th.style.position = "relative"; // for filter button positioning
     headRow.appendChild(th);
   });
   thead.appendChild(headRow);
-
-  // Create filter row
-  const filterRow = document.createElement("tr");
-  headers.forEach((header, i) => {
-    const th = document.createElement("th");
-
-    // Show select dropdown only on certain columns
-    if (
-      header.includes("Score") ||
-      header === "ABV" ||
-      header.includes("No.") ||
-      header.includes("Year")
-    ) {
-      th.innerHTML = ""; // No filter input here
-    } else {
-      const select = document.createElement("select");
-      select.innerHTML = `<option value="">All</option>`;
-      th.appendChild(select);
-    }
-
-    filterRow.appendChild(th);
-  });
-  thead.appendChild(filterRow);
-
   table.appendChild(thead);
 
-  // Body
+  // Body rows
   const tbody = document.createElement("tbody");
   beers.forEach(beer => {
     const row = document.createElement("tr");
@@ -173,10 +152,10 @@ function createTable(beers) {
       if (["BBBRS Score", "Untappd Score", "Can Art Score"].includes(header)) {
         td.style.fontWeight = "bold";
 
-        // Highlight top 5 and add rank numeric
+        // Highlight top 5 and add rank number prefix
         const rankIndex = topScores[header].indexOf(text);
         if (rankIndex !== -1) {
-          text = `${rankEmojis[rankIndex]} ${text}`;
+          text = `${rankNumbers[rankIndex]} ${text}`;
           td.style.color = "#DAA520"; // Gold color
         }
       }
@@ -193,63 +172,136 @@ function createTable(beers) {
 
   table.appendChild(tbody);
   container.appendChild(table);
+}
 
-  // Populate filter dropdowns with unique values from displayed beers
+let activeFilters = {}; // { columnIndex: filterValue }
+
+function applyFilters() {
+  const filtered = allBeers.filter(beer => {
+    return Object.entries(activeFilters).every(([colIndex, filterVal]) => {
+      if (!filterVal) return true; // no filter for this column
+      const header = headers[colIndex];
+      return (beer[header] || "") === filterVal;
+    });
+  });
+  createTable(filtered);
+}
+
+function createFilterButtonOptions() {
+  const container = document.getElementById("beer-table-container");
+  const table = container.querySelector("table");
+  if (!table) return;
+
+  const thead = table.querySelector("thead");
+  const headRow = thead.querySelector("tr");
+
+  // For each header, create a small filter button except numeric/score columns
   headers.forEach((header, colIndex) => {
+    // Skip numeric columns for filters:
     if (
       header.includes("Score") ||
       header === "ABV" ||
       header.includes("No.") ||
       header.includes("Year")
-    ) return; // skip filters for these columns
+    ) return;
 
-    const select = filterRow.children[colIndex].querySelector("select");
-    if (!select) return;
+    // Create filter button container to position inside <th>
+    const th = headRow.children[colIndex];
+    // Remove extra right padding
+    th.style.paddingRight = "30px";
 
-    // Clear previous options except "All"
-    select.querySelectorAll("option:not(:first-child)").forEach(opt => opt.remove());
+    // Create small filter button
+    const filterBtn = document.createElement("button");
+    filterBtn.textContent = "▼";
+    filterBtn.title = `Filter ${header}`;
 
+    // Style the button to blend with header background
+    filterBtn.style.background = "transparent"; // transparent background
+    filterBtn.style.border = "none"; // no border
+    filterBtn.style.cursor = "pointer";
+    filterBtn.style.fontWeight = "bold";
+    filterBtn.style.fontSize = "12px";
+    filterBtn.style.lineHeight = "1";
+    filterBtn.style.marginLeft = "6px"; // small space after header text
+    filterBtn.style.padding = "0";
+    filterBtn.style.color = "inherit"; // inherit text color from header
+    filterBtn.style.userSelect = "none";   
+
+    // Create dropdown menu container
+    const dropdown = document.createElement("div");
+    dropdown.style.position = "absolute";
+    dropdown.style.top = "calc(100% + 4px)";
+    dropdown.style.right = "6px";
+    dropdown.style.background = "#002157";
+    dropdown.style.border = "1px solid #ccc";
+    dropdown.style.borderRadius = "4px";
+    dropdown.style.boxShadow = "0 2px 6px rgba(0,0,0,0.15)";
+    dropdown.style.zIndex = "100";
+    dropdown.style.minWidth = "120px";
+    dropdown.style.maxHeight = "180px";
+    dropdown.style.overflowY = "auto";
+    dropdown.style.display = "none"; // hidden by default
+
+    // Add "All" option
+    const allOption = document.createElement("div");
+    allOption.textContent = "All";
+    allOption.style.padding = "6px 12px";
+    allOption.style.cursor = "pointer";
+    allOption.style.borderBottom = "1px solid #ddd";
+    allOption.style.userSelect = "none";
+    allOption.addEventListener("click", () => {
+      activeFilters[colIndex] = "";
+      dropdown.style.display = "none";
+      applyFilters();
+    });
+    dropdown.appendChild(allOption);
+
+    // Collect unique values in this column
     const uniqueValues = new Set();
-    beers.forEach(beer => {
+    allBeers.forEach(beer => {
       const val = beer[header];
       if (val) uniqueValues.add(val);
     });
 
     [...uniqueValues].sort().forEach(val => {
-      const option = document.createElement("option");
-      option.value = val;
+      const option = document.createElement("div");
       option.textContent = val;
-      select.appendChild(option);
+      option.style.padding = "6px 12px";
+      option.style.cursor = "pointer";
+      option.style.borderBottom = "1px solid #ddd";
+      option.style.userSelect = "none";
+      option.addEventListener("click", () => {
+        activeFilters[colIndex] = val;
+        dropdown.style.display = "none";
+        applyFilters();
+      });
+      dropdown.appendChild(option);
     });
 
-    // Reset select value to All when rebuilding
-    select.value = "";
+    // Append dropdown to <th>
+    th.appendChild(filterBtn);
+    th.appendChild(dropdown);
+
+    // Toggle dropdown on button click
+    filterBtn.addEventListener("click", e => {
+      e.stopPropagation(); // prevent document click
+      // Close other dropdowns first
+      document.querySelectorAll(".filter-dropdown").forEach(d => {
+        if (d !== dropdown) d.style.display = "none";
+      });
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    // Mark dropdown div for global close
+    dropdown.classList.add("filter-dropdown");
   });
 
-  // Add filter event listeners AFTER dropdowns are populated
-  const filterSelects = filterRow.querySelectorAll("select");
-  filterSelects.forEach((select, i) => {
-    select.addEventListener("change", () => {
-      const selectedFilters = Array.from(filterSelects).map(sel => sel.value);
-
-      const filtered = allBeers.filter(beer =>
-        selectedFilters.every((filterVal, idx) => {
-          if (!filterVal) return true;
-          return (beer[headers[idx]] || "") === filterVal;
-        })
-      );
-
-      createTable(filtered);
+  // Close all dropdowns if click outside
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".filter-dropdown").forEach(dropdown => {
+      dropdown.style.display = "none";
     });
   });
-}
-
-function filterBeers(query) {
-  const q = query.toLowerCase();
-  const filtered = allBeers.filter(beer =>
-    headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q))
-  );
-  createTable(filtered);
 }
 
 // Fetch data and setup
@@ -265,11 +317,22 @@ fetch(apiURL)
     };
 
     createTable(allBeers);
+    createFilterButtonOptions();
 
     const searchInput = document.getElementById("beer-search");
     if (searchInput) {
       searchInput.addEventListener("input", () => {
-        filterBeers(searchInput.value);
+        // Reset all column filters on search
+        activeFilters = {};
+        applyFilters();
+
+        // Also apply text search filter on filtered beers
+        const q = searchInput.value.toLowerCase();
+        const filteredBySearch = allBeers.filter(beer => {
+          return headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q));
+        });
+        createTable(filteredBySearch);
+        createFilterButtonOptions();
       });
     }
   })
@@ -278,8 +341,3 @@ fetch(apiURL)
     const container = document.getElementById("beer-table-container");
     container.innerHTML = "<p>Failed to load beers.</p>";
   });
-
-// Sorting, ranking, clickable rows, and hover from your previous code
-document.addEventListener("DOMContentLoaded", () => {
-  // Sorting and other UI handled in createTable function and filter listeners now
-});
