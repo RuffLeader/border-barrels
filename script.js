@@ -134,7 +134,7 @@ function createTable(beers) {
     const row = document.createElement("tr");
 
     // Add clickable link if episode available
-    const epNum = beer["Episode No."];
+    const epNum = beer["Ep No."];
     if (episodeLinks[epNum]) {
       row.style.cursor = "pointer";
       row.addEventListener("click", () => {
