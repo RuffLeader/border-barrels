@@ -205,3 +205,158 @@ fetch(apiURL)
     const container = document.getElementById("beer-table-container");
     container.innerHTML = "<p>Failed to load beers.</p>";
   });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const table = document.querySelector(".beer-table");
+  const thead = table.querySelector("thead");
+  const tbody = table.querySelector("tbody");
+
+  const headers = Array.from(thead.querySelectorAll("th")).map(th => th.textContent.trim());
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+  // 1. Search functionality
+  const searchInput = document.getElementById("beer-search");
+  searchInput.addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase();
+    rows.forEach(row => {
+      const match = Array.from(row.children).some(td =>
+        td.textContent.toLowerCase().includes(searchTerm)
+      );
+      row.style.display = match ? "" : "none";
+    });
+  });
+
+  // 2. Sortable columns
+  let sortDirection = {};
+  headers.forEach((header, index) => {
+    sortDirection[index] = 1;
+  });
+
+  headers.forEach((header, index) => {
+    thead.querySelectorAll("th")[index].addEventListener("click", () => {
+      const isNumeric = !isNaN(parseFloat(rows[0].children[index].textContent));
+      rows.sort((a, b) => {
+        const aText = a.children[index].textContent.trim();
+        const bText = b.children[index].textContent.trim();
+
+        const aVal = isNumeric ? parseFloat(aText) || 0 : aText.toLowerCase();
+        const bVal = isNumeric ? parseFloat(bText) || 0 : bText.toLowerCase();
+
+        if (aVal < bVal) return -1 * sortDirection[index];
+        if (aVal > bVal) return 1 * sortDirection[index];
+        return 0;
+      });
+
+      sortDirection[index] *= -1;
+      rows.forEach(row => tbody.appendChild(row));
+    });
+  });
+
+  // 3. Ranking 1–5 for BBBRS Score
+  const scoreIndex = headers.findIndex(h => h === "BBBRS Score");
+  if (scoreIndex !== -1) {
+    const scoredRows = rows
+      .map(row => ({
+        row,
+        score: parseFloat(row.children[scoreIndex].textContent) || 0
+      }))
+      .sort((a, b) => b.score - a.score);
+
+    scoredRows.slice(0, 5).forEach((entry, i) => {
+      entry.row.children[scoreIndex].innerHTML =
+        `${i + 1}️⃣ ` + entry.row.children[scoreIndex].textContent.trim();
+      entry.row.children[scoreIndex].style.color = "gold";
+      entry.row.children[scoreIndex].style.fontWeight = "bold";
+    });
+  }
+
+  // 4. Clickable rows to YouTube episodes
+  rows.forEach(row => {
+    const episodeCell = Array.from(row.children).find(td =>
+      td.textContent.trim().match(/^Ep\s?\d+/i)
+    );
+    if (episodeCell) {
+      const match = episodeCell.textContent.match(/(\d+)/);
+      if (match) {
+        const episodeNum = parseInt(match[1], 10);
+        const link = `https://www.youtube.com/playlist?list=PLy6JHMIQuCvumbbbzNcfVz3UFIWYMSAGU&playnext=1&index=${episodeNum}`;
+        row.style.cursor = "pointer";
+        row.addEventListener("click", () => window.open(link, "_blank"));
+      }
+    }
+  });
+
+  // 5. Hover highlight
+  rows.forEach(row => {
+    row.addEventListener("mouseenter", () => {
+      row.classList.add("hovered-row");
+    });
+    row.addEventListener("mouseleave", () => {
+      row.classList.remove("hovered-row");
+    });
+  });
+
+  // 6. Filter dropdowns in header
+  const filterRow = document.createElement("tr");
+  headers.forEach((header, i) => {
+    const filterCell = document.createElement("th");
+
+    if (
+      header.includes("Score") ||
+      header === "ABV" ||
+      header.includes("No.") ||
+      header.includes("Year")
+    ) {
+      filterCell.innerHTML = "";
+    } else {
+      const select = document.createElement("select");
+      select.innerHTML = `<option value="">All</option>`;
+      filterCell.appendChild(select);
+    }
+    filterRow.appendChild(filterCell);
+  });
+  thead.appendChild(filterRow);
+
+  headers.forEach((header, colIndex) => {
+    if (
+      header.includes("Score") ||
+      header === "ABV" ||
+      header.includes("No.") ||
+      header.includes("Year")
+    )
+      return;
+
+    const select = filterRow.children[colIndex].querySelector("select");
+    if (!select) return;
+
+    const uniqueValues = new Set();
+    rows.forEach(row => {
+      const cellText = row.children[colIndex].textContent.trim();
+      if (cellText) uniqueValues.add(cellText);
+    });
+
+    [...uniqueValues]
+      .sort()
+      .forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.textContent = val;
+        select.appendChild(opt);
+      });
+
+    select.addEventListener("change", () => {
+      const filters = Array.from(filterRow.querySelectorAll("select")).map(
+        sel => sel?.value || ""
+      );
+
+      rows.forEach(row => {
+        const match = filters.every((filter, i) => {
+          if (!filter) return true;
+          const cell = row.children[i];
+          return cell && cell.textContent.trim() === filter;
+        });
+        row.style.display = match ? "" : "none";
+      });
+    });
+  });
+});
