@@ -51,6 +51,7 @@ main {
   overflow: auto;
   position: relative;
   transform: rotateX(180deg);
+  width: 95vw;
 }
 
 #beer-table-scroll-wrapper::before {
