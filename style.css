@@ -61,7 +61,7 @@ main {
 
 .beer-table {
   border-collapse: collapse;
-  width: max-content;
+  width: 95vw;
   min-width: 100%;
   margin: 0 auto;
   table-layout: auto;
