@@ -47,12 +47,16 @@ main {
 
 /* Move scrollbar to top */
 #beer-table-scroll-wrapper {
-  height: auto;
-  overflow-x: auto;
-  position: relative;
   transform: rotateX(180deg);
-  width: 100%;
-  margin: 1rem 0;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow-x: auto;
+  box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 #beer-table-scroll-wrapper::before {
