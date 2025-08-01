@@ -18,7 +18,8 @@ body {
 
 /* Header and footer fill full viewport width with background */
 #beers-header,
-#beers-footer {
+#beers-footer,
+header, footer {
   background-color: #002157;
   color: white;
   padding: 1rem 0;
