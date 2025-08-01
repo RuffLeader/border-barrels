@@ -341,10 +341,20 @@ fetch(apiURL)
     const container = document.getElementById("beer-table-container");
     container.innerHTML = "<p>Failed to load beers.</p>";
   });
-  
+
 document.getElementById("reset-filters").addEventListener("click", () => {
-  const searchInput = document.getElementById("beer-search");
-  searchInput.value = "";
-  // Trigger the input event to refresh the table
-  searchInput.dispatchEvent(new Event("input"));
+  const table = document.querySelector(".beer-table");
+  if (!table) return;
+
+  // Find all <select> or <input> elements in the header (filter controls)
+  const filters = table.querySelectorAll("thead input, thead select");
+  
+  filters.forEach(filter => {
+    if (filter.tagName === "INPUT" || filter.tagName === "SELECT") {
+      filter.value = ""; // Clear the filter input
+      // Optional: trigger an 'input' or 'change' event to re-filter the table
+      filter.dispatchEvent(new Event("input"));
+      filter.dispatchEvent(new Event("change"));
+    }
+  });
 });
