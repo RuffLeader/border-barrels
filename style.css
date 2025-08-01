@@ -16,12 +16,13 @@ header {
   box-sizing: border-box;
 }
 
-#beers-header {
+#beers-header,
+#beers-footer {
   background-color: #002157;
   color: white;
   padding: 1rem;
   text-align: center;
-  width: 105vw;
+  width: 110vw;
   margin: 0;
   box-sizing: border-box;
 }
@@ -129,16 +130,6 @@ footer {
   text-align: center;
   padding: 1rem;
   width: 100%;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-#beers-footer {
-  background-color: #002157;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  width: 105vw;
   margin: 0;
   box-sizing: border-box;
 }
