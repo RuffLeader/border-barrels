@@ -48,7 +48,7 @@ main {
 /* Move scrollbar to top */
 #beer-table-scroll-wrapper {
   transform: rotateX(180deg);
-  width: 100vw;
+  width: 99vw;
   position: relative;
   left: 50%;
   right: 50%;
