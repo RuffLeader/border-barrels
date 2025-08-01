@@ -342,3 +342,9 @@ fetch(apiURL)
     container.innerHTML = "<p>Failed to load beers.</p>";
   });
   
+document.getElementById("reset-filters").addEventListener("click", () => {
+  const searchInput = document.getElementById("beer-search");
+  searchInput.value = "";
+  // Trigger the input event to refresh the table
+  searchInput.dispatchEvent(new Event("input"));
+});
