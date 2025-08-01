@@ -79,7 +79,7 @@ const episodeLinks = {
   "75": "https://www.youtube.com/watch?v=t345ctH2l0k"
 };
 
-const apiURL = "https://sheetdb.io/api/v1/2a291ogsqgr9y"; // your SheetDB API
+const apiURL = "https://script.google.com/macros/s/AKfycbxDEjttMahiVNPUIAQsWR8YxxIgMbp7qe-7Ci_rKoaoQCGm3QajkFM4WQrxxHob1LIN/exec"; // your SheetDB API
 
 const headers = [
   "Brewery", "Beer Name", "ABV", "Parent Style", "Style",
