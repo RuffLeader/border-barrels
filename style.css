@@ -22,7 +22,7 @@ header {
   color: white;
   padding: 1rem;
   text-align: center;
-  width: max-content;
+  width: 100%;
   margin: 0;
   box-sizing: border-box;
 }
