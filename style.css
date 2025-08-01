@@ -56,7 +56,6 @@ main {
   margin-right: -50vw;
   overflow-x: auto;
   box-sizing: border-box;
-  padding: 0 1rem;
 }
 
 #beer-table-scroll-wrapper::before {
