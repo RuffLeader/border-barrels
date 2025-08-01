@@ -4,27 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Beers Reviewed</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
 </head>
 <body>
   <header id="beers-header">
-    <h1>Beers We've Reviewed</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="beers.html">Beers</a>
-      <a href="episodes.html">Episodes</a>
-      <a href="blog.html">Blog</a>
-    </nav>
+    <div class="container">
+      <h1>Beers We've Reviewed</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="beers.html">Beers</a>
+        <a href="episodes.html">Episodes</a>
+        <a href="blog.html">Blog</a>
+      </nav>
+    </div>
   </header>
 
-<main>
-  <input type="text" id="beer-search" placeholder="Search beers..." />
-  <div id="beer-table-container">Loading beers...</div>
-</main>
+  <main>
+    <div class="container">
+      <input type="text" id="beer-search" placeholder="Search beers..." />
+      <button id="reset-filters">Reset Filters</button>
+      <div id="beer-table-scroll-wrapper">
+        <div id="beer-table-container">Loading beers...</div>
+      </div>
+    </div>
+  </main>
 
   <footer id="beers-footer">
-    <p>© 2025 Border Barrels</p>
+    <div class="container">
+      <p>© 2025 Border Barrels</p>
+    </div>
   </footer>
 </body>
 </html>
