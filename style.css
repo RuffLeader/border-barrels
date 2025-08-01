@@ -48,11 +48,11 @@ main {
 /* Move scrollbar to top */
 #beer-table-scroll-wrapper {
   height: auto;
-  overflow: auto;
+  overflow-x: auto;
   position: relative;
   transform: rotateX(180deg);
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  width: 100%;
+  margin: 1rem 0;
 }
 
 #beer-table-scroll-wrapper::before {
@@ -80,7 +80,6 @@ main {
 .beer-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 900px;
   margin: 0 auto;
   table-layout: auto;
 }
