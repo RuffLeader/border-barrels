@@ -344,7 +344,15 @@ fetch(apiURL)
   });
 
 document.getElementById("reset-filters").addEventListener("click", () => {
-  activeFilters = {};
-  createTable(allBeers);
-  createFilterButtonOptions();
+  const table = document.querySelector(".beer-table");
+  if (!table) return;
+
+  const filters = table.querySelectorAll("thead input, thead select");
+  filters.forEach(filter => {
+    if (filter.tagName === "INPUT" || filter.tagName === "SELECT") {
+      filter.value = "";
+      filter.dispatchEvent(new Event("input"));
+      filter.dispatchEvent(new Event("change"));
+    }
+  });
 });
