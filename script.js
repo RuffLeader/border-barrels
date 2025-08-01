@@ -344,18 +344,7 @@ fetch(apiURL)
   });
 
 document.getElementById("reset-filters").addEventListener("click", () => {
-  const table = document.querySelector(".beer-table");
-  if (!table) return;
-
-  // Find all <select> or <input> elements in the header (filter controls)
-  const filters = table.querySelectorAll("thead input, thead select");
-  
-  filters.forEach(filter => {
-    if (filter.tagName === "INPUT" || filter.tagName === "SELECT") {
-      filter.value = ""; // Clear the filter input
-      // Optional: trigger an 'input' or 'change' event to re-filter the table
-      filter.dispatchEvent(new Event("input"));
-      filter.dispatchEvent(new Event("change"));
-    }
-  });
+  activeFilters = {};
+  createTable(allBeers);
+  createFilterButtonOptions();
 });
