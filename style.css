@@ -1,3 +1,13 @@
+/* Container for consistent centered content with max width */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Body & basic colors */
 body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
@@ -6,27 +16,18 @@ body {
   color: #002157;
 }
 
-header {
-  background-color: #002157;
-  color: white;
-  padding: 1rem;
-  text-align: center;
-  width: 100%;
-  margin: 0;
-  box-sizing: border-box;
-}
-
+/* Header and footer fill full viewport width with background */
 #beers-header,
 #beers-footer {
   background-color: #002157;
   color: white;
-  padding: 1rem;
-  text-align: center;
-  width: 100vw;
-  margin: 0;
+  padding: 1rem 0;
+  width: 100%;
   box-sizing: border-box;
+  text-align: center;
 }
 
+/* Nav styles */
 nav a {
   margin: 0 10px;
   color: #ffffff;
@@ -39,30 +40,45 @@ nav a:hover {
   color: #ffb400;
 }
 
+/* Main content spacing */
 main {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: auto;
+  padding: 2rem 0;
+}
+
+/* Move scrollbar to top */
+#beer-table-scroll-wrapper {
+  height: auto;
+  overflow: auto;
+  position: relative;
+  transform: rotateX(180deg);
+}
+
+#beer-table-scroll-wrapper::before {
+  content: '';
+  display: block;
+  height: 16px;
+  overflow-x: auto;
+}
+
+#beer-table-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  transform: rotateX(180deg);
+  direction: ltr;
+  width: 100%;
 }
 
 #beer-table-container {
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  width: 100vw;
-  max-width: 100vw;
-  padding: 1rem 2rem;
-  background: white;
-  z-index: 10;
-  overflow-x: visible;
+  display: inline-block;
+  min-width: 100%;
+    transform: rotateX(180deg);
 }
 
+/* Beer table styling */
 .beer-table {
   border-collapse: collapse;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
+  min-width: 900px;
   margin: 0 auto;
   table-layout: auto;
 }
@@ -91,17 +107,34 @@ main {
   z-index: 1;
 }
 
+/* Search input styling */
 #beer-search {
-  margin: 1em auto;
+  margin: 0 auto 1.5em auto;
   padding: 0.5em;
   width: 100%;
   max-width: 400px;
-  display: block;
   font-size: 1em;
   border: 1px solid #ccc;
   border-radius: 4px;
+  display: block;
 }
 
+#reset-filters {
+  display: block;
+  margin: 0 auto 1rem auto;
+  padding: 0.5em 1em;
+  background-color: #002157;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#reset-filters:hover {
+  background-color: #0041a8;
+}
+
+/* Table row striping */
 .beer-table tbody tr:nth-child(even) {
   background-color: #f2f4f8;
 }
@@ -115,54 +148,38 @@ main {
   cursor: pointer;
 }
 
+/* Numeric bold styling */
 .numeric-bold {
   font-weight: bold;
 }
 
+/* Top rank styling */
 .top-rank {
-  color: #DAA520; /* gold */
+  color: #DAA520;
   font-weight: bold;
 }
 
-footer {
-  background-color: #002157;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  width: 100%;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.beer-card {
-  border: 1px solid #002157;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  background-color: #f2f4f8;
-}
-
-.video-wrapper {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
+/* Responsive styles */
 @media screen and (max-width: 768px) {
-  .beer-table {
-    font-size: 12px;
+  #beer-table-container {
+    overflow-x: auto;
   }
-  
+
+  .beer-table {
+    min-width: 700px;
+  }
+
+  .container {
+    padding: 0 0.5rem;
+  }
+
   #beer-search {
     max-width: 100%;
   }
-}
 
-/* Style the filter dropdown options on hover */
-.filter-dropdown div:hover {
-  background-color: goldenrod;
-}
-
-/* Optional: add a subtle transition */
-.filter-dropdown {
-  transition: opacity 0.15s ease-in-out;
+  .beer-table th,
+  .beer-table td {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
 }
