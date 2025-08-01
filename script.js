@@ -179,12 +179,13 @@ let activeFilters = {}; // { columnIndex: filterValue }
 function applyFilters() {
   const filtered = allBeers.filter(beer => {
     return Object.entries(activeFilters).every(([colIndex, filterVal]) => {
-      if (!filterVal) return true; // no filter for this column
+      if (!filterVal) return true;
       const header = headers[colIndex];
       return (beer[header] || "") === filterVal;
     });
   });
   createTable(filtered);
+  createFilterButtonOptions(); // ← this line fixes the disappearing buttons
 }
 
 function createFilterButtonOptions() {
