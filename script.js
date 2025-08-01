@@ -341,3 +341,4 @@ fetch(apiURL)
     const container = document.getElementById("beer-table-container");
     container.innerHTML = "<p>Failed to load beers.</p>";
   });
+  
