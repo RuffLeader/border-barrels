@@ -79,7 +79,7 @@ const episodeLinks = {
   "75": "https://www.youtube.com/watch?v=t345ctH2l0k"
 };
 
-const apiURL = "https://script.google.com/macros/s/AKfycbxDEjttMahiVNPUIAQsWR8YxxIgMbp7qe-7Ci_rKoaoQCGm3QajkFM4WQrxxHob1LIN/exec"; // your SheetDB API
+const apiURL = "https://script.google.com/macros/s/AKfycbxDEjttMahiVNPUIAQsWR8YxxIgMbp7qe-7Ci_rKoaoQCGm3QajkFM4WQrxxHob1LIN/exec";
 
 const headers = [
   "Brewery", "Beer Name", "ABV", "Parent Style", "Style",
@@ -92,10 +92,21 @@ const headers = [
 const columnWidths = {};
 headers.forEach(h => columnWidths[h] = "fit-content");
 
-// Changed from emojis to simple numbers 1 to 5 as strings
 const rankNumbers = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
 let allBeers = [];
+let currentPage = 1;
+const beersPerPage = 50;
+
+let topScores = {
+  "BBBRS Score": [],
+  "Untappd Score": [],
+  "Can Art Score": [],
+};
+
+let activeFilters = {}; // { columnIndex: filterValue }
+let sortColumn = null;
+let sortDirection = 'asc'; // 'asc' or 'desc'
 
 function getTopScores(field) {
   return [...allBeers]
@@ -105,11 +116,72 @@ function getTopScores(field) {
     .map(beer => beer[field]);
 }
 
-let topScores = {
-  "BBBRS Score": [],
-  "Untappd Score": [],
-  "Can Art Score": [],
-};
+function getPaginatedBeers(beers) {
+  return beers.slice(0, currentPage * beersPerPage);
+}
+
+function applyFilters() {
+  currentPage = 1;
+  renderTable();
+}
+
+function renderTable() {
+  // Start with all beers
+  let filtered = [...allBeers];
+
+  // Apply filters
+  filtered = filtered.filter(beer => {
+    return Object.entries(activeFilters).every(([colIndex, filterVal]) => {
+      if (!filterVal) return true;
+      const header = headers[colIndex];
+      return (beer[header] || "") === filterVal;
+    });
+  });
+
+  // Apply sorting
+  if (sortColumn !== null) {
+  filtered.sort((a, b) => {
+    let aVal = a[sortColumn];
+    let bVal = b[sortColumn];
+
+    const aNum = parseFloat(aVal);
+    const bNum = parseFloat(bVal);
+
+    const aIsNum = !isNaN(aNum);
+    const bIsNum = !isNaN(bNum);
+
+    // If both numeric, sort normally ascending or descending
+    if (aIsNum && bIsNum) {
+      return sortDirection === 'asc'
+        ? aNum - bNum
+        : bNum - aNum;
+    }
+
+    // If only one is numeric, the numeric one comes first
+    if (aIsNum && !bIsNum) {
+      return -1; // a is number => comes first
+    }
+    if (!aIsNum && bIsNum) {
+      return 1; // b is number => comes first
+    }
+
+    // If both non-numeric (including blanks), sort alphabetically if you want
+    aVal = aVal || "";
+    bVal = bVal || "";
+
+    return sortDirection === 'asc'
+      ? aVal.localeCompare(bVal)
+      : bVal.localeCompare(aVal);
+  });
+}
+
+  // Paginate after filtering & sorting
+  const paginated = getPaginatedBeers(filtered);
+
+  createTable(paginated);
+
+  createFilterButtonOptions();
+}
 
 function createTable(beers) {
   const container = document.getElementById("beer-table-container");
@@ -122,21 +194,53 @@ function createTable(beers) {
   const thead = document.createElement("thead");
   const headRow = document.createElement("tr");
   headers.forEach(header => {
-    const th = document.createElement("th");
+  const th = document.createElement("th");
+
+  // Show sort arrow if this is the sorted column
+  if (sortColumn === header) {
+    const arrow = sortDirection === 'asc' ? ' ▲' : ' ▼';
+    th.textContent = header + arrow;
+  } else {
     th.textContent = header;
-    th.style.width = columnWidths[header];
-    th.style.position = "relative"; // for filter button positioning
-    headRow.appendChild(th);
-  });
+  }
+
+  th.style.width = columnWidths[header];
+  th.style.position = "relative";
+
+  // Only these columns are sortable
+  const sortableHeaders = ["BBBRS Score", "Untappd Score", "Can Art Score"];
+  const cleanedHeader = header.trim().toLowerCase();
+  const isSortable = sortableHeaders.some(h => h.trim().toLowerCase() === cleanedHeader);
+
+  if (isSortable) {
+    th.style.cursor = "pointer";
+    th.addEventListener("click", () => {
+      if (sortColumn === header) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortColumn = header;
+        sortDirection = 'asc';
+      }
+      currentPage = 1;
+      renderTable();
+    });
+  } else {
+    th.style.cursor = "default";
+  }
+
+  headRow.appendChild(th);
+});
+
   thead.appendChild(headRow);
   table.appendChild(thead);
 
   // Body rows
   const tbody = document.createElement("tbody");
+  
   beers.forEach(beer => {
     const row = document.createElement("tr");
 
-    // Add clickable link if episode available
+    // Make row clickable if episode link exists
     const epNum = beer["Ep No."];
     if (episodeLinks[epNum]) {
       row.style.cursor = "pointer";
@@ -152,11 +256,11 @@ function createTable(beers) {
       if (["BBBRS Score", "Untappd Score", "Can Art Score"].includes(header)) {
         td.style.fontWeight = "bold";
 
-        // Highlight top 5 and add rank number prefix
+        // Highlight top 5 and add rank emoji prefix
         const rankIndex = topScores[header].indexOf(text);
         if (rankIndex !== -1) {
           text = `${rankNumbers[rankIndex]} ${text}`;
-          td.style.color = "#DAA520"; // Gold color
+          td.style.color = "#DAA520"; // Gold
         }
       }
 
@@ -172,20 +276,18 @@ function createTable(beers) {
 
   table.appendChild(tbody);
   container.appendChild(table);
-}
 
-let activeFilters = {}; // { columnIndex: filterValue }
-
-function applyFilters() {
-  const filtered = allBeers.filter(beer => {
-    return Object.entries(activeFilters).every(([colIndex, filterVal]) => {
-      if (!filterVal) return true;
-      const header = headers[colIndex];
-      return (beer[header] || "") === filterVal;
-    });
-  });
-  createTable(filtered);
-  createFilterButtonOptions(); // ← this line fixes the disappearing buttons
+  // Center the Load More button and toggle visibility
+  const loadMoreBtn = document.getElementById("load-more-btn");
+  if (loadMoreBtn) {
+    if (beers.length < currentPage * beersPerPage) {
+      loadMoreBtn.style.display = "none";
+    } else {
+      loadMoreBtn.style.display = "block";
+      loadMoreBtn.style.margin = "1em auto"; // center horizontally
+      loadMoreBtn.style.display = "block";
+    }
+  }
 }
 
 function createFilterButtonOptions() {
@@ -196,9 +298,10 @@ function createFilterButtonOptions() {
   const thead = table.querySelector("thead");
   const headRow = thead.querySelector("tr");
 
-  // For each header, create a small filter button except numeric/score columns
+  // Clear any existing dropdowns before creating new ones
+  document.querySelectorAll(".filter-dropdown").forEach(dd => dd.remove());
+
   headers.forEach((header, colIndex) => {
-    // Skip numeric columns for filters:
     if (
       header.includes("Score") ||
       header === "ABV" ||
@@ -206,29 +309,24 @@ function createFilterButtonOptions() {
       header.includes("Year")
     ) return;
 
-    // Create filter button container to position inside <th>
     const th = headRow.children[colIndex];
-    // Remove extra right padding
     th.style.paddingRight = "30px";
 
-    // Create small filter button
     const filterBtn = document.createElement("button");
     filterBtn.textContent = "▼";
     filterBtn.title = `Filter ${header}`;
 
-    // Style the button to blend with header background
-    filterBtn.style.background = "transparent"; // transparent background
-    filterBtn.style.border = "none"; // no border
+    filterBtn.style.background = "transparent";
+    filterBtn.style.border = "none";
     filterBtn.style.cursor = "pointer";
     filterBtn.style.fontWeight = "bold";
     filterBtn.style.fontSize = "12px";
     filterBtn.style.lineHeight = "1";
-    filterBtn.style.marginLeft = "6px"; // small space after header text
+    filterBtn.style.marginLeft = "6px";
     filterBtn.style.padding = "0";
-    filterBtn.style.color = "inherit"; // inherit text color from header
-    filterBtn.style.userSelect = "none";   
+    filterBtn.style.color = "inherit";
+    filterBtn.style.userSelect = "none";
 
-    // Create dropdown menu container
     const dropdown = document.createElement("div");
     dropdown.style.position = "absolute";
     dropdown.style.top = "calc(100% + 4px)";
@@ -241,9 +339,10 @@ function createFilterButtonOptions() {
     dropdown.style.minWidth = "120px";
     dropdown.style.maxHeight = "180px";
     dropdown.style.overflowY = "auto";
-    dropdown.style.display = "none"; // hidden by default
+    dropdown.style.display = "none";
+    dropdown.classList.add("filter-dropdown");
 
-    // Add "All" option
+    // "All" option
     const allOption = document.createElement("div");
     allOption.textContent = "All";
     allOption.style.padding = "6px 12px";
@@ -257,7 +356,7 @@ function createFilterButtonOptions() {
     });
     dropdown.appendChild(allOption);
 
-    // Collect unique values in this column
+    // Unique values for this column from allBeers
     const uniqueValues = new Set();
     allBeers.forEach(beer => {
       const val = beer[header];
@@ -279,33 +378,26 @@ function createFilterButtonOptions() {
       dropdown.appendChild(option);
     });
 
-    // Append dropdown to <th>
     th.appendChild(filterBtn);
     th.appendChild(dropdown);
 
-    // Toggle dropdown on button click
     filterBtn.addEventListener("click", e => {
-      e.stopPropagation(); // prevent document click
-      // Close other dropdowns first
+      e.stopPropagation();
+      // Close other dropdowns
       document.querySelectorAll(".filter-dropdown").forEach(d => {
         if (d !== dropdown) d.style.display = "none";
       });
       dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     });
-
-    // Mark dropdown div for global close
-    dropdown.classList.add("filter-dropdown");
   });
 
-  // Close all dropdowns if click outside
+  // Close dropdowns when clicking outside
   document.addEventListener("click", () => {
-    document.querySelectorAll(".filter-dropdown").forEach(dropdown => {
-      dropdown.style.display = "none";
-    });
+    document.querySelectorAll(".filter-dropdown").forEach(dd => dd.style.display = "none");
   });
 }
 
-// Fetch data and setup
+// Fetch data and initialize
 fetch(apiURL)
   .then(res => res.json())
   .then(data => {
@@ -317,22 +409,33 @@ fetch(apiURL)
       "Can Art Score": getTopScores("Can Art Score"),
     };
 
-    createTable(allBeers);
-    createFilterButtonOptions();
+    renderTable();
 
     const searchInput = document.getElementById("beer-search");
     if (searchInput) {
       searchInput.addEventListener("input", () => {
         // Reset all column filters on search
         activeFilters = {};
-        applyFilters();
+        currentPage = 1;
 
-        // Also apply text search filter on filtered beers
         const q = searchInput.value.toLowerCase();
-        const filteredBySearch = allBeers.filter(beer => {
-          return headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q));
-        });
-        createTable(filteredBySearch);
+
+        if (!q) {
+          renderTable(); // show all beers with filters (none) applied
+          return;
+        }
+
+        // Filter by search term (across all columns)
+        const searchedBeers = allBeers.filter(beer =>
+          headers.some(header => (beer[header] || "").toString().toLowerCase().includes(q))
+        );
+
+        // Update activeFilters to none, reset sort too
+        sortColumn = null;
+        sortDirection = 'asc';
+
+        // Show filtered + searched beers
+        createTable(getPaginatedBeers(searchedBeers));
         createFilterButtonOptions();
       });
     }
@@ -344,15 +447,16 @@ fetch(apiURL)
   });
 
 document.getElementById("reset-filters").addEventListener("click", () => {
-  const table = document.querySelector(".beer-table");
-  if (!table) return;
+  activeFilters = {};
+  sortColumn = null;
+  sortDirection = 'asc';
+  currentPage = 1;
+  const searchInput = document.getElementById("beer-search");
+  if (searchInput) searchInput.value = "";
+  renderTable();
+});
 
-  const filters = table.querySelectorAll("thead input, thead select");
-  filters.forEach(filter => {
-    if (filter.tagName === "INPUT" || filter.tagName === "SELECT") {
-      filter.value = "";
-      filter.dispatchEvent(new Event("input"));
-      filter.dispatchEvent(new Event("change"));
-    }
-  });
+document.getElementById("load-more-btn").addEventListener("click", () => {
+  currentPage++;
+  renderTable();
 });
