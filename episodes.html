@@ -115,31 +115,31 @@
   "73": "https://www.youtube.com/watch?v=YNXv-XFmwRI",
   "74": "https://www.youtube.com/watch?v=oLwyc1tj9RM",
   "75": "https://www.youtube.com/watch?v=t345ctH2l0k"
-    };
+};
 
-    const spotifyBase = "https://open.spotify.com/episode/"; 
-    const appleBase = "https://podcasts.apple.com/episode/";
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("episode-grid");
+  if (!container) return;
 
-    const data = document.getElementById("episode-grid");
+  Object.entries(episodeData).reverse().forEach(([ep, data]) => {
+    const youtubeId = data.youtube.split("v=")[1];
+    const thumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
 
-    Object.entries(episodeData).reverse().forEach(([ep, info]) => {
-      const vid = info.youtube.split("v=")[1];
-      const thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-  
-      const card = document.createElement("div");
-      card.className = "video-card";
-      card.innerHTML = `
-        <img src="${thumb}" alt="Episode ${ep} Thumbnail" />
-        <h3>Episode ${ep}</h3>
-        <p class="description">${info.description}</p>
-        <div class="links">
-          <a href="${info.youtube}" target="_blank">YouTube</a>
-          <a href="${info.spotify}" target="_blank">Spotify</a>
-          <a href="${info.apple}" target="_blank">Apple Podcasts</a>
-        </div>
-      `;
-      data.appendChild(card);
-    });
+    const card = document.createElement("div");
+    card.className = "video-card";
+    card.innerHTML = `
+      <img src="${thumbnail}" alt="Episode ${ep} Thumbnail" />
+      <h3>Episode ${ep}</h3>
+      <p class="description">${data.description}</p>
+      <div class="links">
+        <a href="${data.youtube}" target="_blank">YouTube</a>
+        <a href="${data.spotify}" target="_blank">Spotify</a>
+        <a href="${data.apple}" target="_blank">Apple Podcasts</a>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+});
   </script>
 
   <style>
