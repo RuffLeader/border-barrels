@@ -98,6 +98,17 @@ section {
   text-align: center;
 }
 
+#beers-header a,
+#beers-footer a {
+  color: white;
+  text-decoration: none;
+}
+
+#beers-header a:hover,
+#beers-footer a:hover {
+  color: #ffb400; /* Gold hover (your original style) */
+}
+
 #beer-table-scroll-wrapper {
   transform: rotateX(180deg);
   width: 99vw;
