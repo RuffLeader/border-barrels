@@ -205,3 +205,79 @@ main {
     padding: 6px 8px;
   }
 }
+
+/* HOMEPAGE-SPECIFIC STYLES */
+.home-page header {
+  background-color: #ffffff;
+  color: #002157;
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.home-page header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.home-page nav a {
+  margin: 0 1rem;
+  font-size: 1rem;
+  color: #002157;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+.home-page nav a:hover {
+  color: #DAA520;
+}
+
+.home-page main h2 {
+  font-size: 2rem;
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+.home-page main p {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+}
+
+.home-page section {
+  background-color: #ffffff;
+  margin: 2rem 0;
+  padding: 2rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.home-page .video-wrapper {
+  margin: 2rem 0;
+}
+
+/* Buttons in homepage */
+.home-page button {
+  background-color: #002157;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  margin: 0.25rem;
+}
+
+.home-page button:hover {
+  background-color: #0041a8;
+}
+
+.home-page footer {
+  background-color: #ffffff;
+  color: #002157;
+  padding: 2rem 0;
+  border-top: 2px solid #e0e0e0;
+  font-size: 0.9rem;
+}
+
