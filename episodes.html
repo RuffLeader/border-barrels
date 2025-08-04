@@ -118,24 +118,25 @@
 
     const data = document.getElementById("episode-grid");
 
-    Object.entries(episodeLinks).reverse().forEach(([ep, url]) => {
-      const vid = url.split("v=")[1];
-      const thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
-      const card = document.createElement("div");
-      card.className = "video-card";
-      card.innerHTML = `
-        <img src="${thumb}" alt="Episode ${ep} Thumbnail" />
-        <h3>Episode ${ep}</h3>
-        <p class="description">Description goes here...</p>
-        <div class="links">
-          <a href="${url}" target="_blank">YouTube</a>
-          <a href="${spotifyBase}${vid}" target="_blank">Spotify</a>
-          <a href="${appleBase}${vid}" target="_blank">Apple Podcasts</a>
-        </div>
-      `;
-      data.appendChild(card);
-      // Optionally: fetch description via extractor APIs here
-    });
+Object.entries(episodeData).reverse().forEach(([ep, info]) => {
+  const vid = info.youtube.split("v=")[1];
+  const thumb = `https://img.youtube.com/vi/${vid}/hqdefault.jpg`;
+  
+  const card = document.createElement("div");
+  card.className = "video-card";
+  card.innerHTML = `
+    <img src="${thumb}" alt="Episode ${ep} Thumbnail" />
+    <h3>Episode ${ep}</h3>
+    <p class="description">${info.description}</p>
+    <div class="links">
+      <a href="${info.youtube}" target="_blank">YouTube</a>
+      <a href="${info.spotify}" target="_blank">Spotify</a>
+      <a href="${info.apple}" target="_blank">Apple Podcasts</a>
+    </div>
+  `;
+  data.appendChild(card);
+});
+
   </script>
 
   <style>
