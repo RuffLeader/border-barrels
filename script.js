@@ -198,7 +198,7 @@ function createTable(beers) {
 
   // Show sort arrow if this is the sorted column
   if (sortColumn === header) {
-    const arrow = sortDirection === 'asc' ? ' ▲' : ' ▼';
+    const arrow = sortDirection === 'asc' ? ' ↑' : ' ↓';
     th.textContent = header + arrow;
   } else {
     th.textContent = header;
@@ -313,7 +313,7 @@ function createFilterButtonOptions() {
     th.style.paddingRight = "30px";
 
     const filterBtn = document.createElement("button");
-    filterBtn.textContent = "▼";
+    filterBtn.textContent = "☰";
     filterBtn.title = `Filter ${header}`;
 
     filterBtn.style.background = "transparent";
