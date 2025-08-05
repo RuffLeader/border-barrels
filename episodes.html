@@ -549,76 +549,27 @@
     apple: "https://podcasts.apple.com/au/podcast/beercast-75-tar-barrel-brewery-distillery/id1559619911?i=1000716071590",
     description: "It was a boozey Sunday afternoon in the Border Barrels studio, as Gratzy (via his wife) supplied the boys with FIVE delicious beers from Mornington's hidden gem Tar Barrel Brewery & Distillery."
   },
-};
+    ];
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("episode-grid");
-  if (!container) return;
+    const container = document.getElementById("episode-grid");
 
-  Object.entries(episodeData).reverse().forEach(([ep, data]) => {
-    const youtubeId = data.youtube.split("v=")[1];
-    const thumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+    episodeData.forEach(ep => {
+      const card = document.createElement("div");
+      card.className = "video-card";
 
-    const card = document.createElement("div");
-    card.className = "video-card";
-    card.innerHTML = `
-      <img src="${thumbnail}" alt="Episode ${ep} Thumbnail" />
-      <h3>Episode ${ep}</h3>
-      <p class="description">${data.description}</p>
-      <div class="links">
-        <a href="${data.youtube}" target="_blank">YouTube</a>
-        <a href="${data.spotify}" target="_blank">Spotify</a>
-        <a href="${data.apple}" target="_blank">Apple Podcasts</a>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-});
+      card.innerHTML = `
+        <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
+        <h3>Episode ${ep.number} – ${ep.title}</h3>
+        <p class="description">${ep.description}</p>
+        <div class="links">
+          <a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>
+          <a href="${ep.spotifyUrl}" target="_blank">Spotify</a>
+          <a href="${ep.appleUrl}" target="_blank">Apple</a>
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
   </script>
-
-  <style>
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      padding: 1rem 0;
-    }
-
-    .video-card {
-      background: #ffffff;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 1rem;
-    }
-
-    .video-card img {
-      width:100%;
-      border-radius:4px;
-    }
-
-    .video-card h3 {
-      margin: 0.5em 0;
-      color: #002157;
-    }
-
-    .video-card .description {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 1em;
-      min-height: 3em;
-    }
-
-    .video-card .links a {
-      margin: 0 0.5em;
-      font-size: 0.9rem;
-      color: #002157;
-      text-decoration: none;
-    }
-
-    .video-card .links a:hover {
-      color: #DAA520;
-    }
-  </style>
 </body>
 </html>
