@@ -4,7 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Episodes</title>
-  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fefefe;
+      margin: 0;
+      padding: 0;
+    }
+
+    header, footer {
+      background-color: #002157;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    #episode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .video-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .video-card img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .video-card h3 {
+      margin: 1rem 0 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .video-card .description {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .video-card .links a {
+      margin-right: 0.5rem;
+      text-decoration: none;
+      color: #002157;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .video-card .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -19,7 +86,7 @@
 
   <main>
     <h2>All Episodes</h2>
-    <div class="video-card" id="episode-grid"></div>
+    <div id="episode-grid"></div>
   </main>
 
   <footer>
@@ -27,14 +94,18 @@
   </footer>
 
   <script>
-    const episodeData = {
-  "1": {
+    const episodeData = [
+  {
+    number: 1,
+    title: Akasha Tap Takeover at The Goods Shed,
     youtube: "https://www.youtube.com/watch?v=riVK2nrD4Kk",
-    spotify: "https://open.spotify.com/episode/6ZrApNS7gphvwDJCqJCKQT",
-    apple: "https://podcasts.apple.com/au/podcast/beercast-1-akasha-brewing-live-at-the-goods-shed/id1559619911?i=1000555094610",
+    spotifyUrl: "https://open.spotify.com/episode/6ZrApNS7gphvwDJCqJCKQT",
+    appleUrl: "https://podcasts.apple.com/au/podcast/beercast-1-akasha-brewing-live-at-the-goods-shed/id1559619911?i=1000555094610",
     description: "In a Border Barrels first, the boys sit down with a few heavy hitters in the craft beer industry. Dan from The Goods Shed and Larry from Akasha to talk all things venue building and beer building."
   },
-  "2": {
+  {
+    number: 2,
+    title: Mountain Culture/Black Hops/Yack Creek Distillery
     youtube: "https://www.youtube.com/watch?v=aOvtCZfrJJI",
     spotify: "https://open.spotify.com/episode/1UiYwuHCnJPNkOJbIf19KY",
     apple: "https://podcasts.apple.com/au/podcast/beercast-2-mountain-culture-black-hops-yack-creek-distillery/id1559619911?i=1000559299484",
