@@ -480,28 +480,25 @@
   },
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("episode-grid");
-  if (!container) return;
+    const data = document.getElementById("episode-grid");
 
-  Object.entries(episodeData).reverse().forEach(([ep, data]) => {
-    const youtubeId = data.youtube.split("v=")[1];
-    const thumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+    episodeData.forEach(ep => {
+      const card = document.createElement("div");
+      card.className = "video-card";
 
-    const card = document.createElement("div");
-    card.className = "video-card";
-    card.innerHTML = `
-      <img src="${thumbnail}" alt="Episode ${ep} Thumbnail" />
-      <h3>Episode ${ep}</h3>
-      <p class="description">${data.description}</p>
-      <div class="links">
-        <a href="${data.youtube}" target="_blank">YouTube</a>
-        <a href="${data.spotify}" target="_blank">Spotify</a>
-        <a href="${data.apple}" target="_blank">Apple Podcasts</a>
-      </div>
-    `;
-    container.appendChild(card);
-  });
+      card.innerHTML = `
+        <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
+        <h3>Episode ${ep.number} – ${ep.title}</h3>
+        <p class="description">${ep.description}</p>
+        <div class="links">
+          <a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>
+          <a href="${ep.spotifyUrl}" target="_blank">Spotify</a>
+          <a href="${ep.appleUrl}" target="_blank">Apple</a>
+        </div>
+      `;
+
+      data.appendChild(card);
+    });
 });
   </script>
 
