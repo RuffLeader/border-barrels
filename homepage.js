@@ -11,7 +11,7 @@ async function loadLatestEpisode() {
     container.innerHTML = `
       <a href="https://www.youtube.com/watch?v=${latest.youtubeId}" target="_blank" rel="noopener" class="latest-episode-card" aria-label="Watch latest episode on YouTube">
         <img src="https://img.youtube.com/vi/${latest.youtubeId}/maxresdefault.jpg" alt="Thumbnail for Episode ${latest.number}: ${latest.title}">
-        <div class="play-icon">&#9658;</div>
+        <div class="play-icon"></div>
       </a>
       <div class="episode-meta">
         <h2>Episode ${latest.number}: ${latest.title}</h2>
