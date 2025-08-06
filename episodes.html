@@ -699,7 +699,8 @@
 
 const container = document.getElementById("episode-grid");
 
-episodeData.forEach(ep => {
+// Reverse the array to show newest episodes first
+episodeData.slice().reverse().forEach(ep => {
   const card = document.createElement("div");
   card.className = "video-card";
 
