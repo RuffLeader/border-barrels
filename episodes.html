@@ -6,13 +6,11 @@
   <title>Episodes</title>
   <style>
     body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
-  color: #002157;
-  margin: 0;
-  padding: 0;
-  line-height: 1.6;
-}
+      font-family: Arial, sans-serif;
+      background-color: #fefefe;
+      margin: 0;
+      padding: 0;
+    }
 
     header, footer {
       background-color: #002157;
@@ -35,18 +33,21 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
+      justify-content: center; /* Center the grid container horizontally */
       color: #002157;
+        max-width: 1200px; /* Optional: limit overall container width */
+  margin: 0 auto; /* center container */
+  padding: 1rem;
     }
 
 .video-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 1rem;
-  border-radius: 8px;
-  box-sizing: border-box;
-  min-height: 420px;
+  max-width: 320px;  /* Max width per card */
+  width: 100%;       /* Let cards shrink with grid */
 }
 
 .video-card img {
