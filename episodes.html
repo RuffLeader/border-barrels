@@ -8,7 +8,6 @@
 /* === Base Styles === */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
   color: #002157;
   margin: 0;
   padding: 0;
@@ -100,7 +99,7 @@ main {
   gap: 1.5rem;
   margin: 0 auto;
   padding: 1rem;
-  max-width: 100%;
+  max-width: 100vw;
   width: 100%;
   box-sizing: border-box;
 }
@@ -119,7 +118,6 @@ main {
 
 /* === Episode Cards === */
 .video-card {
-  background: white;
   border-radius: 8px;
   padding: 1rem;
   display: flex;
@@ -130,6 +128,7 @@ main {
   min-height: 460px;
   justify-content: space-between;
   color: #002157; /* <-- Unified font color */
+  box-sizing: border-box;
 }
 
 /* Thumbnail */
@@ -138,7 +137,6 @@ main {
   height: 180px;
   object-fit: cover;
   border-radius: 8px;
-  background-color: #000;
 }
 
 /* Links section */
