@@ -25,9 +25,9 @@ h1, h2, h3 {
 }
 
 /* Universal Header (exclude Beers page) */
-header:not(#beers-header) {
-  background-color: #ffffff;
-  color: #002157;
+header {
+  background-color: #002157;
+  color: #ffffff;
   padding: 3rem 0 2rem;
   border-bottom: 2px solid #e0e0e0;
 }
@@ -40,7 +40,7 @@ header h1 {
 nav a {
   margin: 0 1rem;
   font-size: 1rem;
-  color: #002157;
+  color: #ffffff;
   text-decoration: none;
   padding: 0.5rem;
 }
@@ -50,9 +50,9 @@ nav a:hover {
 }
 
 /* Footer (exclude Beers page) */
-footer:not(#beers-footer) {
-  background-color: #ffffff;
-  color: #002157;
+footer {
+  background-color: #002157;
+  color: #ffffff;
   padding: 2rem 0;
   border-top: 2px solid #e0e0e0;
   font-size: 0.9rem;
@@ -82,31 +82,6 @@ section {
 /* Video Section */
 .video-wrapper {
   margin: 2rem 0;
-}
-
-/* ===================== */
-/* Beers Table - UNTOUCHED */
-/* ===================== */
-
-#beers-header,
-#beers-footer {
-  background-color: #002157;
-  color: white;
-  padding: 1rem 0;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-#beers-header a,
-#beers-footer a {
-  color: white;
-  text-decoration: none;
-}
-
-#beers-header a:hover,
-#beers-footer a:hover {
-  color: #ffb400; /* Gold hover (your original style) */
 }
 
 #beer-table-scroll-wrapper {
