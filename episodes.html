@@ -14,15 +14,26 @@ body {
   line-height: 1.6;
 }
 
-header,
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+header {
+  background-color: #002157;
+  color: #ffffff;
+  padding: 3rem 0 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
 footer {
   background-color: #002157;
-  margin: 0 auto;
-  color: white;
-  padding: 1rem;
-  box-sizing: border-box;
-  text-align: center;
-  width: 100%;
+  color: #ffffff;
+  padding: 2rem 0;
+  border-top: 2px solid #e0e0e0;
+  font-size: 0.9rem;
 }
 
 h1 {
@@ -238,6 +249,7 @@ main {
 </head>
 <body>
   <header>
+    <div class="container">
     <h1>Podcast Episodes</h1>
     <nav>
       <a href="index.html">Home</a>
@@ -245,6 +257,7 @@ main {
       <a href="episodes.html">Episodes</a>
       <a href="blog.html">Blog</a>
     </nav>
+    </div>
   </header>
 
 <div id="controls">
