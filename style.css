@@ -202,28 +202,25 @@ section {
   color: #DAA520;
   font-we
 
-.latest-episode-card {
-  max-width: 100%;
+#latest-episode-container {
+  max-width: 900px;
   margin: 2rem auto;
   padding: 1rem;
-  text-align: center;
   box-sizing: border-box;
 }
 
-.thumbnail-wrapper {
+.latest-episode-card {
   position: relative;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  overflow: hidden;
   border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.thumbnail {
+.latest-episode-card img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
 }
 
 .play-icon {
@@ -231,25 +228,26 @@ section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 72px;
+  font-size: 80px;
   color: white;
-  opacity: 0.9;
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
+  opacity: 0.85;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  pointer-events: none; /* so clicks pass through to the image/link */
 }
 
 .episode-meta {
-  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
   color: #002157;
-  padding: 0 1rem;
 }
 
 .episode-meta h2 {
-  margin: 0.5rem 0;
-  font-size: 1.6rem;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
 }
 
 .episode-meta p {
-  font-size: 1rem;
+  margin: 0;
   line-height: 1.4;
+  font-size: 1rem;
 }
