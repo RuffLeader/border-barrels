@@ -5,135 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Episodes</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fefefe;
-      margin: 0;
-      padding: 0;
-    }
-
-    header, footer {
-      background-color: #002157;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
-    main {
-      padding: 2rem;
-    }
-
-#episode-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-/* When filtered (applied via JS) */
-#episode-grid.filtered > .video-card {
-  max-width: 280px;
-  justify-self: center;
-}
-
-/* When unfiltered (applied via JS) */
-#episode-grid.no-filter > .video-card {
-  max-width: 100%;
-}
-
-/* Center a single card when filtered */
-#episode-grid.filtered.single {
-  justify-content: center;
-  grid-template-columns: 1fr;
-}
-
-.video-card {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  max-width: 320px;  /* Max width per card */
-  width: 100%;       /* Let cards shrink with grid */
-}
-
-.video-card img {
-  width: 100%;
-  height: 180px; /* fix height */
-  object-fit: cover;
-  border-radius: 8px;
-  background-color: #000; /* fallback background */
-}
-
-    .video-card .links a {
-      margin-right: 0.5rem;
-      text-decoration: none;
-      color: #002157;
-      font-weight: bold;
-      font-size: 0.9rem;
-      
-    }
-
-    .video-card .links a:hover {
-      text-decoration: underline;
-      color: #DAA520;
-    }
-
-    
-.episode-info {
-  text-align: center;
-  flex-grow: 1;            /* takes remaining space to push links down */
-}
-
-.episode-number {
-  font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
-  color: #002157;
-}
-
-.episode-title {
-  font-weight: normal;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  color: #002157;
-}
-
-.description {
-  font-size: 0.9rem;
+/* === Base Styles === */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
   color: #002157;
   margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
-
-.links {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  /* optionally add a little padding */
+header,
+footer {
+  background-color: #002157;
+  color: white;
+  padding: 1rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
 }
 
+h1 {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 1rem 0;
+  letter-spacing: 1px;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+nav a {
+  margin: 0 1rem;
+  font-size: 1rem;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem;
+}
+
+nav a:hover {
+  color: #DAA520;
+}
+
+main {
+  padding: 2rem;
+}
+
+/* === Controls (Search + Sort) === */
 #controls {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;  /* Center horizontally */
+  justify-content: center;
   align-items: center;
-  gap: 0; /* no gap so buttons are flush */
+  flex-wrap: nowrap;
   margin: 1.5rem 0;
 }
 
 #controls input#search {
-  max-width: 300px;
-  width: 300px;       /* fixed width */
+  width: 300px;
   padding: 0.6em 0.8em;
   font-size: 1rem;
   border: 1px solid #002157;
@@ -163,15 +91,127 @@
   border-color: #001a40;
 }
 
+/* === Grid Container === */
+#episode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  justify-content: center;
+  align-items: start;
+  gap: 1.5rem;
+  margin: 0 auto;
+  padding: 1rem;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Grid layout when filtered */
+#episode-grid.filtered {
+  grid-template-columns: repeat(auto-fit, 300px);
+  justify-content: center;
+}
+
+/* Center single card */
+#episode-grid.filtered.single {
+  grid-template-columns: 1fr;
+  justify-content: center;
+}
+
+/* === Episode Cards === */
+.video-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  justify-content: space-between;
+  color: #002157; /* <-- Unified font color */
+}
+
+/* Thumbnail */
+.video-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #000;
+}
+
+/* Links section */
+.links {
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.video-card .links a {
+  text-decoration: none;
+  color: #002157;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.video-card .links a:hover {
+  text-decoration: underline;
+  color: #DAA520;
+}
+
+/* === Episode Info === */
+.episode-info {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.episode-number {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.episode-title {
+  font-weight: normal;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* === Pagination Buttons === */
 #pagination {
   margin: 2em 0;
   text-align: center;
 }
+
 #pagination button {
-  margin: 0 5px;
-  padding: 0.5em 1em;
+  background-color: #002157;
+  color: white;
+  border: 1px solid #002157;
+  padding: 0.6em 1em;
+  font-size: 1rem;
   cursor: pointer;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
+#pagination button:hover {
+  background-color: #004080;
+  border-color: #004080;
+}
+
+#pagination button:active {
+  background-color: #001a40;
+  border-color: #001a40;
+}
+
   </style>
 </head>
 <body>
