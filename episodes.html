@@ -24,6 +24,19 @@ footer {
   text-align: center;
 }
 
+header {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  background-color: #002157;
+  color: #ffffff;
+  padding: 2rem 0;
+  border-top: 2px solid #e0e0e0;
+  font-size: 0.9rem;
+}
+
 h1 {
   font-family: 'Segoe UI', sans-serif;
   font-weight: bold;
@@ -185,6 +198,24 @@ main {
   margin: 0.2rem 0;
   padding: 0 0.5rem;
   color: #002157;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.description.truncated {
+  -webkit-line-clamp: 4;
+}
+
+.read-more-btn {
+  margin-top: 0.5rem;
+  color: #002157;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 /* === Pagination Buttons === */
@@ -901,7 +932,8 @@ card.innerHTML = `
   <div class="episode-info">
     <div class="episode-number">Episode ${ep.number}</div>
     <div class="episode-title">${ep.title}</div>
-    <p class="description">${ep.description}</p>
+    <p class="description truncated">${ep.description}</p>
+    <button class="read-more-btn">Read more</button>
   </div>
 `;
 
@@ -909,6 +941,35 @@ card.innerHTML = `
   });
 
   updateGridClasses(filteredData.length); // or whatever array you're rendering
+
+document.querySelectorAll('.video-card').forEach(card => {
+  const desc = card.querySelector('.description');
+  const button = card.querySelector('.read-more-btn');
+
+  if (!desc || !button) return;
+
+  // Temporarily remove truncation to measure full height
+  desc.classList.remove('truncated');
+  const fullHeight = desc.scrollHeight;
+
+  // Apply truncation
+  desc.classList.add('truncated');
+  const truncatedHeight = desc.clientHeight;
+
+  // If truncated and full height are the same, no overflow
+  if (fullHeight <= truncatedHeight + 1) {
+    button.style.display = 'none'; // Hide if not overflowing
+  } else {
+    button.style.display = 'inline-block'; // Show only if needed
+  }
+
+  // Toggle logic
+  button.addEventListener('click', () => {
+    const expanded = !desc.classList.contains('truncated');
+    desc.classList.toggle('truncated');
+    button.textContent = expanded ? 'Read more' : 'Read less';
+  });
+});
 }
 
 // Render pagination controls
