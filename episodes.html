@@ -71,6 +71,34 @@
     .video-card .links a:hover {
       text-decoration: underline;
     }
+
+    #controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 1em 0;
+}
+#controls input {
+  padding: 0.5em;
+  font-size: 1em;
+  flex-grow: 1;
+  margin-right: 1em;
+}
+#controls button {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+}
+#pagination {
+  margin: 2em 0;
+  text-align: center;
+}
+#pagination button {
+  margin: 0 5px;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -83,6 +111,13 @@
       <a href="blog.html">Blog</a>
     </nav>
   </header>
+
+<div id="controls">
+  <input type="text" id="search" placeholder="Search by title, number, or brewery...">
+  <button id="toggleOrder">Show Oldest First</button>
+</div>
+<div id="episode-grid"></div>
+<div id="pagination"></div>
 
   <main>
     <h2>All Episodes</h2>
@@ -698,31 +733,92 @@
     ];
 
 const container = document.getElementById("episode-grid");
+const searchInput = document.getElementById("search");
+const toggleButton = document.getElementById("toggleOrder");
+const pagination = document.getElementById("pagination");
 
-// Reverse the array to show newest episodes first
-episodeData.slice().reverse().forEach(ep => {
-  const card = document.createElement("div");
-  card.className = "video-card";
+let currentPage = 1;
+const itemsPerPage = 10;
+let newestFirst = true;
+let filteredData = [...episodeData];
 
-  let linksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>`;
-  if (ep.spotifyUrl) {
-    linksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify</a>`;
+// Render episodes
+function renderEpisodes(data) {
+  container.innerHTML = "";
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageData = data.slice(start, end);
+
+  pageData.forEach(ep => {
+    const card = document.createElement("div");
+    card.className = "video-card";
+
+    let linksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>`;
+    if (ep.spotifyUrl) {
+      linksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify</a>`;
+    }
+    if (ep.appleUrl) {
+      linksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple</a>`;
+    }
+
+    card.innerHTML = `
+      <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
+      <h3>Episode ${ep.number} – ${ep.title}</h3>
+      <p class="description">${ep.description}</p>
+      <div class="links">${linksHTML}</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+// Render pagination controls
+function renderPagination(dataLength) {
+  pagination.innerHTML = "";
+  const pageCount = Math.ceil(dataLength / itemsPerPage);
+
+  for (let i = 1; i <= pageCount; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    if (i === currentPage) btn.disabled = true;
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderEpisodes(filteredData);
+      renderPagination(filteredData.length);
+    });
+    pagination.appendChild(btn);
   }
-  if (ep.appleUrl) {
-    linksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple</a>`;
-  }
+}
 
-  card.innerHTML = `
-    <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
-    <h3>Episode ${ep.number} – ${ep.title}</h3>
-    <p class="description">${ep.description}</p>
-    <div class="links">
-      ${linksHTML}
-    </div>
-  `;
-
-  container.appendChild(card);
+// Filter episodes
+searchInput.addEventListener("input", () => {
+  const searchTerm = searchInput.value.toLowerCase();
+  filteredData = episodeData.filter(ep =>
+    ep.title.toLowerCase().includes(searchTerm) ||
+    ep.description.toLowerCase().includes(searchTerm) ||
+    String(ep.number).includes(searchTerm)
+  );
+  currentPage = 1;
+  applySorting();
 });
+
+// Toggle order
+toggleButton.addEventListener("click", () => {
+  newestFirst = !newestFirst;
+  toggleButton.textContent = newestFirst ? "Show Oldest First" : "Show Newest First";
+  applySorting();
+});
+
+// Apply sorting and re-render
+function applySorting() {
+  const sorted = [...filteredData].sort((a, b) => newestFirst ? b.number - a.number : a.number - b.number);
+  filteredData = sorted;
+  renderEpisodes(filteredData);
+  renderPagination(filteredData.length);
+}
+
+// Initial render
+applySorting();
 
   </script>
 </body>
