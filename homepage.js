@@ -24,4 +24,4 @@ async function loadLatestEpisode() {
   }
 }
 
-loadLatestEpisode();
+document.addEventListener("DOMContentLoaded", loadLatestEpisode);
