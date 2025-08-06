@@ -1,5 +1,4 @@
-<script>
-  const EPISODES_JSON_URL = "episodes.json"; 
+const EPISODES_JSON_URL = "episodes.json"; 
   // <-- Replace with your actual raw URL to episodes.json on GitHub or your server
 
   const EPISODES_PER_PAGE = 10;
@@ -111,4 +110,3 @@
 
   // Load episodes on page load
   loadEpisodes();
-</script>
