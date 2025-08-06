@@ -737,8 +737,16 @@ const searchInput = document.getElementById("search");
 const toggleButton = document.getElementById("toggleOrder");
 const pagination = document.getElementById("pagination");
 
+function calculateEpisodesPerPage() {
+  const cardWidth = 300; // Approx width of each episode card (adjust if needed)
+  const desiredRows = 3; // Number of rows you want to fill per page
+
+  const cardsPerRow = Math.floor(window.innerWidth / cardWidth);
+  return cardsPerRow * desiredRows;
+}
+
 let currentPage = 1;
-const itemsPerPage = 10;
+let itemsPerPage = calculateEpisodesPerPage();
 let newestFirst = true;
 let filteredData = [...episodeData];
 
@@ -819,6 +827,11 @@ function applySorting() {
 
 // Initial render
 applySorting();
+
+window.addEventListener('resize', () => {
+  episodesPerPage = calculateEpisodesPerPage();
+  renderEpisodes(); // Re-render when screen size changes
+});
 
   </script>
 </body>
