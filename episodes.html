@@ -695,25 +695,32 @@
   },
     ];
 
-    const container = document.getElementById("episode-grid");
+const container = document.getElementById("episode-grid");
 
-    episodeData.forEach(ep => {
-      const card = document.createElement("div");
-      card.className = "video-card";
+episodeData.forEach(ep => {
+  const card = document.createElement("div");
+  card.className = "video-card";
 
-      card.innerHTML = `
-        <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
-        <h3>Episode ${ep.number} – ${ep.title}</h3>
-        <p class="description">${ep.description}</p>
-        <div class="links">
-          <a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>
-          <a href="${ep.spotifyUrl}" target="_blank">Spotify</a>
-          <a href="${ep.appleUrl}" target="_blank">Apple</a>
-        </div>
-      `;
+  let linksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>`;
+  if (ep.spotifyUrl) {
+    linksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify</a>`;
+  }
+  if (ep.appleUrl) {
+    linksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple</a>`;
+  }
 
-      container.appendChild(card);
-    });
+  card.innerHTML = `
+    <img src="https://img.youtube.com/vi/${ep.youtubeId}/hqdefault.jpg" alt="Thumbnail for Episode ${ep.number}">
+    <h3>Episode ${ep.number} – ${ep.title}</h3>
+    <p class="description">${ep.description}</p>
+    <div class="links">
+      ${linksHTML}
+    </div>
+  `;
+
+  container.appendChild(card);
+});
+
   </script>
 </body>
 </html>
