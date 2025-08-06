@@ -203,25 +203,27 @@ section {
   font-we
 
 .latest-episode-card {
-  max-width: 900px;
+  max-width: 100%;
   margin: 2rem auto;
+  padding: 1rem;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .thumbnail-wrapper {
   position: relative;
-  display: block;
   width: 100%;
-  max-width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   overflow: hidden;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .thumbnail {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 12px;
 }
 
 .play-icon {
@@ -229,24 +231,25 @@ section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 64px;
+  font-size: 72px;
   color: white;
   opacity: 0.9;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
   pointer-events: none;
 }
 
 .episode-meta {
   margin-top: 1rem;
   color: #002157;
+  padding: 0 1rem;
 }
 
 .episode-meta h2 {
   margin: 0.5rem 0;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 }
 
 .episode-meta p {
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.4;
 }
