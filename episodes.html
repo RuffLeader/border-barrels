@@ -29,16 +29,31 @@
       padding: 2rem;
     }
 
-    #episode-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      justify-content: center; /* Center the grid container horizontally */
-      color: #002157;
-        max-width: 1200px; /* Optional: limit overall container width */
-  margin: 0 auto; /* center container */
+#episode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 1rem;
-    }
+}
+
+/* When filtered (applied via JS) */
+#episode-grid.filtered > .video-card {
+  max-width: 280px;
+  justify-self: center;
+}
+
+/* When unfiltered (applied via JS) */
+#episode-grid.no-filter > .video-card {
+  max-width: 100%;
+}
+
+/* Center a single card when filtered */
+#episode-grid.filtered.single {
+  justify-content: center;
+  grid-template-columns: 1fr;
+}
 
 .video-card {
   background: white;
@@ -176,11 +191,6 @@
 </div>
 <div id="episode-grid"></div>
 <div id="pagination"></div>
-
-  <main>
-    <h2>All Episodes</h2>
-    <div id="episode-grid"></div>
-  </main>
 
   <footer>
     <p>© 2025 Border Barrels</p>
@@ -795,6 +805,19 @@ const searchInput = document.getElementById("search");
 const toggleButton = document.getElementById("toggleOrder");
 const pagination = document.getElementById("pagination");
 
+function updateGridClasses(filteredItemsCount) {
+  container.classList.remove("no-filter", "filtered", "single");
+
+  if (filteredItemsCount === episodeData.length) {
+    container.classList.add("no-filter");
+  } else {
+    container.classList.add("filtered");
+    if (filteredItemsCount === 1) {
+      container.classList.add("single");
+    }
+  }
+}
+
 function calculateEpisodesPerPage() {
   const cardWidth = 300; // Approx width of each episode card (adjust if needed)
   const desiredRows = 3; // Number of rows you want to fill per page
@@ -841,6 +864,8 @@ card.innerHTML = `
 
     container.appendChild(card);
   });
+
+  updateGridClasses(filteredData.length); // or whatever array you're rendering
 }
 
 // Render pagination controls
