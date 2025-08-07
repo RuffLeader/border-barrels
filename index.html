@@ -7,11 +7,114 @@
   <link rel="stylesheet" href="style.css" />
   <script src="homepage.js" defer></script>
   <style>
-header {
+/* === General Styles === */
+body, html {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
+/* === Hero Section === */
+.hero {
+  position: relative;
+  height: 80vh;
+  min-height: 500px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.hero-video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  object-position: center;
+  width: auto;
+  height: auto;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 33, 87, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+}
+
+.hero p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.hero-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  background-color: #DAA520;
+  color: #002157;
+}
+
+.hero-button:hover {
+  background-color: #c49b1d;
+}
+
+.hero-button.alt {
+  background-color: #002157;
+  color: white;
+}
+
+.hero-button.alt:hover {
+  background-color: #00163a;
+}
+
+/* === Latest Episode Section === */
 #latest-episode-container {
   max-width: 1000px;
   margin: 2rem auto;
@@ -42,7 +145,6 @@ header {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
   width: 60px;
   height: 60px;
   background-color: rgba(255, 255, 255, 0.8);
@@ -53,7 +155,6 @@ header {
   justify-content: center;
   clip-path: polygon(25% 20%, 25% 80%, 75% 50%);
   z-index: 2;
-  
   cursor: pointer;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -71,7 +172,7 @@ header {
   border-style: solid;
   border-width: 20px 0 20px 35px;
   border-color: transparent transparent transparent #002157;
-  margin-left: 5px; /* shift right for better centering */
+  margin-left: 5px;
 }
 
 .episode-meta {
@@ -100,9 +201,9 @@ header {
   overflow: hidden;
   border-radius: 1rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  background-color: transparent; /* ✅ Add this line */
+  background-color: transparent;
 }
-    
+
 .video-thumbnail img {
   width: 100%;
   height: 100%;
@@ -110,108 +211,17 @@ header {
   display: block;
 }
 
-.hero {
-  position: relative;
-  height: 80vh;
-  min-height: 500px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-  width: 100%;
-}
-
-.hero-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-position: center;
-}
-
-.hero-video-wrapper {
-  position: relative;
-  width: 100%;
-  height: 700px; /* Adjust this to crop more/less */
-  overflow: hidden;
-}   
-
-.hero-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 33, 87, 0.6); /* dark overlay for text readability */
-  z-index: 1;
-  padding: 1rem;
-  max-width: 100%;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  color: white;
-  text-align: center;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 3;
-  max-width: 800px;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin: 0.5rem 0;
-}
-
-.hero p {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem 0 1rem;
-}
-
-.hero-button-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
-
-.hero-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #DAA520; /* Gold (now default) */
-  color: #002157;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  font-size: 1rem;
-}
-
+/* === Responsive === */
 @media (max-width: 768px) {
   .hero {
     height: 60vh;
   }
 
-  .hero-overlay h1 {
+  .hero h1 {
     font-size: 2rem;
   }
 
-  .hero-overlay p {
+  .hero p {
     font-size: 1rem;
   }
 
@@ -226,11 +236,11 @@ header {
     height: 50vh;
   }
 
-  .hero-overlay h1 {
+  .hero h1 {
     font-size: 1.5rem;
   }
 
-  .hero-overlay p {
+  .hero p {
     font-size: 0.9rem;
   }
 
@@ -238,24 +248,11 @@ header {
     width: 100%;
     text-align: center;
   }
-}    
 
-.hero-button:hover {
-  background-color: #c49b1d;
-}
-
-.hero-button.alt {
-  background-color: #002157; /* Blue (alt style) */
-  color: white;
-}
-
-.hero-button.alt:hover {
-  background-color: #00163a;
-}
-
-body, section.hero-video-wrapper {
-  margin: 0;
-  padding: 0;
+  .hero-button-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
   </style>
 </head>
