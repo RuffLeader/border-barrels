@@ -164,12 +164,19 @@
   margin-bottom: 0.5rem 0 1rem;
 }
 
+.hero-button-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
 .hero-button {
   display: inline-block;
-  margin: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #002157;
-  color: white;
+  background-color: #DAA520; /* Gold (now default) */
+  color: #002157;
   text-decoration: none;
   border-radius: 6px;
   font-weight: bold;
@@ -177,16 +184,16 @@
 }
 
 .hero-button:hover {
-  background-color: #00163a;
-}
-
-.hero-button.gold {
-  background-color: #DAA520;
-  color: #002157;
-}
-
-.hero-button.gold:hover {
   background-color: #c49b1d;
+}
+
+.hero-button.alt {
+  background-color: #002157; /* Blue (alt style) */
+  color: white;
+}
+
+.hero-button.alt:hover {
+  background-color: #00163a;
 }
   </style>
 </head>
@@ -210,8 +217,9 @@
   <div class="hero-overlay">
     <h1>Border Barrels</h1>
     <p>Cheers to Great Beers 🍻</p>
-    <a href="beers.html" class="hero-button">Browse Beers</a>
-    <a href="episodes.html" class="hero-button gold">Watch Episodes</a>
+  <div class="hero-button-container">
+    <a href="episodes.html" class="hero-button">Watch Episodes</a>
+    <a href="beers.html" class="hero-button alt">Browse Beers</a>
   </div>
 </div>
 </section>
