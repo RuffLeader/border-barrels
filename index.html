@@ -123,8 +123,9 @@
   z-index: 0;
 }
 
- .hero-video-wrapper {
+.hero-video-wrapper {
   position: relative;
+  width: 100%;
   height: 700px; /* Adjust this to crop more/less */
   overflow: hidden;
 }   
@@ -145,7 +146,6 @@
 
   color: white;
   text-align: center;
-  padding: 1rem;
 }
 
 .hero-content {
@@ -155,20 +155,25 @@
 }
 
 .hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin: 0.5rem 0;
 }
 
 .hero p {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem 0 1rem;
 }
 
 .hero-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #002157;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
 .btn-primary,
@@ -218,15 +223,13 @@
     <source src="media/intro.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
+  <div class="hero-overlay">
     <h1>Border Barrels</h1>
-    <p>Cheers to Great Beers</p>
-    <div class="hero-buttons">
-      <a href="episodes.html" class="btn-primary">Watch Latest Episode</a>
-      <a href="beers.html" class="btn-secondary">Browse Beers</a>
-    </div>
+    <p>Cheers to Great Beers 🍻</p>
+    <a href="beers.html" class="hero-button">Browse Beers</a>
+    <a href="episodes.html" class="hero-button gold">Watch Episodes</a>
   </div>
+</div>
 </section>
   <main>
     <div class="container">
