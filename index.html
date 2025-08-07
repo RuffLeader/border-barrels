@@ -120,6 +120,7 @@
   min-height: 100%;
   transform: translate(-50%, -50%);
   object-fit: cover;
+  z-index: 0;
 }
 
  .hero-video-wrapper {
@@ -135,7 +136,16 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 33, 87, 0.6); /* dark overlay for text readability */
-  z-index: 2;
+  z-index: 1;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  text-align: center;
+  padding: 1rem;
 }
 
 .hero-content {
