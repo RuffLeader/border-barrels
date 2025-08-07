@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="style.css" />
   <script src="homepage.js" defer></script>
   <style>
+header {
+  margin: 0;
+  padding: 0;
+}
+
 #latest-episode-container {
   max-width: 1000px;
   margin: 2rem auto;
@@ -121,8 +126,8 @@
 
 .hero-video {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   min-width: 100%;
   min-height: 100%;
   transform: translate(-50%, -50%);
@@ -246,6 +251,11 @@
 
 .hero-button.alt:hover {
   background-color: #00163a;
+}
+
+body, section.hero-video-wrapper {
+  margin: 0;
+  padding: 0;
 }
   </style>
 </head>
