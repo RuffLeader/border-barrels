@@ -22,15 +22,15 @@ body {
 }
 
 /* Base styles */
-header.site-header {
+header {
   background-color: #002157;
-  color: #fff;
+  color: white;
   padding: 1rem 0;
   position: relative;
   z-index: 1000;
 }
 
-.header-container {
+.container.header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -211,8 +211,10 @@ main {
 }
 
 /* Hide nav links on mobile by default */
-nav {
-  position: relative;
+#nav-menu {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 /* Style the burger button */
@@ -220,9 +222,7 @@ nav {
   background: none;
   border: none;
   cursor: pointer;
-  display: none;
-  flex-direction: column;
-  gap: 4px;
+  display: none; /* hidden on desktop */
 }
 
 #nav-toggle:focus {
@@ -232,10 +232,11 @@ nav {
 
 /* The three burger lines */
 .burger {
+  display: block;
   width: 25px;
   height: 3px;
   background-color: white;
-  border-radius: 2px;
+  margin: 5px 0;
 }
 
 /* Desktop nav */
@@ -249,55 +250,39 @@ nav {
   text-decoration: underline;
 }
 
-/* Mobile menu */
-@media (max-width: 700px) {
-  #nav-toggle {
-    display: flex;
-  }
-
-  .nav-links {
+/* Mobile styles */
+@media (max-width: 768px) {
+  #nav-menu {
     display: none;
     flex-direction: column;
-    position: absolute;
-    top: 100%; /* directly under header */
-    left: 0;
-    right: 0;
     background-color: #002157;
-    padding: 1rem 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    padding: 1rem;
   }
-
-  .nav-links a {
-    margin: 0.5rem 0;
-    text-align: center;
-    font-size: 1.1rem;
-  }
-
-  .nav-links.open {
+  #nav-menu.open {
     display: flex;
+  }
+  #nav-toggle {
+    display: block;
   }
 }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-container">
-      <h1 class="page-title">About Us</h1>
-      <nav>
-        <button id="nav-toggle" aria-label="Toggle navigation">
-          <span class="burger"></span>
-          <span class="burger"></span>
-          <span class="burger"></span>
-        </button>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="beers.html">Beers</a>
-          <a href="episodes.html">Episodes</a>
-          <a href="about.html">About Us</a>
-        </div>
-      </nav>
+  <header>
+    <div class="container header-top">
+      <h1>About Us</h1>
+      <button id="nav-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
     </div>
+    <nav id="nav-menu">
+      <a href="index.html">Home</a>
+      <a href="beers.html">Beers</a>
+      <a href="episodes.html">Episodes</a>
+      <a href="about.html">About Us</a>
+    </nav>
   </header>
 
   <main class="container">
@@ -390,12 +375,12 @@ nav {
     <p>© 2025 Border Barrels</p>
   </footer>
 <script>
-  const navToggle = document.getElementById("nav-toggle");
-  const navLinks = document.querySelector(".nav-links");
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
 
-  navToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-  });
+navToggle.addEventListener("click", () => {
+  navMenu.classList.toggle("open");
+});
 </script>
 </body>
 </html>
