@@ -2,300 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Border Barrels</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="homepage.js" defer></script>
   <style>
-#latest-episode-container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
-  box-sizing: border-box;
-  text-align: center;
-}
+    /* Reset and base */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: white;
+      overflow: hidden;
+    }
 
-.latest-episode-card {
-  position: relative;
-  width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  display: block;
-  max-width: 100%;
-}
+    .hero-video-wrapper {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-.latest-episode-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
+    .hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 0;
+    }
 
-.play-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  
-  width: 70px;
-  height: 70px;
-  background-color: white;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  z-index: 2;
-}
+    .hero-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 33, 87, 0.7); /* Brand overlay color */
+      z-index: 1;
 
-.play-icon:hover {
-  transform: translate(-50%, -50%) scale(1.1);
-}
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
 
-.play-icon::before {
-  content: "";
-  display: block;
-  margin-left: 4px; /* adjust horizontal position for centering */
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 15px 0 15px 25px;
-  border-color: transparent transparent transparent #002157;
-}
+    .hero-overlay h1 {
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
 
-.episode-meta {
-  margin-top: 1rem;
-  padding: 0 1rem;
-  background: white;
-  color: #002157;
-}
+    .hero-overlay p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
 
-.episode-meta h2 {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
+    .hero-button-container {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 600px;
+      width: 100%;
+    }
 
-.episode-meta p {
-  margin: 0;
-  line-height: 1.4;
-  font-size: 1rem;
-}
+    .hero-button {
+      flex: 1 1 130px;
+      padding: 0.75rem 1.5rem;
+      background-color: #DAA520; /* Gold */
+      color: #002157;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
 
-.video-thumbnail {
-  position: relative;
-  width: 100%;
-  margin: auto;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  border-radius: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  background-color: transparent; /* ✅ Add this line */
-}
-    
-.video-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+    .hero-button:hover,
+    .hero-button:focus {
+      background-color: #c49b1d;
+      outline: none;
+    }
 
-.hero {
-  position: relative;
-  height: 80vh;
-  min-height: 500px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 2rem;
-  width: 100%;
-}
+    .hero-button.alt {
+      background-color: #002157; /* Blue (alt style) */
+      color: white;
+      box-shadow: 0 4px 8px rgba(0, 33, 87, 0.6);
+    }
 
-.hero-video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  min-width: 100%;
-  min-height: 100%;
-  transform: translate(-50%, -50%);
-  object-fit: cover;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-position: center;
-}
+    .hero-button.alt:hover,
+    .hero-button.alt:focus {
+      background-color: #00163a;
+    }
 
-.hero-video-wrapper {
-  position: relative;
-  width: 100%;
-  height: 900px; /* Adjust this to crop more/less */
-  overflow: hidden;
-}   
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      .hero-overlay h1 {
+        font-size: 2.5rem;
+      }
 
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 33, 87, 0.6); /* Your existing overlay color */
-  z-index: 1;
-  padding: 1rem;
+      .hero-overlay p {
+        font-size: 1.1rem;
+      }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+      .hero-button-container {
+        gap: 1rem;
+      }
 
-  color: white;
-  text-align: center;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 3;
-  max-width: 800px;
-}
-
-.hero h1 {
-  font-size: 3rem;
-  margin: 0.5rem 0;
-}
-
-.hero p {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem 0 1rem;
-}
-
-.hero-button-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
-
-.hero-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #DAA520; /* Gold (now default) */
-  color: #002157;
-  text-decoration: none;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  font-size: 1rem;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    height: 60vh;
-  }
-
-  .hero-overlay h1 {
-    font-size: 2rem;
-  }
-
-  .hero-overlay p {
-    font-size: 1rem;
-  }
-
-  .hero-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    height: 50vh;
-  }
-
-  .hero-overlay h1 {
-    font-size: 1.5rem;
-  }
-
-  .hero-overlay p {
-    font-size: 0.9rem;
-  }
-
-  .hero-button {
-    width: 100%;
-    text-align: center;
-  }
-}    
-
-.hero-button:hover {
-  background-color: #c49b1d;
-}
-
-.hero-button.alt {
-  background-color: #002157; /* Blue (alt style) */
-  color: white;
-}
-
-.hero-button.alt:hover {
-  background-color: #00163a;
-}
+      .hero-button {
+        flex: 1 1 100%;
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="hero-video-wrapper">
-  <video autoplay muted loop playsinline class="hero-video">
-    <source src="media/intro.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  <div class="hero-overlay">
+  <div class="hero-video-wrapper">
+    <video autoplay muted loop playsinline class="hero-video" preload="auto">
+      <source src="media/intro.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="hero-overlay" role="banner" aria-label="Main navigation">
     <h1>Border Barrels</h1>
     <p>Cheers to Great Beers 🍻</p>
-    <div class="hero-button-container">
-      <a href="episodes.html" class="hero-button">Watch Episodes</a>
-      <a href="beers.html" class="hero-button alt">Browse Beers</a>
-    </div>
+    <nav class="hero-button-container" aria-label="Primary site navigation">
+      <a href="beers.html" class="hero-button">Beers</a>
+      <a href="episodes.html" class="hero-button alt">Episodes</a>
+      <a href="blog.html" class="hero-button">Blog</a>
+      <a href="about.html" class="hero-button alt">About Us</a>
+    </nav>
   </div>
-</div>
-  <header>
-    <div class="container">
-      <h1>Border Barrels</h1>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="beers.html">Beers</a>
-        <a href="episodes.html">Episodes</a>
-        <a href="blog.html">Blog</a>
-      </nav>
-    </div>
-  </header>
-  <main>
-    <div class="container">
-      <section>
-        <h2>Cheers to Great Beers 🍻</h2>
-        <p>Welcome to Border Barrels – a podcast and beer review hub celebrating the best craft brews in Australia (and beyond). We review beers, rate can art, and bring banter to every episode.</p>
-        <p><strong>Explore our top-rated beers or check out the latest episode!</strong></p>
-        <a href="beers.html" style="display:inline-block;margin:1rem;padding:0.75rem 1.5rem;background-color:#002157;color:white;text-decoration:none;border-radius:6px;">Browse Beers</a>
-        <a href="episodes.html" style="display:inline-block;margin:1rem;padding:0.75rem 1.5rem;background-color:#DAA520;color:#002157;text-decoration:none;border-radius:6px;">Watch Episodes</a>
-      </section>
-
-      <section class="video-wrapper">
-        <h2>Latest Episode</h2>
-        <div id="latest-episode-container">Loading latest episode...</div>
-      </section>
-
-      <section>
-        <h2>About Us</h2>
-        <p>Border Barrels is hosted by three mates who love cracking beers and having a yarn. We combine good taste with good times – each beer gets scored on flavour and can design. Come along for the ride!</p>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container">
-      <p>© 2025 Border Barrels</p>
-    </div>
-  </footer>
 </body>
 </html>
