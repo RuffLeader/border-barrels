@@ -30,10 +30,11 @@ header {
   z-index: 1000;
 }
 
-.container.header-top {
+header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .page-title {
@@ -219,10 +220,12 @@ main {
 
 /* Style the burger button */
 #nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
   background: none;
   border: none;
   cursor: pointer;
-  display: none; /* hidden on desktop */
 }
 
 #nav-toggle:focus {
@@ -232,11 +235,9 @@ main {
 
 /* The three burger lines */
 .burger {
-  display: block;
   width: 25px;
   height: 3px;
-  background-color: white;
-  margin: 5px 0;
+  background: white;
 }
 
 /* Desktop nav */
@@ -252,37 +253,53 @@ main {
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  #nav-toggle {
+    display: flex;
+  }
+
   #nav-menu {
     display: none;
     flex-direction: column;
+    position: absolute;
+    top: 100%; /* just below header */
+    left: 0;
+    width: 100%;
     background-color: #002157;
-    padding: 1rem;
+    padding: 10px 0;
   }
-  #nav-menu.open {
+
+  #nav-menu.show {
     display: flex;
   }
-  #nav-toggle {
-    display: block;
-  }
+}
+
+#nav-menu {
+  display: flex;
+  gap: 20px;
+}
+
+#nav-menu a {
+  text-decoration: none;
+  color: white;
 }
   </style>
 </head>
 <body>
   <header>
-    <div class="container header-top">
+    <div class="container">
       <h1>About Us</h1>
       <button id="nav-toggle" aria-label="Toggle navigation">
         <span class="burger"></span>
         <span class="burger"></span>
         <span class="burger"></span>
       </button>
+      <nav id="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="beers.html">Beers</a>
+        <a href="episodes.html">Episodes</a>
+        <a href="about.html">About Us</a>
+      </nav>
     </div>
-    <nav id="nav-menu">
-      <a href="index.html">Home</a>
-      <a href="beers.html">Beers</a>
-      <a href="episodes.html">Episodes</a>
-      <a href="about.html">About Us</a>
-    </nav>
   </header>
 
   <main class="container">
@@ -379,7 +396,7 @@ const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
 
 navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("open");
+  navMenu.classList.toggle("show");
 });
 </script>
 </body>
