@@ -251,14 +251,14 @@ main {
   text-decoration: underline;
 }
 
-/* Mobile styles */
+/* Mobile view */
 @media (max-width: 768px) {
   #nav-toggle {
     display: flex;
   }
 
   #nav-menu {
-    display: none;
+    display: none; /* start hidden on mobile */
     flex-direction: column;
     position: absolute;
     top: 100%; /* just below header */
@@ -269,7 +269,7 @@ main {
   }
 
   #nav-menu.show {
-    display: flex;
+    display: flex; /* show only when burger is clicked */
   }
 }
 
@@ -281,6 +281,11 @@ main {
 #nav-menu a {
   text-decoration: none;
   color: white;
+  transition: color 0.2s ease;
+}
+
+#nav-menu a:hover {
+  color: #ffd700; /* gold hover */
 }
   </style>
 </head>
