@@ -467,6 +467,7 @@ const navMenu = document.getElementById("nav-menu");
 
 if (navToggle && navMenu) {
   navToggle.addEventListener("click", () => {
-    navMenu.classList.toggle("show");
+    const isShown = navMenu.classList.toggle("show");
+    navToggle.setAttribute("aria-expanded", isShown ? "true" : "false");
   });
 }
