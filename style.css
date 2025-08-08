@@ -24,25 +24,37 @@ h1, h2, h3 {
   letter-spacing: 1px;
 }
 
-/* Universal Header (exclude Beers page) */
+/* === Header/Nav styles === */
 header {
   background-color: #002157;
   color: #ffffff;
-  padding: 3rem 0 2rem;
+  padding: 1rem 0;
   border-bottom: 2px solid #e0e0e0;
+  position: relative;
+  z-index: 1000;
 }
 
+/* Page title inside header */
 header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin: 0;
+  flex-grow: 1;
+  text-transform: uppercase;
+}
+
+/* Nav styles */
+nav {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 nav a {
-  margin: 0 1rem;
-  font-size: 1rem;
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 nav a:hover {
@@ -201,3 +213,79 @@ section {
 .top-rank {
   color: #DAA520;
   font-we
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* === Burger menu button - hidden on desktop === */
+#nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100; /* above nav */
+}
+
+#nav-toggle:focus {
+  outline: 2px solid #ffb400;
+  outline-offset: 2px;
+}
+
+/* Burger lines */
+.burger {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* === Mobile styles === */
+@media (max-width: 768px) {
+  /* Show burger */
+  #nav-toggle {
+    display: flex;
+  }
+
+  /* Hide nav by default */
+  nav {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #002157;
+    padding: 10px 0;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  /* Show nav when toggled */
+  nav.show {
+    display: flex;
+  }
+
+  nav a {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+  }
+
+  header .container {
+    align-items: center;
+  }
+
+  header h1 {
+    flex-grow: 0;
+  }
+}
+
+/* === Desktop nav always visible === */
+@media (min-width: 769px) {
+  nav {
+    display: flex !important;
+  }
+}
