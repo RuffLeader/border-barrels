@@ -253,7 +253,7 @@ header .container {
   }
 
   /* Hide nav by default */
-  nav {
+  #nav-menu {
     display: none;
     flex-direction: column;
     position: absolute;
@@ -266,7 +266,7 @@ header .container {
   }
 
   /* Show nav when toggled */
-  nav.show {
+  #nav-menu.show {
     display: flex;
   }
 
