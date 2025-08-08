@@ -197,6 +197,70 @@ main {
   background-color: #CD7F32; /* bronze */
   color: #fff;
 }
+
+/* Hide nav links on mobile by default */
+nav {
+  position: relative;
+}
+
+/* Style the burger button */
+#nav-toggle {
+  display: none; /* hidden on desktop */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 28px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 1rem;
+}
+
+#nav-toggle:focus {
+  outline: 2px solid #ffb400;
+  outline-offset: 2px;
+}
+
+/* The three burger lines */
+.burger {
+  width: 28px;
+  height: 3px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Show burger and hide links on mobile */
+@media (max-width: 700px) {
+  nav a {
+    display: none;
+  }
+
+  #nav-toggle {
+    display: flex;
+  }
+
+  nav.open a {
+    display: block;
+    margin: 0.5rem 0;
+    color: #fff;
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  nav.open {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #002157;
+    padding: 1rem 0;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    z-index: 10;
+  }
+}
   </style>
 </head>
 <body>
@@ -204,6 +268,11 @@ main {
     <div class="container">
       <h1>About Us</h1>
       <nav>
+        <button id="nav-toggle" aria-label="Toggle navigation">
+          <span class="burger"></span>
+          <span class="burger"></span>
+          <span class="burger"></span>
+        </button>
         <a href="index.html">Home</a>
         <a href="beers.html">Beers</a>
         <a href="episodes.html">Episodes</a>
