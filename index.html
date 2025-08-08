@@ -126,19 +126,20 @@
     }
     
     .hero-logo {
-      max-width: 180px;    /* max width */
-      max-height: 100px;   /* limit max height */
-      width: auto;         /* auto width to maintain aspect ratio */
-      height: auto;        /* auto height */
+      max-width: 180px;    /* max width for desktop */
+      max-height: 100px;   /* max height */
+      width: auto;
+      height: auto;
       margin-bottom: 1rem;
       user-select: none;
       display: block;
       margin-left: auto;
       margin-right: auto;
     }
+
     @media (max-width: 600px) {
       .hero-logo {
-        max-width: 140px;  /* even smaller on mobile */
+        max-width: 140px;  /* smaller on mobile */
         width: 50vw;
       }
     }
