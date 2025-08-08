@@ -124,7 +124,19 @@
       user-select: none;
       font-style: italic;
     }
-  }
+    
+    .hero-logo {
+      max-width: 300px;
+      width: 60vw; /* scales down on smaller screens */
+      height: auto;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      .hero-logo {
+      max-width: 200px;
+    }
+}
   </style>
 </head>
 <body>
@@ -136,7 +148,7 @@
   </div>
 
   <div class="hero-overlay" role="banner" aria-label="Main navigation">
-    <h1>Border Barrels</h1>
+    <img src="media/logo.png" alt="Border Barrels logo" class="hero-logo" />
     <p>Cheers to Great Beers 🍻</p>
     <nav class="hero-button-container" aria-label="Primary site navigation">
       <a href="beers.html" class="hero-button">Beers</a>
