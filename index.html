@@ -1,122 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Border Barrels - Logo Test</title>
-<style>
-  html, body {
-    margin: 0; padding: 0; height: 100%;
-    overflow: hidden;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #002157;
-    color: white;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Border Barrels</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #002157;
+      color: white;
+    }
 
-  .hero-video-wrapper {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    z-index: 0;
-  }
+    .hero-video-wrapper {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-  .hero-video {
-    position: absolute;
-    top: 50%; left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    z-index: 0;
-  }
+    .hero-video {
+      position: absolute;
+      top: 50%; left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: 0;
+    }
 
-  .hero-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 33, 87, 0.7);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    box-sizing: border-box;
-    z-index: 1;
-    overflow: visible;
-  }
+    .hero-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 33, 87, 0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      box-sizing: border-box;
+      z-index: 1;
+    }
 
-  .hero-logo {
-    max-width: 720px !important;      /* maximum width */
-    width: 80vw !important;            /* responsive width but capped */
-    max-height: 540px !important;      /* max height */
-    height: auto !important;           /* keep aspect ratio */
-    object-fit: contain !important;
-    margin: 0 auto 1.5rem auto;
-    display: block;
-    user-select: none;
-  }
-
-  .hero-tagline {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-  }
-
-  .hero-button-container {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 600px;
-    width: 100%;
-  }
-
-  .hero-button {
-    flex: 1 1 130px;
-    padding: 0.75rem 1.5rem;
-    background-color: #DAA520;
-    color: #002157;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    border: none;
-  }
-
-  .hero-button:hover,
-  .hero-button:focus {
-    background-color: #c49b1d;
-    outline: none;
-  }
-
-  .hero-button.disabled {
-    background-color: #aaa;
-    color: #555;
-    cursor: not-allowed;
-    box-shadow: none;
-    pointer-events: none;
-    user-select: none;
-    font-style: italic;
-  }
-
-  @media (max-width: 600px) {
     .hero-logo {
-      max-width: 120px;
+      max-width: 720px !important;
+      width: 80vw !important;
+      max-height: 540px !important;
+      height: auto !important;
+      object-fit: contain !important;
+      margin: 0 auto 3rem auto;
+      display: block;
+      user-select: none;
     }
-    .hero-tagline {
-      font-size: 1.1rem;
+
+    .hero-button-container {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 600px;
+      width: 100%;
     }
+
     .hero-button {
-      flex: 1 1 100%;
-      font-size: 1rem;
+      flex: 1 1 130px;
+      padding: 0.75rem 1.5rem;
+      background-color: #DAA520;
+      color: #002157;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      border: none;
     }
-  }
-</style>
+
+    .hero-button:hover,
+    .hero-button:focus {
+      background-color: #c49b1d;
+      outline: none;
+    }
+
+    .hero-button.disabled {
+      background-color: #aaa;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      pointer-events: none;
+      user-select: none;
+      font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+      .hero-logo {
+        max-width: 120px;
+      }
+      .hero-button {
+        flex: 1 1 100%;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
