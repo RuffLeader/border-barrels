@@ -1,7 +1,7 @@
 /* Base Layout & Typography */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f9fa;
+  background-color: white;
   color: #002157;
   margin: 0;
   padding: 0;
@@ -29,17 +29,16 @@ header {
   background-color: #002157;
   color: #ffffff;
   padding: 1rem 0;
-  border-bottom: 2px solid #e0e0e0;
   position: relative;
   z-index: 1000;
 }
 
 /* Page title inside header */
-header h1 {
-  font-size: 2rem;
-  margin: 0;
-  flex-grow: 1;
-  text-transform: uppercase;
+header h1.page-title {
+  font-size: 2.5rem;
+  margin: 1rem 0 0.5rem 0;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 /* Nav styles */
@@ -50,15 +49,16 @@ nav {
 }
 
 nav a {
-  color: #fff;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
+  margin: 0 1rem;
   font-size: 1rem;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem;
   transition: color 0.3s ease;
 }
 
 nav a:hover {
-  color: #DAA520;
+  color: #ffb400;
 }
 
 /* Footer (exclude Beers page) */
@@ -277,10 +277,6 @@ header .container {
 
   header .container {
     align-items: center;
-  }
-
-  header h1 {
-    flex-grow: 0;
   }
 }
 
