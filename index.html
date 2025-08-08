@@ -33,9 +33,11 @@
     }
 
     .hero-overlay {
-      position: relative;
+      position: relative; /* changed from fixed */
       top: auto; left: auto;
-      width: 100vw; height: 100vh;
+      width: 100%;
+      min-height: 100vh; /* ensure at least full viewport height */
+      max-height: none; /* remove max-height */
       background: rgba(0, 33, 87, 0.7);
       display: flex;
       flex-direction: column;
@@ -46,7 +48,6 @@
       box-sizing: border-box;
       z-index: 1;
       overflow-y: visible;
-      max-height: 100vh;
     }
 
     .hero-logo {
@@ -101,7 +102,9 @@
 
     @media (max-width: 600px) {
       .hero-logo {
-        max-width: 60px;
+        max-width: 120px !important;
+        width: 50vw !important;
+        height: auto !important;
       }
       .hero-button {
         flex: 1 1 100%;
@@ -113,6 +116,13 @@
       .hero-overlay {
         padding: 1rem;
         overflow-y: visible;
+      }
+
+      .hero-button-container {
+        max-height: 60vh; /* limit height */
+        overflow-y: auto; /* allow scroll inside */
+        flex-wrap: nowrap;
+        flex-direction: column;
       }
   
       .hero-buttons {
