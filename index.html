@@ -45,15 +45,18 @@
     padding: 2rem;
     box-sizing: border-box;
     z-index: 1;
+    overflow: visible;
   }
 
   .hero-logo {
-    max-width: 140px;
-    max-height: 80px;
-    width: 100%;
-    height: auto;
+    width: 140px !important;      /* fixed width */
+    height: auto !important;      /* maintain aspect ratio */
+    max-width: 100% !important;   /* don’t exceed container */
+    max-height: 80px !important;  /* max height */
+    object-fit: contain !important; /* keep aspect ratio */
+    margin: 0 auto 1rem auto;
+    display: block;
     user-select: none;
-    margin-bottom: 1rem;
   }
 
   .hero-tagline {
