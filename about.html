@@ -116,6 +116,9 @@ main {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .host-info {
@@ -125,6 +128,20 @@ main {
 
 .host-info strong {
   color: #002157;
+}
+
+.instagram-link {
+  font-weight: normal;
+  font-size: 1rem;
+  color: #002157;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.instagram-link:hover,
+.instagram-link:focus {
+  color: #ffb400;
+  outline: none;
 }
 
 /* Responsive */
@@ -163,9 +180,11 @@ main {
     <article class="host-card">
       <img src="media/Simmo.png" alt="Simon Eyles photo" class="host-photo" />
       <p class="host-bio">The father of BB, and the reason this whole thing exists at all. Simmo owned the most durable MacBook (RIP).</p>
-      <div class="host-name">Simon Eyles</div>
+      <div class="host-name">
+        Simon Eyles
+        <a href="https://instagram.com/simoneyles" target="_blank" class="instagram-link">@simoneyles</a>
+      </div>
       <div class="host-info">
-        <p><strong>Instagram:</strong> <a href="https://instagram.com/simoneyles" target="_blank">@simoneyles</a></p>
         <p><strong>BBBRS Top Three:</strong><br>
           Hop Nation Brewing Co<br>
           Cream and Cookies Pastry Stout (with Bright Brewery)<br>
@@ -188,9 +207,11 @@ main {
     <article class="host-card">
       <img src="media/Grattzy.png" alt="Zach Gratton photo" class="host-photo" />
       <p class="host-bio">Hasn’t stopped talking since the pod debuted in 2021, wore his son’s fishing hat live on the pod.</p>
-      <div class="host-name">Zach Gratton</div>
+      <div class="host-name">
+        Zach Gratton
+        <a href="https://www.instagram.com/zachgratton/" target="_blank" class="instagram-link">@zachgratton</a>
+      </div>
       <div class="host-info">
-        <p><strong>Instagram:</strong> <a href="https://www.instagram.com/zachgratton/" target="_blank">@zachgratton</a></p>
         <p><strong>BBBRS Top Three:</strong><br>
           Hargreaves Hill<br>
           Team World Double IPA<br>
@@ -213,9 +234,11 @@ main {
     <article class="host-card">
       <img src="media/Hudo.png" alt="Host 3 photo" class="host-photo" />
       <p class="host-bio">Computer man, stats man, spreadsheet man. Thinks only in numbers. The one who burps, A. LOT.</p>
-      <div class="host-name">Hudson Magerstein</div>
+      <div class="host-name">
+        Hudson Magerstein
+        <a href="https://www.instagram.com/hudson_magerstein/" target="_blank" class ="instagram-link">@hudson_magerstein</a>
+      </div>
       <div class="host-info">
-        <p><strong>Instagram:</strong> <a href="https://www.instagram.com/hudson_magerstein/" target="_blank">@hudson_magerstein</a></p>
         <p><strong>BBBRS Top Three:</strong><br>
           Dainton Beer<br>
           Crumblicious Honeycomb and Toffee Stout<br>
