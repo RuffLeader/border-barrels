@@ -60,13 +60,82 @@ nav a:hover {
 }
 
 main {
-  padding: 3rem 1rem;
+  padding: 3rem 1rem 2rem;
   max-width: 700px;
   margin: 0 auto;
   text-align: left;
   font-size: 1.1rem;
   line-height: 1.8;
   color: #002157;
+}
+
+/* === Host Cards Container === */
+.host-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto 4rem;
+  padding: 0 1rem;
+}
+
+/* === Individual Host Card === */
+.host-card {
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 320px;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: left;
+  color: #002157;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.host-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #002157;
+  margin-bottom: 1rem;
+  background-color: #ddd;
+}
+
+.host-bio {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.host-name {
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.host-info {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.host-info strong {
+  color: #002157;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .host-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .host-card {
+    width: 90%;
+  }
 }
   </style>
 </head>
@@ -89,9 +158,61 @@ main {
     <p>Thanks for stopping by! If you have any questions or want to connect, feel free to reach out via our social channels or podcast episodes.</p>
   </main>
 
+  <section class="host-cards">
+    <!-- Host 1 -->
+    <article class="host-card">
+      <img src="https://via.placeholder.com/140" alt="Simon Eyles photo" class="host-photo" />
+      <p class="host-bio">The father of BB, and the reason this whole thing exists at all. Simmo owns the most durable MacBook.</p>
+      <div class="host-name">Simon Eyles</div>
+      <div class="host-info">
+        <p><strong>Instagram:</strong> <a href="https://instagram.com/simoneyles" target="_blank">@simoneyles</a></p>
+        <p><strong>Highest Rated Beers (BBBRS):</strong><br>
+          Bridge Road Brewers – Eggster Triple Chocolate Ale, 22 out of 25<br>
+          Sunday Road Brewing Co. – Some Velvet Evening Imperial Stout, 22 out of 25
+        </p>
+        <p><strong>Highest Rated Beer Untappd:</strong><br>
+          Sunday Road Brewing Co. – Some Velvet Evening Imperial Stout, 5 out of 5
+        </p>
+        <p><strong>Nickname:</strong> Old Sime</p>
+        <p><strong>Accomplishments:</strong> 2002 Under 16’s Spin Bowler of the Year, Longest Distance between Eyebrows and Hairline 2022</p>
+      </div>
+    </article>
+
+    <!-- Host 2 -->
+    <article class="host-card">
+      <img src="https://via.placeholder.com/140" alt="Host 2 photo" class="host-photo" />
+      <p class="host-bio">[Add Host 2 bio here]</p>
+      <div class="host-name">[Host 2 Name]</div>
+      <div class="host-info">
+        <p><strong>Instagram:</strong> <a href="#">@[host2instagram]</a></p>
+        <p><strong>Highest Rated Beers (BBBRS):</strong><br>
+          [Host 2 beers]</p>
+        <p><strong>Highest Rated Beer Untappd:</strong><br>
+          [Host 2 Untappd]</p>
+        <p><strong>Nickname:</strong> [Host 2 nickname]</p>
+        <p><strong>Accomplishments:</strong> [Host 2 accomplishments]</p>
+      </div>
+    </article>
+
+    <!-- Host 3 -->
+    <article class="host-card">
+      <img src="https://via.placeholder.com/140" alt="Host 3 photo" class="host-photo" />
+      <p class="host-bio">[Add Host 3 bio here]</p>
+      <div class="host-name">[Host 3 Name]</div>
+      <div class="host-info">
+        <p><strong>Instagram:</strong> <a href="#">@[host3instagram]</a></p>
+        <p><strong>Highest Rated Beers (BBBRS):</strong><br>
+          [Host 3 beers]</p>
+        <p><strong>Highest Rated Beer Untappd:</strong><br>
+          [Host 3 Untappd]</p>
+        <p><strong>Nickname:</strong> [Host 3 nickname]</p>
+        <p><strong>Accomplishments:</strong> [Host 3 accomplishments]</p>
+      </div>
+    </article>
+  </section>
+
   <footer>
     <p>© 2025 Border Barrels</p>
   </footer>
 </body>
 </html>
-
