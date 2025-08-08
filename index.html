@@ -46,7 +46,6 @@
       padding: 2rem;
       box-sizing: border-box;
       z-index: 1;
-      overflow-y: visible;
     }
 
     .hero-logo {
@@ -114,12 +113,10 @@
     @media (max-width: 600px) {
       .hero-overlay {
         padding: 1rem;
-        overflow-y: visible;
       }
 
       .hero-button-container {
         max-height: 60vh; /* limit height */
-        overflow-y: auto; /* allow scroll inside */
         flex-wrap: nowrap;
         flex-direction: column;
       }
