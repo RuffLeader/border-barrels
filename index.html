@@ -52,6 +52,10 @@
       text-align: center;
       padding: 2rem;
       box-sizing: border-box;
+
+        /* add this to avoid stretching children */
+      align-content: center;
+      flex-wrap: nowrap;
     }
 
     .hero-overlay h1 {
@@ -126,18 +130,18 @@
     }
     
 .hero-logo {
-  max-width: 140px;
-  max-height: 80px;
-  width: auto;
+  width: 140px;
   height: auto;
+  max-height: 80px;
   margin-bottom: 1rem;
   user-select: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
-
-  flex-shrink: 0;  /* prevent shrinking too small */
-  flex-grow: 0;    /* prevent growing beyond max-width */
+  object-fit: contain;
+  
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 @media (max-width: 600px) {
