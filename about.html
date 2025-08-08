@@ -370,5 +370,13 @@ nav {
   <footer>
     <p>© 2025 Border Barrels</p>
   </footer>
+<script>
+  const nav = document.querySelector('nav');
+  const toggle = document.getElementById('nav-toggle');
+
+  toggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+  });
+</script>
 </body>
 </html>
