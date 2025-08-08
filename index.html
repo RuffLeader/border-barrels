@@ -80,30 +80,20 @@
       flex: 1 1 130px;
       padding: 0.75rem 1.5rem;
       background-color: #DAA520; /* Gold */
-      color: #002157;
+      color: #002157; /* Dark blue text */
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
       font-size: 1.1rem;
       transition: background-color 0.3s ease;
       box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      border: none;
     }
 
     .hero-button:hover,
     .hero-button:focus {
-      background-color: #c49b1d;
+      background-color: #c49b1d; /* Darker gold */
       outline: none;
-    }
-
-    .hero-button.alt {
-      background-color: #002157; /* Blue (alt style) */
-      color: white;
-      box-shadow: 0 4px 8px rgba(0, 33, 87, 0.6);
-    }
-
-    .hero-button.alt:hover,
-    .hero-button.alt:focus {
-      background-color: #00163a;
     }
 
     /* Responsive tweaks */
@@ -125,16 +115,16 @@
         font-size: 1rem;
       }
 
-      .hero-button.disabled {
-        background-color: #aaa;
-        color: #555;
-        cursor: not-allowed;
-        box-shadow: none;
-        pointer-events: none; /* Prevent clicks */
-        user-select: none;
-        font-style: italic;
-      }
+    .hero-button.disabled {
+      background-color: #aaa;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      pointer-events: none;
+      user-select: none;
+      font-style: italic;
     }
+  }
   </style>
 </head>
 <body>
@@ -150,9 +140,9 @@
     <p>Cheers to Great Beers 🍻</p>
     <nav class="hero-button-container" aria-label="Primary site navigation">
       <a href="beers.html" class="hero-button">Beers</a>
-      <a href="episodes.html" class="hero-button alt">Episodes</a>
+      <a href="episodes.html" class="hero-button">Episodes</a>
       <a href="blog.html" class="hero-button">Blog</a>
-      <a href="about.html" class="hero-button alt">About Us</a>
+      <a href="about.html" class="hero-button">About Us</a>
       <button class="hero-button disabled" aria-disabled="true" title="Coming Soon!">Store (Coming Soon!)</button>
     </nav>
   </div>
