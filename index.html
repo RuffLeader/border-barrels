@@ -1,159 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Border Barrels</title>
-  <style>
-    /* Reset and base */
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      overflow: hidden;
-    }
-
-    .hero-video-wrapper {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .hero-video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      z-index: 0;
-    }
-
-    .hero-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 33, 87, 0.7); /* Brand overlay color */
-      z-index: 1;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-      box-sizing: border-box;
-
-        /* add this to avoid stretching children */
-      align-content: center;
-      flex-wrap: nowrap;
-    }
-
-    .hero-overlay h1 {
-      font-size: 3.5rem;
-      margin-bottom: 0.5rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
-
-    .hero-overlay p {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
-      font-weight: 500;
-    }
-
-    .hero-button-container {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    .hero-button {
-      flex: 1 1 130px;
-      padding: 0.75rem 1.5rem;
-      background-color: #DAA520; /* Gold */
-      color: #002157; /* Dark blue text */
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-      border: none;
-    }
-
-    .hero-button:hover,
-    .hero-button:focus {
-      background-color: #c49b1d; /* Darker gold */
-      outline: none;
-    }
-
-    /* Responsive tweaks */
-    @media (max-width: 600px) {
-      .hero-overlay h1 {
-        font-size: 2.5rem;
-      }
-
-      .hero-overlay p {
-        font-size: 1.1rem;
-      }
-
-      .hero-button-container {
-        gap: 1rem;
-      }
-
-      .hero-button {
-        flex: 1 1 100%;
-        font-size: 1rem;
-      }
-
-    .hero-button.disabled {
-      background-color: #aaa;
-      color: #555;
-      cursor: not-allowed;
-      box-shadow: none;
-      pointer-events: none;
-      user-select: none;
-      font-style: italic;
-    }
-    
-.hero-logo {
-  width: 140px;
-  height: auto;
-  max-height: 80px;
-  margin-bottom: 1rem;
-  user-select: none;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  object-fit: contain;
-  
-  flex-shrink: 0;
-  flex-grow: 0;
-}
-
-@media (max-width: 600px) {
-  .hero-logo {
-    max-width: 120px;    /* slightly smaller on mobile */
-    width: 50vw;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Border Barrels - Logo Test</title>
+<style>
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #002157;
+    color: white;
   }
-}
-}
-  </style>
+
+  .hero-video-wrapper {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .hero-video {
+    position: absolute;
+    top: 50%; left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 33, 87, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+
+  .hero-logo {
+    max-width: 140px;
+    max-height: 80px;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    margin-bottom: 1rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+  }
+
+  .hero-button-container {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .hero-button {
+    flex: 1 1 130px;
+    padding: 0.75rem 1.5rem;
+    background-color: #DAA520;
+    color: #002157;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: none;
+  }
+
+  .hero-button:hover,
+  .hero-button:focus {
+    background-color: #c49b1d;
+    outline: none;
+  }
+
+  .hero-button.disabled {
+    background-color: #aaa;
+    color: #555;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    user-select: none;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .hero-logo {
+      max-width: 120px;
+    }
+    .hero-tagline {
+      font-size: 1.1rem;
+    }
+    .hero-button {
+      flex: 1 1 100%;
+      font-size: 1rem;
+    }
+  }
+</style>
 </head>
 <body>
+
   <div class="hero-video-wrapper">
     <video autoplay muted loop playsinline class="hero-video" preload="auto">
       <source src="media/intro.mp4" type="video/mp4" />
@@ -163,7 +126,7 @@
 
   <div class="hero-overlay" role="banner" aria-label="Main navigation">
     <img src="media/logo.png" alt="Border Barrels logo" class="hero-logo" />
-    <p>Cheers to Great Beers 🍻</p>
+    <p class="hero-tagline">Cheers to Great Beers 🍻</p>
     <nav class="hero-button-container" aria-label="Primary site navigation">
       <a href="beers.html" class="hero-button">Beers</a>
       <a href="episodes.html" class="hero-button">Episodes</a>
@@ -172,5 +135,6 @@
       <button class="hero-button disabled" aria-disabled="true" title="Coming Soon!">Store (Coming Soon!)</button>
     </nav>
   </div>
+
 </body>
 </html>
