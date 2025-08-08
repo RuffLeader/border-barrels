@@ -465,9 +465,11 @@ document.getElementById("load-more-btn").addEventListener("click", () => {
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
 
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
+
 if (navToggle && navMenu) {
   navToggle.addEventListener("click", () => {
-    const isShown = navMenu.classList.toggle("show");
-    navToggle.setAttribute("aria-expanded", isShown ? "true" : "false");
+    navMenu.classList.toggle("show");
   });
 }
