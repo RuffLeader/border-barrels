@@ -21,11 +21,23 @@ body {
   text-align: center;
 }
 
-header {
+/* Base styles */
+header.site-header {
   background-color: #002157;
-  color: #ffffff;
-  padding: 3rem 0 2rem;
-  border-bottom: 2px solid #e0e0e0;
+  color: #fff;
+  padding: 1rem 0;
+  position: relative;
+  z-index: 1000;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  margin: 0;
 }
 
 footer {
@@ -205,16 +217,12 @@ nav {
 
 /* Style the burger button */
 #nav-toggle {
-  display: none; /* hidden on desktop */
-  flex-direction: column;
-  justify-content: space-around;
-  width: 28px;
-  height: 22px;
-  background: transparent;
+  background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
-  margin-right: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 4px;
 }
 
 #nav-toggle:focus {
@@ -224,59 +232,70 @@ nav {
 
 /* The three burger lines */
 .burger {
-  width: 28px;
+  width: 25px;
   height: 3px;
-  background-color: #fff;
+  background-color: white;
   border-radius: 2px;
-  transition: all 0.3s ease;
 }
 
-/* Show burger and hide links on mobile */
-@media (max-width: 700px) {
-  nav a {
-    display: none;
-  }
+/* Desktop nav */
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+}
 
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile menu */
+@media (max-width: 700px) {
   #nav-toggle {
     display: flex;
   }
 
-  nav.open a {
-    display: block;
-    margin: 0.5rem 0;
-    color: #fff;
-    font-size: 1.1rem;
-    text-align: center;
-  }
-
-  nav.open {
+  .nav-links {
+    display: none;
+    flex-direction: column;
     position: absolute;
-    top: 100%;
+    top: 100%; /* directly under header */
     left: 0;
     right: 0;
     background-color: #002157;
     padding: 1rem 0;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    z-index: 10;
+  }
+
+  .nav-links a {
+    margin: 0.5rem 0;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .nav-links.open {
+    display: flex;
   }
 }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>About Us</h1>
+  <header class="site-header">
+    <div class="container header-container">
+      <h1 class="page-title">About Us</h1>
       <nav>
         <button id="nav-toggle" aria-label="Toggle navigation">
           <span class="burger"></span>
           <span class="burger"></span>
           <span class="burger"></span>
         </button>
-        <a href="index.html">Home</a>
-        <a href="beers.html">Beers</a>
-        <a href="episodes.html">Episodes</a>
-        <a href="about.html">About Us</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="beers.html">Beers</a>
+          <a href="episodes.html">Episodes</a>
+          <a href="about.html">About Us</a>
+        </div>
       </nav>
     </div>
   </header>
