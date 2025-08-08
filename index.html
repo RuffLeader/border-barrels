@@ -126,8 +126,8 @@
     }
     
 .hero-logo {
-  max-width: 140px;      /* smaller max width on desktop */
-  max-height: 80px;      /* reduce max height */
+  max-width: 140px;
+  max-height: 80px;
   width: auto;
   height: auto;
   margin-bottom: 1rem;
@@ -135,6 +135,9 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+
+  flex-shrink: 0;  /* prevent shrinking too small */
+  flex-grow: 0;    /* prevent growing beyond max-width */
 }
 
 @media (max-width: 600px) {
