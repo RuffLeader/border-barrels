@@ -212,7 +212,8 @@ section {
 
 .top-rank {
   color: #DAA520;
-  font-we
+  font: bold;
+}
 
 header .container {
   display: flex;
