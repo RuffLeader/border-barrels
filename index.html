@@ -126,15 +126,17 @@
     }
     
     .hero-logo {
-      max-width: 300px;
-      width: 60vw; /* scales down on smaller screens */
+      max-width: 180px;  /* smaller max width */
+      width: 40vw;       /* scales responsively but smaller */
       height: auto;
       margin-bottom: 1rem;
       user-select: none;
     }
     @media (max-width: 600px) {
       .hero-logo {
-      max-width: 200px;
+        max-width: 140px;  /* even smaller on mobile */
+        width: 50vw;
+      }
     }
 }
   </style>
