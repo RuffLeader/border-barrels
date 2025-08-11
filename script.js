@@ -76,7 +76,8 @@ const episodeLinks = {
   "72": "https://www.youtube.com/watch?v=b-OXGgmECWs",
   "73": "https://www.youtube.com/watch?v=YNXv-XFmwRI",
   "74": "https://www.youtube.com/watch?v=oLwyc1tj9RM",
-  "75": "https://www.youtube.com/watch?v=t345ctH2l0k"
+  "75": "https://www.youtube.com/watch?v=t345ctH2l0k",
+  "76": "https://www.youtube.com/watch?v=RkDwmI38io8"
 };
 
 const apiURL = "https://script.google.com/macros/s/AKfycbxDEjttMahiVNPUIAQsWR8YxxIgMbp7qe-7Ci_rKoaoQCGm3QajkFM4WQrxxHob1LIN/exec";
