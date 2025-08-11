@@ -358,6 +358,21 @@ main {
   .description {
     font-size: 0.8rem;
   }
+
+  /* Make search and toggle button match height */
+  #controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #controls input#search,
+  #controls button#toggleOrder {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    padding: 0.6em;
+    height: auto; /* let padding control height */
+  }
 }
 
   </style>
