@@ -432,8 +432,13 @@ function updateGridClasses(filteredItemsCount) {
 }
 
 function calculateEpisodesPerPage() {
-  const cardWidth = 300; // Approx width of each episode card (adjust if needed)
-  const desiredRows = 3; // Number of rows you want to fill per page
+  let cardWidth = 300;
+  let desiredRows = 3;
+
+  if (window.innerWidth <= 600) {
+    cardWidth = 180;    // smaller card width for mobile
+    desiredRows = 4;    // show more rows on mobile
+  }
 
   const cardsPerRow = Math.floor(window.innerWidth / cardWidth);
   return cardsPerRow * desiredRows;
