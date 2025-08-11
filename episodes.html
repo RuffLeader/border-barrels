@@ -282,32 +282,46 @@ main {
   padding: 0;
 }
 
-/* === Pagination Buttons === */
+/* Pagination styles */
 #pagination {
   margin: 2em 0;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
 }
 
-#pagination button {
+#pagination .page-btn {
   background-color: #002157;
   color: white;
   border: 1px solid #002157;
-  padding: 0.6em 1em;
+  padding: 0.5em 0.9em;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
-  margin: 0 0.5rem;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-#pagination button:hover {
+#pagination .page-btn:hover:not(:disabled) {
   background-color: #004080;
   border-color: #004080;
 }
 
-#pagination button:active {
-  background-color: #001a40;
-  border-color: #001a40;
+#pagination .page-btn.active {
+  background-color: #ffb400;
+  color: #002157;
+  font-weight: bold;
+}
+
+#pagination .ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4em;
+  font-size: 1rem;
+  color: #002157;
+  opacity: 0.7;
 }
 
 /* Mobile styles */
@@ -372,6 +386,15 @@ main {
     font-size: 1rem;
     padding: 0.6em;
     height: auto; /* let padding control height */
+  }
+
+  #pagination {
+    gap: 0.3rem;
+  }
+  #pagination .page-btn,
+  #pagination .ellipsis {
+    font-size: 0.9rem;
+    padding: 0.4em 0.6em;
   }
 }
 
@@ -516,11 +539,10 @@ function renderPagination(dataLength) {
   const addButton = (page) => {
     const btn = document.createElement("button");
     btn.textContent = page;
+    btn.classList.add("page-btn");
     if (page === currentPage) {
       btn.disabled = true;
-      btn.style.backgroundColor = "#ffb400"; // highlight color
-      btn.style.color = "#002157";
-      btn.style.fontWeight = "bold";
+      btn.classList.add("active");
     }
     btn.addEventListener("click", () => {
       currentPage = page;
@@ -533,7 +555,7 @@ function renderPagination(dataLength) {
   const addEllipsis = () => {
     const span = document.createElement("span");
     span.textContent = "...";
-    span.style.margin = "0 4px";
+    span.classList.add("ellipsis");
     pagination.appendChild(span);
   };
 
