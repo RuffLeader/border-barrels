@@ -510,18 +510,45 @@ function renderEpisodes(data) {
 function renderPagination(dataLength) {
   pagination.innerHTML = "";
   const pageCount = Math.ceil(dataLength / itemsPerPage);
+  const pages = [];
 
-  for (let i = 1; i <= pageCount; i++) {
+  const addButton = (page) => {
     const btn = document.createElement("button");
-    btn.textContent = i;
-    if (i === currentPage) btn.disabled = true;
+    btn.textContent = page;
+    if (page === currentPage) {
+      btn.disabled = true;
+      btn.style.backgroundColor = "#ffb400"; // highlight color
+      btn.style.color = "#002157";
+      btn.style.fontWeight = "bold";
+    }
     btn.addEventListener("click", () => {
-      currentPage = i;
+      currentPage = page;
       renderEpisodes(filteredData);
       renderPagination(filteredData.length);
     });
     pagination.appendChild(btn);
+  };
+
+  if (pageCount <= 1) return; // no pagination needed
+
+  // Always show first page
+  addButton(1);
+
+  // Pages before current
+  for (let i = currentPage - 2; i < currentPage; i++) {
+    if (i > 1) addButton(i);
   }
+
+  // Current page
+  if (currentPage > 1 && currentPage < pageCount) addButton(currentPage);
+
+  // Pages after current
+  for (let i = currentPage + 1; i <= currentPage + 2; i++) {
+    if (i < pageCount) addButton(i);
+  }
+
+  // Always show last page
+  if (pageCount > 1) addButton(pageCount);
 }
 
 function applySorting() {
