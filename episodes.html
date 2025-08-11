@@ -510,7 +510,8 @@ function renderEpisodes(data) {
 function renderPagination(dataLength) {
   pagination.innerHTML = "";
   const pageCount = Math.ceil(dataLength / itemsPerPage);
-  const pages = [];
+
+  if (pageCount <= 1) return; // No pagination needed
 
   const addButton = (page) => {
     const btn = document.createElement("button");
@@ -529,26 +530,43 @@ function renderPagination(dataLength) {
     pagination.appendChild(btn);
   };
 
-  if (pageCount <= 1) return; // no pagination needed
+  const addEllipsis = () => {
+    const span = document.createElement("span");
+    span.textContent = "...";
+    span.style.margin = "0 4px";
+    pagination.appendChild(span);
+  };
 
-  // Always show first page
-  addButton(1);
+  const pagesToShow = [];
 
-  // Pages before current
-  for (let i = currentPage - 2; i < currentPage; i++) {
-    if (i > 1) addButton(i);
+  // Always include first page
+  pagesToShow.push(1);
+
+  // Two before current
+  for (let i = currentPage - 2; i <= currentPage - 1; i++) {
+    if (i > 1 && i < pageCount) pagesToShow.push(i);
   }
 
-  // Current page
-  if (currentPage > 1 && currentPage < pageCount) addButton(currentPage);
+  // Current
+  if (currentPage > 1 && currentPage < pageCount) pagesToShow.push(currentPage);
 
-  // Pages after current
+  // Two after current
   for (let i = currentPage + 1; i <= currentPage + 2; i++) {
-    if (i < pageCount) addButton(i);
+    if (i > 1 && i < pageCount) pagesToShow.push(i);
   }
 
-  // Always show last page
-  if (pageCount > 1) addButton(pageCount);
+  // Always include last page
+  if (pageCount > 1) pagesToShow.push(pageCount);
+
+  // Build pagination with ellipses
+  let prevPage = null;
+  pagesToShow.forEach((p) => {
+    if (prevPage && p - prevPage > 1) {
+      addEllipsis();
+    }
+    addButton(p);
+    prevPage = p;
+  });
 }
 
 function applySorting() {
