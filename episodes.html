@@ -335,6 +335,31 @@ main {
   }
 }
 
+/* Smaller cards on mobile */
+@media (max-width: 600px) {
+  #episode-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem; /* slightly smaller gap */
+  }
+
+  .video-card {
+    max-width: 260px; /* was 320px */
+    padding: 0.75rem; /* less padding */
+  }
+
+  .video-card img {
+    border-radius: 6px;
+  }
+
+  .episode-title {
+    font-size: 0.95rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+}
+
   </style>
 </head>
 <body>
