@@ -17,7 +17,7 @@ const beers = [
   { id: 16, name: "Bent - Straightforward Beer", brewery: "BentSpoke Brewing Co.", abv: 4, style: "Lager", bbbrsScore: 17.92, untappdScore: 3.5, beerCanUrl: "media/beers/bent.png", epnum: 62 },
   { id: 17, name: "Crankshaft", brewery: "BentSpoke Brewing Co.", abv: 5.8, style: "IPA", bbbrsScore: 18.92, untappdScore: 3.92, beerCanUrl: "media/beers/crankshaft.png", epnum: 71 },
   { id: 18, name: "Flemm", brewery: "BentSpoke Brewing Co.", abv: 6, style: "Sour", bbbrsScore: 20.08, untappdScore: 3.92, beerCanUrl: "media/beers/flemm.png", epnum: 62 },
-  { id: 19, name: "FreeWheeler", brewery: "BentSpoke Brewing Co.", abv: <0.5, style: "Non-Alcoholic Beer", bbbrsScore: 17.17, untappdScore: 2.92, beerCanUrl: "media/beers/freewheeler.png", epnum: 62 },
+  { id: 19, name: "FreeWheeler", brewery: "BentSpoke Brewing Co.", abv: 0.5, style: "Non-Alcoholic Beer", bbbrsScore: 17.17, untappdScore: 2.92, beerCanUrl: "media/beers/freewheeler.png", epnum: 62 },
   { id: 20, name: "Keep It Simple JAIPA", brewery: "BentSpoke Brewing Co.", abv: 6.8, style: "IPA", bbbrsScore: 19.67, untappdScore: 4.17, beerCanUrl: "media/beers/keep-it-simple.png", epnum: 62 },
   { id: 21, name: "Muthur Funker", brewery: "BentSpoke Brewing Co.", abv: 5, style: "Lambic", bbbrsScore: 19.5, untappdScore: 3.83, beerCanUrl: "media/beers/muthur-funker.png", epnum: 62 },
   { id: 22, name: "Boozy Fruit New England IPA", brewery: "Big Shed Brewing", abv: 6.2, style: "IPA", bbbrsScore: 21.08, untappdScore: 4.75, beerCanUrl: "media/beers/boozy-fruit.png", epnum: 65 },
