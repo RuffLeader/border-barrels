@@ -1,4 +1,4 @@
-const beers = [
+const beers= [
   { id: 1, name: "2022 Summer of Sour | Royal Fruit Cup", brewery: "Aether Brewing", abv: 5.5, style: "Sour", bbbrsScore: 16.75, untappdScore: 4.33, beerCanUrl: "media/beers/summer-of-sour.png", epnum: 27 },
   { id: 2, name: "Creature of the Night Peanut Butter Stout", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 20.17, untappdScore: 4.08, beerCanUrl: "media/beers/creature-of-the-night.png", epnum: 27 },
   { id: 3, name: "Peanut Butter Stout Seasonal Release", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 17.25, untappdScore: 4.33, beerCanUrl: "media/beers/peanut-butter-stout.png", epnum: 31 },
