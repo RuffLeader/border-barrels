@@ -194,5 +194,5 @@ const beers = [
   { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "media/beers/larry-pale.png", epnum: 71 },
 ];
 
-const breweries = [
+const breweries = []
   
