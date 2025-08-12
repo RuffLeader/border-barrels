@@ -1,4 +1,4 @@
-const beers= [
+const beers = [
   { id: 1, name: "2022 Summer of Sour | Royal Fruit Cup", brewery: "Aether Brewing", abv: 5.5, style: "Sour", bbbrsScore: 16.75, untappdScore: 4.33, beerCanUrl: "media/beers/summer-of-sour.png", epnum: 27 },
   { id: 2, name: "Creature of the Night Peanut Butter Stout", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 20.17, untappdScore: 4.08, beerCanUrl: "media/beers/creature-of-the-night.png", epnum: 27 },
   { id: 3, name: "Peanut Butter Stout Seasonal Release", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 17.25, untappdScore: 4.33, beerCanUrl: "media/beers/peanut-butter-stout.png", epnum: 31 },
@@ -94,9 +94,9 @@ const beers= [
   { id: 93, name: "Chaos of the Universe - Hades Black IPA", brewery: "Hargreaves Hill Brewing Co.", abv: 6, style: "IPA", bbbrsScore: 21.5, untappdScore: 4, beerCanUrl: "media/beers/chaos-hades.png", epnum: 66 },
   { id: 94, name: "Kenny West Coast IPA", brewery: "Hargreaves Hill Brewing Co.", abv: 6, style: "IPA", bbbrsScore: 21.5, untappdScore: 4.42, beerCanUrl: "media/beers/kenny.png", epnum: 66 },
   { id: 95, name: "Midday Double Hazy IPA (with Celestial Beerworks)", brewery: "Hargreaves Hill Brewing Co.", abv: 7.8, style: "IPA", bbbrsScore: 20, untappdScore: 4.33, beerCanUrl: "media/beers/midday.png", epnum: 66 },
-  { id: 96, name: "Naughty Schwarzbier Midnight Lager (with Naught Distilling)", brewery: "Hargreaves Hill Brewing Co.", abv: 5, style: "Schwarzbier", bbbrsScore: 20.08, untappdScore: 3.67, beerCanUrl: "media/beers/naughty-schwarzbier.png", epnum: Off },
+  { id: 96, name: "Naughty Schwarzbier Midnight Lager (with Naught Distilling)", brewery: "Hargreaves Hill Brewing Co.", abv: 5, style: "Schwarzbier", bbbrsScore: 20.08, untappdScore: 3.67, beerCanUrl: "media/beers/naughty-schwarzbier.png", epnum: null },
   { id: 97, name: "R.I.S. Imperial Stout 2022", brewery: "Hargreaves Hill Brewing Co.", abv: 11.2, style: "Stout", bbbrsScore: 21.67, untappdScore: 4.67, beerCanUrl: "media/beers/RIS-2022.png", epnum: 37 },
-  { id: 98, name: "Superdelicfragilisticexpialidoatish Oat Cream IPA", brewery: "Hargreaves Hill Brewing Co.", abv: 7.6, style: "IPA", bbbrsScore: 22, untappdScore: 4.67, beerCanUrl: "media/beers/superdelic.png", epnum: Off },
+  { id: 98, name: "Superdelicfragilisticexpialidoatish Oat Cream IPA", brewery: "Hargreaves Hill Brewing Co.", abv: 7.6, style: "IPA", bbbrsScore: 22, untappdScore: 4.67, beerCanUrl: "media/beers/superdelic.png", epnum: null },
   { id: 99, name: "Team America IPA - Citra & Amarillo", brewery: "Hargreaves Hill Brewing Co.", abv: 6.7, style: "IPA", bbbrsScore: 20.33, untappdScore: 4.25, beerCanUrl: "media/beers/team-america.png", epnum: 32 },
   { id: 100, name: "Team Australia IPA - Galaxy & Vic Secret", brewery: "Hargreaves Hill Brewing Co.", abv: 6.7, style: "IPA", bbbrsScore: 20.33, untappdScore: 4.08, beerCanUrl: "media/beers/team-australia.png", epnum: 32 },
   { id: 101, name: "Team New Zealand IPA - Motueka & Nectaron", brewery: "Hargreaves Hill Brewing Co.", abv: 6.7, style: "IPA", bbbrsScore: 20.08, untappdScore: 3.92, beerCanUrl: "media/beers/team-new-zealand.png", epnum: 32 },
