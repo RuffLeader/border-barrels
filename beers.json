@@ -1,5 +1,5 @@
 const beers = [
-  {id: 1, name: "2022 Summer of Sour | Royal Fruit Cup", brewery: "Aether Brewing", abv: 5.5, style: "Sour", bbbrsScore: 16.75, untappdScore: 4.33, beerCanUrl: "media/beers/summer-of-sour.png", epnum: 27},
+  { id: 1, name: "2022 Summer of Sour | Royal Fruit Cup", brewery: "Aether Brewing", abv: 5.5, style: "Sour", bbbrsScore: 16.75, untappdScore: 4.33, beerCanUrl: "media/beers/summer-of-sour.png", epnum: 27 },
   { id: 2, name: "Creature of the Night Peanut Butter Stout", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 20.17, untappdScore: 4.08, beerCanUrl: "media/beers/creature-of-the-night.png", epnum: 27 },
   { id: 3, name: "Peanut Butter Stout Seasonal Release", brewery: "Aether Brewing", abv: 7, style: "Stout", bbbrsScore: 17.25, untappdScore: 4.33, beerCanUrl: "media/beers/peanut-butter-stout.png", epnum: 31 },
   { id: 4, name: "Twisted Vine Blood Orange Passionfruit", brewery: "Aether Brewing", abv: 5.5, style: "IPA", bbbrsScore: 15.33, untappdScore: 3.92, beerCanUrl: "media/beers/twisted-vine.png", epnum: 27 },
@@ -137,7 +137,7 @@ const beers = [
   { id: 136, name: "Let's See Hazy IPA", brewery: "Ocean Reach Brewing", abv: 6.2, style: "IPA", bbbrsScore: 21.42, untappdScore: 4.17, beerCanUrl: "media/beers/lets-see.png", epnum: 69 },
   { id: 137, name: "Midnight Dancing Panther", brewery: "Ocean Reach Brewing", abv: 7.3, style: "Stout", bbbrsScore: 22.08, untappdScore: 4.33, beerCanUrl: "media/beers/midnight-dancing-panther.png", epnum: 69 },
   { id: 138, name: "Nels Hikes Hazy IPA", brewery: "Ocean Reach Brewing", abv: 6.2, style: "IPA", bbbrsScore: 22, untappdScore: 4.33, beerCanUrl: "media/beers/nels-hikes.png", epnum: 69 },
-  { id: 139, name: "High Grade IPA with Clean Fusion (with Dogma Brewery)", brewery: "One Drop Brewing Co."", abv: 7, style: ""IPA"", bbbrsScore: 20.25, untappdScore: 4.08, beerCanUrl: ""media/beers/high-grade.png"", epnum: 39 },
+  { id: 139, name: "High Grade IPA with Clean Fusion (with Dogma Brewery)", brewery: "One Drop Brewing Co.", abv: 7, style: "IPA", bbbrsScore: 20.25, untappdScore: 4.08, beerCanUrl: "media/beers/high-grade.png", epnum: 39 },
   { id: 140, name: "Nu Nu Dip Hopped WCIPA with Clean Fusion", brewery: "One Drop Brewing Co.", abv: 7, style: "IPA", bbbrsScore: 20.83, untappdScore: 3.92, beerCanUrl: "media/beers/nu-nu-dip.png", epnum: 39 },
   { id: 141, name: "Pie Head Ice Cream Sour - Plum & Peach Crumble", brewery: "One Drop Brewing Co.", abv: 9, style: "Sour", bbbrsScore: 20.25, untappdScore: 3.83, beerCanUrl: "media/beers/pie-head.png", epnum: 34 },
   { id: 142, name: "Rainbow Country Fruited Glitter Sour Ale - Watermelon, Citrus & Edible Glitter", brewery: "One Drop Brewing Co.", abv: 6.9, style: "Sour", bbbrsScore: 21.5, untappdScore: 4.33, beerCanUrl: "media/beers/rainbow-country.png", epnum: 34 },
