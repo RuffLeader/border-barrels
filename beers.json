@@ -191,5 +191,5 @@ const beers = [
   { id: 190, name: "Bubble Trouble Tutti Frutti Ice Cream Sour", brewery: "Working Title Brew Co.", abv: 6, style: "Sour", bbbrsScore: 16.17, untappdScore: 4.08, beerCanUrl: "media/beers/bubble-trouble.png", epnum: 28 },
   { id: 191, name: "Reign Supreme Affogato & Cream Ale", brewery: "Working Title Brew Co.", abv: 7, style: "Cream Ale", bbbrsScore: 15.92, untappdScore: 3.75, beerCanUrl: "media/beers/reign-supreme.png", epnum: 28 },
   { id: 192, name: "Shakedown Lime Milkshake DIPA", brewery: "Working Title Brew Co.", abv: 8.5, style: "IPA", bbbrsScore: 16, untappdScore: 3.92, beerCanUrl: "media/beers/shakedown.png", epnum: 28 },
-  { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "media/beers/larry-pale.png", epnum: 71 },
+  { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "media/beers/larry-pale.png", epnum: 71 }
 ];
