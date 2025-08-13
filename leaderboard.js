@@ -6,14 +6,7 @@
     return el;
   }
 
-  // --- Beer leaderboards ---
-  function topBeersByScore(scoreKey) {
-    return beers
-      .filter(b => typeof b[scoreKey] === 'number')
-      .sort((a, b) => b[scoreKey] - a[scoreKey])
-      .slice(0, 10);
-  }
-
+  // --- Fit text to max 2 lines ---
   function fitTextToTwoLines(el) {
     const style = getComputedStyle(el);
     const lineHeight = parseFloat(style.lineHeight);
@@ -36,6 +29,14 @@
       if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
     });
     cards.forEach(c => (c.style.height = maxHeight + 'px'));
+  }
+
+  // --- Beer leaderboards ---
+  function topBeersByScore(scoreKey) {
+    return beers
+      .filter(b => typeof b[scoreKey] === 'number')
+      .sort((a, b) => b[scoreKey] - a[scoreKey])
+      .slice(0, 10);
   }
 
   function renderListBeer(beer, rank, container, scoreKey, delay) {
@@ -76,7 +77,7 @@
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name);
+      fitTextToTwoLines(name); // ← re-added two-line rule
     });
   }
 
@@ -95,18 +96,17 @@
   function topBreweriesByScore(scoreKey) {
     return brewery
       .map(brew => {
-        // Find all beers from this brewery
         const beersByBrew = beers.filter(be => be.brewery === brew.name && typeof be[scoreKey] === 'number');
         const avgScore = beersByBrew.length
           ? beersByBrew.reduce((sum, b) => sum + b[scoreKey], 0) / beersByBrew.length
           : 0;
         return {
-          ...brew, // includes logoUrl
+          ...brew,
           avgScore,
           beerCount: beersByBrew.length
         };
       })
-      .filter(b => b.beerCount > 0) // only show breweries with beers
+      .filter(b => b.beerCount > 0)
       .sort((a, b) => b.avgScore - a.avgScore)
       .slice(0, 10);
   }
@@ -136,17 +136,22 @@
     info.appendChild(breweryMeta);
 
     const meta = createEl('div', 'beer-meta');
-    const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
+    const score = createEl('div', 'beer-score', brew.avgScore.toFixed(2)); // ← like beers leaderboard
     meta.appendChild(score);
-    info.appendChild(meta);
 
+    // Episodes at bottom
+    const episodes = createEl('div', '', `Episodes: ${brew.episodes?.join(', ') || 'N/A'}`);
+    meta.appendChild(episodes);
+
+    info.appendChild(meta);
     li.appendChild(info);
+
     container.appendChild(li);
 
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name);
+      fitTextToTwoLines(name); // ← re-add two-line rule
     });
   }
 
