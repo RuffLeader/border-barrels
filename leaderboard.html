@@ -31,7 +31,6 @@
     }
 
     .leaderboard-section {
-      width: 90vw;
       max-width: 1200px;
       margin: 0 auto 60px;
       background: rgba(255,255,255,0.05);
@@ -257,16 +256,17 @@
       max-width: 600px; /* optional */
     }
     
-    /* Mobile: stack vertically */
+    /* Mobile: override widths for stacked layout */
     @media (max-width: 800px) {
+      .leaderboards-wrapper .leaderboard-section {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;           /* optional: remove horizontal margin */
+      }
+    
       .leaderboards-wrapper {
         flex-direction: column;
         gap: 20px;
-      }
-    
-      .leaderboards-wrapper .leaderboard-section {
-        width: 100%;
-        max-width: none;
       }
     }
   </style>
