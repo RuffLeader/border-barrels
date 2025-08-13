@@ -290,7 +290,6 @@ header .container {
 .leaderboard-btn {
   display: block;
   width: 60vw;             /* responsive width */
-  max-width: 350px;        /* max width */
   margin: 1rem auto;
   padding: 10px 0;
   background-color: gold;
