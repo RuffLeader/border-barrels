@@ -161,24 +161,27 @@
 
     /* Container for beer info */
     .beer-info {
-      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px; /* space between name and brewery */
     }
 
     /* Beer name */
-    .beer-name {
-      font-weight: 700;
-      font-size: 1.4rem;
-      margin-bottom: 4px;
-      color: #fefefe;
-      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7); /* subtle warm glow */
+    .beer-name,
+    .brewery-name {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #eee; /* a light color that fits your dark bg */
     }
 
     /* Brewery name */
     .brewery-name {
-      font-size: 1rem;
-      color: #d4b75e;
-      margin-bottom: 10px;
-      text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+      opacity: 0.8; /* make brewery name a bit lighter */
+    }
+
+    .brewery-name::before {
+      content: " – ";
+      color: #ccc;
     }
 
     /* Meta info container (ABV and Style) */
