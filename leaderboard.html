@@ -181,14 +181,13 @@
       justify-content: space-between; /* even spacing between leaderboards */
       align-items: flex-start;
       width: 80%; /* wrapper takes 80% of page width */
-      max-width: 1200px; /* optional max width for very large screens */
       margin: 0 auto 60px; /* center wrapper with bottom margin */
       gap: 30px; /* space between the two leaderboards */
     }
 
     /* Each leaderboard takes more of the wrapper's width */
     .leaderboards-wrapper .leaderboard-section {
-      flex: 1 1 calc(50% - 15px); /* roughly half minus half the gap */
+      flex: 1 1 0; /* roughly half minus half the gap */
       max-width: none; /* remove previous max-width restrictions */
     }
 
