@@ -26,6 +26,28 @@
     }
   }
 
+  // Equalize card heights in a container
+  function equalizeCardHeights(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const cards = Array.from(container.querySelectorAll('.beer-card'));
+    if (!cards.length) return;
+
+    // Reset heights
+    cards.forEach(c => c.style.height = 'auto');
+
+    // Find the tallest card
+    let maxHeight = 0;
+    cards.forEach(c => {
+      const h = c.offsetHeight;
+      if (h > maxHeight) maxHeight = h;
+    });
+
+    // Apply max height to all cards
+    cards.forEach(c => c.style.height = maxHeight + 'px');
+  }
+
   function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
 
@@ -89,6 +111,9 @@
     top10.forEach((beer, idx) => {
       renderListBeer(beer, idx + 1, listContainer, scoreKey, idx * 100);
     });
+
+    // Equalize card heights after a short delay
+    setTimeout(() => equalizeCardHeights(listId), 50);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
