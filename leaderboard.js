@@ -45,41 +45,46 @@
     container.appendChild(card);
   }
 
-  // Added scoreKey param
-  function renderListBeer(beer, rank, container, scoreKey) {
-    const li = createEl('li', 'beer-card');
+ // Updated scoreKey param
+function renderListBeer(beer, rank, container, scoreKey) {
+  const li = createEl('li', 'beer-card');
 
-    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-    li.appendChild(rankDiv);
+  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+  li.appendChild(rankDiv);
 
-    const img = createEl('img', 'beer-image');
-    img.src = beer.beerCanUrl || beer.canArtUrl || '';
-    img.alt = beer.name + ' can art';
-    li.appendChild(img);
+  // New wrapper for image + info
+  const contentWrapper = createEl('div', 'beer-content-wrapper');
 
-    const info = createEl('div', 'beer-info');
+  const img = createEl('img', 'beer-image');
+  img.src = beer.beerCanUrl || beer.canArtUrl || '';
+  img.alt = beer.name + ' can art';
+  contentWrapper.appendChild(img);
 
-    const name = createEl('div', 'beer-name', beer.name);
-    info.appendChild(name);
+  const info = createEl('div', 'beer-info');
 
-    const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
-    info.appendChild(brewery);
+  const name = createEl('div', 'beer-name', beer.name);
+  info.appendChild(name);
 
-    const meta = createEl('div', 'beer-meta');
-    const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
-    const style = createEl('div', '', beer.style || 'Unknown style');
-    meta.appendChild(abv);
-    meta.appendChild(style);
-    info.appendChild(meta);
+  const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
+  info.appendChild(brewery);
 
-    li.appendChild(info);
+  const meta = createEl('div', 'beer-meta');
+  const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
+  const style = createEl('div', '', beer.style || 'Unknown style');
+  meta.appendChild(abv);
+  meta.appendChild(style);
+  info.appendChild(meta);
 
-    // Use scoreKey here
-    const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
-    li.appendChild(score);
+  contentWrapper.appendChild(info);
 
-    container.appendChild(li);
-  }
+  li.appendChild(contentWrapper);
+
+  // Use scoreKey here
+  const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
+  li.appendChild(score);
+
+  container.appendChild(li);
+}
 
   function renderBeerLeaderboard(scoreKey, podiumId, listId) {
     const podiumContainer = document.getElementById(podiumId);
