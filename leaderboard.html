@@ -233,42 +233,40 @@
 
     /* Beer info container */
     .beer-info {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;  /* space between name, brewery, meta */
-      flex-wrap: wrap; /* wrap if too narrow */
+      flex-grow: 1;
     }
 
     /* Beer name */
     .beer-name {
       font-weight: 800;
       font-size: 1.45rem;
+      margin-bottom: 6px;
       color: #fff;
+      letter-spacing: 0.02em;
       text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
-      white-space: nowrap;
     }
 
     /* Brewery name */
     .brewery-name {
       font-size: 1.05rem;
       color: #d4b75e;
+      margin-bottom: 12px;
       text-shadow: 0 0 4px rgba(0,0,0,0.6);
-      white-space: nowrap;
     }
 
     /* Meta info */
     .beer-meta {
       display: flex;
-      gap: 1.2rem;
+      gap: 28px;
       font-size: 1rem;
       color: #d4b75e;
       font-weight: 600;
       text-shadow: 0 0 3px rgba(0,0,0,0.6);
-      white-space: nowrap;
     }
 
     .beer-meta div {
-      min-width: auto; /* override any fixed min-width */
+      min-width: 90px;
+      text-align: center;
     }
 
     /* Score styling */
