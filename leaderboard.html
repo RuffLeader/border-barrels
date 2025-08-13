@@ -25,9 +25,8 @@
     }
 
     .leaderboard-section {
-      max-width: none;      /* remove max-width so width can be flexible */
-      width: 90vw;          /* 90% of viewport width */
-      margin: 0 auto 50px;  /* center horizontally and add bottom margin */
+      max-width: 720px;
+      margin: 0 auto 50px;
       background: rgba(255,255,255,0.05);
       border-radius: 12px;
       padding: 20px 30px;
@@ -121,14 +120,15 @@
 
     /* Each beer card styling */
     .beer-card {
-      display: grid;
-      grid-template-columns: 60px 1fr 80px;
+      display: flex;
       align-items: center;
-      gap: 1rem;
-      background: transparent; /* no background */
-      box-shadow: none; /* remove shadow */
+      background: transparent !important;
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 16px;
+      box-shadow: none !important;
+      transition: box-shadow 0.3s ease;
       color: #fff;
-      padding: 12px 0;
     }
 
     .beer-card:hover {
@@ -137,11 +137,13 @@
 
     /* Rank number styling */
     .beer-rank {
-      text-align: left;
       font-weight: 900;
       font-size: 2.4rem;
-      color: #4a90e2;
+      width: 60px;
+      color: #fefefe;
+      text-align: center;
       flex-shrink: 0;
+      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7); /* subtle warm glow */
     }
 
     /* Beer can image */
@@ -149,35 +151,33 @@
       width: 80px;
       height: 80px;
       object-fit: contain;
-      flex-shrink: 0;
-      border-radius: 8px;
       background: transparent;
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      margin-right: 1rem;
     }
 
     /* Container for beer info */
     .beer-info {
-      display: flex;
-      align-items: center;
-      justify-content: center; /* centers the entire block horizontally */
-      gap: 1rem;
+      flex-grow: 1;
     }
 
     /* Beer name */
-    .beer-name,
-    .brewery-name {
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: #eee; /* a light color that fits your dark bg */
+    .beer-name {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+      color: #fefefe;
+      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7); /* subtle warm glow */
     }
 
     /* Brewery name */
     .brewery-name {
-      opacity: 0.8; /* make brewery name a bit lighter */
-    }
-
-    .brewery-name::before {
-      content: " – ";
-      color: #ccc;
+      font-size: 1rem;
+      color: #d4b75e;
+      margin-bottom: 10px;
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     }
 
     /* Meta info container (ABV and Style) */
@@ -199,10 +199,12 @@
 
     /* Score styling */
     .beer-score {
-      text-align: right;
       font-size: 1.4rem;
       font-weight: 900;
-      color: #e67e22;
+      color: #f0a830;
+      min-width: 80px;
+      text-align: center;
+      text-shadow: 0 0 5px rgba(240, 168, 48, 0.9);
     }
 
     /* Special styling for the top 3 beers (list) */
@@ -235,26 +237,6 @@
     .beer-leaderboard .beer-card .beer-image {
       width: 80px;
       height: 80px;
-    }
-
-    /* Make beer name and brewery stacked vertically but aligned left */
-    .beer-info > div {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: #fff;
-    }
-    
-    .beer-name {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin: 0;
-    }
-    
-    .brewery-name {
-      font-size: 1rem;
-      color: #ccc;
-      margin: 0;
     }
   </style>
 </head>
