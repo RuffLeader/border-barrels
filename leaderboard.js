@@ -13,49 +13,6 @@
       .slice(0, 10);
   }
 
-  function renderPodiumBeer(beer, rank, container, scoreKey, delay) {
-    const card = createEl('div', `beer-card pos${rank}`);
-
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(15px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    if (delay) {
-      card.style.transitionDelay = delay + 'ms';
-    }
-
-    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-    card.appendChild(rankDiv);
-
-    const img = createEl('img', 'beer-image');
-    img.src = beer.beerCanUrl || beer.canArtUrl || '';
-    img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
-    card.appendChild(img);
-
-    const name = createEl('div', 'beer-name', beer.name);
-    card.appendChild(name);
-
-    const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
-    card.appendChild(brewery);
-
-    const meta = createEl('div', 'beer-meta');
-    const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
-    const style = createEl('div', '', beer.style || 'Unknown style');
-    meta.appendChild(abv);
-    meta.appendChild(style);
-    card.appendChild(meta);
-
-    const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
-    card.appendChild(score);
-
-    container.appendChild(card);
-
-    // Trigger fade-in after appending to DOM
-    requestAnimationFrame(() => {
-      card.style.opacity = '1';
-      card.style.transform = 'translateY(0)';
-    });
-  }
-
   function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
 
@@ -102,35 +59,25 @@
     });
   }
 
-  function renderBeerLeaderboard(scoreKey, podiumId, listId) {
-    const podiumContainer = document.getElementById(podiumId);
+  function renderBeerLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
 
-    if (!podiumContainer || !listContainer) {
-      console.error('Podium or list container not found');
+    if (!listContainer) {
+      console.error('List container not found');
       return;
     }
 
     const top10 = topBeersByScore(scoreKey);
 
-    podiumContainer.innerHTML = '';
     listContainer.innerHTML = '';
 
-    // Podium order 2,1,3 for layout, stagger delay 0ms, 150ms, 300ms
-    const podiumOrder = [2, 1, 3];
-    podiumOrder.forEach((pos, idx) => {
-      const beer = top10[pos - 1];
-      if (beer) renderPodiumBeer(beer, pos, podiumContainer, scoreKey, idx * 150);
+    top10.forEach((beer, idx) => {
+      renderListBeer(beer, idx + 1, listContainer, scoreKey, idx * 100);
     });
-
-    // Rest of beers 4-10 with stagger delays starting after podium
-    for (let i = 3; i < top10.length; i++) {
-      renderListBeer(top10[i], i + 1, listContainer, scoreKey, 450 + (i - 3) * 100);
-    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderBeerLeaderboard('untappdScore', 'beer-podium-untappd', 'beer-leaderboard-untappd');
-    renderBeerLeaderboard('bbbrsScore', 'beer-podium-bbbrs', 'beer-leaderboard-bbbrs');
+    renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
+    renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
   });
 })();
