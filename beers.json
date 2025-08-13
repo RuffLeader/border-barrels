@@ -241,3 +241,5 @@ const = breweries [
   { name: "Working Title Brew Co.", bbbrsScoreAvg: 16.03, untappdScoreAvg: 3.92, logoUrl: ".media/logos/your-mates-brewing-co.png", epnum: [28] },
   { name: "Your Mates Brewing Co", bbbrsScoreAvg: 17.42, untappdScoreAvg: 2.83, logoUrl: "media/logos/your-mates-brewing-co.png", epnum: [71] }
 ];
+
+const styles = ["Altbier", "Barleywine", "Belgian Strong Dark Ale", "Bock", "Brown Ale", "Cream Ale", "Dark Ale", "Hard Ginger Beer", "IPA", "Kölsch", "Lager", "Lambic", "Märzen", "Mild", "Non-Alcoholic Beer", "Pale Ale", "Pilsner", "Porter", "Rauchbier", "Schwarzbier", "Sour", "Stout", "Wheat Beer"];
