@@ -116,43 +116,44 @@
   }
 
   function renderListBrewery(brew, rank, container, scoreKey, delay) {
-    const li = createEl('li', 'beer-card'); // Reuse same beer-card styling
-    if (rank <= 3) li.classList.add(`rank${rank}`);
+  const li = createEl('li', 'beer-card'); // Reuse same beer-card styling
+  if (rank <= 3) li.classList.add(`rank${rank}`);
 
-    li.style.opacity = '0';
-    li.style.transform = 'translateY(15px)';
-    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    if (delay) li.style.transitionDelay = delay + 'ms';
+  li.style.opacity = '0';
+  li.style.transform = 'translateY(15px)';
+  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  if (delay) li.style.transitionDelay = delay + 'ms';
 
-    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-    li.appendChild(rankDiv);
+  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+  li.appendChild(rankDiv);
 
-    const img = createEl('img', 'beer-image');
-    img.src = brew.beerSample.beerCanUrl || brew.beerSample.canArtUrl || '';
-    img.alt = `Sample can from ${brew.brewery}`;
-    li.appendChild(img);
+  const img = createEl('img', 'beer-image');
+  // Use brewery logo for leaderboard
+  img.src = brew.beerSample.logoUrl || ''; 
+  img.alt = `${brew.brewery} logo`;
+  li.appendChild(img);
 
-    const info = createEl('div', 'beer-info');
-    const name = createEl('div', 'beer-name', brew.brewery);
-    info.appendChild(name);
+  const info = createEl('div', 'beer-info');
+  const name = createEl('div', 'beer-name', brew.brewery);
+  info.appendChild(name);
 
-    const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
-    info.appendChild(breweryMeta);
+  const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
+  info.appendChild(breweryMeta);
 
-    const meta = createEl('div', 'beer-meta');
-    const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
-    meta.appendChild(score);
-    info.appendChild(meta);
+  const meta = createEl('div', 'beer-meta');
+  const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
+  meta.appendChild(score);
+  info.appendChild(meta);
 
-    li.appendChild(info);
-    container.appendChild(li);
+  li.appendChild(info);
+  container.appendChild(li);
 
-    requestAnimationFrame(() => {
-      li.style.opacity = '1';
-      li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name);
-    });
-  }
+  requestAnimationFrame(() => {
+    li.style.opacity = '1';
+    li.style.transform = 'translateY(0)';
+    fitTextToTwoLines(name);
+  });
+}
 
   function renderBreweryLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
