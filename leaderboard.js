@@ -13,28 +13,24 @@
       .slice(0, 10);
   }
 
-  function renderPodiumBeer(beer, rank, container) {
+  // Added scoreKey param
+  function renderPodiumBeer(beer, rank, container, scoreKey) {
     const card = createEl('div', `beer-card pos${rank}`);
-    
-    // Rank big number
+
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     card.appendChild(rankDiv);
 
-    // Image
     const img = createEl('img', 'beer-image');
     img.src = beer.beerCanUrl || beer.canArtUrl || '';
     img.alt = beer.name + ' can art';
     card.appendChild(img);
 
-    // Name
     const name = createEl('div', 'beer-name', beer.name);
     card.appendChild(name);
 
-    // Brewery
     const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
     card.appendChild(brewery);
 
-    // Meta info (abv & style)
     const meta = createEl('div', 'beer-meta');
     const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
     const style = createEl('div', '', beer.style || 'Unknown style');
@@ -42,14 +38,15 @@
     meta.appendChild(style);
     card.appendChild(meta);
 
-    // Score
+    // Use scoreKey here
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     card.appendChild(score);
 
     container.appendChild(card);
   }
 
-  function renderListBeer(beer, rank, container) {
+  // Added scoreKey param
+  function renderListBeer(beer, rank, container, scoreKey) {
     const li = createEl('li', 'beer-card');
 
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
@@ -77,6 +74,7 @@
 
     li.appendChild(info);
 
+    // Use scoreKey here
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     li.appendChild(score);
 
@@ -102,12 +100,12 @@
 
     podiumOrder.forEach(pos => {
       const beer = top10[pos - 1];
-      if (beer) renderPodiumBeer(beer, pos, podiumContainer);
+      if (beer) renderPodiumBeer(beer, pos, podiumContainer, scoreKey);
     });
 
     // Rest of beers 4-10
     for (let i = 3; i < top10.length; i++) {
-      renderListBeer(top10[i], i + 1, listContainer);
+      renderListBeer(top10[i], i + 1, listContainer, scoreKey);
     }
   }
 
