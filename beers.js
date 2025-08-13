@@ -194,7 +194,7 @@ const beers = [
   { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "media/beers/larry-pale.png", epnum: 71 }
 ];
 
-const = breweries [
+const breweries = [
   { name: "Aether Brewing", bbbrsScoreAvg: 17.38, untappdScoreAvg: 4.17, logoUrl: ".media/logos/avnge-brewing.png", epnum: [27, 31] },
   { name: "AVNGE Brewing", bbbrsScoreAvg: 21.3, untappdScoreAvg: 4.04, logoUrl: ".media/logos/bacchus-brewing-co.png", epnum: [60] },
   { name: "Bacchus Brewing Co.", bbbrsScoreAvg: 20.94, untappdScoreAvg: 4.42, logoUrl: ".media/logos/balter-brewing.png", epnum: [53] },
