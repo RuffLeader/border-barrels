@@ -306,13 +306,13 @@ header .container {
 }
 
 .leaderboard-btn:hover {
-  background-color: #b8860b;
+  background-color: #ffe34d;
 }
 
 /* Container for search + reset */
 #controls {
   display: flex;
-  max-width: 60vw;  /* max 90% of viewport width */
+  max-width: 50vw;  /* max 90% of viewport width */
   width: 100%;      /* take full width of parent */
   margin: 1rem auto; /* center horizontally with margin */
   gap: 0;           /* no gap between input and button */
