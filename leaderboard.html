@@ -53,19 +53,20 @@
 
     /* Podium container */
     .podium-container {
+      width: 600px; /* combined width equal to list card */
+      margin: 0 auto 3rem;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: flex-end;
-      gap: 2.5rem;
-      margin-bottom: 3rem;
-      min-height: 180px;
+      gap: 1rem;
+      min-height: 320px; /* enough for tallest card */
     }
 
     /* Podium cards base */
     .beer-card.pos1,
     .beer-card.pos2,
     .beer-card.pos3 {
-      background: transparent !important;
+      width: 200px;
       border-radius: 15px;
       padding: 1rem 1.2rem;
       color: #fff;
@@ -78,6 +79,10 @@
       transition: transform 0.3s ease;
       cursor: default;
       user-select: none;
+      position: relative;
+      /* remove old transform */
+      transform: none !important;
+      box-shadow: none; /* reset, will add below */
     }
 
     /* Subtle bounce animation on load */
@@ -100,50 +105,55 @@
       100% { transform: translateY(0); opacity: 1; }
     }
 
-    /* Position 1 styles */
+    /* Position 1: taller */
     .beer-card.pos1 {
-      width: 200px;
-      font-size: 1.6rem;
-      transform: translateY(-25px);
-      z-index: 3;
-      border-radius: 15px;
+      height: 300px;
       background: radial-gradient(circle at center, #f9d976 0%, #f39c12 70%);
       color: #fff;
       box-shadow:
-        0 0 12px #f39c12,
+        0 0 18px 4px #d9a441,
         0 8px 20px rgba(243, 156, 18, 0.6);
-      cursor: default;
+      z-index: 3;
+      animation: bounceUp 1s ease forwards;
     }
 
+    .beer-card.pos1 .beer-rank,
+    .beer-card.pos2 .beer-rank,
+    .beer-card.pos3 .beer-rank {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: 900;
+      user-select: none;
+    }
+
+    /* Rank font sizes by position */
     .beer-card.pos1 .beer-rank {
       font-size: 4.5rem;
       color: #7f3c00;
-      margin-bottom: 0.6rem;
       text-shadow: 0 0 10px #7f3c00;
+      margin-bottom: 0; /* removed margin */
     }
 
     .beer-card.pos1 .beer-image {
-      width: 130px;
-      height: 130px;
-      margin-bottom: 1rem;
+      margin-top: 70px; /* enough space for rank */
+      width: 120px;
+      height: 120px;
       border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       object-fit: contain;
     }
 
-    /* Positions 2 and 3 styles */
+    /* Positions 2 and 3: shorter */
     .beer-card.pos2,
     .beer-card.pos3 {
-      width: 160px;
-      font-size: 1.2rem;
-      transform: translateY(0);
-      z-index: 2;
-      border-radius: 15px;
-      background: radial-gradient(circle at center, #e0e0e0 0%, #b0b0b0 70%);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+      height: 260px;
+      background: radial-gradient(circle at center, #c0c0c0 0%, #a0a0a0 70%);
       color: #333;
-      cursor: default;
-      text-shadow: none;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      z-index: 2;
+      animation: bounceUp 1.1s ease forwards;
     }
 
     .beer-card.pos2 {
@@ -155,19 +165,16 @@
     .beer-card.pos3 .beer-rank {
       font-size: 3.5rem;
       color: #4b3b00;
-      margin-bottom: 0.5rem;
       text-shadow: none;
-      font-weight: 900;
     }
 
     .beer-card.pos2 .beer-image,
     .beer-card.pos3 .beer-image {
       width: 110px;
       height: 110px;
-      margin-bottom: 0.8rem;
+      margin-top: 65px;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      object-fit: contain;
     }
 
     /* Beer Leaderboard list styles */
