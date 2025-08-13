@@ -114,41 +114,50 @@
   function renderListBrewery(brew, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
     if (rank <= 3) li.classList.add(`rank${rank}`);
-
+  
     li.style.opacity = '0';
     li.style.transform = 'translateY(15px)';
     li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     if (delay) li.style.transitionDelay = delay + 'ms';
-
+  
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
-
+  
+    // Pull logo from brewery array
+    const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
     const img = createEl('img', 'beer-image');
-    img.src = brew.logoUrl || '';
-    img.alt = `${brew.name} logo`;
+    img.src = breweryObj.logoUrl || '';
+    img.alt = `${brew.brewery} logo`;
     li.appendChild(img);
-
+  
     const info = createEl('div', 'beer-info');
-    const name = createEl('div', 'beer-name', brew.name);
+    const name = createEl('div', 'beer-name', brew.brewery);
     info.appendChild(name);
-
+  
     const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
     info.appendChild(breweryMeta);
-
+  
     const meta = createEl('div', 'beer-meta');
-    const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
-    meta.appendChild(score);
+    // Instead of avg score, show episode numbers
+    const episodes = createEl('div', '', `Episodes: ${breweryObj.episodes?.join(', ') || 'N/A'}`);
+    meta.appendChild(episodes);
     info.appendChild(meta);
-
+  
     li.appendChild(info);
+  
+    // Big score on the side like beers leaderboard
+    const scoreDiv = createEl('div', 'beer-score', brew.avgScore.toFixed(2));
+    li.appendChild(scoreDiv);
+  
     container.appendChild(li);
-
+  
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
       fitTextToTwoLines(name);
     });
   }
+
 
   function renderBreweryLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
