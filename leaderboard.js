@@ -13,16 +13,22 @@
       .slice(0, 10);
   }
 
-  // Added scoreKey param
-  function renderPodiumBeer(beer, rank, container, scoreKey) {
+  function renderPodiumBeer(beer, rank, container, scoreKey, delay) {
     const card = createEl('div', `beer-card pos${rank}`);
+
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(15px)';
+    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) {
+      card.style.transitionDelay = delay + 'ms';
+    }
 
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     card.appendChild(rankDiv);
 
     const img = createEl('img', 'beer-image');
     img.src = beer.beerCanUrl || beer.canArtUrl || '';
-    img.alt = beer.name + ' can art';
+    img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
     card.appendChild(img);
 
     const name = createEl('div', 'beer-name', beer.name);
@@ -38,23 +44,34 @@
     meta.appendChild(style);
     card.appendChild(meta);
 
-    // Use scoreKey here
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     card.appendChild(score);
 
     container.appendChild(card);
+
+    // Trigger fade-in after appending to DOM
+    requestAnimationFrame(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
   }
 
-  // Added scoreKey param
-  function renderListBeer(beer, rank, container, scoreKey) {
+  function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
+
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(15px)';
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) {
+      li.style.transitionDelay = delay + 'ms';
+    }
 
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
 
     const img = createEl('img', 'beer-image');
     img.src = beer.beerCanUrl || beer.canArtUrl || '';
-    img.alt = beer.name + ' can art';
+    img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
     li.appendChild(img);
 
     const info = createEl('div', 'beer-info');
@@ -74,11 +91,15 @@
 
     li.appendChild(info);
 
-    // Use scoreKey here
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     li.appendChild(score);
 
     container.appendChild(li);
+
+    requestAnimationFrame(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+    });
   }
 
   function renderBeerLeaderboard(scoreKey, podiumId, listId) {
@@ -95,17 +116,16 @@
     podiumContainer.innerHTML = '';
     listContainer.innerHTML = '';
 
-    // Podium top 3 in order: 2,1,3 for layout
+    // Podium order 2,1,3 for layout, stagger delay 0ms, 150ms, 300ms
     const podiumOrder = [2, 1, 3];
-
-    podiumOrder.forEach(pos => {
+    podiumOrder.forEach((pos, idx) => {
       const beer = top10[pos - 1];
-      if (beer) renderPodiumBeer(beer, pos, podiumContainer, scoreKey);
+      if (beer) renderPodiumBeer(beer, pos, podiumContainer, scoreKey, idx * 150);
     });
 
-    // Rest of beers 4-10
+    // Rest of beers 4-10 with stagger delays starting after podium
     for (let i = 3; i < top10.length; i++) {
-      renderListBeer(top10[i], i + 1, listContainer, scoreKey);
+      renderListBeer(top10[i], i + 1, listContainer, scoreKey, 450 + (i - 3) * 100);
     }
   }
 
