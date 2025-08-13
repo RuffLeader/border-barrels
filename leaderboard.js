@@ -53,3 +53,24 @@
       // Meta (ABV & Style)
       const meta = createEl('div', 'beer-meta');
       const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
+      const style = createEl('div', '', beer.style || 'Unknown style');
+      meta.appendChild(abv);
+      meta.appendChild(style);
+      info.appendChild(meta);
+
+      li.appendChild(info);
+
+      // Score
+      const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
+      li.appendChild(score);
+
+      container.appendChild(li);
+    });
+  }
+
+  // Run rendering on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
+    renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
+  });
+})();
