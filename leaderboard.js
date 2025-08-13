@@ -93,23 +93,20 @@
 
   // --- Brewery leaderboards ---
   function topBreweriesByScore(scoreKey) {
-    // Aggregate breweries by average score from beers
-    const breweryMap = {};
-    beers.forEach(b => {
-      if (typeof b[scoreKey] === 'number') {
-        if (!breweryMap[b.brewery])
-          breweryMap[b.brewery] = { brewery: b.brewery, beers: [], scoreSum: 0 };
-        breweryMap[b.brewery].beers.push(b);
-        breweryMap[b.brewery].scoreSum += b[scoreKey];
-      }
-    });
-
-    return Object.values(breweryMap)
-      .map(brew => ({
-        brewery: brew.brewery,
-        avgScore: brew.scoreSum / brew.beers.length,
-        beerCount: brew.beers.length
-      }))
+    return brewery
+      .map(brew => {
+        // Find all beers from this brewery
+        const beersByBrew = beers.filter(be => be.brewery === brew.name && typeof be[scoreKey] === 'number');
+        const avgScore = beersByBrew.length
+          ? beersByBrew.reduce((sum, b) => sum + b[scoreKey], 0) / beersByBrew.length
+          : 0;
+        return {
+          ...brew, // includes logoUrl
+          avgScore,
+          beerCount: beersByBrew.length
+        };
+      })
+      .filter(b => b.beerCount > 0) // only show breweries with beers
       .sort((a, b) => b.avgScore - a.avgScore)
       .slice(0, 10);
   }
@@ -126,15 +123,13 @@
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
 
-    // Pull logo from brewery array
-    const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
     const img = createEl('img', 'beer-image');
-    img.src = breweryObj.logoUrl || '';
-    img.alt = `${brew.brewery} logo`;
+    img.src = brew.logoUrl || '';
+    img.alt = `${brew.name} logo`;
     li.appendChild(img);
 
     const info = createEl('div', 'beer-info');
-    const name = createEl('div', 'beer-name', brew.brewery);
+    const name = createEl('div', 'beer-name', brew.name);
     info.appendChild(name);
 
     const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
