@@ -2,154 +2,186 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Border Barrels Leaderboards</title>
+  <script src="beers.js"></script>
+  <script src="leaderboard.js" defer></script>
+
   <style>
+    /* Reset & base */
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #002157;
       color: #fff;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
     }
 
-    h1, h2 {
+    h1 {
       text-align: center;
+      margin-bottom: 40px;
+      font-weight: 700;
     }
 
     .leaderboard-section {
-      margin: 40px auto;
-      max-width: 800px;
+      max-width: 720px;
+      margin: 0 auto 50px;
       background: rgba(255,255,255,0.05);
-      padding: 20px;
       border-radius: 12px;
+      padding: 20px 30px;
     }
 
-    .leaderboard-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 8px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .rank {
-      font-weight: bold;
-      font-size: 1.2em;
-      width: 30px;
+    .leaderboard-section h2 {
+      color: #f0a830;
+      margin-bottom: 24px;
+      font-weight: 700;
+      font-size: 1.8rem;
       text-align: center;
     }
 
-    .beer-can, .brewery-logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      background: white;
-      border-radius: 6px;
-      padding: 4px;
+    /* Beer Leaderboard styles */
+
+    /* Container for beer leaderboard */
+    .beer-leaderboard {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
-    .item-info {
-      flex: 1;
-    }
-
-    .leaderboard {
-      margin-bottom: 3rem;
-    }
-
-    .leaderboard h2 {
-      margin-bottom: 1rem;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #002157;
-    }
-
-    /* Bigger styles for top 3 */
-.leaderboard-item.top3 {
-  background-color: #f8f8f8;
-  border-left: 5px solid gold;
-}
-
-.leaderboard-item.top10 {
-  background-color: #f1f1f1;
-}
-
-    .leaderboard-item {
+    /* Each beer card styling */
+    .beer-card {
       display: flex;
       align-items: center;
-      margin-bottom: 0.5rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: box-shadow 0.3s ease;
+      color: #222;
     }
 
-    .leaderboard-item .rank {
-      width: 2rem;
-      font-weight: bold;
+    .beer-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .leaderboard-item .name {
+    /* Rank number styling */
+    .beer-rank {
+      font-weight: 900;
+      font-size: 2.4rem;
+      width: 60px;
+      color: #4a90e2;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* Beer can image */
+    .beer-image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-right: 20px;
+      background: white;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Container for beer info */
+    .beer-info {
       flex-grow: 1;
     }
 
-    .brewery-logo {
-      vertical-align: middle;
-      border-radius: 3px;
-      margin-right: 0.5rem;
+    /* Beer name */
+    .beer-name {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+      color: #111;
     }
 
-.leaderboard-item.beer {
-  display: grid;
-  grid-template-columns: 30px 60px 1.5fr 2fr 1fr 1fr 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
-}
+    /* Brewery name */
+    .brewery-name {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
 
-.leaderboard-item.beer img.beer-can {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  border-radius: 6px;
-  background: white;
-  padding: 4px;
-}
+    /* Meta info container (ABV and Style) */
+    .beer-meta {
+      display: flex;
+      gap: 24px;
+      font-size: 0.95rem;
+      color: #444;
+      font-weight: 600;
+    }
 
-.leaderboard-item .rank {
-  font-weight: bold;
-  font-size: 1.2em;
-  text-align: center;
-}
+    /* Each meta item */
+    .beer-meta div {
+      min-width: 80px;
+      text-align: center;
+    }
 
-.leaderboard-item .brewery,
-.leaderboard-item .name,
-.leaderboard-item .abv,
-.leaderboard-item .style,
-.leaderboard-item .score {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+    /* Score styling */
+    .beer-score {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: #e67e22;
+      min-width: 80px;
+      text-align: center;
+    }
 
-.leaderboard-item .brewery {
-  font-weight: bold;
-  color: #333;
-}
+    /* Special styling for the top 3 beers */
+    .beer-card.top3 {
+      background: #f0f8ff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
 
-.leaderboard-item .name {
-  font-size: 1.1em;
-  color: #555;
-}
+    .beer-card.top3 .beer-rank {
+      font-size: 3rem;
+      color: #d35400;
+    }
 
-.leaderboard-item .abv,
-.leaderboard-item .style,
-.leaderboard-item .score {
-  font-size: 0.9em;
-  color: #777;
-}
+    .beer-card.top3 .beer-score {
+      font-size: 1.8rem;
+      color: #d35400;
+    }
+
+    /* Brewery leaderboard placeholder styling */
+    #brewery-leaderboard {
+      color: #eee;
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 40px 0;
+      border: 2px dashed #555;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
+
   <h1>Border Barrels Leaderboards</h1>
-  <div id="leaderboards"></div>
-  <script src="beers.js"></script>
-  <script src="leaderboard.js"></script>
+
+  <!-- Top Beers by Untappd Score -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Beers by Untappd Score</h2>
+    <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
+  </div>
+
+  <!-- Top Beers by BBBRS Score -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Beers by BBBRS Score</h2>
+    <ul id="beer-leaderboard-bbbrs" class="beer-leaderboard"></ul>
+  </div>
+
+  <!-- Top Breweries placeholder -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Breweries</h2>
+    <div id="brewery-leaderboard">
+      Brewery leaderboard will go here.
+    </div>
+  </div>
+
 </body>
 </html>
