@@ -285,11 +285,11 @@ header .container {
   }
 }
 
-#leaderboard-btn {
+.leaderboard-btn {
   display: block;
   margin: 1rem auto;
   padding: 0.5em 1em;
-  background-color: #bfa13f;  /* gold */
+  background-color: #DAA520;  /* gold */
   color: white;
   border: none;
   border-radius: 4px;
@@ -297,7 +297,7 @@ header .container {
   font-size: 1em;
 }
 
-#leaderboard-btn:hover {
+.leaderboard-btn:hover {
   background-color: #d4af37; /* lighter gold on hover */
 }
 
