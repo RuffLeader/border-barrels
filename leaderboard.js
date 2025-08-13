@@ -2,7 +2,7 @@
 function getTopBeers(limit = 10) {
   return beers
     .slice() // copy array
-    .sort((a, b) => b.BBBRSScore - a.BBBRSScore)
+    .sort((a, b) => b.bbbrsScoreAvg - a.bbbrsScoreAvg)
     .slice(0, limit);
 }
 
@@ -15,7 +15,7 @@ function getTopBreweries(limit = 10) {
     if (!breweryStats[name]) {
       breweryStats[name] = { total: 0, count: 0, logo: beer.logoUrl };
     }
-    breweryStats[name].total += beer.BBBRSScore;
+    breweryStats[name].total += beer.bbbrsScoreAvg;
     breweryStats[name].count++;
   });
 
@@ -42,7 +42,7 @@ function renderBeerLeaderboard() {
         <img src="${beer.logoUrl}" alt="${beer.brewery}" class="beer-can">
         <div class="item-info">
           <strong>${beer.beerName}</strong> (${beer.brewery})<br>
-          Score: ${beer.BBBRSScore.toFixed(2)}
+          Score: ${beer.bbbrsScoreAvg.toFixed(2)}
         </div>
       </div>
     `)
