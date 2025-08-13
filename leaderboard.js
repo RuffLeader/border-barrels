@@ -6,6 +6,7 @@
     return el;
   }
 
+  // --- Beer leaderboards (existing) ---
   function topBeersByScore(scoreKey) {
     return beers
       .filter(b => typeof b[scoreKey] === 'number')
@@ -13,45 +14,32 @@
       .slice(0, 10);
   }
 
-  // Dynamically reduce font size to fit max 2 lines
   function fitTextToTwoLines(el) {
     const style = getComputedStyle(el);
     const lineHeight = parseFloat(style.lineHeight);
     const maxHeight = lineHeight * 2;
     let fontSize = parseFloat(style.fontSize);
-
     while (el.scrollHeight > maxHeight && fontSize > 10) {
       fontSize -= 0.5;
       el.style.fontSize = fontSize + 'px';
     }
   }
 
-  // Equalize card heights in a container
   function equalizeCardHeights(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
-
     const cards = Array.from(container.querySelectorAll('.beer-card'));
     if (!cards.length) return;
-
-    // Reset heights
     cards.forEach(c => c.style.height = 'auto');
-
-    // Find the tallest card
     let maxHeight = 0;
     cards.forEach(c => {
-      const h = c.offsetHeight;
-      if (h > maxHeight) maxHeight = h;
+      if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
     });
-
-    // Apply max height to all cards
     cards.forEach(c => c.style.height = maxHeight + 'px');
   }
 
   function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
-
-    // Add rank-specific class for top 3
     if (rank <= 3) li.classList.add(`rank${rank}`);
 
     li.style.opacity = '0';
@@ -68,10 +56,8 @@
     li.appendChild(img);
 
     const info = createEl('div', 'beer-info');
-
     const name = createEl('div', 'beer-name', beer.name);
     info.appendChild(name);
-
     const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
     info.appendChild(brewery);
 
@@ -83,41 +69,109 @@
     info.appendChild(meta);
 
     li.appendChild(info);
-
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     li.appendChild(score);
 
     container.appendChild(li);
-
-    // Fade-in animation
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name); // Adjust font to fit 2 lines
+      fitTextToTwoLines(name);
     });
   }
 
   function renderBeerLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
-
-    if (!listContainer) {
-      console.error('List container not found');
-      return;
-    }
-
+    if (!listContainer) return;
     const top10 = topBeersByScore(scoreKey);
     listContainer.innerHTML = '';
-
     top10.forEach((beer, idx) => {
       renderListBeer(beer, idx + 1, listContainer, scoreKey, idx * 100);
     });
+    setTimeout(() => equalizeCardHeights(listId), 50);
+  }
 
-    // Equalize card heights after a short delay
+  // --- New Brewery leaderboard logic ---
+  function topBreweriesByScore(scoreKey) {
+    // Aggregate breweries by average score
+    const breweryMap = {};
+    beers.forEach(b => {
+      if (typeof b[scoreKey] === 'number') {
+        if (!breweryMap[b.brewery]) breweryMap[b.brewery] = { brewery: b.brewery, beers: [], scoreSum: 0 };
+        breweryMap[b.brewery].beers.push(b);
+        breweryMap[b.brewery].scoreSum += b[scoreKey];
+      }
+    });
+
+    const breweries = Object.values(breweryMap).map(brew => ({
+      brewery: brew.brewery,
+      avgScore: brew.scoreSum / brew.beers.length,
+      beerCount: brew.beers.length,
+      beerSample: brew.beers[0] // use first beer for image & meta
+    }));
+
+    return breweries
+      .sort((a, b) => b.avgScore - a.avgScore)
+      .slice(0, 10);
+  }
+
+  function renderListBrewery(brew, rank, container, scoreKey, delay) {
+    const li = createEl('li', 'beer-card'); // Reuse same beer-card styling
+    if (rank <= 3) li.classList.add(`rank${rank}`);
+
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(15px)';
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) li.style.transitionDelay = delay + 'ms';
+
+    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+    li.appendChild(rankDiv);
+
+    const img = createEl('img', 'beer-image');
+    img.src = brew.beerSample.beerCanUrl || brew.beerSample.canArtUrl || '';
+    img.alt = `Sample can from ${brew.brewery}`;
+    li.appendChild(img);
+
+    const info = createEl('div', 'beer-info');
+    const name = createEl('div', 'beer-name', brew.brewery);
+    info.appendChild(name);
+
+    const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
+    info.appendChild(breweryMeta);
+
+    const meta = createEl('div', 'beer-meta');
+    const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
+    meta.appendChild(score);
+    info.appendChild(meta);
+
+    li.appendChild(info);
+    container.appendChild(li);
+
+    requestAnimationFrame(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+      fitTextToTwoLines(name);
+    });
+  }
+
+  function renderBreweryLeaderboard(scoreKey, listId) {
+    const listContainer = document.getElementById(listId);
+    if (!listContainer) return;
+    const top10 = topBreweriesByScore(scoreKey);
+    listContainer.innerHTML = '';
+    top10.forEach((brew, idx) => {
+      renderListBrewery(brew, idx + 1, listContainer, scoreKey, idx * 100);
+    });
     setTimeout(() => equalizeCardHeights(listId), 50);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Beer leaderboards
     renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
     renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
+
+    // Brewery leaderboards (new)
+    renderBreweryLeaderboard('untappdScore', 'brewery-leaderboard-untappd');
+    renderBreweryLeaderboard('bbbrsScore', 'brewery-leaderboard-bbbrs');
   });
 })();
