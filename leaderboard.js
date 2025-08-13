@@ -24,6 +24,19 @@
     }
 
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+
+    // 🎨 Give top 3 a muted gold/silver/bronze background
+    if (rank === 1) {
+      rankDiv.style.backgroundColor = '#d4af37'; // muted gold
+      rankDiv.style.color = '#002157';
+    } else if (rank === 2) {
+      rankDiv.style.backgroundColor = '#c0c0c0'; // muted silver
+      rankDiv.style.color = '#002157';
+    } else if (rank === 3) {
+      rankDiv.style.backgroundColor = '#cd7f32'; // muted bronze
+      rankDiv.style.color = '#002157';
+    }
+
     li.appendChild(rankDiv);
 
     const img = createEl('img', 'beer-image');
