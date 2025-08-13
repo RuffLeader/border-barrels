@@ -122,14 +122,13 @@
     /* Each beer card styling */
     .beer-card {
       display: grid;
-      grid-template-columns: 60px 1fr 80px; /* rank | center content | score */
+      grid-template-columns: 60px 1fr 80px;
       align-items: center;
-      background: transparent; /* since you removed backgrounds */
-      border-radius: 12px;
-      padding: 12px 20px;
-      margin-bottom: 16px;
-      box-shadow: none; /* no shadow */
-      color: #fff; /* adjust font color for dark bg */
+      gap: 1rem;
+      background: transparent; /* no background */
+      box-shadow: none; /* remove shadow */
+      color: #fff;
+      padding: 12px 0;
     }
 
     .beer-card:hover {
@@ -138,32 +137,29 @@
 
     /* Rank number styling */
     .beer-rank {
+      text-align: left;
       font-weight: 900;
       font-size: 2.4rem;
       color: #4a90e2;
-      text-align: left;
+      flex-shrink: 0;
     }
 
     /* Beer can image */
     .beer-image {
-      width: 70px;
-      height: 70px;
+      width: 80px;
+      height: 80px;
       object-fit: contain;
-      margin-right: 1rem;
-      grid-column: 2;
-      justify-self: start;  /* align left inside center column */
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: transparent;
     }
 
     /* Container for beer info */
     .beer-info {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: #fff;
-      font-weight: 600;
-      font-size: 1.2rem;
-      grid-column: 2;
-      justify-self: start;  /* align left inside center column */
+      align-items: center;
+      justify-content: center; /* centers the entire block horizontally */
+      gap: 1rem;
     }
 
     /* Beer name */
@@ -203,11 +199,10 @@
 
     /* Score styling */
     .beer-score {
+      text-align: right;
       font-size: 1.4rem;
       font-weight: 900;
       color: #e67e22;
-      min-width: 80px;
-      text-align: right;
     }
 
     /* Special styling for the top 3 beers (list) */
@@ -240,6 +235,26 @@
     .beer-leaderboard .beer-card .beer-image {
       width: 80px;
       height: 80px;
+    }
+
+    /* Make beer name and brewery stacked vertically but aligned left */
+    .beer-info > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+    }
+    
+    .beer-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    
+    .brewery-name {
+      font-size: 1rem;
+      color: #ccc;
+      margin: 0;
     }
   </style>
 </head>
