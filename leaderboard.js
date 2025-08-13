@@ -14,61 +14,53 @@
   }
 
   function renderListBeer(beer, rank, container, scoreKey, delay) {
-    const li = createEl('li', 'beer-card');
+  const li = createEl('li', 'beer-card');
 
-    // Apply soft background color for top 3
-    const bgColors = [
-      'rgba(255, 215, 0, 0.15)',   // Gold (Rank 1)
-      'rgba(192, 192, 192, 0.15)', // Silver (Rank 2)
-      'rgba(205, 127, 50, 0.15)'   // Bronze (Rank 3)
-    ];
-    if (rank <= 3) {
-      li.style.backgroundColor = bgColors[rank - 1];
-      li.style.borderRadius = '10px';
-    }
-
-    li.style.opacity = '0';
-    li.style.transform = 'translateY(15px)';
-    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    if (delay) {
-      li.style.transitionDelay = delay + 'ms';
-    }
-
-    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-    li.appendChild(rankDiv);
-
-    const img = createEl('img', 'beer-image');
-    img.src = beer.beerCanUrl || beer.canArtUrl || '';
-    img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
-    li.appendChild(img);
-
-    const info = createEl('div', 'beer-info');
-
-    const name = createEl('div', 'beer-name', beer.name);
-    info.appendChild(name);
-
-    const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
-    info.appendChild(brewery);
-
-    const meta = createEl('div', 'beer-meta');
-    const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
-    const style = createEl('div', '', beer.style || 'Unknown style');
-    meta.appendChild(abv);
-    meta.appendChild(style);
-    info.appendChild(meta);
-
-    li.appendChild(info);
-
-    const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
-    li.appendChild(score);
-
-    container.appendChild(li);
-
-    requestAnimationFrame(() => {
-      li.style.opacity = '1';
-      li.style.transform = 'translateY(0)';
-    });
+  // Add rank-specific class for top 3
+  if (rank <= 3) {
+    li.classList.add(`rank${rank}`);
   }
+
+  li.style.opacity = '0';
+  li.style.transform = 'translateY(15px)';
+  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  if (delay) li.style.transitionDelay = delay + 'ms';
+
+  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+  li.appendChild(rankDiv);
+
+  const img = createEl('img', 'beer-image');
+  img.src = beer.beerCanUrl || beer.canArtUrl || '';
+  img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
+  li.appendChild(img);
+
+  const info = createEl('div', 'beer-info');
+
+  const name = createEl('div', 'beer-name', beer.name);
+  info.appendChild(name);
+
+  const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
+  info.appendChild(brewery);
+
+  const meta = createEl('div', 'beer-meta');
+  const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
+  const style = createEl('div', '', beer.style || 'Unknown style');
+  meta.appendChild(abv);
+  meta.appendChild(style);
+  info.appendChild(meta);
+
+  li.appendChild(info);
+
+  const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
+  li.appendChild(score);
+
+  container.appendChild(li);
+
+  requestAnimationFrame(() => {
+    li.style.opacity = '1';
+    li.style.transform = 'translateY(0)';
+  });
+}
 
   function renderBeerLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
