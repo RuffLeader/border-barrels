@@ -64,16 +64,14 @@
     }
 
     /* Bigger styles for top 3 */
-    .leaderboard-item.top3 {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #003366;
-    }
+.leaderboard-item.top3 {
+  background-color: #f8f8f8;
+  border-left: 5px solid gold;
+}
 
-    .leaderboard-item.top10 {
-      font-size: 1rem;
-      color: #555;
-    }
+.leaderboard-item.top10 {
+  background-color: #f1f1f1;
+}
 
     .leaderboard-item {
       display: flex;
@@ -96,12 +94,13 @@
       margin-right: 0.5rem;
     }
 
-    .leaderboard-item.beer {
+.leaderboard-item.beer {
   display: grid;
   grid-template-columns: 30px 60px 1.5fr 2fr 1fr 1fr 1fr;
   align-items: center;
   gap: 12px;
   padding: 8px 0;
+  border-bottom: 1px solid #ddd;
 }
 
 .leaderboard-item.beer img.beer-can {
@@ -127,6 +126,23 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.leaderboard-item .brewery {
+  font-weight: bold;
+  color: #333;
+}
+
+.leaderboard-item .name {
+  font-size: 1.1em;
+  color: #555;
+}
+
+.leaderboard-item .abv,
+.leaderboard-item .style,
+.leaderboard-item .score {
+  font-size: 0.9em;
+  color: #777;
 }
   </style>
 </head>
