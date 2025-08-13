@@ -54,52 +54,71 @@
 function renderBeerLeaderboard(scoreKey, title) {
   const beersTop10 = topBeersByScore(scoreKey);
 
-  const section = createEl('section', 'leaderboard beers');
-  const h2 = createEl('h2', null, title);
-  section.appendChild(h2);
+  const container = document.getElementById('beer-leaderboard');
+  container.innerHTML = ''; // Clear previous
+
+  const heading = document.createElement('h2');
+  heading.textContent = title;
+  heading.style.textAlign = 'center';
+  heading.style.marginBottom = '24px';
+  container.appendChild(heading);
 
   beersTop10.forEach((beer, i) => {
-    const isTop3 = i < 3;
-    const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
+    const card = document.createElement('div');
+    card.className = 'beer-card';
+    if (i < 3) card.classList.add('top3');
 
     // Rank
-    item.appendChild(createEl('div', 'rank', `#${i + 1}`));
+    const rank = document.createElement('div');
+    rank.className = 'beer-rank';
+    rank.textContent = `#${i + 1}`;
+    card.appendChild(rank);
 
-    // Beer Can Image
-    const img = createEl('img', 'beer-can');
+    // Beer Image
+    const img = document.createElement('img');
+    img.className = 'beer-image';
     img.src = beer.beerCanUrl || 'placeholder-image.png';
     img.alt = beer.name;
-    item.appendChild(img);
+    card.appendChild(img);
 
-    // Brewery Name
-    const breweryDiv = createEl('div', 'brewery');
-    breweryDiv.textContent = beer.brewery || 'Unknown Brewery';
-    item.appendChild(breweryDiv);
+    // Beer Info (Name + Brewery)
+    const info = document.createElement('div');
+    info.className = 'beer-info';
 
-    // Beer Name
-    const nameDiv = createEl('div', 'name');
-    nameDiv.textContent = beer.name;
-    item.appendChild(nameDiv);
+    const name = document.createElement('div');
+    name.className = 'beer-name';
+    name.textContent = beer.name;
+    info.appendChild(name);
 
-    // ABV
-    const abvDiv = createEl('div', 'abv');
-    abvDiv.textContent = `${beer.abv}%`;
-    item.appendChild(abvDiv);
+    const brewery = document.createElement('div');
+    brewery.className = 'brewery-name';
+    brewery.textContent = beer.brewery || 'Unknown Brewery';
+    info.appendChild(brewery);
 
-    // Style
-    const styleDiv = createEl('div', 'style');
-    styleDiv.textContent = beer.style || 'Unknown Style';
-    item.appendChild(styleDiv);
+    card.appendChild(info);
+
+    // Meta (ABV, Style)
+    const meta = document.createElement('div');
+    meta.className = 'beer-meta';
+
+    const abv = document.createElement('div');
+    abv.textContent = `ABV: ${beer.abv || '?'}%`;
+    meta.appendChild(abv);
+
+    const style = document.createElement('div');
+    style.textContent = beer.style || 'Unknown Style';
+    meta.appendChild(style);
+
+    card.appendChild(meta);
 
     // Score
-    const scoreDiv = createEl('div', 'score');
-    scoreDiv.textContent = beer[scoreKey].toFixed(2);
-    item.appendChild(scoreDiv);
+    const score = document.createElement('div');
+    score.className = 'beer-score';
+    score.textContent = beer[scoreKey].toFixed(2);
+    card.appendChild(score);
 
-    section.appendChild(item);
+    container.appendChild(card);
   });
-
-  container.appendChild(section);
 }
 
   function renderBreweryLeaderboard(scoreKey, title) {
