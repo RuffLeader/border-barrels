@@ -51,30 +51,46 @@
   }
   container.innerHTML = '';
 
-  function renderBeerLeaderboard(scoreKey, title) {
-    const beersTop10 = topBeersByScore(scoreKey);
+  beersTop10.forEach((beer, i) => {
+  const isTop3 = i < 3;
+  const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
 
-    const section = createEl('section', 'leaderboard beers');
-    section.appendChild(createEl('h2', null, title));
+  // Rank
+  item.appendChild(createEl('div', 'rank', `#${i + 1}`));
 
-    beersTop10.forEach((beer, i) => {
-      const isTop3 = i < 3;
-      const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
+  // Beer Can Image
+  const img = createEl('img', 'beer-can');
+  img.src = beer.beerCanUrl || 'placeholder-image.png'; // fallback image if none
+  img.alt = beer.name;
+  item.appendChild(img);
 
-      item.appendChild(createEl('div', 'rank', `#${i + 1}`));
+  // Brewery Name
+  const breweryDiv = createEl('div', 'brewery');
+  breweryDiv.textContent = beer.brewery || 'Unknown Brewery';
+  item.appendChild(breweryDiv);
 
-      const nameDiv = createEl('div', 'name');
-      nameDiv.textContent = `${beer.name} (${beer.brewery || 'Unknown Brewery'})`;
-      item.appendChild(nameDiv);
+  // Beer Name
+  const nameDiv = createEl('div', 'name');
+  nameDiv.textContent = beer.name;
+  item.appendChild(nameDiv);
 
-      item.appendChild(createEl('div', 'score', beer[scoreKey].toFixed(2)));
+  // ABV
+  const abvDiv = createEl('div', 'abv');
+  abvDiv.textContent = `${beer.abv}%`;
+  item.appendChild(abvDiv);
 
-      section.appendChild(item);
-    });
+  // Style
+  const styleDiv = createEl('div', 'style');
+  styleDiv.textContent = beer.style || 'Unknown Style';
+  item.appendChild(styleDiv);
 
-    container.appendChild(section);
-  }
+  // Score
+  const scoreDiv = createEl('div', 'score');
+  scoreDiv.textContent = beer[scoreKey].toFixed(2);
+  item.appendChild(scoreDiv);
 
+  section.appendChild(item);
+});
   function renderBreweryLeaderboard(scoreKey, title) {
     const breweriesTop10 = topBreweriesByScore(scoreKey);
 
