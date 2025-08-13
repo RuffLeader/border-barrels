@@ -175,19 +175,17 @@ section {
   cursor: pointer;
 }
 
-/* Input & Buttons - keep these unchanged on Beers page */
+/* Search input styling */
 #beer-search {
-  margin: 0 auto 1.5em auto;
-  padding: 0.5em;
-  width: 100%;
-  max-width: 400px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  display: block;
+  width: 300px;
+  padding: 0.6em 0.8em;
+  font-size: 1rem;
+  border: 1px solid #002157;
+  border-radius: 4px 0 0 4px; /* rounded left corners */
+  outline: none;
+  box-sizing: border-box;
 }
 
-#reset-filters,
 #load-more-btn {
   display: block;
   margin: 1rem auto;
@@ -200,7 +198,6 @@ section {
   font-size: 1em;
 }
 
-#reset-filters:hover,
 #load-more-btn:hover {
   background-color: #0041a8;
 }
@@ -301,4 +298,31 @@ header .container {
 
 #leaderboard-btn:hover {
   background-color: #d4af37; /* lighter gold on hover */
+}
+
+/* Container for search + reset */
+#controls {
+  display: flex;
+  justify-content: center;   /* center horizontally */
+  align-items: center;
+  gap: 0.2rem;               /* small gap between */
+  margin: 1rem 0;
+}
+
+/* Reset filters button styling */
+#reset-filters {
+  background-color: #002157;
+  color: white;
+  border: 1px solid #002157;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0; /* rounded right corners */
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+#reset-filters:hover {
+  background-color: #004080;
+  border-color: #004080;
 }
