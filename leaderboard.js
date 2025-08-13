@@ -123,14 +123,17 @@
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
   
-    // Pull logo from brewery array
+    // Look up brewery object for logo and episodes
     const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
+  
     const img = createEl('img', 'beer-image');
     img.src = breweryObj.logoUrl || '';
     img.alt = `${brew.brewery} logo`;
     li.appendChild(img);
   
     const info = createEl('div', 'beer-info');
+  
+    // Brewery name stays from brew.brewery
     const name = createEl('div', 'beer-name', brew.brewery);
     info.appendChild(name);
   
@@ -138,14 +141,13 @@
     info.appendChild(breweryMeta);
   
     const meta = createEl('div', 'beer-meta');
-    // Instead of avg score, show episode numbers
     const episodes = createEl('div', '', `Episodes: ${breweryObj.episodes?.join(', ') || 'N/A'}`);
     meta.appendChild(episodes);
     info.appendChild(meta);
   
     li.appendChild(info);
   
-    // Big score on the side like beers leaderboard
+    // Show average score on the side like beer leaderboard
     const scoreDiv = createEl('div', 'beer-score', brew.avgScore.toFixed(2));
     li.appendChild(scoreDiv);
   
@@ -157,6 +159,8 @@
       fitTextToTwoLines(name);
     });
   }
+
+
 
 
   function renderBreweryLeaderboard(scoreKey, listId) {
