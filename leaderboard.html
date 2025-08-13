@@ -146,25 +146,24 @@
 
     /* Beer can image */
     .beer-image {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       object-fit: contain;
       margin-right: 1rem;
       grid-column: 2;
-      justify-self: center;
+      justify-self: start;  /* align left inside center column */
     }
 
     /* Container for beer info */
     .beer-info {
       display: flex;
-      gap: 0.5rem;
-      align-items: baseline;
-      flex-wrap: wrap;
+      flex-direction: column;
+      justify-content: center;
       color: #fff;
       font-weight: 600;
       font-size: 1.2rem;
       grid-column: 2;
-      justify-self: center;
+      justify-self: start;  /* align left inside center column */
     }
 
     /* Beer name */
