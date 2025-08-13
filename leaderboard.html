@@ -175,19 +175,22 @@
   .beer-card.rank2 { background-color: rgba(180, 180, 180, 0.5); }
   .beer-card.rank3 { background-color: rgba(205, 127, 50, 0.5); }
 
-  /* Leaderboards wrapper (desktop side-by-side) */
-  .leaderboards-wrapper {
-    display: flex;
-    gap: 30px;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap; /* allow wrapping if needed */
-  }
+    /* Leaderboards wrapper (desktop side-by-side, centered, 80% width of page) */
+    .leaderboards-wrapper {
+      display: flex;
+      justify-content: space-between; /* even spacing between leaderboards */
+      align-items: flex-start;
+      width: 80%; /* wrapper takes 80% of page width */
+      max-width: 1200px; /* optional: prevent too wide on large screens */
+      margin: 0 auto 60px; /* center wrapper with margin below */
+      gap: 20px; /* space between the two leaderboards */
+    }
 
-  .leaderboards-wrapper .leaderboard-section {
-    flex: 1 1 45%;
-    max-width: 600px;
-  }
+    /* Each leaderboard takes half of the wrapper */
+    .leaderboards-wrapper .leaderboard-section {
+      flex: 1 1 calc(50% - 10px); /* roughly half minus half of the gap */
+      max-width: none; /* remove max-width restriction */
+    }
 
   /* Brewery leaderboard placeholder */
   #brewery-leaderboard {
@@ -211,14 +214,15 @@
 
     .leaderboards-wrapper {
       flex-direction: column;
+      width: 100%;
       gap: 20px;
     }
 
     .leaderboards-wrapper .leaderboard-section {
       width: 100%;
       max-width: 100%;
-      padding: 20px;
       margin: 0 auto;
+      padding: 20px;
     }
 
     .beer-card {
