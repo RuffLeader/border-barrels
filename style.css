@@ -177,14 +177,15 @@ section {
 
 /* Search input styling */
 #beer-search {
-  width: 300px;
-  padding: 0.6em 0.8em;
-  font-size: 1rem;
+  flex: 1; /* take all available width */
+  padding: 0.5em 1em;
+  font-size: 1em;
   border: 1px solid #002157;
-  border-right: none; /* remove right border to connect with button */
-  border-radius: 4px 0 0 4px; /* rounded left corners */
-  outline: none;
+  border-right: none; /* so borders don’t double up */
+  border-radius: 4px 0 0 4px;
   box-sizing: border-box;
+  height: 40px; /* fix height */
+  outline: none;
 }
 
 #load-more-btn {
@@ -310,25 +311,24 @@ header .container {
 
 /* Container for search + reset */
 #controls {
+  max-width: 350px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;   /* center horizontally */
-  align-items: center;
-  gap: 0;               /* small gap between */
-  margin: 1rem 0;
+  gap: 0; /* no gap between elements */
 }
 
 /* Reset filters button styling */
 #reset-filters {
+  padding: 0.5em 1em;
+  font-size: 1em;
+  border: 1px solid #002157;
+  border-radius: 0 4px 4px 0;
   background-color: #002157;
   color: white;
-  border: 1px solid #002157;
-  border-left: none; /* remove left border to connect with input */
-  padding: 0.6em 1em;
-  font-size: 1rem;
   cursor: pointer;
-  border-radius: 0 4px 4px 0; /* rounded right corners */
+  height: 40px; /* match search bar height */
   box-sizing: border-box;
-  transition: background-color 0.3s ease;
+  border-left: none; /* prevent double border */
 }
 
 #reset-filters:hover {
