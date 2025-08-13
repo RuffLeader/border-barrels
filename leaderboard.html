@@ -248,6 +248,19 @@
       flex-grow: 1;
       gap: 1rem;
     }
+
+    .beer-content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px; /* space between image and info */
+      text-align: center;
+      flex-wrap: wrap; /* allows wrapping if narrow screen */
+    }
+    .beer-content-wrapper .beer-image {
+      max-width: 60px; /* keep size consistent */
+      height: auto;
+    }
   </style>
 </head>
 <body>
