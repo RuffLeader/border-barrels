@@ -239,6 +239,15 @@
       width: 80px;
       height: 80px;
     }
+
+    /* Group beer image and info for ranks 4-10 */
+    .beer-card:not(.top3) .beer-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      gap: 1rem;
+    }
   </style>
 </head>
 <body>
