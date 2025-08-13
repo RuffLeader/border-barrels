@@ -115,8 +115,8 @@
       .slice(0, 10);
   }
 
-  function renderListBrewery(brew, rank, container, scoreKey, delay) {
-  const li = createEl('li', 'beer-card'); // Reuse same beer-card styling
+ function renderListBrewery(brew, rank, container, scoreKey, delay) {
+  const li = createEl('li', 'beer-card'); 
   if (rank <= 3) li.classList.add(`rank${rank}`);
 
   li.style.opacity = '0';
@@ -128,8 +128,8 @@
   li.appendChild(rankDiv);
 
   const img = createEl('img', 'beer-image');
-  // Use brewery logo for leaderboard
-  img.src = brew.beerSample.logoUrl || ''; 
+  // Correctly use the logoUrl from the sample beer
+  img.src = brew.beerSample.logoUrl || '';
   img.alt = `${brew.brewery} logo`;
   li.appendChild(img);
 
