@@ -30,12 +30,12 @@
     if (!container) return;
     const cards = Array.from(container.querySelectorAll('.beer-card'));
     if (!cards.length) return;
-    cards.forEach(c => c.style.height = 'auto');
+    cards.forEach(c => (c.style.height = 'auto'));
     let maxHeight = 0;
     cards.forEach(c => {
       if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
     });
-    cards.forEach(c => c.style.height = maxHeight + 'px');
+    cards.forEach(c => (c.style.height = maxHeight + 'px'));
   }
 
   function renderListBeer(beer, rank, container, scoreKey, delay) {
@@ -93,10 +93,12 @@
 
   // --- Brewery leaderboards ---
   function topBreweriesByScore(scoreKey) {
+    // Aggregate breweries by average score from beers
     const breweryMap = {};
     beers.forEach(b => {
       if (typeof b[scoreKey] === 'number') {
-        if (!breweryMap[b.brewery]) breweryMap[b.brewery] = { brewery: b.brewery, beers: [], scoreSum: 0 };
+        if (!breweryMap[b.brewery])
+          breweryMap[b.brewery] = { brewery: b.brewery, beers: [], scoreSum: 0 };
         breweryMap[b.brewery].beers.push(b);
         breweryMap[b.brewery].scoreSum += b[scoreKey];
       }
@@ -113,7 +115,7 @@
   }
 
   function renderListBrewery(brew, rank, container, scoreKey, delay) {
-    const li = createEl('li', 'beer-card'); 
+    const li = createEl('li', 'beer-card');
     if (rank <= 3) li.classList.add(`rank${rank}`);
 
     li.style.opacity = '0';
@@ -124,6 +126,7 @@
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
 
+    // Pull logo from brewery array
     const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
     const img = createEl('img', 'beer-image');
     img.src = breweryObj.logoUrl || '';
