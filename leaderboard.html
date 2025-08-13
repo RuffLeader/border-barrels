@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Border Barrels Leaderboards</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #002157;
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .leaderboard-section {
+      margin: 40px auto;
+      max-width: 800px;
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .rank {
+      font-weight: bold;
+      font-size: 1.2em;
+      width: 30px;
+      text-align: center;
+    }
+
+    .beer-can, .brewery-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      background: white;
+      border-radius: 6px;
+      padding: 4px;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Border Barrels Leaderboards</h1>
+
+  <!-- Top Beers -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Beers</h2>
+    <div id="beer-leaderboard"></div>
+  </div>
+
+  <!-- Top Breweries -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Breweries</h2>
+    <div id="brewery-leaderboard"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="beers.js"></script>
+  <script src="breweries.js"></script>
+  <script src="leaderboard.js"></script>
+</body>
+</html>
