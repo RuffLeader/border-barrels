@@ -6,7 +6,7 @@
     return el;
   }
 
-  // --- Beer leaderboards (existing) ---
+  // --- Beer leaderboards ---
   function topBeersByScore(scoreKey) {
     return beers
       .filter(b => typeof b[scoreKey] === 'number')
@@ -91,9 +91,8 @@
     setTimeout(() => equalizeCardHeights(listId), 50);
   }
 
-  // --- New Brewery leaderboard logic ---
+  // --- Brewery leaderboards ---
   function topBreweriesByScore(scoreKey) {
-    // Aggregate breweries by average score
     const breweryMap = {};
     beers.forEach(b => {
       if (typeof b[scoreKey] === 'number') {
@@ -103,57 +102,55 @@
       }
     });
 
-    const breweries = Object.values(breweryMap).map(brew => ({
-      brewery: brew.brewery,
-      avgScore: brew.scoreSum / brew.beers.length,
-      beerCount: brew.beers.length,
-      beerSample: brew.beers[0] // use first beer for image & meta
-    }));
-
-    return breweries
+    return Object.values(breweryMap)
+      .map(brew => ({
+        brewery: brew.brewery,
+        avgScore: brew.scoreSum / brew.beers.length,
+        beerCount: brew.beers.length
+      }))
       .sort((a, b) => b.avgScore - a.avgScore)
       .slice(0, 10);
   }
 
- function renderListBrewery(brew, rank, container, scoreKey, delay) {
-  const li = createEl('li', 'beer-card'); 
-  if (rank <= 3) li.classList.add(`rank${rank}`);
+  function renderListBrewery(brew, rank, container, scoreKey, delay) {
+    const li = createEl('li', 'beer-card'); 
+    if (rank <= 3) li.classList.add(`rank${rank}`);
 
-  li.style.opacity = '0';
-  li.style.transform = 'translateY(15px)';
-  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  if (delay) li.style.transitionDelay = delay + 'ms';
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(15px)';
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) li.style.transitionDelay = delay + 'ms';
 
-  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-  li.appendChild(rankDiv);
+    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+    li.appendChild(rankDiv);
 
-  const img = createEl('img', 'beer-image');
-  // Correctly use the logoUrl from the sample beer
-  img.src = brew.beerSample.logoUrl || '';
-  img.alt = `${brew.brewery} logo`;
-  li.appendChild(img);
+    const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
+    const img = createEl('img', 'beer-image');
+    img.src = breweryObj.logoUrl || '';
+    img.alt = `${brew.brewery} logo`;
+    li.appendChild(img);
 
-  const info = createEl('div', 'beer-info');
-  const name = createEl('div', 'beer-name', brew.brewery);
-  info.appendChild(name);
+    const info = createEl('div', 'beer-info');
+    const name = createEl('div', 'beer-name', brew.brewery);
+    info.appendChild(name);
 
-  const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
-  info.appendChild(breweryMeta);
+    const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
+    info.appendChild(breweryMeta);
 
-  const meta = createEl('div', 'beer-meta');
-  const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
-  meta.appendChild(score);
-  info.appendChild(meta);
+    const meta = createEl('div', 'beer-meta');
+    const score = createEl('div', '', `Avg: ${brew.avgScore.toFixed(2)}`);
+    meta.appendChild(score);
+    info.appendChild(meta);
 
-  li.appendChild(info);
-  container.appendChild(li);
+    li.appendChild(info);
+    container.appendChild(li);
 
-  requestAnimationFrame(() => {
-    li.style.opacity = '1';
-    li.style.transform = 'translateY(0)';
-    fitTextToTwoLines(name);
-  });
-}
+    requestAnimationFrame(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+      fitTextToTwoLines(name);
+    });
+  }
 
   function renderBreweryLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
@@ -167,11 +164,9 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    // Beer leaderboards
     renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
     renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
 
-    // Brewery leaderboards (new)
     renderBreweryLeaderboard('untappdScore', 'brewery-leaderboard-untappd');
     renderBreweryLeaderboard('bbbrsScore', 'brewery-leaderboard-bbbrs');
   });
