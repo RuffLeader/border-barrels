@@ -78,13 +78,13 @@
 
     /* Beer can image */
     .beer-image {
-      height: 100%;  /* make image fill row height */
-      width: auto;   /* keep aspect ratio */
+      width: 60px;
+      height: 60px;
       object-fit: contain;
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-      box-shadow: none;
+      background: transparent; /* Remove any background */
+      padding: 0;              /* Remove padding if any */
+      border-radius: 0;        /* Remove border radius if you want sharp edges */
+      box-shadow: none;        /* Remove shadow if present */
     }
 
     /* Container for beer info */
@@ -155,26 +155,6 @@
       padding: 40px 0;
       border: 2px dashed #555;
       border-radius: 8px;
-    }
-
-    .leaderboard-item {
-      display: flex;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      height: 60px; /* fixed row height */
-      gap: 12px;
-    }
-
-    .leaderboard-item.top3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #ffd700; /* Gold color for top 3 */
-    }
-    
-    .leaderboard-item.top10 {
-      font-size: 1rem;
-      color: #ccc;
     }
   </style>
 </head>
