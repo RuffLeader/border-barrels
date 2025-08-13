@@ -242,23 +242,52 @@
       background-color: rgba(205, 127, 50, 0.5); /* Muted bronze */
       border-radius: 10px;
     }
+
+    /* Leaderboards wrapper for desktop */
+    .leaderboards-wrapper {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    /* Make each leaderboard section take half the width */
+    .leaderboards-wrapper .leaderboard-section {
+      flex: 1 1 45%;
+      max-width: 600px; /* optional */
+    }
+    
+    /* Mobile: stack vertically */
+    @media (max-width: 800px) {
+      .leaderboards-wrapper {
+        flex-direction: column;
+        gap: 20px;
+      }
+    
+      .leaderboards-wrapper .leaderboard-section {
+        width: 100%;
+        max-width: none;
+      }
+    }
   </style>
 </head>
 <body>
 
   <h1>Border Barrels Leaderboards</h1>
 
-  <!-- Top Beers by Untappd Score -->
-  <div class="leaderboard-section">
-    <h2>Top 10 Beers by Untappd Score</h2>
-    <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
-  </div>
-
+<div class="leaderboards-wrapper">
   <!-- Top Beers by BBBRS Score -->
   <div class="leaderboard-section">
     <h2>Top 10 Beers by BBBRS Score</h2>
     <ul id="beer-leaderboard-bbbrs" class="beer-leaderboard"></ul>
   </div>
+  
+  <!-- Top Beers by Untappd Score -->
+  <div class="leaderboard-section">
+    <h2>Top 10 Beers by Untappd Score</h2>
+    <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
+  </div>
+</div>
 
   <!-- Top Breweries placeholder -->
   <div class="leaderboard-section">
