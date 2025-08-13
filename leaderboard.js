@@ -58,30 +58,6 @@
     section.appendChild(createEl('h2', null, title));
 
     beersTop10.forEach((beer, i) => {
-      const isTop3 = i < 3;
-      const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
-
-      item.appendChild(createEl('div', 'rank', `#${i + 1}`));
-
-      const nameDiv = createEl('div', 'name');
-      nameDiv.textContent = `${beer.name} (${beer.brewery || 'Unknown Brewery'})`;
-      item.appendChild(nameDiv);
-
-      item.appendChild(createEl('div', 'score', beer[scoreKey].toFixed(2)));
-
-      section.appendChild(item);
-    });
-
-    container.appendChild(section);
-  }
-
-  function renderBreweryLeaderboard(scoreKey, title) {
-    const breweriesTop10 = topBreweriesByScore(scoreKey);
-
-    const section = createEl('section', 'leaderboard breweries');
-    section.appendChild(createEl('h2', null, title));
-
-    beersTop10.forEach((beer, i) => {
   const isTop3 = i < 3;
   const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
 
@@ -121,6 +97,37 @@
 
   section.appendChild(item);
 });
+
+
+    container.appendChild(section);
+  }
+
+  function renderBreweryLeaderboard(scoreKey, title) {
+    const breweriesTop10 = topBreweriesByScore(scoreKey);
+
+    const section = createEl('section', 'leaderboard breweries');
+    section.appendChild(createEl('h2', null, title));
+
+    breweriesTop10.forEach((brewery, i) => {
+      const isTop3 = i < 3;
+      const item = createEl('div', `leaderboard-item brewery ${isTop3 ? 'top3' : 'top10'}`);
+
+      item.appendChild(createEl('div', 'rank', `#${i + 1}`));
+
+      const nameDiv = createEl('div', 'name');
+      if (brewery.logoUrl) {
+        const img = createEl('img', 'brewery-logo');
+        img.src = brewery.logoUrl;
+        img.alt = brewery.name;
+        nameDiv.appendChild(img);
+      }
+      nameDiv.appendChild(document.createTextNode(brewery.name));
+      item.appendChild(nameDiv);
+
+      item.appendChild(createEl('div', 'score', brewery[scoreKey].toFixed(2)));
+
+      section.appendChild(item);
+    });
 
     container.appendChild(section);
   }
