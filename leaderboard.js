@@ -6,7 +6,7 @@
     return el;
   }
 
-  // --- Fit text to max 2 lines ---
+  // --- Fit text to max 2 lines by shrinking font ---
   function fitTextToTwoLines(el) {
     const style = getComputedStyle(el);
     const lineHeight = parseFloat(style.lineHeight);
@@ -77,7 +77,7 @@
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name); // ← re-added two-line rule
+      fitTextToTwoLines(name); // ← ensures beer name fits 2 lines
     });
   }
 
@@ -136,7 +136,7 @@
     info.appendChild(breweryMeta);
 
     const meta = createEl('div', 'beer-meta');
-    const score = createEl('div', 'beer-score', brew.avgScore.toFixed(2)); // ← like beers leaderboard
+    const score = createEl('div', 'beer-score', brew.avgScore.toFixed(2)); // ← like beer leaderboard
     meta.appendChild(score);
 
     // Episodes at bottom
@@ -151,7 +151,7 @@
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name); // ← re-add two-line rule
+      fitTextToTwoLines(name); // ← ensures brewery name fits 2 lines
     });
   }
 
