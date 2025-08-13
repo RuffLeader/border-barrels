@@ -125,8 +125,8 @@
     li.appendChild(rankDiv);
 
     const breweryObj = brewery.find(b => b.name === brew.brewery) || {};
-    const imgSrc = breweryObj.logoUrl || '';
-    img.src = imgSrc;
+    const img = createEl('img', 'beer-image');
+    img.src = breweryObj.logoUrl || '';
     img.alt = `${brew.brewery} logo`;
     li.appendChild(img);
 
