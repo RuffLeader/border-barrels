@@ -51,56 +51,56 @@
   }
   container.innerHTML = '';
 
-  function renderBeerLeaderboard(scoreKey, title) {
-    const beersTop10 = topBeersByScore(scoreKey);
+function renderBeerLeaderboard(scoreKey, title) {
+  const beersTop10 = topBeersByScore(scoreKey);
 
-    const section = createEl('section', 'leaderboard beers');
-    section.appendChild(createEl('h2', null, title));
+  const section = createEl('section', 'leaderboard beers');
+  const h2 = createEl('h2', null, title);
+  section.appendChild(h2);
 
-    beersTop10.forEach((beer, i) => {
-  const isTop3 = i < 3;
-  const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
+  beersTop10.forEach((beer, i) => {
+    const isTop3 = i < 3;
+    const item = createEl('div', `leaderboard-item beer ${isTop3 ? 'top3' : 'top10'}`);
 
-  // Rank
-  item.appendChild(createEl('div', 'rank', `#${i + 1}`));
+    // Rank
+    item.appendChild(createEl('div', 'rank', `#${i + 1}`));
 
-  // Beer Can Image
-  const img = createEl('img', 'beer-can');
-  img.src = beer.beerCanUrl || 'placeholder-image.png'; // fallback image if none
-  img.alt = beer.name;
-  item.appendChild(img);
+    // Beer Can Image
+    const img = createEl('img', 'beer-can');
+    img.src = beer.beerCanUrl || 'placeholder-image.png';
+    img.alt = beer.name;
+    item.appendChild(img);
 
-  // Brewery Name
-  const breweryDiv = createEl('div', 'brewery');
-  breweryDiv.textContent = beer.brewery || 'Unknown Brewery';
-  item.appendChild(breweryDiv);
+    // Brewery Name
+    const breweryDiv = createEl('div', 'brewery');
+    breweryDiv.textContent = beer.brewery || 'Unknown Brewery';
+    item.appendChild(breweryDiv);
 
-  // Beer Name
-  const nameDiv = createEl('div', 'name');
-  nameDiv.textContent = beer.name;
-  item.appendChild(nameDiv);
+    // Beer Name
+    const nameDiv = createEl('div', 'name');
+    nameDiv.textContent = beer.name;
+    item.appendChild(nameDiv);
 
-  // ABV
-  const abvDiv = createEl('div', 'abv');
-  abvDiv.textContent = `${beer.abv}%`;
-  item.appendChild(abvDiv);
+    // ABV
+    const abvDiv = createEl('div', 'abv');
+    abvDiv.textContent = `${beer.abv}%`;
+    item.appendChild(abvDiv);
 
-  // Style
-  const styleDiv = createEl('div', 'style');
-  styleDiv.textContent = beer.style || 'Unknown Style';
-  item.appendChild(styleDiv);
+    // Style
+    const styleDiv = createEl('div', 'style');
+    styleDiv.textContent = beer.style || 'Unknown Style';
+    item.appendChild(styleDiv);
 
-  // Score
-  const scoreDiv = createEl('div', 'score');
-  scoreDiv.textContent = beer[scoreKey].toFixed(2);
-  item.appendChild(scoreDiv);
+    // Score
+    const scoreDiv = createEl('div', 'score');
+    scoreDiv.textContent = beer[scoreKey].toFixed(2);
+    item.appendChild(scoreDiv);
 
-  section.appendChild(item);
-});
+    section.appendChild(item);
+  });
 
-
-    container.appendChild(section);
-  }
+  container.appendChild(section);
+}
 
   function renderBreweryLeaderboard(scoreKey, title) {
     const breweriesTop10 = topBreweriesByScore(scoreKey);
