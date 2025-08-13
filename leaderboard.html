@@ -131,14 +131,25 @@
     flex-grow: 1;
   }
 
-  .beer-name {
-    font-weight: 800;
-    font-size: 1.45rem;
-    margin-bottom: 6px;
-    color: #fff;
-    letter-spacing: 0.02em;
-    text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
-  }
+    /* Limit beer name to 2 lines with ellipsis */
+    .beer-name {
+      font-weight: 800;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
+    
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* max 2 lines */
+      overflow: hidden;
+      text-overflow: ellipsis;
+    
+      /* Optional: slightly reduce font if needed to fit */
+      font-size: clamp(1.2rem, 2vw, 1.45rem);
+      line-height: 1.2em;
+    }
 
   .brewery-name {
     font-size: 1.05rem;
