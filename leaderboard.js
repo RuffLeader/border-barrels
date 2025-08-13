@@ -16,6 +16,17 @@
   function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
 
+    // Apply soft background color for top 3
+    const bgColors = [
+      'rgba(255, 215, 0, 0.15)',   // Gold (Rank 1)
+      'rgba(192, 192, 192, 0.15)', // Silver (Rank 2)
+      'rgba(205, 127, 50, 0.15)'   // Bronze (Rank 3)
+    ];
+    if (rank <= 3) {
+      li.style.backgroundColor = bgColors[rank - 1];
+      li.style.borderRadius = '10px';
+    }
+
     li.style.opacity = '0';
     li.style.transform = 'translateY(15px)';
     li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
@@ -24,19 +35,6 @@
     }
 
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-
-    // 🎨 Give top 3 a muted gold/silver/bronze background
-    if (rank === 1) {
-      rankDiv.style.backgroundColor = '#d4af37'; // muted gold
-      rankDiv.style.color = '#002157';
-    } else if (rank === 2) {
-      rankDiv.style.backgroundColor = '#c0c0c0'; // muted silver
-      rankDiv.style.color = '#002157';
-    } else if (rank === 3) {
-      rankDiv.style.backgroundColor = '#cd7f32'; // muted bronze
-      rankDiv.style.color = '#002157';
-    }
-
     li.appendChild(rankDiv);
 
     const img = createEl('img', 'beer-image');
