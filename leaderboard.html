@@ -125,12 +125,10 @@
       color: #fff;
       letter-spacing: 0.02em;
       text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
-
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      word-break: break-word;
+      overflow: hidden;       /* keep clipped if it still exceeds 2 lines */
+      display: block;         /* ensure block for height calculations */
+      line-height: 1.2em;     /* must match JS lineHeight calc */
+      white-space: normal;    /* allow wrapping */
     }
 
     .brewery-name {
