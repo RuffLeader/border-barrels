@@ -119,12 +119,12 @@
     .beer-info { flex-grow: 1; }
 
     .beer-name {
-      font-weight: 800;
-      font-size: 1.45rem;
-      margin-bottom: 6px;
-      color: #fff;
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
+      display: -webkit-box;
+      -webkit-line-clamp: 2; /* limit to 2 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+      line-height: 1.2em; /* adjust as needed */
     }
 
     .brewery-name {
