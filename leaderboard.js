@@ -137,7 +137,7 @@ function renderListBrewery(brew, rank, container, scoreKey, delay) {
 
   const meta = createEl('div', 'beer-meta');
   // Episodes at bottom
-  const episodes = createEl('div', '', `Episodes: ${brew.episodes?.join(', ') || 'N/A'}`);
+  const episodes = createEl('div', '', `Episodes: ${brew.epnum?.join(', ') || 'N/A'}`);
   meta.appendChild(episodes);
   info.appendChild(meta);
 
