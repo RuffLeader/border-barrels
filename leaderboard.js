@@ -132,7 +132,7 @@ function renderListBrewery(brew, rank, container, scoreKey, delay) {
   const name = createEl('div', 'beer-name', brew.name);
   info.appendChild(name);
 
-  const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} beers reviewed`);
+  const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} Beers Reviewed`);
   info.appendChild(breweryMeta);
 
   const meta = createEl('div', 'beer-meta');
