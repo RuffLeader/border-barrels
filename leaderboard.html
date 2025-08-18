@@ -395,6 +395,81 @@
         font-size: 1.1rem;
       }
     }
+
+    .extra-content.recent-additions {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 30px 20px;
+      margin-bottom: 60px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      backdrop-filter: saturate(180%) blur(12px);
+      color: #fff;
+    }
+    
+    .recent-episode-card {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .episode-header h3 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #f0a830;
+      margin-bottom: 12px;
+      text-shadow: 0 0 7px rgba(240,168,48,0.8);
+    }
+    
+    .recent-beers {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .recent-beers li {
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #d4b75e;
+    }
+    
+    .recent-beers .beer-name {
+      font-weight: 700;
+      color: #fff;
+    }
+    
+    .recent-beers .brewery-name {
+      font-weight: 600;
+      color: #f0a830;
+    }
+    
+    .episode-video iframe {
+      width: 100%;
+      max-width: 640px;
+      height: 360px;
+      border-radius: 12px;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .episode-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-weight: 700;
+    }
+    
+    .episode-links a {
+      color: #f0a830;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      transition: background 0.3s ease;
+    }
+    
+    .episode-links a:hover {
+      background: rgba(240,168,48,0.2);
+    }
   </style>
 </head>
 <body>
@@ -465,6 +540,42 @@
           <h2>Top Styles by Untappd Score</h2>
           <ul id="style-leaderboard-untappd" class="beer-leaderboard"></ul>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="extra-content recent-additions">
+    <h2>Most Recent Additions - Episode 30</h2>
+  
+    <div class="recent-episode-card">
+      <!-- Episode info -->
+      <div class="episode-header">
+        <h3>Episode 30: Off-Roadie & More</h3>
+        <p>Beers Reviewed:</p>
+        <ul class="recent-beers">
+          <li>
+            <span class="beer-name">Off-Roadie</span> – BBBRS #3, Untappd #2  
+            (<span class="brewery-name">Sunday Road Brewing</span> – BBBRS #2, Untappd #1)
+          </li>
+          <li>
+            <span class="beer-name">Hopster IPA</span> – BBBRS #7, Untappd #5  
+            (<span class="brewery-name">Hargreaves Hill</span> – BBBRS #6, Untappd #4)
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Embedded YouTube video -->
+      <div class="episode-video">
+        <iframe width="560" height="315" 
+          src="https://www.youtube.com/embed/t345ctH2l0k" 
+          title="YouTube video player" frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen></iframe>
+      </div>
+  
+      <!-- Podcast links -->
+      <div class="episode-links">
+        <a href="https://open.spotify.com/show/...">Spotify</a>
+        <a href="https://podcasts.apple.com/...">Apple Podcasts</a>
       </div>
     </div>
   </div>
