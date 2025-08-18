@@ -280,6 +280,56 @@
       color: #002157;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
+    /* === Header / Navbar === */
+    header {
+      background-color: #002157;
+      padding: 10px 20px;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo img {
+      height: 60px;
+      width: auto;
+    }
+    
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links li a:hover {
+      color: #FFD700; /* gold highlight on hover */
+    }
+    
+    .nav-links li.disabled a {
+      color: gray;
+      pointer-events: none;
+    }
+    
+    /* === Footer === */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #002157;
+      color: white;
+      font-size: 14px;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
