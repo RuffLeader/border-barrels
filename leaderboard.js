@@ -255,9 +255,13 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   function showTooltip() {
     clearTimeout(hoverTimeout);
     const rect = li.getBoundingClientRect();
-    tooltip.style.top = rect.bottom + window.scrollY + 'px';
-    tooltip.style.left = rect.left + window.scrollX + 'px';
     tooltip.style.display = 'block';
+    
+    // center tooltip horizontally relative to the beer card
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+    tooltip.style.left = Math.max(left + window.scrollX, 5) + 'px'; // prevent going off left edge
+    tooltip.style.top = rect.bottom + window.scrollY + 'px';
   }
 
   function hideTooltip() {
