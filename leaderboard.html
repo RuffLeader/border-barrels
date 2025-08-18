@@ -18,8 +18,16 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      flex-direction: column;
     }
 
+
+    main {
+      flex: 1 0 auto; /* main takes all space between header and footer */
+      padding: 30px 20px; /* optional */
+    }
+    
     h1 {
       text-align: center;
       margin-bottom: 50px;
@@ -359,6 +367,7 @@
       font-size: 0.9rem;
       text-align: center;
       width: 100%;              /* full width footer */
+      flex-shrink: 0; /* always at bottom */
     }
     
     /* === Mobile nav === */
@@ -406,6 +415,7 @@
       </nav>
     </div>
   </header>
+  <main>
   <!-- Beer Leaderboards (Grouped) -->
   <div class="leaderboard-group">
     <button class="leaderboard-toggle">Top Beers</button>
@@ -423,7 +433,7 @@
       </div>
     </div>
   </div>
-
+  </main>
   <!-- Brewery Leaderboards (Grouped) -->
   <div class="leaderboard-group">
     <button class="leaderboard-toggle">Top Breweries</button>
