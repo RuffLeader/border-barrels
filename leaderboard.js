@@ -257,13 +257,17 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   li.addEventListener('click', (e) => {
     e.stopPropagation();
     tooltipVisible = true;
-
+  
+    // Temporarily show tooltip off-screen to measure width
+    tooltip.style.display = 'block';
+    tooltip.style.left = '-9999px';
+    tooltip.style.top = '-9999px';
+  
     const rect = li.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
     const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
     tooltip.style.left = Math.max(left + window.scrollX, 5) + 'px';
     tooltip.style.top = rect.bottom + window.scrollY + 'px';
-    tooltip.style.display = 'block';
   });
 
   // hide tooltip if mouse leaves card or tooltip
