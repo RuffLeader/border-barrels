@@ -580,7 +580,7 @@
 
     // Calculate brewery leaderboard positions
     function getBreweryRank(breweryName, scoreKey) {
-      const sorted = [...breweries].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
+      const sorted = [...brewery].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
       return sorted.findIndex(b => b.name === breweryName) + 1;
     }
 
@@ -590,7 +590,7 @@
       const beerRankBB = getBeerRank(beer, 'bbbrsScore');
       const beerRankUT = getBeerRank(beer, 'untappdScore');
 
-      const brewery = breweries.find(b => b.name === beer.brewery);
+      const brewery = brewery.find(b => b.name === beer.brewery);
       const breweryRankBB = getBreweryRank(brewery.name, 'bbbrsScore');
       const breweryRankUT = getBreweryRank(brewery.name, 'untappdScore');
 
