@@ -168,11 +168,88 @@ function renderListBrewery(brew, rank, container, scoreKey, delay) {
     setTimeout(() => equalizeCardHeights(listId), 50);
   }
 
+  // --- Style leaderboards ---
+function topStylesByScore(scoreKey) {
+  const stylesMap = {};
+
+  beers.forEach(beer => {
+    if (typeof beer[scoreKey] === 'number' && beer.style) {
+      if (!stylesMap[beer.style]) {
+        stylesMap[beer.style] = { name: beer.style, totalScore: 0, count: 0 };
+      }
+      stylesMap[beer.style].totalScore += beer[scoreKey];
+      stylesMap[beer.style].count++;
+    }
+  });
+
+  return Object.values(stylesMap)
+    .map(s => ({
+      ...s,
+      avgScore: s.totalScore / s.count
+    }))
+    .filter(s => s.count > 1) // only keep styles with at least 2 beers
+    .sort((a, b) => b.avgScore - a.avgScore)
+    .slice(0, 10);
+}
+
+function renderListStyle(style, rank, container, scoreKey, delay) {
+  const li = createEl('li', 'beer-card');
+  if (rank <= 3) li.classList.add(`rank${rank}`);
+
+  li.style.opacity = '0';
+  li.style.transform = 'translateY(15px)';
+  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  if (delay) li.style.transitionDelay = delay + 'ms';
+
+  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+  li.appendChild(rankDiv);
+
+  // Placeholder image for style
+  const img = createEl('img', 'beer-image');
+  img.src = '/images/style-placeholder.png'; // change path if needed
+  img.alt = `${style.name} icon`;
+  li.appendChild(img);
+
+  const info = createEl('div', 'beer-info');
+  const name = createEl('div', 'beer-name', style.name);
+  info.appendChild(name);
+
+  const count = createEl('div', 'brewery-name', `${style.count} Beers Reviewed`);
+  info.appendChild(count);
+
+  li.appendChild(info);
+
+  const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
+  li.appendChild(score);
+
+  container.appendChild(li);
+
+  requestAnimationFrame(() => {
+    li.style.opacity = '1';
+    li.style.transform = 'translateY(0)';
+    fitTextToTwoLines(name);
+  });
+}
+
+function renderStyleLeaderboard(scoreKey, listId) {
+  const listContainer = document.getElementById(listId);
+  if (!listContainer) return;
+  const top10 = topStylesByScore(scoreKey);
+  listContainer.innerHTML = '';
+  top10.forEach((style, idx) => {
+    renderListStyle(style, idx + 1, listContainer, scoreKey, idx * 100);
+  });
+  setTimeout(() => equalizeCardHeights(listId), 50);
+}
+
   document.addEventListener('DOMContentLoaded', () => {
     renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
     renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
 
     renderBreweryLeaderboard('untappdScore', 'brewery-leaderboard-untappd');
     renderBreweryLeaderboard('bbbrsScore', 'brewery-leaderboard-bbbrs');
+
+    renderStyleLeaderboard('untappdScore', 'style-leaderboard-untappd');
+    renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
   });
 })();
