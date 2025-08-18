@@ -280,128 +280,117 @@
       color: #002157;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    header {
-  background-color: #002157;
-  color: white;
-  padding: 1rem 0;  /* Same as beers.html */
-  position: relative;
-  z-index: 1000;
-  /* Remove border-bottom */
-  /* border-bottom: 2px solid #e0e0e0;  Remove this line */
-}
-
-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-header h1 {
-  font-size: 2.5rem;  /* Matches about.html and beers.html */
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 1rem 0 0.5rem;
-  letter-spacing: 1px;
-}
-
-footer {
-  background-color: #002157;
-  color: #ffffff;
-  padding: 2rem 0;
-  border-top: 2px solid #e0e0e0;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-nav a {
-  margin: 0 1rem;
-  font-size: 1rem;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 0.5rem;
-}
-
-nav a:hover {
-  color: #ffb400;
-}
-
-main {
-  padding: 2rem;
-}
-
-/* Nav styles */
-#nav-menu {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  list-style: none;
-}
-
-#nav-menu a {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-
-#nav-menu a:hover {
-  color: #ffb400;
-}
-
-/* Burger menu button */
-#nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100;
-}
-
-#nav-toggle:focus {
-  outline: 2px solid #ffb400;
-  outline-offset: 2px;
-}
-
-.burger {
-  width: 25px;
-  height: 3px;
-  background: white;
-  border-radius: 2px;
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
-  #nav-toggle {
-    display: flex;
-  }
-  #nav-menu {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #002157;
-    padding: 10px 0;
-    border-bottom: 2px solid #e0e0e0;
-  }
-  #nav-menu.show {
-    display: flex;
-  }
-  #nav-menu a {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-  }
-}
+    /* === Header (scoped) === */
+    header.site-header {
+      background-color: #002157;
+      color: #ffffff;
+      padding: 1rem 0;
+      position: relative;
+      z-index: 1000;
+    }
+    
+    header.site-header .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    header.site-header h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 1rem 0 0.5rem;
+      letter-spacing: 1px;
+    }
+    
+    /* Nav links in header */
+    header.site-header nav#nav-menu a {
+      margin: 0 1rem;
+      font-size: 1rem;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.5rem;
+      transition: color 0.3s ease;
+    }
+    
+    header.site-header nav#nav-menu a:hover {
+      color: #ffb400;
+    }
+    
+    /* Burger button */
+    #nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+    }
+    
+    #nav-toggle:focus {
+      outline: 2px solid #ffb400;
+      outline-offset: 2px;
+    }
+    
+    #nav-toggle .burger {
+      width: 25px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+    
+    /* Desktop nav layout */
+    header.site-header nav#nav-menu {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    /* === Footer (scoped) === */
+    footer.site-footer {
+      background-color: #002157;
+      color: #ffffff;
+      padding: 2rem 0;
+      border-top: 2px solid #e0e0e0;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    /* === Mobile nav === */
+    @media (max-width: 768px) {
+      #nav-toggle { display: flex; }
+    
+      header.site-header nav#nav-menu {
+        display: none;                 /* hidden by default on mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: #002157;
+        padding: 10px 0;
+        border-bottom: 2px solid #e0e0e0;
+      }
+    
+      header.site-header nav#nav-menu.show {
+        display: flex;                 /* toggled open */
+      }
+    
+      header.site-header nav#nav-menu a {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- === Header === -->
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1>Leaderboards</h1>
       <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -409,7 +398,7 @@ main {
         <span class="burger"></span>
         <span class="burger"></span>
       </button>
-      <nav id="nav-menu" class="nav-links">
+      <nav id="nav-menu">
         <a href="index.html">Home</a>
         <a href="beers.html">Beers</a>
         <a href="episodes.html">Episodes</a>
@@ -472,8 +461,21 @@ main {
   </div>
   
   <!-- === Footer === -->
-  <footer>
+  <footer class="site-footer">
     <p>© 2025 Border Barrels</p>
   </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navToggle = document.getElementById("nav-toggle");
+      const navMenu = document.getElementById("nav-menu");
+      if (navToggle && navMenu) {
+        navToggle.addEventListener("click", () => {
+          navMenu.classList.toggle("show");
+          const expanded = navToggle.getAttribute("aria-expanded") === "true";
+          navToggle.setAttribute("aria-expanded", String(!expanded));
+        });
+      }
+    });
+  </script>
 </body>
 </html>
