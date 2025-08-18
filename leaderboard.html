@@ -402,19 +402,20 @@ main {
 <body>
   <!-- === Header === -->
   <header>
-    <nav class="navbar">
-      <div class="logo">
-        <a href="/"><img src="/media/logo.png" alt="Border Barrels Logo"></a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="/beers.html">Beers</a></li>
-        <li><a href="/episodes.html">Episodes</a></li>
-        <li><a href="/leaderboard.html">Leaderboard</a></li>
-        <li><a href="/about.html">About Us</a></li>
-        <li class="disabled"><a href="#">Store (Coming Soon)</a></li>
-        <li class="disabled"><a href="#">Blog (Coming Soon)</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <h1>Leaderboards</h1>
+      <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
+      <nav id="nav-menu" class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="beers.html">Beers</a>
+        <a href="episodes.html">Episodes</a>
+        <a href="about.html">About Us</a>
+      </nav>
+    </div>
   </header>
   <!-- Beer Leaderboards (Grouped) -->
   <div class="leaderboard-group">
