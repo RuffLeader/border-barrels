@@ -173,24 +173,34 @@ function topStylesByScore(scoreKey) {
   const stylesMap = {};
 
   beers.forEach(beer => {
-    if (typeof beer[scoreKey] === 'number' && beer.style) {
-      if (!stylesMap[beer.style]) {
-        stylesMap[beer.style] = { name: beer.style, totalScore: 0, count: 0 };
+      if (typeof beer[scoreKey] === 'number' && beer.style) {
+        if (!stylesMap[beer.style]) {
+          stylesMap[beer.style] = { 
+            name: beer.style, 
+            totalScore: 0, 
+            count: 0,
+            beers: [] 
+          };
+        }
+        stylesMap[beer.style].totalScore += beer[scoreKey];
+        stylesMap[beer.style].count++;
+        stylesMap[beer.style].beers.push({
+          name: beer.name,
+          score: beer[scoreKey]
+        });
       }
-      stylesMap[beer.style].totalScore += beer[scoreKey];
-      stylesMap[beer.style].count++;
-    }
-  });
-
-  return Object.values(stylesMap)
-    .map(s => ({
-      ...s,
-      avgScore: s.totalScore / s.count
-    }))
-    .filter(s => s.count > 1) // only keep styles with at least 2 beers
-    .sort((a, b) => b.avgScore - a.avgScore)
-    .slice(0, 10);
-}
+    });
+  
+    return Object.values(stylesMap)
+      .map(s => ({
+        ...s,
+        avgScore: s.totalScore / s.count,
+        beers: s.beers.sort((a, b) => b.score - a.score) // high → low
+      }))
+      .filter(s => s.count > 1) // only keep styles with at least 2 beers
+      .sort((a, b) => b.avgScore - a.avgScore)
+      .slice(0, 10);
+  }
 
 function renderListStyle(style, rank, container, scoreKey, delay) {
   const li = createEl('li', 'beer-card');
@@ -216,11 +226,17 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
 
   const count = createEl('div', 'brewery-name', `${style.count} Beers Reviewed`);
   info.appendChild(count);
-
   li.appendChild(info);
 
   const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
   li.appendChild(score);
+
+  // Tooltip with beer list
+  const tooltip = createEl('div', 'style-tooltip');
+  tooltip.innerHTML = style.beers
+    .map(b => `<div><strong>${b.name}</strong> — ${b.score.toFixed(2)}</div>`)
+    .join('');
+  li.appendChild(tooltip);
 
   container.appendChild(li);
 
