@@ -171,22 +171,23 @@
       .beer-meta { justify-content: center; gap: 15px; }
     }
 
+    /* Tooltip base style */
     .style-tooltip {
       display: none;
       position: absolute;
-      top: 100%; /* position below the card */
+      top: 100%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.95); /* darker background */
+      background: #000000; /* darker background */
       color: #fff;
       padding: 0.6rem;
       border-radius: 8px;
       max-width: 250px;
       font-size: 0.8rem;
-      z-index: 100;
+      z-index: 999;
       white-space: normal;
-      overflow-y: auto;   /* allow scrolling if too tall */
-      max-height: 300px;  /* limit height */
+      overflow-y: auto;
+      max-height: 300px;
     }
     
     /* Arrow pointing up */
