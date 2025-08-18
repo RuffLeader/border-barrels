@@ -192,8 +192,11 @@
     }
 
     .leaderboard-toggle {
+      display: flex;
+      justify-content: center; /* centers the text horizontally */
+      align-items: center;     /* centers vertically if button grows */
       width: 100%;
-      text-align: left;
+      text-align: center;      /* fallback */
       padding: 12px 20px;
       font-size: 1.3rem;
       font-weight: 700;
