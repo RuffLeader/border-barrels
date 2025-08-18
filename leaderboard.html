@@ -190,46 +190,87 @@
     .beer-card:hover .style-tooltip {
       display: block;
     }
+
+    .leaderboard-toggle {
+      width: 100%;
+      text-align: left;
+      padding: 12px 20px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: #f0a830;
+      color: #002157;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .leaderboard-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+    
+    .leaderboard-content.open {
+      max-height: 2000px; /* large enough to fit content */
+    }
   </style>
 </head>
 <body>
   <h1>Border Barrels Leaderboards</h1>
 
-  <div class="leaderboards-wrapper">
-    <!-- Top Beers by BBBRS Score -->
-    <div class="leaderboard-section">
-      <h2>Top 10 Beers by BBBRS Score</h2>
-      <ul id="beer-leaderboard-bbbrs" class="beer-leaderboard"></ul>
-    </div>
-
-    <!-- Top Beers by Untappd Score -->
-    <div class="leaderboard-section">
-      <h2>Top 10 Beers by Untappd Score</h2>
-      <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
+  <!-- Beer Leaderboards (Grouped) -->
+  <div class="leaderboard-group">
+    <button class="leaderboard-toggle">Top Beers</button>
+    <div class="leaderboard-content">
+      <div class="leaderboards-wrapper">
+        <div class="leaderboard-section">
+          <h2>Top 10 Beers by BBBRS Score</h2>
+          <ul id="beer-leaderboard-bbbrs" class="beer-leaderboard"></ul>
+        </div>
+  
+        <div class="leaderboard-section">
+          <h2>Top 10 Beers by Untappd Score</h2>
+          <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="leaderboards-wrapper">
-    <div class="leaderboard-section">
-      <h2>Top 10 Breweries by BBBRS Score</h2>
-      <ul id="brewery-leaderboard-bbbrs" class="beer-leaderboard"></ul>
-    </div>
-  
-    <div class="leaderboard-section">
-      <h2>Top 10 Breweries by Untappd Score</h2>
-      <ul id="brewery-leaderboard-untappd" class="beer-leaderboard"></ul>
+  <!-- Brewery Leaderboards (Grouped) -->
+  <div class="leaderboard-group">
+    <button class="leaderboard-toggle">Top Breweries</button>
+    <div class="leaderboard-content">
+      <div class="leaderboards-wrapper">
+        <div class="leaderboard-section">
+          <h2>Top 10 Breweries by BBBRS Score</h2>
+          <ul id="brewery-leaderboard-bbbrs" class="beer-leaderboard"></ul>
+        </div>
+      
+        <div class="leaderboard-section">
+          <h2>Top 10 Breweries by Untappd Score</h2>
+          <ul id="brewery-leaderboard-untappd" class="beer-leaderboard"></ul>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="leaderboards-wrapper">
-    <div class="leaderboard-section">
-      <h2>Top 10 Styles by BBBRS Score</h2>
-      <ul id="style-leaderboard-bbbrs" class="beer-leaderboard"></ul>
-    </div>
+  <!-- Style Leaderboards (optional separate toggles) -->
+  <div class="leaderboard-group">
+    <button class="leaderboard-toggle">Top Styles</button>
+    <div class="leaderboard-content">
+      <div class="leaderboards-wrapper">
+        <div class="leaderboard-section">
+          <h2>Top Styles by BBBRS Score</h2>
+          <ul id="style-leaderboard-bbbrs" class="beer-leaderboard"></ul>
+        </div>
   
-    <div class="leaderboard-section">
-      <h2>Top 10 Styles by Untappd Score</h2>
-      <ul id="style-leaderboard-untappd" class="beer-leaderboard"></ul>
+        <div class="leaderboard-section">
+          <h2>Top Styles by Untappd Score</h2>
+          <ul id="style-leaderboard-untappd" class="beer-leaderboard"></ul>
+        </div>
+      </div>
     </div>
   </div>
 </body>
