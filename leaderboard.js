@@ -277,26 +277,22 @@ function renderStyleLeaderboard(scoreKey, listId) {
         if (!isOpen) {
           content.classList.add('open');
     
+          // dynamically set max-height to fit content
+          content.style.maxHeight = content.scrollHeight + 'px';
+    
           // Add close button if it doesn't exist
           if (!content.querySelector('.leaderboard-close')) {
             const closeBtn = document.createElement('button');
             closeBtn.textContent = 'Close Leaderboard';
             closeBtn.className = 'leaderboard-close';
-            closeBtn.style.marginTop = '12px';
-            closeBtn.style.padding = '10px 16px';
-            closeBtn.style.fontSize = '1rem';
-            closeBtn.style.fontWeight = '600';
-            closeBtn.style.background = '#002157';
-            closeBtn.style.color = '#f0a830';
-            closeBtn.style.border = 'none';
-            closeBtn.style.borderRadius = '10px';
-            closeBtn.style.cursor = 'pointer';
             closeBtn.addEventListener('click', () => {
+              content.style.maxHeight = '0';
               content.classList.remove('open');
             });
             content.appendChild(closeBtn);
           }
         } else {
+          content.style.maxHeight = '0';
           content.classList.remove('open');
         }
       });
