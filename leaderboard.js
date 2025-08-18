@@ -241,6 +241,8 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   tooltip.style.borderRadius = '8px';
   tooltip.style.fontSize = '0.8rem';
   tooltip.style.maxWidth = '300px';
+  tooltip.style.maxHeight = '300px';
+  tooltip.style.overflowY = 'auto'; // allow scroll if too many beers
   tooltip.style.zIndex = 1000;
   tooltip.style.display = 'none';
   tooltip.innerHTML = style.beers
@@ -249,29 +251,33 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   
   document.body.appendChild(tooltip);
 
-  // --- Hover logic ---
-  let hoverTimeout;
+  // --- Click-to-show logic ---
+  let tooltipVisible = false;
 
-  function showTooltip() {
-    clearTimeout(hoverTimeout);
+  li.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tooltipVisible = true;
+
     const rect = li.getBoundingClientRect();
-    tooltip.style.display = 'block';
-    
-    // center tooltip horizontally relative to the beer card
     const tooltipRect = tooltip.getBoundingClientRect();
     const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
-    tooltip.style.left = Math.max(left + window.scrollX, 5) + 'px'; // prevent going off left edge
+    tooltip.style.left = Math.max(left + window.scrollX, 5) + 'px';
     tooltip.style.top = rect.bottom + window.scrollY + 'px';
-  }
+    tooltip.style.display = 'block';
+  });
 
-  function hideTooltip() {
-    hoverTimeout = setTimeout(() => tooltip.style.display = 'none', 100);
-  }
+  // hide tooltip if mouse leaves card or tooltip
+  const hideTooltip = () => {
+    tooltip.style.display = 'none';
+    tooltipVisible = false;
+  };
 
-  li.addEventListener('mouseenter', showTooltip);
-  li.addEventListener('mouseleave', hideTooltip);
+  li.addEventListener('mouseleave', (e) => {
+    if (!tooltipVisible) return;
+    const toElement = e.relatedTarget;
+    if (!tooltip.contains(toElement)) hideTooltip();
+  });
 
-  tooltip.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
   tooltip.addEventListener('mouseleave', hideTooltip);
 
   container.appendChild(li);
