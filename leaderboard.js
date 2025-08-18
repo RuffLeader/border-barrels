@@ -232,23 +232,43 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
   li.appendChild(score);
 
-  // Tooltip with beer list including brewery
+  // --- Tooltip ---
   const tooltip = createEl('div', 'style-tooltip');
+  tooltip.style.position = 'absolute';
+  tooltip.style.background = '#000'; // full black
+  tooltip.style.color = '#fff';
+  tooltip.style.padding = '0.6rem';
+  tooltip.style.borderRadius = '8px';
+  tooltip.style.fontSize = '0.8rem';
+  tooltip.style.maxWidth = '300px';
+  tooltip.style.zIndex = 1000;
+  tooltip.style.display = 'none';
   tooltip.innerHTML = style.beers
-    .map(b => `<div><strong>${b.brewery || 'Unknown Brewery'}</strong>: ${b.name} — ${b.score.toFixed(2)}</div>`)
+    .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — ${b.score.toFixed(2)}</div>`)
     .join('');
+  
   document.body.appendChild(tooltip);
 
-  li.addEventListener('mouseenter', (e) => {
-    tooltip.style.display = 'block';
+  // --- Hover logic ---
+  let hoverTimeout;
+
+  function showTooltip() {
+    clearTimeout(hoverTimeout);
     const rect = li.getBoundingClientRect();
-    tooltip.style.top = rect.bottom + window.scrollY + 'px'; // below card
+    tooltip.style.top = rect.bottom + window.scrollY + 'px';
     tooltip.style.left = rect.left + window.scrollX + 'px';
-  });
-  
-  li.addEventListener('mouseleave', () => {
-    tooltip.style.display = 'none';
-  });
+    tooltip.style.display = 'block';
+  }
+
+  function hideTooltip() {
+    hoverTimeout = setTimeout(() => tooltip.style.display = 'none', 100);
+  }
+
+  li.addEventListener('mouseenter', showTooltip);
+  li.addEventListener('mouseleave', hideTooltip);
+
+  tooltip.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
+  tooltip.addEventListener('mouseleave', hideTooltip);
 
   container.appendChild(li);
 
