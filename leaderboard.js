@@ -270,31 +270,31 @@ function renderStyleLeaderboard(scoreKey, listId) {
     renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
 
     document.querySelectorAll('.leaderboard-toggle').forEach(btn => {
+      const originalText = btn.textContent;
+      const content = btn.nextElementSibling;
+      const closeBtn = content.querySelector('.leaderboard-close');
+    
       btn.addEventListener('click', () => {
-        const content = btn.nextElementSibling;
         const isOpen = content.classList.contains('open');
     
         if (!isOpen) {
           content.classList.add('open');
-    
-          // dynamically set max-height to fit content
           content.style.maxHeight = content.scrollHeight + 'px';
-    
-          // Add close button if it doesn't exist
-          if (!content.querySelector('.leaderboard-close')) {
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'Close Leaderboard';
-            closeBtn.className = 'leaderboard-close';
-            closeBtn.addEventListener('click', () => {
-              content.style.maxHeight = '0';
-              content.classList.remove('open');
-            });
-            content.appendChild(closeBtn);
-          }
+          closeBtn.style.display = 'block';             // show close button
+          btn.textContent = `Close ${originalText.replace(/^Top\s/, '')}`;
         } else {
-          content.style.maxHeight = '0';
           content.classList.remove('open');
+          content.style.maxHeight = '0';
+          closeBtn.style.display = 'none';             // hide close button
+          btn.textContent = originalText;
         }
+      });
+    
+      closeBtn.addEventListener('click', () => {
+        content.classList.remove('open');
+        content.style.maxHeight = '0';
+        closeBtn.style.display = 'none';
+        btn.textContent = originalText;
       });
     });
   });
