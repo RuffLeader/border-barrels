@@ -186,7 +186,8 @@ function topStylesByScore(scoreKey) {
         stylesMap[beer.style].count++;
         stylesMap[beer.style].beers.push({
           name: beer.name,
-          score: beer[scoreKey]
+          score: beer[scoreKey],
+          brewery: beer.brewery || 'Unknown Brewery'
         });
       }
     });
@@ -231,10 +232,10 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
   li.appendChild(score);
 
-  // Tooltip with beer list
+  // Tooltip with beer list including brewery
   const tooltip = createEl('div', 'style-tooltip');
   tooltip.innerHTML = style.beers
-    .map(b => `<div><strong>${b.name}</strong> — ${b.score.toFixed(2)}</div>`)
+    .map(b => `<div><strong>${b.brewery || 'Unknown Brewery'}</strong>: ${b.name} — ${b.score.toFixed(2)}</div>`)
     .join('');
   li.appendChild(tooltip);
 
