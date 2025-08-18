@@ -565,7 +565,7 @@
       }
     });
 
-     (() => {
+    (function() {
     // Get latest episode
     const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
 
@@ -586,13 +586,13 @@
 
     const cardContainer = document.getElementById('recent-card');
 
-    beersInEp.forEach(beer => {
+    beersThisEp.forEach(beer => {
       const beerRankBB = getBeerRank(beer, 'bbbrsScore');
       const beerRankUT = getBeerRank(beer, 'untappdScore');
 
       const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
-      const breweryRankBB = getBreweryRank(brewery.name, 'bbbrsScoreAvg');
-      const breweryRankUT = getBreweryRank(brewery.name, 'untappdScoreAvg');
+      const breweryRankBB = br ? getBreweryRank(br.name, 'bbbrsScore') : '-';
+      const breweryRankUT = br ? getBreweryRank(br.name, 'untappdScore') : '-';
 
       const card = document.createElement('div');
       card.className = 'beer-card rank1'; // use rank1 for styling, adjust if desired
