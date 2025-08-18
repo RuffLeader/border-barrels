@@ -268,5 +268,12 @@ function renderStyleLeaderboard(scoreKey, listId) {
 
     renderStyleLeaderboard('untappdScore', 'style-leaderboard-untappd');
     renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
+
+    document.querySelectorAll('.leaderboard-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
+        content.classList.toggle('open');
+      });
+    });
   });
 })();
