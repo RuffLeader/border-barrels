@@ -570,7 +570,7 @@
     const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
 
     // Find all beers from that episode
-    const beersInEp = beers.filter(b => b.epnum === latestEp.number);
+    const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEpisode.number));
 
     // Calculate beer leaderboard positions
     function getBeerRank(beer, scoreKey) {
@@ -590,9 +590,9 @@
       const beerRankBB = getBeerRank(beer, 'bbbrsScore');
       const beerRankUT = getBeerRank(beer, 'untappdScore');
 
-      const brewery = brewery.find(b => b.name === beer.brewery);
-      const breweryRankBB = getBreweryRank(brewery.name, 'bbbrsScore');
-      const breweryRankUT = getBreweryRank(brewery.name, 'untappdScore');
+      const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
+      const breweryRankBB = getBreweryRank(brewery.name, 'bbbrsScoreAvg');
+      const breweryRankUT = getBreweryRank(brewery.name, 'untappdScoreAvg');
 
       const card = document.createElement('div');
       card.className = 'beer-card rank1'; // use rank1 for styling, adjust if desired
