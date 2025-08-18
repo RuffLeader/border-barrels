@@ -270,31 +270,35 @@ function renderStyleLeaderboard(scoreKey, listId) {
     renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
 
     document.querySelectorAll('.leaderboard-toggle').forEach(btn => {
-      const originalText = btn.textContent;
-      const content = btn.nextElementSibling;
-      const closeBtn = content.querySelector('.leaderboard-close');
-    
       btn.addEventListener('click', () => {
+        const content = btn.nextElementSibling;
         const isOpen = content.classList.contains('open');
     
         if (!isOpen) {
           content.classList.add('open');
-          content.style.maxHeight = content.scrollHeight + 'px';
-          closeBtn.style.display = 'block';             // show close button
-          btn.textContent = `Close ${originalText.replace(/^Top\s/, '')}`;
+    
+          // Add close button if it doesn't exist
+          if (!content.querySelector('.leaderboard-close')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = 'Close Leaderboard';
+            closeBtn.className = 'leaderboard-close';
+            closeBtn.style.marginTop = '12px';
+            closeBtn.style.padding = '10px 16px';
+            closeBtn.style.fontSize = '1rem';
+            closeBtn.style.fontWeight = '600';
+            closeBtn.style.background = '#002157';
+            closeBtn.style.color = '#f0a830';
+            closeBtn.style.border = 'none';
+            closeBtn.style.borderRadius = '10px';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.addEventListener('click', () => {
+              content.classList.remove('open');
+            });
+            content.appendChild(closeBtn);
+          }
         } else {
           content.classList.remove('open');
-          content.style.maxHeight = '0';
-          closeBtn.style.display = 'none';             // hide close button
-          btn.textContent = originalText;
         }
-      });
-    
-      closeBtn.addEventListener('click', () => {
-        content.classList.remove('open');
-        content.style.maxHeight = '0';
-        closeBtn.style.display = 'none';
-        btn.textContent = originalText;
       });
     });
   });
