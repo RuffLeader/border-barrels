@@ -42,53 +42,42 @@
   function renderListBeer(beer, rank, container, scoreKey, delay) {
     const li = createEl('li', 'beer-card');
     if (rank <= 3) li.classList.add(`rank${rank}`);
-  
+
     li.style.opacity = '0';
     li.style.transform = 'translateY(15px)';
     li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     if (delay) li.style.transitionDelay = delay + 'ms';
-  
+
     const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
     li.appendChild(rankDiv);
-  
+
     const img = createEl('img', 'beer-image');
     img.src = beer.beerCanUrl || beer.canArtUrl || '';
     img.alt = `${beer.name} can art from ${beer.brewery || 'Unknown Brewery'}`;
     li.appendChild(img);
-  
+
     const info = createEl('div', 'beer-info');
     const name = createEl('div', 'beer-name', beer.name);
     info.appendChild(name);
-  
     const brewery = createEl('div', 'brewery-name', beer.brewery || 'Unknown Brewery');
     info.appendChild(brewery);
-  
+
     const meta = createEl('div', 'beer-meta');
     const abv = createEl('div', '', `ABV: ${beer.abv ? beer.abv.toFixed(1) + '%' : 'N/A'}`);
     const style = createEl('div', '', beer.style || 'Unknown style');
     meta.appendChild(abv);
     meta.appendChild(style);
     info.appendChild(meta);
-  
-    // --- Hidden hover info ---
-    const hoverInfo = createEl('div', 'beer-hover-info');
-    hoverInfo.innerHTML = `
-      <div>Supplier: ${beer.supplier || 'N/A'}</div>
-      <div>Year Reviewed: ${beer.yearReviewed || 'N/A'}</div>
-      <div>Scores: BBBRS ${beer.bbbrsScore?.toFixed(2) || 'N/A'}, Untappd ${beer.untappdScore?.toFixed(2) || 'N/A'}</div>
-    `;
-    info.appendChild(hoverInfo);
-  
+
     li.appendChild(info);
-  
     const score = createEl('div', 'beer-score', beer[scoreKey].toFixed(2));
     li.appendChild(score);
-  
+
     container.appendChild(li);
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name);
+      fitTextToTwoLines(name); // ← ensures beer name fits 2 lines
     });
   }
 
