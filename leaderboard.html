@@ -9,21 +9,48 @@
 
   <style>
     /* Reset & base */
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #001a3d, #002157);
       color: #fff;
-      margin: 0;
-      padding: 30px 20px;
       min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      display: flex;
+      flex-direction: column;
     }
 
+    a { text-decoration: none; color: inherit; }
+
+    /* Header */
+    header {
+      background: #002157;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #f0a830;
+      letter-spacing: 0.05em;
+    }
+    nav a {
+      margin-left: 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #f0a830;
+    }
+
+    /* Page title */
     h1 {
       text-align: center;
-      margin-bottom: 50px;
+      margin: 40px 0 50px;
       font-weight: 900;
       font-size: 3rem;
       letter-spacing: 0.05em;
@@ -52,7 +79,6 @@
       text-shadow: 0 0 8px rgba(240, 168, 48, 0.9);
     }
 
-    /* Leaderboards wrapper (desktop side-by-side) */
     .leaderboards-wrapper {
       display: flex;
       justify-content: space-between;
@@ -66,13 +92,8 @@
       flex: 1 1 0;
     }
 
-    /* Beer & Brewery leaderboard styles (shared) */
-    .beer-leaderboard, .brewery-leaderboard {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
+    /* Beer & Brewery cards */
+    .beer-leaderboard { list-style: none; margin: 0; padding: 0; }
     .beer-card {
       display: flex;
       align-items: center;
@@ -85,14 +106,12 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
-
     .beer-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 12px 30px rgba(240, 168, 48, 0.7);
       background: rgba(240, 168, 48, 0.1);
       color: #f0a830;
     }
-
     .beer-rank {
       font-weight: 900;
       font-size: 2.6rem;
@@ -103,7 +122,6 @@
       margin-right: 1.4rem;
       text-shadow: 0 0 7px rgba(240, 168, 48, 0.8);
     }
-
     .beer-image {
       width: 90px;
       height: 90px;
@@ -113,11 +131,8 @@
       transition: transform 0.3s ease;
       flex-shrink: 0;
     }
-
     .beer-card:hover .beer-image { transform: scale(1.1); }
-
     .beer-info { flex-grow: 1; }
-
     .beer-name {
       font-weight: 800;
       font-size: 1.45rem;
@@ -125,28 +140,13 @@
       color: #fff;
       letter-spacing: 0.02em;
       text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
-      overflow: hidden;       /* keep clipped if it still exceeds 2 lines */
-      display: block;         /* ensure block for height calculations */
-      line-height: 1.2em;     /* must match JS lineHeight calc */
-      white-space: normal;    /* allow wrapping */
     }
-
     .brewery-name {
       font-size: 1.05rem;
       color: #d4b75e;
       margin-bottom: 12px;
       text-shadow: 0 0 4px rgba(0,0,0,0.6);
     }
-
-    .beer-meta {
-      display: flex;
-      gap: 28px;
-      font-size: 1rem;
-      color: #d4b75e;
-      font-weight: 600;
-      text-shadow: 0 0 3px rgba(0,0,0,0.6);
-    }
-
     .beer-score {
       font-size: 1.5rem;
       font-weight: 900;
@@ -155,90 +155,26 @@
       text-align: center;
       text-shadow: 0 0 7px rgba(240, 168, 48, 1);
     }
-
     .beer-card.rank1 { background-color: rgba(212, 175, 55, 0.5); }
     .beer-card.rank2 { background-color: rgba(180, 180, 180, 0.5); }
     .beer-card.rank3 { background-color: rgba(205, 127, 50, 0.5); }
 
-    /* Responsive: stack leaderboards on mobile */
+    /* Responsive */
     @media (max-width: 800px) {
-      body { padding: 20px 10px; }
       .leaderboards-wrapper { flex-direction: column; width: 100%; gap: 20px; }
       .leaderboards-wrapper .leaderboard-section { width: 100%; max-width: 100%; margin: 0 auto; padding: 20px; }
       .beer-card { flex-direction: column; align-items: center; text-align: center; padding: 16px 12px; }
       .beer-rank { margin-right: 0; margin-bottom: 12px; }
       .beer-image { margin-right: 0; margin-bottom: 12px; }
-      .beer-meta { justify-content: center; gap: 15px; }
     }
 
-    /* Tooltip base style */
-    .style-tooltip {
-      position: absolute;
-      background: #000;
-      color: #fff;
-      padding: 0.6rem;
-      border-radius: 8px;
-      max-width: 300px;
-      font-size: 0.8rem;
-      z-index: 9999;
-      display: none;
-      overflow-y: auto;
-      max-height: 300px;
-    }
-    
-    /* Arrow pointing up */
-    .style-tooltip::after {
-      content: "";
-      position: absolute;
-      top: -6px;              /* position just above the tooltip box */
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 6px;       /* size of the triangle */
-      border-style: solid;
-      border-color: transparent transparent rgba(0,0,0,0.95) transparent;
-    }
-
-    /* Custom scrollbar for style tooltip */
-    .style-tooltip::-webkit-scrollbar {
-      width: 6px;               /* thin scrollbar */
-    }
-    
-    .style-tooltip::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05); /* very subtle track */
-      border-radius: 3px;
-    }
-    
-    .style-tooltip::-webkit-scrollbar-thumb {
-      background: rgba(240, 168, 48, 0.5); /* amber color thumb */
-      border-radius: 3px;
-    }
-    
-    .style-tooltip::-webkit-scrollbar-thumb:hover {
-      background: rgba(240, 168, 48, 0.8);
-    }
-    
-    /* For Firefox */
-    .style-tooltip {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(240, 168, 48, 0.5) rgba(255, 255, 255, 0.05);
-    }
-
-    /* Show tooltip if card OR tooltip is hovered */
-    .beer-card:hover .style-tooltip,
-    .style-tooltip:hover {
-      display: block;
-    }
-    
-    .beer-card:hover .style-tooltip {
-      display: block;
-    }
-
+    /* Toggle buttons */
     .leaderboard-toggle {
       display: flex;
-      justify-content: center; /* centers the text horizontally */
-      align-items: center;     /* centers vertically if button grows */
+      justify-content: center;
+      align-items: center;
       width: 100%;
-      text-align: center;      /* fallback */
+      text-align: center;
       padding: 12px 20px;
       font-size: 1.3rem;
       font-weight: 700;
@@ -247,45 +183,41 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      margin-bottom: 1rem;
+      margin: 20px auto 1rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    
     .leaderboard-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.5s ease;
-      position: relative; /* ensure children are positioned correctly */
     }
-    
-    .leaderboard-content.open {
-      max-height: 2000px; /* large enough to fit content */
-    }
+    .leaderboard-content.open { max-height: 2000px; }
 
-    .leaderboard-close {
-      display: block;
-      margin: 16px auto 0; /* centers horizontally and adds top spacing */
-      padding: 10px 16px;
-      font-size: 1rem;
-      font-weight: 600;
-      background: #002157;
-      color: #f0a830;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    
-    .leaderboard-close:hover {
-      background: #f0a830;
-      color: #002157;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    /* Footer */
+    footer {
+      background: #001a3d;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: auto;
     }
   </style>
 </head>
 <body>
+  <header>
+    <div class="logo">Border Barrels</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="episodes.html">Episodes</a>
+      <a href="beers.html">Beers</a>
+      <a href="leaderboard.html">Leaderboards</a>
+    </nav>
+  </header>
+
   <h1>Border Barrels Leaderboards</h1>
 
-  <!-- Beer Leaderboards (Grouped) -->
+  <!-- Beer Leaderboards -->
   <div class="leaderboard-group">
     <button class="leaderboard-toggle">Top Beers</button>
     <div class="leaderboard-content">
@@ -294,7 +226,6 @@
           <h2>Top 10 Beers by BBBRS Score</h2>
           <ul id="beer-leaderboard-bbbrs" class="beer-leaderboard"></ul>
         </div>
-  
         <div class="leaderboard-section">
           <h2>Top 10 Beers by Untappd Score</h2>
           <ul id="beer-leaderboard-untappd" class="beer-leaderboard"></ul>
@@ -303,7 +234,7 @@
     </div>
   </div>
 
-  <!-- Brewery Leaderboards (Grouped) -->
+  <!-- Brewery Leaderboards -->
   <div class="leaderboard-group">
     <button class="leaderboard-toggle">Top Breweries</button>
     <div class="leaderboard-content">
@@ -312,7 +243,6 @@
           <h2>Top 10 Breweries by BBBRS Score</h2>
           <ul id="brewery-leaderboard-bbbrs" class="beer-leaderboard"></ul>
         </div>
-      
         <div class="leaderboard-section">
           <h2>Top 10 Breweries by Untappd Score</h2>
           <ul id="brewery-leaderboard-untappd" class="beer-leaderboard"></ul>
@@ -321,7 +251,7 @@
     </div>
   </div>
 
-  <!-- Style Leaderboards (optional separate toggles) -->
+  <!-- Style Leaderboards -->
   <div class="leaderboard-group">
     <button class="leaderboard-toggle">Top Styles</button>
     <div class="leaderboard-content">
@@ -330,7 +260,6 @@
           <h2>Top Styles by BBBRS Score</h2>
           <ul id="style-leaderboard-bbbrs" class="beer-leaderboard"></ul>
         </div>
-  
         <div class="leaderboard-section">
           <h2>Top Styles by Untappd Score</h2>
           <ul id="style-leaderboard-untappd" class="beer-leaderboard"></ul>
@@ -338,5 +267,9 @@
       </div>
     </div>
   </div>
+
+  <footer>
+    &copy; 2025 Border Barrels. All rights reserved.
+  </footer>
 </body>
 </html>
