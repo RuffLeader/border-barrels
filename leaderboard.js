@@ -244,6 +244,8 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   tooltip.style.zIndex = 1000;
   tooltip.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6)';
   tooltip.style.display = 'none';
+  tooltip.style.textAlign = 'center';      // ← center all text
+  tooltip.style.lineHeight = '1.4em';     // optional: improve readability
   tooltip.innerHTML = style.beers
     .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — <span style="color:#f0a830">${b.score.toFixed(2)}</span></div>`)
     .join('');
