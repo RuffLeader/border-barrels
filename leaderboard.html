@@ -174,7 +174,7 @@
     .style-tooltip {
       display: none;
       position: absolute;
-      bottom: 110%;
+      top: 110%;              /* below the card */
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0,0,0,0.85);
@@ -185,6 +185,18 @@
       font-size: 0.8rem;
       z-index: 100;
       white-space: normal;
+    }
+    
+    /* Arrow pointing up */
+    .style-tooltip::after {
+      content: "";
+      position: absolute;
+      top: -6px;              /* position just above the tooltip box */
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 6px;       /* size of the triangle */
+      border-style: solid;
+      border-color: transparent transparent rgba(0,0,0,0.85) transparent;
     }
     
     .beer-card:hover .style-tooltip {
