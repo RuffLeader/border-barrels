@@ -543,26 +543,10 @@
       </div>
     </div>
   </div>
-  <div class="extra-content recent-additions">
-    <h2>Most Recent Additions - Episode 30</h2>
-  
-    <div class="recent-episode-card">
-      <!-- Episode info -->
-      <div class="episode-header">
-        <h3>Episode 30: Off-Roadie & More</h3>
-        <p>Beers Reviewed:</p>
-        <ul class="recent-beers">
-          <li>
-            <span class="beer-name">Off-Roadie</span> – BBBRS #3, Untappd #2  
-            (<span class="brewery-name">Sunday Road Brewing</span> – BBBRS #2, Untappd #1)
-          </li>
-          <li>
-            <span class="beer-name">Hopster IPA</span> – BBBRS #7, Untappd #5  
-            (<span class="brewery-name">Hargreaves Hill</span> – BBBRS #6, Untappd #4)
-          </li>
-        </ul>
-      </div>
-  
+  <div id="recent-additions" class="leaderboard-section">
+    <h2>Most Recent Additions</h2>
+    <div id="recent-card"></div>
+  </div>
       <!-- Embedded YouTube video -->
       <div class="episode-video">
         <iframe width="560" height="315" 
@@ -596,6 +580,75 @@
         });
       }
     });
+
+     (() => {
+    // Get latest episode
+    const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
+
+    // Find all beers from that episode
+    const beersInEp = beers.filter(b => b.epnum === latestEp.number);
+
+    // Calculate beer leaderboard positions
+    function getBeerRank(beer, scoreKey) {
+      const sorted = [...beers].sort((a,b) => b[scoreKey] - a[scoreKey]);
+      return sorted.findIndex(b => b.name === beer.name) + 1;
+    }
+
+    // Calculate brewery leaderboard positions
+    function getBreweryRank(breweryName, scoreKey) {
+      const sorted = [...breweries].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
+      return sorted.findIndex(b => b.name === breweryName) + 1;
+    }
+
+    const cardContainer = document.getElementById('recent-card');
+
+    beersInEp.forEach(beer => {
+      const beerRankBB = getBeerRank(beer, 'bbbrsScore');
+      const beerRankUT = getBeerRank(beer, 'untappdScore');
+
+      const brewery = breweries.find(b => b.name === beer.brewery);
+      const breweryRankBB = getBreweryRank(brewery.name, 'bbbrsScore');
+      const breweryRankUT = getBreweryRank(brewery.name, 'untappdScore');
+
+      const card = document.createElement('div');
+      card.className = 'beer-card rank1'; // use rank1 for styling, adjust if desired
+      card.innerHTML = `
+        <div class="beer-info">
+          <div class="beer-name">${beer.name}</div>
+          <div class="brewery-name">${beer.brewery}</div>
+          <div class="beer-meta">
+            <div>Beer BBBRS Rank: ${beerRankBB}</div>
+            <div>Beer Untappd Rank: ${beerRankUT}</div>
+            <div>Brewery BBBRS Rank: ${breweryRankBB}</div>
+            <div>Brewery Untappd Rank: ${breweryRankUT}</div>
+          </div>
+        </div>
+      `;
+      cardContainer.appendChild(card);
+    });
+
+    // Add YouTube embed
+    const ytEmbed = document.createElement('iframe');
+    ytEmbed.width = "100%";
+    ytEmbed.height = "315";
+    ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
+    ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
+    ytEmbed.frameBorder = "0";
+    ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    ytEmbed.allowFullscreen = true;
+    cardContainer.appendChild(ytEmbed);
+
+    // Add Spotify & Apple links
+    const linksDiv = document.createElement('div');
+    linksDiv.style.marginTop = '12px';
+    linksDiv.style.textAlign = 'center';
+    linksDiv.innerHTML = `
+      <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
+      <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
+    `;
+    cardContainer.appendChild(linksDiv);
+
+  })();
   </script>
 </body>
 </html>
