@@ -170,6 +170,26 @@
       .beer-image { margin-right: 0; margin-bottom: 12px; }
       .beer-meta { justify-content: center; gap: 15px; }
     }
+
+    .style-tooltip {
+      display: none;
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 0.6rem;
+      border-radius: 8px;
+      max-width: 250px;
+      font-size: 0.8rem;
+      z-index: 100;
+      white-space: normal;
+    }
+    
+    .beer-card:hover .style-tooltip {
+      display: block;
+    }
   </style>
 </head>
 <body>
