@@ -206,7 +206,7 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
 
   // Placeholder image for style
   const img = createEl('img', 'beer-image');
-  img.src = '/images/style-placeholder.png'; // change path if needed
+  img.src = styles[style.name] || '/media/styles/placeholder.png';
   img.alt = `${style.name} icon`;
   li.appendChild(img);
 
