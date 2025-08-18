@@ -235,53 +235,51 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   // --- Tooltip ---
   const tooltip = createEl('div', 'style-tooltip');
   tooltip.style.position = 'absolute';
-  tooltip.style.background = '#000'; // full black
+  tooltip.style.background = '#002157'; // navy
   tooltip.style.color = '#fff';
   tooltip.style.padding = '0.6rem';
   tooltip.style.borderRadius = '8px';
   tooltip.style.fontSize = '0.8rem';
-  tooltip.style.maxWidth = '300px';
-  tooltip.style.maxHeight = '300px';
-  tooltip.style.overflowY = 'auto'; // allow scroll if too many beers
+  tooltip.style.maxWidth = 'none'; // full card width
   tooltip.style.zIndex = 1000;
+  tooltip.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6)';
   tooltip.style.display = 'none';
   tooltip.innerHTML = style.beers
-    .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — ${b.score.toFixed(2)}</div>`)
+    .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — <span style="color:#f0a830">${b.score.toFixed(2)}</span></div>`)
     .join('');
   
   document.body.appendChild(tooltip);
 
-  // --- Click-to-show logic ---
-  let tooltipVisible = false;
+  let hoverTimeout;
+  let isOpen = false;
 
-  li.addEventListener('click', (e) => {
-    e.stopPropagation();
-    tooltipVisible = true;
-  
-    // Temporarily show tooltip off-screen to measure width
-    tooltip.style.display = 'block';
-    tooltip.style.left = '-9999px';
-    tooltip.style.top = '-9999px';
-  
+  function showTooltip() {
+    clearTimeout(hoverTimeout);
     const rect = li.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-    const left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
-    tooltip.style.left = Math.max(left + window.scrollX, 5) + 'px';
+
+    tooltip.style.width = rect.width + 'px'; // match card width
+    tooltip.style.display = 'block';
+    tooltip.style.left = rect.left + window.scrollX + 'px';
     tooltip.style.top = rect.bottom + window.scrollY + 'px';
+    isOpen = true;
+  }
+
+  function hideTooltip() {
+    hoverTimeout = setTimeout(() => {
+      tooltip.style.display = 'none';
+      isOpen = false;
+    }, 100);
+  }
+
+  // Click toggles tooltip
+  li.addEventListener('click', () => {
+    if (!isOpen) showTooltip();
+    else hideTooltip();
   });
 
-  // hide tooltip if mouse leaves card or tooltip
-  const hideTooltip = () => {
-    tooltip.style.display = 'none';
-    tooltipVisible = false;
-  };
-
-  li.addEventListener('mouseleave', (e) => {
-    if (!tooltipVisible) return;
-    const toElement = e.relatedTarget;
-    if (!tooltip.contains(toElement)) hideTooltip();
-  });
-
+  // Close when leaving card or tooltip
+  li.addEventListener('mouseleave', hideTooltip);
+  tooltip.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
   tooltip.addEventListener('mouseleave', hideTooltip);
 
   container.appendChild(li);
