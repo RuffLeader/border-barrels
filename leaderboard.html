@@ -174,20 +174,19 @@
     .style-tooltip {
       display: none;
       position: absolute;
-      top: 110%;              /* below the card */
+      top: 100%; /* position below the card */
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95); /* darker background */
+      background: rgba(0,0,0,0.95); /* darker background */
       color: #fff;
-      padding: 0.8rem;
+      padding: 0.6rem;
       border-radius: 8px;
-      max-width: 300px;       /* max width */
-      max-height: 250px;      /* max height before scrolling */
-      overflow-y: auto;       /* scroll if too tall */
+      max-width: 250px;
       font-size: 0.8rem;
       z-index: 100;
       white-space: normal;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      overflow-y: auto;   /* allow scrolling if too tall */
+      max-height: 300px;  /* limit height */
     }
     
     /* Arrow pointing up */
@@ -225,6 +224,12 @@
     .style-tooltip {
       scrollbar-width: thin;
       scrollbar-color: rgba(240, 168, 48, 0.5) rgba(255, 255, 255, 0.05);
+    }
+
+    /* Show tooltip if card OR tooltip is hovered */
+    .beer-card:hover .style-tooltip,
+    .style-tooltip:hover {
+      display: block;
     }
     
     .beer-card:hover .style-tooltip {
