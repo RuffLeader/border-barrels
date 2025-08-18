@@ -242,4 +242,28 @@ const brewery = [
   { name: "Your Mates Brewing Co", bbbrsScoreAvg: 17.42, untappdScoreAvg: 2.83, logoUrl: "media/logos/your-mates-brewing-co.png", epnum: [71] }
 ];
 
-const styles = ["Altbier", "Barleywine", "Belgian Strong Dark Ale", "Bock", "Brown Ale", "Cream Ale", "Dark Ale", "Hard Ginger Beer", "IPA", "Kölsch", "Lager", "Lambic", "Märzen", "Mild", "Non-Alcoholic Beer", "Pale Ale", "Pilsner", "Porter", "Rauchbier", "Schwarzbier", "Sour", "Stout", "Wheat Beer"];
+const styles = {
+  "Altbier": "/media/styles/altbier.png",
+  "Barleywine": "/media/styles/barleywine.png",
+  "Belgian Strong Dark Ale": "/media/styles/belgian-strong-dark.png",
+  "Bock": "/media/styles/bock.png",
+  "Brown Ale": "/media/styles/brown-ale.png",
+  "Cream Ale": "/media/styles/cream-ale.png",
+  "Dark Ale": "/media/styles/dark-ale.png",
+  "Hard Ginger Beer": "/media/styles/ginger-beer.png",
+  "IPA": "/media/styles/ipa.png",
+  "Kölsch": "/media/styles/kolsch.png",
+  "Lager": "/media/styles/lager.png",
+  "Lambic": "/media/styles/lambic.png",
+  "Märzen": "/media/styles/marzen.png",
+  "Mild": "/media/styles/mild.png",
+  "Non-Alcoholic Beer": "/media/styles/non-alcoholic.png",
+  "Pale Ale": "/media/styles/pale-ale.png",
+  "Pilsner": "/media/styles/pilsner.png",
+  "Porter": "/media/styles/porter.png",
+  "Rauchbier": "/media/styles/rauchbier.png",
+  "Schwarzbier": "/media/styles/schwarzbier.png",
+  "Sour": "/media/styles/sour.png",
+  "Stout": "/media/styles/stout.png",
+  "Wheat Beer": "/media/styles/wheat.png"
+};
