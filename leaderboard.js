@@ -237,7 +237,18 @@ function renderListStyle(style, rank, container, scoreKey, delay) {
   tooltip.innerHTML = style.beers
     .map(b => `<div><strong>${b.brewery || 'Unknown Brewery'}</strong>: ${b.name} — ${b.score.toFixed(2)}</div>`)
     .join('');
-  li.appendChild(tooltip);
+  document.body.appendChild(tooltip);
+
+  li.addEventListener('mouseenter', (e) => {
+    tooltip.style.display = 'block';
+    const rect = li.getBoundingClientRect();
+    tooltip.style.top = rect.bottom + window.scrollY + 'px'; // below card
+    tooltip.style.left = rect.left + window.scrollX + 'px';
+  });
+  
+  li.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
 
   container.appendChild(li);
 
