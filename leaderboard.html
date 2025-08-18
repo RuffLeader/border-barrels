@@ -568,34 +568,34 @@
     (function() {
     // Get latest episode
     const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
-
+    
     // Find all beers from that episode
-    const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEpisode.number));
-
+    const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEp.number));
+    
     // Calculate beer leaderboard positions
     function getBeerRank(beer, scoreKey) {
       const sorted = [...beers].sort((a,b) => b[scoreKey] - a[scoreKey]);
       return sorted.findIndex(b => b.name === beer.name) + 1;
     }
-
+    
     // Calculate brewery leaderboard positions
     function getBreweryRank(breweryName, scoreKey) {
       const sorted = [...brewery].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
-      return sorted.findIndex(b => b.name === breweryName) + 1;
+      return sorted.findIndex(b => b.name.trim().toLowerCase() === breweryName.trim().toLowerCase()) + 1;
     }
-
+    
     const cardContainer = document.getElementById('recent-card');
-
+    
     beersThisEp.forEach(beer => {
       const beerRankBB = getBeerRank(beer, 'bbbrsScore');
       const beerRankUT = getBeerRank(beer, 'untappdScore');
-
+    
       const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
       const breweryRankBB = br ? getBreweryRank(br.name, 'bbbrsScore') : '-';
       const breweryRankUT = br ? getBreweryRank(br.name, 'untappdScore') : '-';
-
+    
       const card = document.createElement('div');
-      card.className = 'beer-card rank1'; // use rank1 for styling, adjust if desired
+      card.className = 'beer-card rank1'; // styling
       card.innerHTML = `
         <div class="beer-info">
           <div class="beer-name">${beer.name}</div>
@@ -610,7 +610,7 @@
       `;
       cardContainer.appendChild(card);
     });
-
+    
     // Add YouTube embed
     const ytEmbed = document.createElement('iframe');
     ytEmbed.width = "100%";
@@ -621,7 +621,7 @@
     ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
     ytEmbed.allowFullscreen = true;
     cardContainer.appendChild(ytEmbed);
-
+    
     // Add Spotify & Apple links
     const linksDiv = document.createElement('div');
     linksDiv.style.marginTop = '12px';
