@@ -565,7 +565,7 @@
         });
       }
     });
-
+  document.addEventListener("DOMContentLoaded", () => {
     (function() {
     // Get latest episode
     const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
@@ -634,6 +634,7 @@
     cardContainer.appendChild(linksDiv);
 
   })();
+  });
   </script>
 </body>
 </html>
