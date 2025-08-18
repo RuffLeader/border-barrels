@@ -177,14 +177,17 @@
       top: 110%;              /* below the card */
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.85);
+      background: rgba(0, 0, 0, 0.95); /* darker background */
       color: #fff;
-      padding: 0.6rem;
+      padding: 0.8rem;
       border-radius: 8px;
-      max-width: 250px;
+      max-width: 300px;       /* max width */
+      max-height: 250px;      /* max height before scrolling */
+      overflow-y: auto;       /* scroll if too tall */
       font-size: 0.8rem;
       z-index: 100;
       white-space: normal;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
     
     /* Arrow pointing up */
@@ -196,7 +199,7 @@
       transform: translateX(-50%);
       border-width: 6px;       /* size of the triangle */
       border-style: solid;
-      border-color: transparent transparent rgba(0,0,0,0.85) transparent;
+      border-color: transparent transparent rgba(0,0,0,0.95) transparent;
     }
     
     .beer-card:hover .style-tooltip {
