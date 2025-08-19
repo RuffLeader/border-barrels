@@ -498,8 +498,39 @@
 
     #recent-card {
       display: flex;
+      flex-direction: row; /* or column if stacking on mobile */
+      width: 95vw;
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 80vh; /* fills 80% of viewport height */
+      gap: 20px;
+    }
+    .recent-wrapper {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+      height: 100%;
+    }
+    
+    .video-wrapper {
+      flex: 0 0 65%; /* video takes ~65% width */
+      display: flex;
       flex-direction: column;
-      height: 80vh; /* or whatever portion of viewport you want */
+      height: 100%;
+    }
+    
+    .cards-wrapper {
+      flex: 0 0 33%; /* cards take ~33% width */
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      height: 100%;
+      overflow-y: auto; /* scroll if too tall */
+    }
+    
+    .video-wrapper iframe {
+      flex: 1;          /* fill height of wrapper */
+      width: 100%;
     }
   </style>
 </head>
@@ -639,12 +670,10 @@
     videoWrapper.style.flex = '1 1 60%';
     videoWrapper.style.display = 'flex';
     videoWrapper.style.flexDirection = 'column';
-    videoWrapper.style.height = '100%';
   
     const ytEmbed = document.createElement('iframe');
     ytEmbed.style.flex = '1';   // fill remaining height
     ytEmbed.width = "100%";
-    ytEmbed.height = "100%";
     ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
     ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
     ytEmbed.frameBorder = "0";
@@ -671,7 +700,6 @@
     cardsWrapper.style.display = 'flex';
     cardsWrapper.style.flexDirection = 'column';
     cardsWrapper.style.gap = '16px';
-    cardsWrapper.style.height = '100%'; // same as video wrapper
   
     // --- Brewery card ---
     const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
