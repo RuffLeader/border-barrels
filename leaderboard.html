@@ -396,80 +396,49 @@
       }
     }
 
-    .extra-content.recent-additions {
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 30px 20px;
+    .recent-additions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
       margin-bottom: 60px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-      backdrop-filter: saturate(180%) blur(12px);
-      color: #fff;
     }
     
-    .recent-episode-card {
+    .recent-additions .video-wrapper {
+      flex: 1 1 400px; /* min width for video */
+      max-width: 600px;
+    }
+    
+    .recent-additions .cards-wrapper {
+      flex: 1 1 300px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
     
-    .episode-header h3 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #f0a830;
-      margin-bottom: 12px;
-      text-shadow: 0 0 7px rgba(240,168,48,0.8);
-    }
-    
-    .recent-beers {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .recent-beers li {
-      margin-bottom: 10px;
-      font-size: 1rem;
-      color: #d4b75e;
-    }
-    
-    .recent-beers .beer-name {
-      font-weight: 700;
+    .beer-card, .brewery-card {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 15px;
+      padding: 16px 24px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
       color: #fff;
     }
     
-    .recent-beers .brewery-name {
-      font-weight: 600;
+    .brewery-card .brewery-name {
+      font-weight: 900;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
       color: #f0a830;
     }
     
-    .episode-video iframe {
-      width: 100%;
-      max-width: 640px;
-      height: 360px;
-      border-radius: 12px;
-      margin: 0 auto;
-      display: block;
+    @media (max-width: 900px) {
+      .recent-additions {
+        flex-direction: column;
+      }
+      .recent-additions .video-wrapper, .recent-additions .cards-wrapper {
+        max-width: 100%;
+      }
     }
-    
-    .episode-links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      font-weight: 700;
-    }
-    
-    .episode-links a {
-      color: #f0a830;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.05);
-      transition: background 0.3s ease;
-    }
-    
-    .episode-links a:hover {
-      background: rgba(240,168,48,0.2);
-    }
+
   </style>
 </head>
 <body>
@@ -545,7 +514,7 @@
   </div>
   <div id="recent-additions" class="leaderboard-section">
     <h2>Most Recent Additions</h2>
-    <div id="recent-card"></div>
+    <div id="recent-card" class="recent-additions"></div>
   </div>
   </main>
   <!-- === Footer === -->
@@ -564,90 +533,83 @@
         });
       }
     });
-    document.addEventListener("DOMContentLoaded", async () => {
-      const cardContainer = document.getElementById('recent-card');
-      if (!cardContainer) return;
+    (async function() {
+      // Fetch episodes.json
+      const resp = await fetch('episodes.json');
+      const episodes = await resp.json();
     
-      try {
-        // Fetch episodes.json
-        const epResp = await fetch('episodes.json');
-        const episodes = await epResp.json();
-    
-        // Make sure beers and brewery arrays are loaded from beers.js
-        if (!beers || !brewery) {
-          console.error("Beers or brewery arrays not found.");
-          return;
-        }
-    
-        // Get the latest episode
-        const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
-    
-        // Find all beers from that episode
-        const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEp.number));
-    
-        // Helper functions to calculate leaderboard positions
-        function getBeerRank(beer, scoreKey) {
-          const sorted = [...beers].sort((a,b) => b[scoreKey] - a[scoreKey]);
-          return sorted.findIndex(b => b.name === beer.name) + 1;
-        }
-    
-        function getBreweryRank(breweryName, scoreKey) {
-          const sorted = [...brewery].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
-          const found = sorted.findIndex(b => b.name.trim().toLowerCase() === breweryName.trim().toLowerCase());
-          return found >= 0 ? found + 1 : '-';
-        }
-    
-        // Build card
-        beersThisEp.forEach(beer => {
-          const beerRankBB = getBeerRank(beer, 'bbbrsScore');
-          const beerRankUT = getBeerRank(beer, 'untappdScore');
-    
-          const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
-          const breweryRankBB = br ? getBreweryRank(br.name, 'bbbrsScore') : '-';
-          const breweryRankUT = br ? getBreweryRank(br.name, 'untappdScore') : '-';
-    
-          const card = document.createElement('div');
-          card.className = 'beer-card rank1';
-          card.innerHTML = `
-            <div class="beer-info">
-              <div class="beer-name">${beer.name}</div>
-              <div class="brewery-name">${beer.brewery}</div>
-              <div class="beer-meta">
-                <div>Beer BBBRS Rank: ${beerRankBB}</div>
-                <div>Beer Untappd Rank: ${beerRankUT}</div>
-                <div>Brewery BBBRS Rank: ${breweryRankBB}</div>
-                <div>Brewery Untappd Rank: ${breweryRankUT}</div>
-              </div>
-            </div>
-          `;
-          cardContainer.appendChild(card);
-        });
-    
-        // Add YouTube embed
-        const ytEmbed = document.createElement('iframe');
-        ytEmbed.width = "100%";
-        ytEmbed.height = "315";
-        ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
-        ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
-        ytEmbed.frameBorder = "0";
-        ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        ytEmbed.allowFullscreen = true;
-        cardContainer.appendChild(ytEmbed);
-    
-        // Add Spotify & Apple links
-        const linksDiv = document.createElement('div');
-        linksDiv.style.marginTop = '12px';
-        linksDiv.style.textAlign = 'center';
-        linksDiv.innerHTML = `
-          <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
-          <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
-        `;
-        cardContainer.appendChild(linksDiv);
-    
-      } catch (err) {
-        console.error("Failed to load episodes.json:", err);
+      // Ensure beers.js and brewery arrays exist
+      if (!beers || !brewery) {
+        console.error("Beers or brewery arrays not found.");
+        return;
       }
-    });
+    
+      const latestEp = episodes.reduce((a,b) => a.number > b.number ? a : b);
+      const beersThisEp = beers.filter(b => b.epnum === latestEp.number);
+    
+      const cardContainer = document.getElementById('recent-card');
+    
+      // Create video wrapper
+      const videoWrapper = document.createElement('div');
+      videoWrapper.className = 'video-wrapper';
+      const ytEmbed = document.createElement('iframe');
+      ytEmbed.width = "100%";
+      ytEmbed.height = "315";
+      ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
+      ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
+      ytEmbed.frameBorder = "0";
+      ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      ytEmbed.allowFullscreen = true;
+      videoWrapper.appendChild(ytEmbed);
+      cardContainer.appendChild(videoWrapper);
+    
+      // Create cards wrapper
+      const cardsWrapper = document.createElement('div');
+      cardsWrapper.className = 'cards-wrapper';
+    
+      // --- Brewery card ---
+      const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
+      brNames.forEach(brName => {
+        const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
+        if (!br) return;
+    
+        const breweryCard = document.createElement('div');
+        breweryCard.className = 'brewery-card';
+        const breweryRankBB = br ? brewery.findIndex(b => b.name === br.name) + 1 : '-';
+        breweryCard.innerHTML = `
+          <div class="brewery-name">${br.name}</div>
+          <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
+          <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+        `;
+        cardsWrapper.appendChild(breweryCard);
+      });
+    
+      // --- Beer cards ---
+      beersThisEp.forEach(beer => {
+        const beerCard = document.createElement('div');
+        beerCard.className = 'beer-card';
+        beerCard.innerHTML = `
+          <div class="beer-name">${beer.name}</div>
+          <div class="brewery-name">${beer.brewery}</div>
+          <div>Beer BBBRS Rank: ${getBeerRank(beer, 'bbbrsScore')}</div>
+          <div>Beer Untappd Rank: ${getBeerRank(beer, 'untappdScore')}</div>
+        `;
+        cardsWrapper.appendChild(beerCard);
+      });
+    
+      cardContainer.appendChild(cardsWrapper);
+    
+      // --- Spotify & Apple links ---
+      const linksDiv = document.createElement('div');
+      linksDiv.style.marginTop = '12px';
+      linksDiv.style.textAlign = 'center';
+      linksDiv.innerHTML = `
+        <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
+        <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
+      `;
+      cardContainer.appendChild(linksDiv);
+    
+    })();
   </script>
 </body>
 </html>
