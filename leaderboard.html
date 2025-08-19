@@ -607,17 +607,21 @@
         if (!br) return;
       
         const breweryCard = document.createElement('div');
-        breweryCard.className = 'brewery-card'; // use same class as leaderboard
+        breweryCard.className = 'beer-card'; // reuse same card style as beers for compactness
+      
         breweryCard.innerHTML = `
-          <div class="brewery-logo">
-            ${br.logoUrl ? `<img src="${br.logoUrl}" alt="${br.name}" />` : ''}
+          <div class="beer-image">
+            ${br.logoUrl ? `<img src="${br.logoUrl}" alt="${br.name}" style="width:100%; height:100%; object-fit:contain;">` : ''}
           </div>
-          <div class="brewery-name">${br.name}</div>
-          <div class="beer-meta">
-            <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
-            <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+          <div class="beer-info">
+            <div class="brewery-name">${br.name}</div>
+            <div class="beer-meta">
+              <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
+              <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+            </div>
           </div>
         `;
+      
         cardsWrapper.appendChild(breweryCard);
       });
     
