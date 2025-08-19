@@ -684,7 +684,7 @@
     beersThisEp.forEach((beer, i) => {
       const rankClass = i === 0 ? 'rank1' : i === 1 ? 'rank2' : i === 2 ? 'rank3' : '';
       const beerCard = document.createElement('div');
-      beerCard.className = `beer-card ${rankClass}`;
+      beerCard.className = `beer-card #${rankClass}`;
       beerCard.innerHTML = `
         <div class="beer-rank">#${getBeerRank(beer, 'bbbrsScore')}</div>
         <img class="beer-image" src="${beer.beerCanUrl}" alt="${beer.name}" />
