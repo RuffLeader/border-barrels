@@ -686,7 +686,7 @@
       const beerCard = document.createElement('div');
       beerCard.className = `beer-card ${rankClass}`;
       beerCard.innerHTML = `
-        <div class="beer-rank">${getBeerRank(beer, 'bbbrsScore')}</div>
+        <div class="beer-rank">#${getBeerRank(beer, 'bbbrsScore')}</div>
         <img class="beer-image" src="${beer.beerCanUrl}" alt="${beer.name}" />
         <div class="beer-info">
           <div class="beer-name">${beer.name}</div>
