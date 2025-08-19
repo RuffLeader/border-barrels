@@ -574,8 +574,8 @@
         const episodes = await epResp.json();
     
         // Make sure beers and brewery arrays are loaded from beers.js
-        if (!window.beers || !window.brewery) {
-          console.error("Beers or brewery arrays not found. Make sure beers.js is included.");
+        if (!beers || !brewery) {
+          console.error("Beers or brewery arrays not found.");
           return;
         }
     
