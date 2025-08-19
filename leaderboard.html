@@ -520,13 +520,17 @@
         width: 100% !important;
         padding: 20px;
         flex: 1 1 300px;           /* cards shrink to at least 300px */
-        max-width: 400px;          /* prevent them from stretching too wide */
+        max-width: none;          /* prevent them from stretching too wide */
       }
     
       .leaderboard-content.open {
         max-height: none; /* let content expand */
         overflow: visible;
         z-index: 1;
+        width: 100%;           /* fill width of toggle button */
+        max-width: 95%;        /* optional: small margin from screen edges */
+        margin: 0 auto;        /* center */
+        padding: 0 10px;       /* match button spacing */
       }
     
       .leaderboard-close {
