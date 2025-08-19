@@ -565,76 +565,63 @@
         });
       }
     });
-  document.addEventListener("DOMContentLoaded", () => {
-    (function() {
-    // Get latest episode
-    const latestEp = episodes.reduce((a, b) => (a.number > b.number ? a : b));
-    
-    // Find all beers from that episode
-    const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEp.number));
-    
-    // Calculate beer leaderboard positions
-    function getBeerRank(beer, scoreKey) {
-      const sorted = [...beers].sort((a,b) => b[scoreKey] - a[scoreKey]);
-      return sorted.findIndex(b => b.name === beer.name) + 1;
-    }
-    
-    // Calculate brewery leaderboard positions
-    function getBreweryRank(breweryName, scoreKey) {
-      const sorted = [...brewery].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
-      return sorted.findIndex(b => b.name.trim().toLowerCase() === breweryName.trim().toLowerCase()) + 1;
-    }
-    
-    const cardContainer = document.getElementById('recent-card');
-    
-    beersThisEp.forEach(beer => {
-      const beerRankBB = getBeerRank(beer, 'bbbrsScore');
-      const beerRankUT = getBeerRank(beer, 'untappdScore');
-    
-      const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
-      const breweryRankBB = br ? getBreweryRank(br.name, 'bbbrsScore') : '-';
-      const breweryRankUT = br ? getBreweryRank(br.name, 'untappdScore') : '-';
-    
-      const card = document.createElement('div');
-      card.className = 'beer-card rank1'; // styling
-      card.innerHTML = `
-        <div class="beer-info">
-          <div class="beer-name">${beer.name}</div>
-          <div class="brewery-name">${beer.brewery}</div>
-          <div class="beer-meta">
-            <div>Beer BBBRS Rank: ${beerRankBB}</div>
-            <div>Beer Untappd Rank: ${beerRankUT}</div>
-            <div>Brewery BBBRS Rank: ${breweryRankBB}</div>
-            <div>Brewery Untappd Rank: ${breweryRankUT}</div>
-          </div>
-        </div>
-      `;
-      cardContainer.appendChild(card);
-    });
-    
-    // Add YouTube embed
-    const ytEmbed = document.createElement('iframe');
-    ytEmbed.width = "100%";
-    ytEmbed.height = "315";
-    ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
-    ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
-    ytEmbed.frameBorder = "0";
-    ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    ytEmbed.allowFullscreen = true;
-    cardContainer.appendChild(ytEmbed);
-    
-    // Add Spotify & Apple links
-    const linksDiv = document.createElement('div');
-    linksDiv.style.marginTop = '12px';
-    linksDiv.style.textAlign = 'center';
-    linksDiv.innerHTML = `
-      <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
-      <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
-    `;
-    cardContainer.appendChild(linksDiv);
+ document.addEventListener("DOMContentLoaded", () => {
+  const latestEp = episodes.reduce((a,b) => a.number > b.number ? a : b);
+  const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEp.number));
+  
+  const cardContainer = document.getElementById('recent-card');
+  if(!cardContainer) return;
 
-  })();
+  beersThisEp.forEach(beer => {
+    const beerRankBB = [...beers].sort((a,b) => b.bbbrsScore - a.bbbrsScore)
+                               .findIndex(b => b.name === beer.name) + 1;
+    const beerRankUT = [...beers].sort((a,b) => b.untappdScore - a.untappdScore)
+                               .findIndex(b => b.name === beer.name) + 1;
+    
+    const br = brewery.find(b => b.name.trim().toLowerCase() === beer.brewery.trim().toLowerCase());
+    const breweryRankBB = br ? [...brewery].sort((a,b) => b.bbbrsScoreAvg - a.bbbrsScoreAvg)
+                                   .findIndex(b => b.name === br.name) + 1 : '-';
+    const breweryRankUT = br ? [...brewery].sort((a,b) => b.untappdScoreAvg - a.untappdScoreAvg)
+                                   .findIndex(b => b.name === br.name) + 1 : '-';
+
+    const card = document.createElement('div');
+    card.className = 'beer-card rank1';
+    card.innerHTML = `
+      <div class="beer-info">
+        <div class="beer-name">${beer.name}</div>
+        <div class="brewery-name">${beer.brewery}</div>
+        <div class="beer-meta">
+          <div>Beer BBBRS Rank: ${beerRankBB}</div>
+          <div>Beer Untappd Rank: ${beerRankUT}</div>
+          <div>Brewery BBBRS Rank: ${breweryRankBB}</div>
+          <div>Brewery Untappd Rank: ${breweryRankUT}</div>
+        </div>
+      </div>
+    `;
+    cardContainer.appendChild(card);
   });
+
+  // Add YouTube embed
+  const ytEmbed = document.createElement('iframe');
+  ytEmbed.width = "100%";
+  ytEmbed.height = "315";
+  ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
+  ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
+  ytEmbed.frameBorder = "0";
+  ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+  ytEmbed.allowFullscreen = true;
+  cardContainer.appendChild(ytEmbed);
+
+  // Spotify & Apple links
+  const linksDiv = document.createElement('div');
+  linksDiv.style.marginTop = '12px';
+  linksDiv.style.textAlign = 'center';
+  linksDiv.innerHTML = `
+    <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
+    <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
+  `;
+  cardContainer.appendChild(linksDiv);
+});
   </script>
 </body>
 </html>
