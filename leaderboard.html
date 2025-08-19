@@ -622,15 +622,18 @@
     wrapper.style.display = 'flex';
     wrapper.style.flexWrap = 'wrap';
     wrapper.style.gap = '20px';
+    wrapper.style.justifyContent = 'space-between'; // spread children
+    wrapper.style.width = '95vw'; // almost full viewport width
+    wrapper.style.margin = '0 auto'; // center wrapper
   
     // --- Video side ---
     const videoWrapper = document.createElement('div');
     videoWrapper.className = 'video-wrapper';
-    videoWrapper.style.flex = '1 1 400px';
+    videoWrapper.style.flex = '1 1 45%';
   
     const ytEmbed = document.createElement('iframe');
     ytEmbed.width = "100%";
-    ytEmbed.height = "315";
+    ytEmbed.height = "400";
     ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
     ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
     ytEmbed.frameBorder = "0";
@@ -653,7 +656,7 @@
     // --- Cards side ---
     const cardsWrapper = document.createElement('div');
     cardsWrapper.className = 'cards-wrapper';
-    cardsWrapper.style.flex = '1 1 400px';
+    cardsWrapper.style.flex = '1 1 50%';
     cardsWrapper.style.display = 'flex';
     cardsWrapper.style.flexDirection = 'column';
     cardsWrapper.style.gap = '16px';
