@@ -622,18 +622,23 @@
     wrapper.style.display = 'flex';
     wrapper.style.flexWrap = 'wrap';
     wrapper.style.gap = '20px';
-    wrapper.style.justifyContent = 'space-between'; // spread children
-    wrapper.style.width = '95vw'; // almost full viewport width
-    wrapper.style.margin = '0 auto'; // center wrapper
+    wrapper.style.justifyContent = 'space-between';
+    wrapper.style.width = '95vw';
+    wrapper.style.margin = '0 auto';
+    wrapper.style.alignItems = 'stretch'; // ensures children stretch to same height
   
     // --- Video side ---
     const videoWrapper = document.createElement('div');
     videoWrapper.className = 'video-wrapper';
     videoWrapper.style.flex = '1 1 45%';
+    videoWrapper.style.display = 'flex';
+    videoWrapper.style.flexDirection = 'column';
+    videoWrapper.style.height = '100%';
   
     const ytEmbed = document.createElement('iframe');
+    ytEmbed.style.flex = '1';   // fill remaining height
     ytEmbed.width = "100%";
-    ytEmbed.height = "400";
+    ytEmbed.height = "100%";
     ytEmbed.src = `https://www.youtube.com/embed/${latestEp.youtubeId}`;
     ytEmbed.title = `Episode ${latestEp.number} - ${latestEp.title}`;
     ytEmbed.frameBorder = "0";
@@ -660,6 +665,7 @@
     cardsWrapper.style.display = 'flex';
     cardsWrapper.style.flexDirection = 'column';
     cardsWrapper.style.gap = '16px';
+    cardsWrapper.style.height = '100%'; // same as video wrapper
   
     // --- Brewery card ---
     const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
