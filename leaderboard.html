@@ -534,42 +534,35 @@
       }
     });
     (async function() {
-      // --- Ranking functions ---
-      function getBeerRank(beer, scoreKey) {
-        const sorted = [...beers].sort((a,b) => b[scoreKey] - a[scoreKey]);
-        return sorted.findIndex(b => b.name === beer.name) + 1;
-      }
-    
-      function getBreweryRank(breweryName, scoreKey) {
-        const sorted = [...brewery].sort((a,b) => b[scoreKey+'Avg'] - a[scoreKey+'Avg']);
-        return sorted.findIndex(b => b.name.trim().toLowerCase() === breweryName.trim().toLowerCase()) + 1;
-      }
-    
-      // --- Fetch episodes ---
+      // Fetch episodes.json
       const resp = await fetch('episodes.json');
       const episodes = await resp.json();
     
+      // Ensure beers.js and brewery arrays exist
       if (!beers || !brewery) {
         console.error("Beers or brewery arrays not found.");
         return;
       }
     
       const latestEp = episodes.reduce((a,b) => a.number > b.number ? a : b);
-      const beersThisEp = beers.filter(b => Number(b.epnum) === Number(latestEp.number));
+      const beersThisEp = beers.filter(b => b.epnum === latestEp.number);
     
       const cardContainer = document.getElementById('recent-card');
     
-      // --- Create wrapper for video + cards ---
+      // Create wrapper for video + cards
       const wrapper = document.createElement('div');
       wrapper.className = 'recent-wrapper';
       wrapper.style.display = 'flex';
+      wrapper.style.gap = '30px';
       wrapper.style.flexWrap = 'wrap';
-      wrapper.style.gap = '20px';
+      cardContainer.appendChild(wrapper);
     
       // --- Video (left) ---
       const videoWrapper = document.createElement('div');
       videoWrapper.className = 'video-wrapper';
-      videoWrapper.style.flex = '1 1 400px'; // adjusts for responsiveness
+      videoWrapper.style.flex = '1 1 400px'; // responsive width
+    
+      // YouTube iframe
       const ytEmbed = document.createElement('iframe');
       ytEmbed.width = "100%";
       ytEmbed.height = "315";
@@ -579,27 +572,36 @@
       ytEmbed.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       ytEmbed.allowFullscreen = true;
       videoWrapper.appendChild(ytEmbed);
+    
+      // Spotify & Apple links below video
+      const linksDiv = document.createElement('div');
+      linksDiv.style.marginTop = '12px';
+      linksDiv.style.textAlign = 'center';
+      linksDiv.innerHTML = `
+        <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
+        <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
+      `;
+      videoWrapper.appendChild(linksDiv);
+    
       wrapper.appendChild(videoWrapper);
     
-      // --- Cards (right) ---
+      // --- Cards wrapper (right) ---
       const cardsWrapper = document.createElement('div');
       cardsWrapper.className = 'cards-wrapper';
       cardsWrapper.style.flex = '1 1 400px';
       cardsWrapper.style.display = 'flex';
       cardsWrapper.style.flexDirection = 'column';
-      cardsWrapper.style.gap = '16px';
+      cardsWrapper.style.gap = '20px';
+      wrapper.appendChild(cardsWrapper);
     
       // --- Brewery card ---
-      const brNames = [...new Set(beersThisEp.map(b => b.brewery))];
+      const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
       brNames.forEach(brName => {
         const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
         if (!br) return;
     
         const breweryCard = document.createElement('div');
         breweryCard.className = 'brewery-card';
-        breweryCard.style.background = 'rgba(255,255,255,0.05)';
-        breweryCard.style.padding = '16px';
-        breweryCard.style.borderRadius = '12px';
         breweryCard.innerHTML = `
           <div class="brewery-name">${br.name}</div>
           <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
@@ -612,9 +614,6 @@
       beersThisEp.forEach(beer => {
         const beerCard = document.createElement('div');
         beerCard.className = 'beer-card';
-        beerCard.style.background = 'rgba(255,255,255,0.05)';
-        beerCard.style.padding = '16px';
-        beerCard.style.borderRadius = '12px';
         beerCard.innerHTML = `
           <div class="beer-name">${beer.name}</div>
           <div class="brewery-name">${beer.brewery}</div>
@@ -623,19 +622,6 @@
         `;
         cardsWrapper.appendChild(beerCard);
       });
-    
-      wrapper.appendChild(cardsWrapper);
-      cardContainer.appendChild(wrapper);
-    
-      // --- Spotify & Apple links ---
-      const linksDiv = document.createElement('div');
-      linksDiv.style.marginTop = '12px';
-      linksDiv.style.textAlign = 'center';
-      linksDiv.innerHTML = `
-        <a href="${latestEp.spotifyUrl}" target="_blank" style="margin-right:20px; color:#f0a830; font-weight:700;">Spotify</a>
-        <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
-      `;
-      cardContainer.appendChild(linksDiv);
     
     })();
   </script>
