@@ -398,21 +398,31 @@
 
     .recent-additions {
       display: flex;
-      flex-wrap: wrap;
       gap: 20px;
-      margin-bottom: 60px;
+      width: 95vw;          /* container spans 95% of viewport */
+      height: 80vh;         /* adjust height as needed */
+      margin: 0 auto;       /* center container */
     }
     
     .recent-additions .video-wrapper {
-      flex: 1 1 400px; /* min width for video */
-      max-width: 600px;
+      flex: 0 0 65%;        /* video takes ~65% width */
+      display: flex;
+      flex-direction: column;
+      height: 100%;         /* match container height */
     }
     
     .recent-additions .cards-wrapper {
-      flex: 1 1 300px;
+      flex: 0 0 33%;        /* cards take ~33% width */
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
+      height: 100%;         /* match container height */
+      overflow-y: auto;     /* scroll if too tall */
+    }
+
+    .recent-additions .video-wrapper iframe {
+      flex: 1;              /* iframe fills video wrapper */
+      width: 100%;
     }
     
     .beer-card, .brewery-card {
@@ -488,6 +498,7 @@
         max-width: 100%;
       }
     }
+    
     .beer-card .beer-image img {
       width: 90px;
       height: 90px;
@@ -498,39 +509,37 @@
 
     #recent-card {
       display: flex;
-      flex-direction: row; /* or column if stacking on mobile */
       width: 95vw;
+      height: 80vh;       /* adjust if needed */
       margin: 0 auto;
-      height: 80vh; /* fills 80% of viewport height */
       gap: 20px;
     }
     
     .recent-wrapper {
       display: flex;
-      flex: 1;
-      gap: 20px;
+      width: 100%;
       height: 100%;
-      width: 100%;          /* ensures it fills #recent-card */
+      gap: 20px;
     }
     
     .video-wrapper {
-      flex: 0 0 35%; /* video takes ~65% width */
+      flex: 0 0 65%;      /* video takes 65% width */
       display: flex;
       flex-direction: column;
       height: 100%;
     }
     
     .cards-wrapper {
-      flex: 0 0 60%; /* cards take ~33% width */
+      flex: 0 0 33%;      /* cards take 33% width */
       display: flex;
       flex-direction: column;
       gap: 16px;
-      height: 100%;
-      overflow-y: auto; /* scroll if too tall */
+      height: 100%;       /* same height as video */
+      overflow-y: auto;   /* scroll if too tall */
     }
     
     .video-wrapper iframe {
-      flex: 1;          /* fill height of wrapper */
+      flex: 1;            /* iframe fills height of wrapper */
       width: 100%;
     }
   </style>
