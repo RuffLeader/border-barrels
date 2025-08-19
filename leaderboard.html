@@ -605,10 +605,13 @@
       brNames.forEach(brName => {
         const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
         if (!br) return;
-    
+      
         const breweryCard = document.createElement('div');
-        breweryCard.className = 'brewery-leaderboard brewery-card';
+        breweryCard.className = 'brewery-card'; // use same class as leaderboard
         breweryCard.innerHTML = `
+          <div class="brewery-logo">
+            ${br.logoUrl ? `<img src="${br.logoUrl}" alt="${br.name}" />` : ''}
+          </div>
           <div class="brewery-name">${br.name}</div>
           <div class="beer-meta">
             <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
