@@ -167,17 +167,6 @@
     .beer-card.rank2 { background-color: rgba(180, 180, 180, 0.5); }
     .beer-card.rank3 { background-color: rgba(205, 127, 50, 0.5); }
 
-    /* Responsive: stack leaderboards on mobile */
-    @media (max-width: 800px) {
-      body { padding: 20px 10px; }
-      .leaderboards-wrapper { flex-direction: column; width: 100%; gap: 20px; }
-      .leaderboards-wrapper .leaderboard-section { width: 100%; max-width: 100%; margin: 0 auto; padding: 20px; }
-      .beer-card { flex-direction: column; align-items: center; text-align: center; padding: 16px 12px; }
-      .beer-rank { margin-right: 0; margin-bottom: 12px; }
-      .beer-image { margin-right: 0; margin-bottom: 12px; }
-      .beer-meta { justify-content: center; gap: 15px; }
-    }
-
     /* Tooltip base style */
     .style-tooltip {
       position: absolute;
@@ -496,15 +485,6 @@
       font-weight: 600;
       text-shadow: 0 0 3px rgba(0,0,0,0.6);
     }
-    
-    @media (max-width: 900px) {
-      .recent-additions {
-        flex-direction: column;
-      }
-      .recent-additions .video-wrapper, .recent-additions .cards-wrapper {
-        max-width: 100%;
-      }
-    }
 
     /* Chrome, Edge, Safari */
     .recent-additions .cards-wrapper::-webkit-scrollbar {
@@ -523,6 +503,50 @@
     
     .recent-additions .cards-wrapper::-webkit-scrollbar-thumb:hover {
       background-color: #aaa; /* lighter on hover */
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+    
+      /* --- Leaderboards --- */
+      .leaderboard .beer-cards {
+        display: grid;
+        grid-template-columns: 1fr;   /* stack cards */
+        gap: 0.75rem;
+      }
+    
+      .leaderboard .beer-card {
+        height: auto;                 /* let them expand naturally */
+        min-height: unset;
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+    
+      /* make sure expanded leaderboard pushes down content */
+      .leaderboard.expanded {
+        position: relative;
+        z-index: 1;
+        margin-bottom: 2rem;          /* space so close button isn’t hidden */
+      }
+    
+      /* --- Most Recent Additions --- */
+      .recent-additions {
+        flex-direction: column;       /* stack video + cards */
+        align-items: center;
+        width: 100%;
+        gap: 1rem;
+      }
+    
+      .recent-additions .video-wrapper,
+      .recent-additions .cards-wrapper {
+        width: 95%;                   /* full width but within margin */
+        height: auto;
+      }
+    
+      .recent-additions .cards-wrapper {
+        max-height: none;             /* no cutoff on mobile */
+        overflow-y: visible;
+      }
     }
   </style>
 </head>
