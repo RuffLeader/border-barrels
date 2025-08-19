@@ -736,6 +736,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const recentBeerNames = document.querySelectorAll('.recent-additions .beer-name');
   recentBeerNames.forEach(el => fitTextToOneLine(el));
 });
+
+// leaderboard.js
+function equalizeLeaderboardHeights() {
+  const cards = document.querySelectorAll('.leaderboard-section .beer-card');
+  let maxHeight = 0;
+  cards.forEach(card => {
+    card.style.height = 'auto'; // reset
+    maxHeight = Math.max(maxHeight, card.offsetHeight);
+  });
+  cards.forEach(card => card.style.height = maxHeight + 'px');
+}
+
+document.addEventListener('DOMContentLoaded', equalizeLeaderboardHeights);
   </script>
 </body>
 </html>
