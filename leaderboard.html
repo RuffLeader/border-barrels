@@ -426,11 +426,16 @@
     }
     
     .recent-additions .beer-card, .brewery-card {
+      display: flex;
+      align-items: center;
       background: rgba(255, 255, 255, 0.06);
       border-radius: 15px;
       padding: 16px 24px;
+      margin-bottom: 20px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.2);
       color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
     }
     
     .recent-additions .brewery-card .brewery-name {
