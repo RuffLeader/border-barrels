@@ -607,26 +607,26 @@
       cardsWrapper.style.gap = '16px';
     
       // --- Brewery card ---
-      const brNames = [...new Set(beersThisEp.map(b => b.brewery))];
+      const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
       brNames.forEach(brName => {
         const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
         if (!br) return;
       
-      const breweryCard = document.createElement('div');
-      breweryCard.className = 'beer-card'; // same container class as leaderboard
-      
-      breweryCard.innerHTML = `
-        <img class="beer-image" src="${br.logoUrl}" alt="${br.name}">
-        <div class="beer-info">
-          <div class="brewery-name">${br.name}</div>
-          <div class="beer-meta">
-            <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
-            <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+        const breweryCard = document.createElement('div');
+        breweryCard.className = 'beer-card rank1'; // same container as beer cards
+        breweryCard.innerHTML = `
+          <img class="beer-image" src="${br.logoUrl}" alt="${br.name}">
+          <div class="beer-info">
+            <div class="brewery-name">${br.name}</div>
+            <div class="beer-meta">
+              <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
+              <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+            </div>
           </div>
-        </div>
-      `;
-      cardsWrapper.appendChild(breweryCard);
+        `;
+        cardsWrapper.appendChild(breweryCard);
       });
+
 
     
       // --- Beer cards ---
