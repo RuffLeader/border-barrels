@@ -721,6 +721,23 @@
     cardContainer.appendChild(wrapper);
   
   })();
+  // Match leaderboard card heights (your old function)
+function matchLeaderboardHeights() {
+  const leaderboardCards = document.querySelectorAll('.leaderboard-section .beer-card');
+  let maxHeight = 0;
+  leaderboardCards.forEach(card => {
+    card.style.height = 'auto'; // reset
+    maxHeight = Math.max(maxHeight, card.offsetHeight);
+  });
+  leaderboardCards.forEach(card => card.style.height = maxHeight + 'px');
+}
+
+// Run after everything is loaded
+window.addEventListener('load', () => {
+  matchLeaderboardHeights();
+});
+
+// Optional: re-run if leaderboard content changes dynamically
   </script>
 </body>
 </html>
