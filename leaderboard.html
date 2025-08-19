@@ -721,23 +721,21 @@
     cardContainer.appendChild(wrapper);
   
   })();
-  // Match leaderboard card heights (your old function)
-function matchLeaderboardHeights() {
-  const leaderboardCards = document.querySelectorAll('.leaderboard-section .beer-card');
-  let maxHeight = 0;
-  leaderboardCards.forEach(card => {
-    card.style.height = 'auto'; // reset
-    maxHeight = Math.max(maxHeight, card.offsetHeight);
-  });
-  leaderboardCards.forEach(card => card.style.height = maxHeight + 'px');
+// Fit text to one line ONLY for most recent additions cards
+function fitTextToOneLine(el, maxFont = 1.45) {
+  let fontSize = maxFont;
+  el.style.fontSize = fontSize + "rem";
+  while(el.scrollWidth > el.clientWidth && fontSize > 0.8) { // stop at min font
+    fontSize -= 0.05;
+    el.style.fontSize = fontSize + "rem";
+  }
 }
 
-// Run after everything is loaded
-window.addEventListener('load', () => {
-  matchLeaderboardHeights();
+// Run only for .recent-additions cards
+document.addEventListener('DOMContentLoaded', () => {
+  const recentBeerNames = document.querySelectorAll('.recent-additions .beer-name');
+  recentBeerNames.forEach(el => fitTextToOneLine(el));
 });
-
-// Optional: re-run if leaderboard content changes dynamically
   </script>
 </body>
 </html>
