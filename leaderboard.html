@@ -429,6 +429,56 @@
       margin-bottom: 12px;
       color: #f0a830;
     }
+
+    .brewery-card {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 15px;
+      padding: 16px 24px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      color: #fff;
+    }
+    
+    .brewery-rank {
+      font-weight: 900;
+      font-size: 2.6rem;
+      width: 70px;
+      color: #f0a830;
+      text-align: center;
+      margin-right: 1.4rem;
+      text-shadow: 0 0 7px rgba(240, 168, 48, 0.8);
+    }
+    
+    .brewery-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-right: 1.6rem;
+    }
+    
+    .brewery-info {
+      flex-grow: 1;
+    }
+    
+    .brewery-name {
+      font-weight: 800;
+      font-size: 1.45rem;
+      margin-bottom: 6px;
+      color: #fff;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
+    }
+    
+    .brewery-meta {
+      display: flex;
+      gap: 28px;
+      font-size: 1rem;
+      color: #d4b75e;
+      font-weight: 600;
+      text-shadow: 0 0 3px rgba(0,0,0,0.6);
+    }
     
     @media (max-width: 900px) {
       .recent-additions {
@@ -607,18 +657,18 @@
     cardsWrapper.style.gap = '16px';
   
     // --- Brewery card ---
-    const brNames = [...new Set(beersThisEp.map(b => b.brewery))];
     brNames.forEach(brName => {
       const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
       if (!br) return;
-  
+    
       const breweryCard = document.createElement('div');
-      breweryCard.className = 'brewery-card'; // Use leaderboard style class
+      breweryCard.className = 'brewery-card rank1'; // keep rank1 styling if desired
       breweryCard.innerHTML = `
-        <img src="${br.logoUrl}" alt="${br.name} logo" style="width:60px; height:60px; object-fit:contain; margin-right:16px;">
-        <div class="beer-info">
+        <div class="brewery-rank">${getBreweryRank(br.name, 'bbbrsScore')}</div>
+        <img class="brewery-logo" src="${br.logoUrl}" alt="${br.name} logo">
+        <div class="brewery-info">
           <div class="brewery-name">${br.name}</div>
-          <div class="beer-meta">
+          <div class="brewery-meta">
             <div>BBBRS Rank: ${getBreweryRank(br.name,'bbbrsScore')}</div>
             <div>Untappd Rank: ${getBreweryRank(br.name,'untappdScore')}</div>
           </div>
