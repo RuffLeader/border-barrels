@@ -560,9 +560,17 @@
     
       const cardContainer = document.getElementById('recent-card');
     
-      // Create video wrapper
+      // Create wrapper for video + cards
+      const wrapper = document.createElement('div');
+      wrapper.className = 'recent-wrapper';
+      wrapper.style.display = 'flex';
+      wrapper.style.flexWrap = 'wrap';
+      wrapper.style.gap = '20px';
+    
+      // --- Video side ---
       const videoWrapper = document.createElement('div');
       videoWrapper.className = 'video-wrapper';
+      videoWrapper.style.flex = '1 1 400px';
       const ytEmbed = document.createElement('iframe');
       ytEmbed.width = "100%";
       ytEmbed.height = "315";
@@ -582,45 +590,56 @@
         <a href="${latestEp.appleUrl}" target="_blank" style="color:#f0a830; font-weight:700;">Apple Podcasts</a>
       `;
       videoWrapper.appendChild(linksDiv);
+      wrapper.appendChild(videoWrapper);
     
-      cardContainer.appendChild(videoWrapper);
-    
-      // Create cards wrapper
+      // --- Cards side ---
       const cardsWrapper = document.createElement('div');
       cardsWrapper.className = 'cards-wrapper';
+      cardsWrapper.style.flex = '1 1 400px';
+      cardsWrapper.style.display = 'flex';
+      cardsWrapper.style.flexDirection = 'column';
+      cardsWrapper.style.gap = '16px';
     
       // --- Brewery card ---
-      const brNames = [...new Set(beersThisEp.map(b => b.brewery))]; // unique breweries
+      const brNames = [...new Set(beersThisEp.map(b => b.brewery))];
       brNames.forEach(brName => {
         const br = brewery.find(b => b.name.trim().toLowerCase() === brName.trim().toLowerCase());
         if (!br) return;
     
         const breweryCard = document.createElement('div');
-        breweryCard.className = 'brewery-card';
-        const breweryRankBB = getBreweryRank(br.name, 'bbbrsScore');
-        const breweryRankUT = getBreweryRank(br.name, 'untappdScore');
+        breweryCard.className = 'brewery-leaderboard brewery-card';
         breweryCard.innerHTML = `
           <div class="brewery-name">${br.name}</div>
-          <div>BBBRS Rank: ${breweryRankBB}</div>
-          <div>Untappd Rank: ${breweryRankUT}</div>
+          <div class="beer-meta">
+            <div>BBBRS Rank: ${getBreweryRank(br.name, 'bbbrsScore')}</div>
+            <div>Untappd Rank: ${getBreweryRank(br.name, 'untappdScore')}</div>
+          </div>
         `;
         cardsWrapper.appendChild(breweryCard);
       });
     
       // --- Beer cards ---
-      beersThisEp.forEach(beer => {
+      beersThisEp.forEach((beer, i) => {
         const beerCard = document.createElement('div');
-        beerCard.className = 'beer-card';
+        const rankClass = i === 0 ? 'rank1' : i === 1 ? 'rank2' : i === 2 ? 'rank3' : '';
+        beerCard.className = `beer-card ${rankClass}`;
         beerCard.innerHTML = `
-          <div class="beer-name">${beer.name}</div>
-          <div class="brewery-name">${beer.brewery}</div>
-          <div>Beer BBBRS Rank: ${getBeerRank(beer, 'bbbrsScore')}</div>
-          <div>Beer Untappd Rank: ${getBeerRank(beer, 'untappdScore')}</div>
+          <div class="beer-rank">${getBeerRank(beer, 'bbbrsScore')}</div>
+          <img class="beer-image" src="${beer.beerCanUrl}" alt="${beer.name}" />
+          <div class="beer-info">
+            <div class="beer-name">${beer.name}</div>
+            <div class="brewery-name">${beer.brewery}</div>
+            <div class="beer-meta">
+              <div>BBBRS Rank: ${getBeerRank(beer, 'bbbrsScore')}</div>
+              <div>Untappd Rank: ${getBeerRank(beer, 'untappdScore')}</div>
+            </div>
+          </div>
         `;
         cardsWrapper.appendChild(beerCard);
       });
     
-      cardContainer.appendChild(cardsWrapper);
+      wrapper.appendChild(cardsWrapper);
+      cardContainer.appendChild(wrapper);
     
     })();
   </script>
