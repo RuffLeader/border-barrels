@@ -721,19 +721,6 @@
     cardContainer.appendChild(wrapper);
   
   })();
-function fitTextToOneLine(el, maxFont = 1.45) {
-  let fontSize = maxFont;
-  el.style.fontSize = fontSize + "rem";
-  while(el.scrollWidth > el.clientWidth && fontSize > 0.8) { // stop at min font
-    fontSize -= 0.05;
-    el.style.fontSize = fontSize + "rem";
-  }
-}
-
-// Run after the page content has loaded
-window.addEventListener('load', () => {
-  document.querySelectorAll('.recent-additions .beer-name').forEach(el => fitTextToOneLine(el));
-});
   </script>
 </body>
 </html>
