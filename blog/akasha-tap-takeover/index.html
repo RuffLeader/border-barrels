@@ -59,42 +59,40 @@
       border-bottom-color: #001540;
     }
     
-    /* Photo grid figure */
-    .grid-figure {
-      display: grid; /* make the figure a grid container */
-      grid-template-columns: 1fr; /* default: single column on mobile */
+    /* Container for all images */
+    .grid-images {
+      display: grid;
+      grid-template-columns: 1fr; /* default single column for mobile */
       gap: 1rem;
       margin: 2rem auto;
-      max-width: 1000px;
     }
     
-    .grid-figure img {
+    /* Individual images */
+    .grid-images img {
       width: 100%;
-      height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.12);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     
-    .grid-figure img:hover {
-      transform: translateY(-6px) scale(1.03); /* lifts and slightly enlarges */
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18); /* stronger shadow */
+    .grid-images img:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
     }
     
-    .grid-figure figcaption {
-      grid-column: 1 / -1; /* caption spans all columns */
+    /* Caption below the grid */
+    .photo-grid figcaption {
       text-align: center;
       margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #555;
+      grid-column: 1 / -1; /* ensures caption spans full width if needed */
     }
     
-    /* Desktop view: multiple columns */
+    /* Desktop: 2–3 images per row */
     @media (min-width: 768px) {
-      .grid-figure {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 2–3 images per row */
-        gap: 1.5rem;
+      .grid-images {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         max-width: 1400px;
       }
     }
@@ -159,14 +157,14 @@
     </p>
   <!-- Photo grid -->
     <div class="photo-grid">
-      <figure class="grid-figure">
+      <div class="grid-images">
         <img src="/media/photos/akasha-1.jpg" alt="The boys starting the pod" />
         <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
         <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
         <img src="/media/photos/akasha-4.jpg" alt="The Goods Shed Wodonga" />
-        <figcaption>Photos Courtesy of <a href="https://sundaymusestudio.com/" target="_blank" rel="noopener">Sunday Muse Studio</a></figcaption>
-      </figure>
-    </div>    
+      </div>
+      <figcaption>Photos Courtesy of <a href="https://sundaymusestudio.com/" target="_blank" rel="noopener">Sunday Muse Studio</a></figcaption>
+    </div>
     <p><a href="/blog/">← Back to Blog</a></p>
   </div>
     <footer>
