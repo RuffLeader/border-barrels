@@ -59,13 +59,13 @@
       border-bottom-color: #001540;
     }
     
-    /* Grid for multiple images in one figure */
+    /* Base grid for mobile/small screens */
     .photo-grid figure {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 300px min for bigger images */
-      gap: 1rem; /* smaller gap to bring images closer */
+      grid-template-columns: 1fr; /* single column by default */
+      gap: 1rem;
       margin: 2rem auto;
-      max-width: 1200px; /* container width */
+      max-width: 1000px;
     }
     
     .photo-grid figure img {
@@ -81,6 +81,15 @@
       margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #555;
+    }
+    
+    /* Desktop view: multiple larger columns */
+    @media (min-width: 768px) {
+      .photo-grid figure {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 2–3 large images per row */
+        gap: 1.5rem; /* slightly bigger gap for desktop */
+        max-width: 1400px; /* wider container for large screens */
+      }
     }
 
     /* ✅ Styling for standalone figures */
@@ -148,7 +157,7 @@
         <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
         <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
         <img src="/media/photos/akasha-4.jpg" alt="The Goods Shed Wodonga" />
-        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
+        <figcaption>Photos Courtesy of <a href="https://sundaymusestudio.com/" target="_blank" rel="noopener">Sunday Muse Studio</a></figcaption>
       </figure>
     </div>    
     <p><a href="/blog/">← Back to Blog</a></p>
