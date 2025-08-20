@@ -33,29 +33,56 @@
       color: #777;
     }
     .post-content {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 2rem auto;
       padding: 0 1rem;
       line-height: 1.6;
     }
-    .post-content img {
-      max-width: 100%;
+
+    /* Center paragraph text */
+    .post-content p {
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* Nicer link styles */
+    .post-content a {
+      color: #002157;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #00215733;
+      transition: all 0.2s ease;
+    }
+    .post-content a:hover {
+      color: #001540;
+      border-bottom-color: #001540;
+    }
+    
+    /* Grid layout for multiple figures */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .photo-grid figure {
+      margin: 0;
+      text-align: center;
+    }
+
+    .photo-grid img {
+      width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      margin: 1.5rem 0;
-      display: block;
     }
-    
-    .post-content figure {
-      margin: 2rem 0;
-      text-align: center;
-    }
-    
-    .post-content figcaption {
+
+    .photo-grid figcaption {
+      margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #555;
-      margin-top: 0.5rem;
     }
   </style>
 </head>
@@ -88,26 +115,33 @@
 
   <div class="post-content">
     <p>On a special episode of Border Barrels, the boys head across the mighty Murray to the home of craft beer on the border, The Goods Shed, for their Akasha Tap Takeover event. 
-This one has, interviews (wow!) with Dan from The Goods Shed, and Larry from Akasha Brewing. It has all of us trying some delicious craft beer (some exclusive to the event), and as always, it has some terrible banter from the boys.
-This is the inaugural Beercast, this is our most fun pod to date, so get around it! We would love to do an infinite more of these types of pods.</p>
-    <p>Make sure you check out both <a href="https://www.instagram.com/akashabrew/" target="_blank" rel="noopener">Akasha</a> and <a href="https://www.instagram.com/goodsshed/" target="_blank" rel="noopener">The Goods Shed</a> on their socials.</p>
-   <figure>
-      <img src="/media/photos/akasha-1.jpg" alt="The boys starting the pod" />
-      <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-    </figure>
-    <figure>
-      <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
-      <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-    </figure>
-    <figure>
-      <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
-      <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-    </figure>
-    <figure>
-      <img src="/media/photos/akasha-4.jpg" alt="The Goods Shed Wodonga" />
-      <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-    </figure>
-    
+    This one has, interviews (wow!) with Dan from The Goods Shed, and Larry from Akasha Brewing. It has all of us trying some delicious craft beer (some exclusive to the event), and as always, it has some terrible banter from the boys.
+    This is the inaugural Beercast, this is our most fun pod to date, so get around it! We would love to do an infinite more of these types of pods.</p>
+    <p>Make sure you check out both 
+      <a href="https://www.instagram.com/akashabrew/" target="_blank" rel="noopener">Akasha</a>
+      and
+      <a href="https://www.instagram.com/goodsshed/" target="_blank" rel="noopener">The Goods Shed</a>
+      on their socials.
+    </p>
+  <!-- Photo grid -->
+    <div class="photo-grid">
+      <figure>
+        <img src="/media/photos/akasha-1.jpg" alt="The boys starting the pod" />
+        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
+      </figure>
+      <figure>
+        <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
+        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
+      </figure>
+      <figure>
+        <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
+        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
+      </figure>
+      <figure>
+        <img src="/media/photos/akasha-4.jpg" alt="The Goods Shed Wodonga" />
+        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
+      </figure>
+    </div>    
     <p><a href="/blog/">← Back to Blog</a></p>
   </div>
     <footer>
@@ -143,12 +177,14 @@ This is the inaugural Beercast, this is our most fun pod to date, so get around 
     }
 
     loadPost();
-    const navToggle = document.getElementById("nav-toggle");
-const navMenu = document.getElementById("nav-menu");
 
-navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("show");
-});
+    // Mobile nav toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+
+    navToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+    });
   </script>
 </body>
 </html>
