@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Blog</title>
   <link rel="stylesheet" href="/style.css"/>
+  <style>
+    .blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0;
+      list-style: none;
+    }
+    .blog-item {
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      background: #fff;
+      color: #000;
+    }
+    .blog-item h2 {
+      margin: 0 0 0.5rem 0;
+    }
+    .blog-item p {
+      margin: 0.5rem 0 0 0;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -25,7 +49,7 @@
   </header>
 
   <main>
-    <p>Coming soon: behind-the-scenes, extra reviews, and more!</p>
+    <ul id="blog-list" class="blog-list"></ul>
   </main>
 
   <footer>
@@ -33,5 +57,31 @@
       <p>© 2025 Border Barrels</p>
     </div>
   </footer>
+  <script>
+    async function loadPosts() {
+      const res = await fetch('/blog/posts.json');
+      const posts = await res.json();
+
+      // Sort by date (newest first)
+      posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const list = document.getElementById('blog-list');
+
+      posts.forEach(post => {
+        const li = document.createElement('li');
+        li.className = 'blog-item';
+
+        li.innerHTML = `
+          <h2><a href="/blog/${post.slug}/">${post.title}</a></h2>
+          <small>${new Date(post.date).toLocaleDateString()}</small>
+          <p>${post.excerpt}</p>
+        `;
+
+        list.appendChild(li);
+      });
+    }
+
+    loadPosts();
+  </script>
 </body>
 </html>
