@@ -15,18 +15,75 @@
       padding: 0;
       list-style: none;
     }
-    .blog-item {
-      padding: 1.5rem;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      background: #fff;
-      color: #000;
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
-    .blog-item h2 {
+
+    .blog-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .blog-card-content {
+      padding: 1.2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card h2 {
+      font-size: 1.3rem;
       margin: 0 0 0.5rem 0;
+      color: #002157;
     }
-    .blog-item p {
-      margin: 0.5rem 0 0 0;
+
+    .blog-card small {
+      color: #777;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .blog-card p {
+      flex: 1;
+      margin: 0 0 1rem 0;
+      font-size: 0.95rem;
+    }
+
+    .blog-card a {
+      text-decoration: none;
+      color: white;
+      background: #002157;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .blog-card a:hover {
+      background: #001540;
     }
   </style>
 </head>
@@ -49,7 +106,7 @@
   </header>
 
   <main>
-    <ul id="blog-list" class="blog-list"></ul>
+    <div id="blog-grid" class="blog-grid"></div>
   </main>
 
   <footer>
@@ -65,19 +122,23 @@
       // Sort by date (newest first)
       posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      const list = document.getElementById('blog-list');
+      const grid = document.getElementById('blog-grid');
 
       posts.forEach(post => {
-        const li = document.createElement('li');
-        li.className = 'blog-item';
+        const card = document.createElement('div');
+        card.className = 'blog-card';
 
-        li.innerHTML = `
-          <h2><a href="/blog/${post.slug}/">${post.title}</a></h2>
-          <small>${new Date(post.date).toLocaleDateString()}</small>
-          <p>${post.excerpt}</p>
+        card.innerHTML = `
+          <img src="${post.image}" alt="${post.title}">
+          <div class="blog-card-content">
+            <h2>${post.title}</h2>
+            <small>${new Date(post.date).toLocaleDateString()}</small>
+            <p>${post.excerpt}</p>
+            <a href="/blog/${post.slug}/">Read More →</a>
+          </div>
         `;
 
-        list.appendChild(li);
+        grid.appendChild(card);
       });
     }
 
