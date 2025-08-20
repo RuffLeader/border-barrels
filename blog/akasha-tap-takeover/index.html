@@ -59,28 +59,25 @@
       border-bottom-color: #001540;
     }
     
-    /* Grid layout for multiple figures */
-    .photo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 2rem;
-      margin: 2rem 0;
-      max-width: 1400px; /* wider container */
-    }
-
+    /* Grid for multiple images in one figure */
     .photo-grid figure {
-      margin: 0;
-      text-align: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 300px min for bigger images */
+      gap: 1rem; /* smaller gap to bring images closer */
+      margin: 2rem auto;
+      max-width: 1200px; /* container width */
     }
-
-    .photo-grid img {
+    
+    .photo-grid figure img {
       width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     }
-
-    .photo-grid figcaption {
+    
+    .photo-grid figure figcaption {
+      grid-column: 1 / -1; /* span full width */
+      text-align: center;
       margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #555;
@@ -148,17 +145,8 @@
     <div class="photo-grid">
       <figure>
         <img src="/media/photos/akasha-1.jpg" alt="The boys starting the pod" />
-        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-      </figure>
-      <figure>
         <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
-        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-      </figure>
-      <figure>
         <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
-        <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
-      </figure>
-      <figure>
         <img src="/media/photos/akasha-4.jpg" alt="The Goods Shed Wodonga" />
         <figcaption>Photo Courtesy of Sunday Muse Studio</figcaption>
       </figure>
