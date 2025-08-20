@@ -3,18 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <title>Off-Roadie Review | Border Barrels Blog</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/style.css">
+   <style>
+    .post-header {
+      position: relative;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    .post-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .post-header h1 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+    }
+    .post-meta {
+      text-align: center;
+      margin: 1rem 0;
+      color: #777;
+    }
+    .post-content {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>🍺 Off-Roadie Review</h1>
     <p>Reviewed in Episode 23</p>
   </header>
+  <!-- Header image & title will be injected -->
+  <div id="post-header" class="post-header">
+    <h1 id="post-title">Loading...</h1>
+  </div>
 
-  <article>
-    <p>We cracked open Sunday Road Brewing’s Off-Roadie and gave it a 20.5/25 overall score. Here’s what we thought...</p>
+  <div class="post-meta">
+    <small id="post-date"></small>
+  </div>
 
+  <div class="post-content">
+    <p>
+      This is where your blog content goes. You can write whatever you like here,
+      and the header image + title will be auto-loaded.
+    </p>
     <p><a href="/blog/">← Back to Blog</a></p>
-  </article>
+  </div>
+  <script>
+    async function loadPost() {
+      const res = await fetch('/blog/posts.json');
+      const posts = await res.json();
+
+      // Get current slug from URL path
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const slug = pathParts[pathParts.length - 1]; // last part before /
+
+      // Find post data
+      const post = posts.find(p => p.slug === slug);
+
+      if (post) {
+        // Set header background
+        const header = document.getElementById('post-header');
+        header.style.backgroundImage = `url(${post.image})`;
+
+        // Set title + date
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-date').textContent =
+          new Date(post.date).toLocaleDateString();
+
+        // Update <title> for SEO
+        document.title = `${post.title} | Border Barrels Blog`;
+      }
+    }
+
+    loadPost();
+  </script>
 </body>
 </html>
