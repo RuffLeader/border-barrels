@@ -59,36 +59,43 @@
       border-bottom-color: #001540;
     }
     
-    /* Base grid for mobile/small screens */
-    .photo-grid figure {
-      display: grid;
-      grid-template-columns: 1fr; /* single column by default */
+    /* Photo grid figure */
+    .grid-figure {
+      display: grid; /* make the figure a grid container */
+      grid-template-columns: 1fr; /* default: single column on mobile */
       gap: 1rem;
       margin: 2rem auto;
       max-width: 1000px;
     }
     
-    .photo-grid figure img {
+    .grid-figure img {
       width: 100%;
       height: auto;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    
+    .grid-figure img:hover {
+      transform: translateY(-6px) scale(1.03); /* lifts and slightly enlarges */
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18); /* stronger shadow */
     }
     
-    .photo-grid figure figcaption {
-      grid-column: 1 / -1; /* span full width */
+    .grid-figure figcaption {
+      grid-column: 1 / -1; /* caption spans all columns */
       text-align: center;
       margin-top: 0.5rem;
       font-size: 0.9rem;
       color: #555;
     }
     
-    /* Desktop view: multiple larger columns */
+    /* Desktop view: multiple columns */
     @media (min-width: 768px) {
-      .photo-grid figure {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 2–3 large images per row */
-        gap: 1.5rem; /* slightly bigger gap for desktop */
-        max-width: 1400px; /* wider container for large screens */
+      .grid-figure {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 2–3 images per row */
+        gap: 1.5rem;
+        max-width: 1400px;
       }
     }
 
@@ -152,7 +159,7 @@
     </p>
   <!-- Photo grid -->
     <div class="photo-grid">
-      <figure>
+      <figure class="grid-figure">
         <img src="/media/photos/akasha-1.jpg" alt="The boys starting the pod" />
         <img src="/media/photos/akasha-2.jpg" alt="The boys are joined by Larry from Akasha" />
         <img src="/media/photos/akasha-3.jpg" alt="The boys are joined by Larry from Akasha" />
