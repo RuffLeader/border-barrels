@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Murray Towns Brewing Co. Interview at The Woolhouse, Albury</title>
+  <link rel="stylesheet" href="/style.css">
+   <style>
+    .post-header {
+      position: relative;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    .post-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .post-header h1 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+    }
+    .post-meta {
+      text-align: center;
+      margin: 1rem 0;
+      color: #777;
+    }
+    .post-content {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+
+    /* Center paragraph text */
+    .post-content p {
+      text-align: center;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* Nicer link styles */
+    .post-content a {
+      color: #002157;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #00215733;
+      transition: all 0.2s ease;
+    }
+    .post-content a:hover {
+      color: #001540;
+      border-bottom-color: #001540;
+    }
+    
+    /* Container for all images */
+    .grid-images {
+      display: grid;
+      grid-template-columns: 1fr; /* default single column for mobile */
+      gap: 1rem;
+      margin: 2rem auto;
+    }
+    
+    /* Individual images */
+    .grid-images img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .grid-images img:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+    
+    /* Caption below the grid */
+    .photo-grid figcaption {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+      grid-column: 1 / -1; /* ensures caption spans full width if needed */
+    }
+    
+    /* Desktop: 2–3 images per row */
+    @media (min-width: 768px) {
+      .grid-images {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        max-width: 1400px;
+      }
+    }
+
+    /* ✅ Styling for standalone figures */
+    .post-content figure {
+      margin: 2rem auto;
+      text-align: center;
+      max-width: 800px;
+    }
+    
+    .post-content figure img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .post-content figure figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="page-title">Border Barrels Blog</h1>
+      <nav id="nav-menu" class="nav-links">
+        <a href="/index.html">Home</a>
+        <a href="/beers.html">Beers</a>
+        <a href="/episodes.html">Episodes</a>
+        <a href="/blog/index.html">Blog</a>
+        <a href="/about.html">About Us</a>
+      </nav>
+      <button id="nav-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
+    </div>
+  </header>
+  <!-- Header image & title will be injected -->
+  <div id="post-header" class="post-header">
+    <h1 id="post-title">Loading...</h1>
+  </div>
+
+  <div class="post-meta">
+    <small id="post-date"></small>
+  </div>
+
+  <div class="post-content">
+    <p>HOW LUCKY ARE WE?! A wonderful experience for the Border Barrels lads, as Jodie and Barry from Murray Towns Brewing Co. joined us for a relaxing Sunday afternoon session at The Woolhouse in Albury.<br>
+    These generous gentlemen supplied us with all the exclusives! Two development beers being the immediate highlight (Jodie is an absolute magician), plus all the exciting details of a future Murray Towns brewpub.<br>
+    We can already taste A Beer Named Sue, sure to be pouring on opening night. Jodie and Barry also provided us with details of their own personal beer journeys, and what ultimately lead to the creation of Murray Towns (Hint: It almost had a very different, hilarious name).<br>
+    Make sure to check our their current range of beers, available at select local venues on tap and in cans at local beer dealers.<br>
+    Thanks again to Barry and Jodie, as well as Gav and the team at The Woolhouse for allowing us to use their wonderful venue for this podcast.</p>
+    <p>Check the episode out on <a href="https://www.youtube.com/watch?v=YuWLq4Y0TbQ" target="_blank" rel="noopener">YouTube</a>, <a href="https://open.spotify.com/episode/585tXguXf5ItAFIZ8LQJ8J" target="_blank" rel="noopener">Spotify</a>, or <a href="https://podcasts.apple.com/au/podcast/beercast-36-murray-towns-brewing/id1559619911?i=1000615085234" target="_blank" rel="noopener">Apple Podcasts</a>.
+    <p>Make sure you check out both 
+      <a href="https://www.instagram.com/murraytowns_brewing_co/" target="_blank" rel="noopener">Murray Towns Brewing Co.</a>
+      and
+      <a href="https://www.instagram.com/thewoolhouse/" target="_blank" rel="noopener">The Woolhouse</a>
+      on their socials.
+    </p>
+  <!-- Photo grid -->
+    <div class="photo-grid">
+      <div class="grid-images">
+        <img src="/media/photos/murray-towns-1.jpg" alt="The interview has begun" />
+        <img src="/media/photos/murray-towns-2.jpg" alt="Grattzy having a good time" />
+        <img src="/media/photos/murray-towns-3.jpg" alt="Hudo get worked up again" />
+        <img src="/media/photos/murray-towns-4.jpg" alt="Murray Towns Brewing Logo on vest" />
+        <img src="/media/photos/murray-towns-5.jpg" alt="Interview in full swing" />
+        <img src="/media/photos/murray-towns-7.jpg" alt="Interview is getting funny" />
+      </div>
+      <figcaption>Photos Courtesy of <a href="https://sundaymusestudio.com/" target="_blank" rel="noopener">Sunday Muse Studio</a></figcaption>
+    </div>
+    <p><a href="/blog/">← Back to Blog</a></p>
+  </div>
+    <footer>
+    <div class="container">
+      <p>© 2025 Border Barrels</p>
+    </div>
+  </footer>
+  <script>
+    async function loadPost() {
+      const res = await fetch('/blog/posts.json');
+      const posts = await res.json();
+
+      // Get current slug from URL path
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const slug = pathParts[pathParts.length - 1]; // last part before /
+
+      // Find post data
+      const post = posts.find(p => p.slug === slug);
+
+      if (post) {
+        // Set header background
+        const header = document.getElementById('post-header');
+        header.style.backgroundImage = `url(${post.image})`;
+
+        // Set title + date
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-date').textContent =
+          new Date(post.date).toLocaleDateString();
+
+        // Update <title> for SEO
+        document.title = `${post.title} | Border Barrels Blog`;
+      }
+    }
+
+    loadPost();
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+
+    navToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+    });
+  </script>
+</body>
+</html>
