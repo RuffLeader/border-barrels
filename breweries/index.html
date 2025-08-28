@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let filteredBreweries = [];
   let currentPage = 1;
 
-  // Populate status filter
+  // --- Populate status filter ---
   ["", "Independent", "Not Independent"].forEach(optText => {
     const opt = document.createElement("option");
     opt.value = optText;
@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
     statusFilter.appendChild(opt);
   });
 
-  // Populate state filter
+  // --- Populate state filter ---
   const states = [...new Set(breweries.map(b => b.state))].sort();
   states.forEach(state => {
     const opt = document.createElement("option");
@@ -266,14 +266,16 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
+  // --- Calculate items per page safely ---
   function getItemsPerPage() {
     const gridWidth = grid.clientWidth;
     const cardWidth = 220;
     const gap = 20;
-    const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
+    const cardsPerRow = Math.max(1, Math.floor((gridWidth + gap) / (cardWidth + gap)));
     return cardsPerRow * 2; // 2 rows
   }
 
+  // --- Render breweries ---
   function renderPage() {
     const itemsPerPage = getItemsPerPage();
     grid.innerHTML = "";
@@ -299,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPagination(itemsPerPage);
   }
 
+  // --- Render pagination ---
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
     const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
@@ -320,6 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // --- Filter breweries ---
   function filterBreweries() {
     const search = searchBar.value.toLowerCase();
     const status = statusFilter.value;
@@ -338,18 +342,24 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPage();
   }
 
+  // --- Event listeners ---
   searchBar.addEventListener("input", filterBreweries);
   statusFilter.addEventListener("change", filterBreweries);
   stateFilter.addEventListener("change", filterBreweries);
 
-  window.addEventListener("resize", renderPage);
+  // --- Debounced resize handler ---
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(renderPage, 150);
+  });
 
+  // --- Initial render ---
   filterBreweries();
 
-  // Burger menu toggle
+  // --- Burger menu toggle ---
   const navToggle = document.getElementById("nav-toggle");
   const navMenu = document.getElementById("nav-menu");
-
   if (navToggle && navMenu) {
     navToggle.addEventListener("click", () => {
       navMenu.classList.toggle("show");
