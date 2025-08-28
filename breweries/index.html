@@ -237,127 +237,127 @@
     <p>© 2025 Border Barrels</p>
   </footer>
 
-  <script src="/breweries.js"></script>
-  <script>
-    const grid = document.getElementById("breweryGrid");
-    const searchBar = document.getElementById("searchBar");
-    const statusFilter = document.getElementById("statusFilter");
-    const stateFilter = document.getElementById("stateFilter");
-    const pagination = document.getElementById("pagination");
+<script src="/breweries.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("breweryGrid");
+  const searchBar = document.getElementById("searchBar");
+  const statusFilter = document.getElementById("statusFilter");
+  const stateFilter = document.getElementById("stateFilter");
+  const pagination = document.getElementById("pagination");
 
-    let filteredBreweries = [];
-    let currentPage = 1;
+  let filteredBreweries = [];
+  let currentPage = 1;
 
-    // Populate status filter
-    ["", "Independent", "Not Independent"].forEach(optText => {
-      const opt = document.createElement("option");
-      opt.value = optText;
-      opt.textContent = optText === "" ? "All Status" : optText;
-      statusFilter.appendChild(opt);
+  // Populate status filter
+  ["", "Independent", "Not Independent"].forEach(optText => {
+    const opt = document.createElement("option");
+    opt.value = optText;
+    opt.textContent = optText === "" ? "All Status" : optText;
+    statusFilter.appendChild(opt);
+  });
+
+  // Populate state filter
+  const states = [...new Set(breweries.map(b => b.state))].sort();
+  states.forEach(state => {
+    const opt = document.createElement("option");
+    opt.value = state;
+    opt.textContent = state;
+    stateFilter.appendChild(opt);
+  });
+
+  function getItemsPerPage() {
+    const gridWidth = grid.clientWidth;
+    const cardWidth = 220;
+    const gap = 20;
+    const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
+    return cardsPerRow * 2; // 2 rows
+  }
+
+  function renderPage() {
+    const itemsPerPage = getItemsPerPage();
+    grid.innerHTML = "";
+
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredBreweries.slice(start, end);
+
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
     });
 
-    // Populate state filter
-    const states = [...new Set(breweries.map(b => b.state))].sort();
-    states.forEach(state => {
-      const opt = document.createElement("option");
-      opt.value = state;
-      opt.textContent = state;
-      stateFilter.appendChild(opt);
-    });
+    renderPagination(itemsPerPage);
+  }
 
-    function getItemsPerPage() {
-      const gridWidth = grid.clientWidth;
-      const cardWidth = 220;
-      const gap = 20;
-      const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
-      return cardsPerRow * 2; // 2 rows
-    }
+  function renderPagination(itemsPerPage) {
+    pagination.innerHTML = "";
+    const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
+    if (pageCount <= 1) return;
 
-    function renderPage() {
-      const itemsPerPage = getItemsPerPage();
-      grid.innerHTML = "";
-
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      const pageItems = filteredBreweries.slice(start, end);
-
-      pageItems.forEach(b => {
-        const breweryStatus = b.independent ? "Independent" : "Not Independent";
-        const card = document.createElement("div");
-        card.className = "brewery-card";
-        card.innerHTML = `
-          ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-          <h2>${b.name}</h2>
-          <p>${b.city}, ${b.state}</p>
-          <p>${breweryStatus}</p>
-          <a href="/breweries/${b.slug}.html">View Brewery</a>
-        `;
-        grid.appendChild(card);
-      });
-
-      renderPagination(itemsPerPage);
-    }
-
-    function renderPagination(itemsPerPage) {
-      pagination.innerHTML = "";
-      const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
-      if (pageCount <= 1) return;
-
-      for (let page = 1; page <= pageCount; page++) {
-        const btn = document.createElement("button");
-        btn.textContent = page;
-        btn.classList.add("page-btn");
-        if (page === currentPage) {
-          btn.disabled = true;
-          btn.classList.add("active");
-        }
-        btn.addEventListener("click", () => {
-          currentPage = page;
-          renderPage();
-        });
-        pagination.appendChild(btn);
+    for (let page = 1; page <= pageCount; page++) {
+      const btn = document.createElement("button");
+      btn.textContent = page;
+      btn.classList.add("page-btn");
+      if (page === currentPage) {
+        btn.disabled = true;
+        btn.classList.add("active");
       }
-    }
-
-    function filterBreweries() {
-      const search = searchBar.value.toLowerCase();
-      const status = statusFilter.value;
-      const state = stateFilter.value;
-
-      filteredBreweries = breweries.filter(b => {
-        const breweryStatus = b.independent ? "Independent" : "Not Independent";
-        return (
-          b.name.toLowerCase().includes(search) &&
-          (status === "" || breweryStatus === status) &&
-          (state === "" || b.state === state)
-        );
+      btn.addEventListener("click", () => {
+        currentPage = page;
+        renderPage();
       });
-
-      currentPage = 1;
-      renderPage();
+      pagination.appendChild(btn);
     }
+  }
 
-    searchBar.addEventListener("input", filterBreweries);
-    statusFilter.addEventListener("change", filterBreweries);
-    stateFilter.addEventListener("change", filterBreweries);
+  function filterBreweries() {
+    const search = searchBar.value.toLowerCase();
+    const status = statusFilter.value;
+    const state = stateFilter.value;
 
-    window.addEventListener("resize", renderPage);
-
-    filterBreweries();
-
-    // Burger menu toggle
-    document.addEventListener("DOMContentLoaded", () => {
-      const navToggle = document.getElementById("nav-toggle");
-      const navMenu = document.getElementById("nav-menu");
-
-      if (navToggle && navMenu) {
-        navToggle.addEventListener("click", () => {
-          navMenu.classList.toggle("show");
-          const expanded = navToggle.getAttribute("aria-expanded") === "true";
-          navToggle.setAttribute("aria-expanded", !expanded);
-        });
-      }
+    filteredBreweries = breweries.filter(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      return (
+        b.name.toLowerCase().includes(search) &&
+        (status === "" || breweryStatus === status) &&
+        (state === "" || b.state === state)
+      );
     });
-  </script>
+
+    currentPage = 1;
+    renderPage();
+  }
+
+  searchBar.addEventListener("input", filterBreweries);
+  statusFilter.addEventListener("change", filterBreweries);
+  stateFilter.addEventListener("change", filterBreweries);
+
+  window.addEventListener("resize", renderPage);
+
+  filterBreweries();
+
+  // Burger menu toggle
+  const navToggle = document.getElementById("nav-toggle");
+  const navMenu = document.getElementById("nav-menu");
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+      const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", !expanded);
+    });
+  }
+});
+</script>
 </body>
 </html>
