@@ -142,11 +142,11 @@
 
     .brewery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, 250px); /* fixed width for all cards */
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* fixed width for all cards */
       justify-content: center; /* center the grid on the page */
       gap: 20px;
       padding: 20px;
-      max-width: 1100px; /* match your container width */
+      width: 100%; /* match your container width */
       margin: 0 auto; /* ensure grid is centered in the page */
     }
 
@@ -157,6 +157,7 @@
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.2s;
+      min-height: 220px;
     }
 
     .brewery-card:hover {
