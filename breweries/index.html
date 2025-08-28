@@ -391,6 +391,21 @@ statusFilter.addEventListener("change", filterBreweries);
 stateFilter.addEventListener("change", filterBreweries);
 
 filterBreweries();
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+
+    if (navToggle && navMenu) {
+      navToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("show");
+
+        // Update aria-expanded for accessibility
+        const expanded = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", !expanded);
+      });
+    }
+  });
 </script>
 </body>
 </html>
