@@ -3,7 +3,7 @@ const breweries = [
     name: "Aether Brewing",
     city: "Northgate",
     state: "Queensland",
-    logo: "media/logos/aether-brewing.png",
+    logo: "/media/logos/aether-brewing.png",
     website: "https://aetherbrewing.com.au/",
     instagram: "https://www.instagram.com/aether_brewing",
     description: "Aether Brewing is a family-owned and independent craft brewery based in Brisbane, Australia. Our passion for creativity flows, not only through our taps, but onto our labels, which showcase the talents of local visual artists. While you’re here, check out the Artist Amplifier Initiative, a collaborative springboard that looks to grow awareness and appreciation of the Australian arts community. We aim to inspire creative, flavourful, connected, and fulfilling lives in our community. We look to grow awareness and appreciation of the Australian arts community – combining its artistic talent with the inspired flair of our exceptional brew team. In doing so, we hope to enhance engagement between creatives and artists, as well as the brewing and hospitality communities.",
