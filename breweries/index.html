@@ -79,15 +79,20 @@
       border-radius: 8px;
     }
 
+    .brewery-grid-wrapper {
+      display: flex;
+      justify-content: center; /* center the grid */
+    }
+    
     .brewery-grid {
       display: grid;
-      justify-content: center;
+      grid-template-columns: repeat(auto-fill, 220px); /* fixed card width */
+      justify-content: center; /* center the grid within wrapper */
       gap: 20px;
       padding: 20px;
     }
 
     .brewery-card {
-      flex: 0 0 220px; /* fixed width */
       background: #f9f9f9;
       border-radius: 12px;
       padding: 20px;
@@ -263,10 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Calculate items per page safely ---
   function getItemsPerPage() {
     const gridWidth = grid.clientWidth;
-    const cardWidth = 220;
-    const gap = 20;
-    const cardsPerRow = Math.max(1, Math.floor((gridWidth + gap) / (cardWidth + gap)));
-    return cardsPerRow * 2; // 2 rows
+    const cardWidth = 220; // card width matches CSS
+    const gap = 20;        // CSS grid gap
+    const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
+    return cardsPerRow * 2; // 2 rows per page
   }
 
   // --- Render breweries ---
