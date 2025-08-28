@@ -141,8 +141,8 @@
     }
 
     .brewery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, 220px); /* fixed width for all cards */
+      display: inline-grid;
+      grid-template-columns: repeat(auto-fill, 220px); /* fixed width for all cards */
       justify-content: center; /* center the grid on the page */
       gap: 20px;
       padding: 20px;
@@ -150,6 +150,11 @@
       margin: 0 auto; /* ensure grid is centered in the page */
     }
 
+    .brewery-grid-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+    
     .brewery-card {
       background: #f9f9f9;
       border-radius: 12px;
@@ -293,8 +298,10 @@
     </select>
   </div>
 
-  <div class="brewery-grid" id="breweryGrid"></div>
-
+  <div class="brewery-grid-wrapper">
+    <div class="brewery-grid" id="breweryGrid"></div>
+  </div>
+      
   <div id="pagination"></div>
   
   <footer>
