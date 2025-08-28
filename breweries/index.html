@@ -323,6 +323,7 @@ function renderPage() {
     `;
     grid.appendChild(card);
   });
+  renderPagination(); // Add this line to render buttons
 }
 
 function renderPagination() {
@@ -341,7 +342,6 @@ function renderPagination() {
     btn.addEventListener("click", () => {
       currentPage = page;
       renderPage();
-      renderPagination();
     });
     pagination.appendChild(btn);
   };
@@ -384,7 +384,6 @@ function filterBreweries() {
 
   currentPage = 1;
   renderPage();
-  renderPagination();
 }
 
 searchBar.addEventListener("input", filterBreweries);
