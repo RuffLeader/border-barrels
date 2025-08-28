@@ -141,6 +141,15 @@
     stateFilter.appendChild(opt);
   });
 
+  // Set status dropdown options
+  const statusOptions = ["", "Independent", "Not Independent"];
+  statusOptions.forEach(optText => {
+    const opt = document.createElement("option");
+    opt.value = optText;
+    opt.textContent = optText === "" ? "All Status" : optText;
+    statusFilter.appendChild(opt);
+  });
+
   function renderBreweries() {
     const search = searchBar.value.toLowerCase();
     const status = statusFilter.value;
