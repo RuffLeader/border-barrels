@@ -238,6 +238,26 @@
         gap: 0.5rem;
       }
     }
+
+    @media (max-width: 768px) {
+  #nav-toggle {
+    display: flex;
+  }
+  #nav-menu {
+    display: none;       /* hide menu by default */
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #002157;
+    padding: 10px 0;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  #nav-menu.show {
+    display: flex;       /* show menu when .show is added */
+  }
+}
   </style>
 </head>
 <body>
