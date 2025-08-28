@@ -80,17 +80,19 @@
     }
 
     .brewery-grid-wrapper {
-      width: 90%;
       display: flex;
-      justify-content: center; /* center the grid */
+      justify-content: center;
+      width: 100%;
     }
     
     .brewery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, 220px); /* key change */
-      justify-content: center; /* center the grid within wrapper */
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      justify-content: center; /* centers last row if uneven */
       gap: 20px;
       padding: 20px;
+      max-width: 1100px;
+      width: 90%;
     }
 
     .brewery-card {
@@ -266,40 +268,35 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
-  // --- Calculate items per page safely ---
-  function getItemsPerPage() {
-    const gridWidth = grid.clientWidth;
-    const cardWidth = 220; // card width matches CSS
-    const gap = 20;        // CSS grid gap
-    const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
-    return cardsPerRow * 2; // 2 rows per page
-  }
+function getItemsPerPage() {
+  const cardsPerRow = Math.floor(grid.clientWidth / 240); // 220px + ~gap
+  return cardsPerRow * 2; // 2 rows per page
+}
 
-  // --- Render breweries ---
-  function renderPage() {
-    const itemsPerPage = getItemsPerPage();
-    grid.innerHTML = "";
+function renderPage() {
+  const itemsPerPage = getItemsPerPage();
+  grid.innerHTML = "";
 
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = filteredBreweries.slice(start, end);
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageItems = filteredBreweries.slice(start, end);
 
-    pageItems.forEach(b => {
-      const breweryStatus = b.independent ? "Independent" : "Not Independent";
-      const card = document.createElement("div");
-      card.className = "brewery-card";
-      card.innerHTML = `
-        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-        <h2>${b.name}</h2>
-        <p>${b.city}, ${b.state}</p>
-        <p>${breweryStatus}</p>
-        <a href="/breweries/${b.slug}.html">View Brewery</a>
-      `;
-      grid.appendChild(card);
-    });
+  pageItems.forEach(b => {
+    const breweryStatus = b.independent ? "Independent" : "Not Independent";
+    const card = document.createElement("div");
+    card.className = "brewery-card";
+    card.innerHTML = `
+      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+      <h2>${b.name}</h2>
+      <p>${b.city}, ${b.state}</p>
+      <p>${breweryStatus}</p>
+      <a href="/breweries/${b.slug}.html">View Brewery</a>
+    `;
+    grid.appendChild(card);
+  });
 
-    renderPagination(itemsPerPage);
-  }
+  renderPagination(itemsPerPage);
+}
 
   // --- Render pagination ---
   function renderPagination(itemsPerPage) {
