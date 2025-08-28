@@ -363,8 +363,8 @@ const breweries = [
   },
   {
     name: "Garage Project",
-    city: "Wellington City",
-    state: "Wellington, New Zealand",
+    city: "Wellington",
+    state: "New Zealand",
     logo: "/media/logos/garage-project.png",
     website: "https://garageproject.com.au",
     instagram: "https://www.instagram.com/garageproject",
