@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Breweries | Border Barrels</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #002157;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #002157;
+      color: white;
+    }
+
+    .search-filter {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-filter input,
+    .search-filter select {
+      padding: 8px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .brewery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .brewery-card {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+
+    .brewery-card:hover {
+      transform: scale(1.03);
+    }
+
+    .brewery-card img {
+      max-width: 120px;
+      margin-bottom: 10px;
+    }
+
+    .brewery-card h2 {
+      margin: 10px 0 5px;
+      font-size: 20px;
+    }
+
+    .brewery-card p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .brewery-card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #002157;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .brewery-card a:hover {
+      background: #0040a0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Breweries</h1>
+  </header>
+
+  <div class="search-filter">
+    <input type="text" id="searchBar" placeholder="Search breweries...">
+    <select id="statusFilter">
+      <option value="">All Status</option>
+      <option value="Independent">Independent</option>
+      <option value="Owned">Owned</option>
+      <option value="Closed">Closed</option>
+    </select>
+    <select id="stateFilter">
+      <option value="">All States</option>
+      <!-- JS will fill with states -->
+    </select>
+  </div>
+
+  <div class="brewery-grid" id="breweryGrid"></div>
+
+  <script src="/breweries.js"></script>
+  <script>
+    const grid = document.getElementById("breweryGrid");
+    const searchBar = document.getElementById("searchBar");
+    const statusFilter = document.getElementById("statusFilter");
+    const stateFilter = document.getElementById("stateFilter");
+
+    // Get unique states from breweries.js
+    const states = [...new Set(breweries.map(b => b.state))].sort();
+    states.forEach(state => {
+      const opt = document.createElement("option");
+      opt.value = state;
+      opt.textContent = state;
+      stateFilter.appendChild(opt);
+    });
+
+    function renderBreweries() {
+      const search = searchBar.value.toLowerCase();
+      const status = statusFilter.value;
+      const state = stateFilter.value;
+
+      grid.innerHTML = "";
+
+      breweries
+        .filter(b => 
+          b.name.toLowerCase().includes(search) &&
+          (status === "" || b.status.includes(status)) &&
+          (state === "" || b.state === state)
+        )
+        .forEach(b => {
+          const card = document.createElement("div");
+          card.className = "brewery-card";
+          card.innerHTML = `
+            ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+            <h2>${b.name}</h2>
+            <p>${b.city}, ${b.state}</p>
+            <p>${b.status}</p>
+            <a href="/breweries/${b.slug}.html">View Brewery</a>
+          `;
+          grid.appendChild(card);
+        });
+    }
+
+    searchBar.addEventListener("input", renderBreweries);
+    statusFilter.addEventListener("change", renderBreweries);
+    stateFilter.addEventListener("change", renderBreweries);
+
+    renderBreweries();
+  </script>
+</body>
+</html>
