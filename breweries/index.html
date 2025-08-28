@@ -311,7 +311,6 @@ const pagination = document.getElementById("pagination");
 
 let filteredBreweries = [];
 let currentPage = 1;
-const itemsPerPage = 12;
 
 // Populate status filter
 ["", "Independent", "Not Independent"].forEach(optText => {
@@ -330,8 +329,19 @@ states.forEach(state => {
   stateFilter.appendChild(opt);
 });
 
+// Calculate items per page based on grid width and card width (2 rows per page)
+function getItemsPerPage() {
+  const gridWidth = grid.clientWidth;
+  const cardWidth = 220; // approximate width including gap
+  const gap = 20; // same as CSS grid gap
+  const cardsPerRow = Math.floor((gridWidth + gap) / (cardWidth + gap));
+  return cardsPerRow * 2; // 2 rows
+}
+
 function renderPage() {
+  const itemsPerPage = getItemsPerPage();
   grid.innerHTML = "";
+
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   const pageItems = filteredBreweries.slice(start, end);
@@ -349,15 +359,16 @@ function renderPage() {
     `;
     grid.appendChild(card);
   });
-  renderPagination(); // Add this line to render buttons
+
+  renderPagination(itemsPerPage);
 }
 
-function renderPagination() {
+function renderPagination(itemsPerPage) {
   pagination.innerHTML = "";
   const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
   if (pageCount <= 1) return;
 
-  const addButton = (page) => {
+  for (let page = 1; page <= pageCount; page++) {
     const btn = document.createElement("button");
     btn.textContent = page;
     btn.classList.add("page-btn");
@@ -370,28 +381,7 @@ function renderPagination() {
       renderPage();
     });
     pagination.appendChild(btn);
-  };
-
-  const addEllipsis = () => {
-    const span = document.createElement("span");
-    span.textContent = "...";
-    span.classList.add("ellipsis");
-    pagination.appendChild(span);
-  };
-
-  const pagesToShow = [];
-  pagesToShow.push(1);
-  for (let i = currentPage - 2; i <= currentPage + 2; i++) {
-    if (i > 1 && i < pageCount) pagesToShow.push(i);
   }
-  if (pageCount > 1) pagesToShow.push(pageCount);
-
-  let prevPage = null;
-  pagesToShow.forEach(p => {
-    if (prevPage && p - prevPage > 1) addEllipsis();
-    addButton(p);
-    prevPage = p;
-  });
 }
 
 function filterBreweries() {
@@ -416,22 +406,26 @@ searchBar.addEventListener("input", filterBreweries);
 statusFilter.addEventListener("change", filterBreweries);
 stateFilter.addEventListener("change", filterBreweries);
 
+// Re-render on window resize to recalc cards per row
+window.addEventListener("resize", renderPage);
+
 filterBreweries();
 
-    document.addEventListener("DOMContentLoaded", () => {
-    const navToggle = document.getElementById("nav-toggle");
-    const navMenu = document.getElementById("nav-menu");
+// Burger menu toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const navToggle = document.getElementById("nav-toggle");
+  const navMenu = document.getElementById("nav-menu");
 
-    if (navToggle && navMenu) {
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("show");
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
 
-        // Update aria-expanded for accessibility
-        const expanded = navToggle.getAttribute("aria-expanded") === "true";
-        navToggle.setAttribute("aria-expanded", !expanded);
-      });
-    }
-  });
+      // Update aria-expanded for accessibility
+      const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", !expanded);
+    });
+  }
+});
 </script>
 </body>
 </html>
