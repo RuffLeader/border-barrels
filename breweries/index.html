@@ -95,17 +95,14 @@
     }
 
     .brewery-card {
-      flex: 0 1 220px; /* fixed card width */
+      width: 220px;       /* fixed width */
+      flex: 0 0 220px;    /* no grow, no shrink */
       background: #f9f9f9;
       border-radius: 12px;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between; /* push logo to top, rest to bottom */
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-      min-height: 220px;
+      min-height: 220px;  /* optional, keep cards uniform height */
     }
 
     .brewery-card:hover {
