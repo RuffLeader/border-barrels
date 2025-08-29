@@ -250,7 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let filteredBreweries = [];
   let currentPage = 1;
-  const rowsPerPage = 2;
 
   // Populate status filter
   ["", "Independent", "Not Independent"].forEach(optText => {
@@ -269,18 +268,31 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
+  // Calculate items per page: 2 rows per page
   function getItemsPerPage() {
     const style = getComputedStyle(grid);
     const gap = parseInt(style.getPropertyValue('gap')) || 20;
-    const card = grid.querySelector('.brewery-card');
-    let cardWidth = 220; // default width
-    if (card) {
-      const cardStyle = getComputedStyle(card);
+
+    let cardWidth = 220; // fallback width
+
+    // Measure a temporary card if none exist yet
+    if (!grid.querySelector('.brewery-card')) {
+      const tempCard = document.createElement('div');
+      tempCard.className = 'brewery-card';
+      tempCard.style.visibility = 'hidden';
+      tempCard.style.position = 'absolute';
+      tempCard.style.width = '220px';
+      grid.appendChild(tempCard);
+      cardWidth = tempCard.offsetWidth + gap;
+      grid.removeChild(tempCard);
+    } else {
+      const card = grid.querySelector('.brewery-card');
       cardWidth = card.offsetWidth + gap;
     }
+
     const gridWidth = grid.clientWidth + gap;
     const cardsPerRow = Math.floor(gridWidth / cardWidth) || 1;
-    return cardsPerRow * rowsPerPage;
+    return cardsPerRow * 2; // 2 rows per page
   }
 
   function renderPage() {
@@ -367,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
 </script>
+
 </body>
 </html>
