@@ -86,8 +86,9 @@
     }
     
     .brewery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, 220px);
+      display: flex;
+      flex-wrap: wrap;
+      grid-template-columns: repeat(auto-fit, 220px);
       justify-content: center; /* centers last row if uneven */
       gap: 20px;
       padding: 20px;
@@ -95,6 +96,7 @@
     }
 
     .brewery-card {
+      flex: 0 1 220px; /* fixed card width */
       background: #f9f9f9;
       border-radius: 12px;
       padding: 20px;
