@@ -89,7 +89,7 @@
       display: flex;
       flex-wrap: wrap;
       grid-template-columns: repeat(auto-fit, 220px);
-      justify-content: center; /* centers last row if uneven */
+      justify-content: start; /* centers last row if uneven */
       gap: 20px;
       padding: 20px;
       width: 100%;
@@ -278,9 +278,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Render page ---
 function renderPage() {
-  const cardWidth = 240;
-  const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-  const itemsPerPage = cardsPerRow * 2;
+const cardWidth = 240; // 220 + gap
+const cardsPerRow = Math.floor(grid.clientWidth / cardWidth);
+const itemsPerPage = cardsPerRow * 2; // 2 rows max
+const pageItems = filteredBreweries.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
+grid.style.justifyContent = pageItems.length < itemsPerPage ? 'center' : 'start';
 
   grid.innerHTML = "";
 
