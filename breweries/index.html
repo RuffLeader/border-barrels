@@ -268,8 +268,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 function getItemsPerPage() {
-  const cardsPerRow = Math.floor(grid.clientWidth / 240); // 220px + ~gap
-  return cardsPerRow * 2; // 2 rows per page
+  // Read the grid’s current column setup
+  const gridStyles = window.getComputedStyle(grid);
+  const templateCols = gridStyles.getPropertyValue("grid-template-columns");
+
+  // Count how many columns are actually being rendered
+  const cardsPerRow = templateCols.split(" ").length;
+
+  return cardsPerRow * 2; // always 2 rows per page
 }
 
 function renderPage() {
