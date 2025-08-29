@@ -99,6 +99,9 @@
       background: #f9f9f9;
       border-radius: 12px;
       padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* push logo to top, rest to bottom */
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       transition: transform 0.2s;
@@ -111,7 +114,7 @@
 
     .brewery-card img {
       max-width: 120px;
-      margin-bottom: 10px;
+      margin-bottom: auto; /* ensures it stays at the top */
     }
 
     .brewery-card h2 {
@@ -136,6 +139,10 @@
 
     .brewery-card a:hover {
       background: #0040a0;
+    }
+
+    .brewery-card .bottom-content {
+      margin-top: auto; /* pushes this content to bottom */
     }
 
     /* Pagination */
@@ -309,10 +316,12 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "brewery-card";
       card.innerHTML = `
         ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-        <h2>${b.name}</h2>
-        <p>${b.city}, ${b.state}</p>
-        <p>${breweryStatus}</p>
-        <a href="/breweries/${b.slug}.html">View Brewery</a>
+        <div class="bottom-content">
+          <h2>${b.name}</h2>
+          <p>${b.city}, ${b.state}</p>
+          <p>${breweryStatus}</p>
+          <a href="/breweries/${b.slug}.html">View Brewery</a>
+        </div>
       `;
       grid.appendChild(card);
     });
