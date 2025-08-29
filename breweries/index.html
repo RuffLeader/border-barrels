@@ -248,10 +248,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const stateFilter = document.getElementById("stateFilter");
   const pagination = document.getElementById("pagination");
 
-  let filteredBreweries = breweries || [];
+  let filteredBreweries = [];
   let currentPage = 1;
 
-  // --- Populate status filter ---
+  // Populate status filter
   ["", "Independent", "Not Independent"].forEach(optText => {
     const opt = document.createElement("option");
     opt.value = optText;
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     statusFilter.appendChild(opt);
   });
 
-  // --- Populate state filter ---
+  // Populate state filter
   const states = [...new Set(breweries.map(b => b.state))].sort();
   states.forEach(state => {
     const opt = document.createElement("option");
@@ -268,59 +268,60 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
-  // --- Determine items per page (2 rows) ---
-function getItemsPerPage() {
-  const cardWidth = 240; // 220px card + ~gap
-  const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-  return cardsPerRow * 2; // exactly 2 rows worth
-}
+  function getItemsPerPage() {
+    const cardMinWidth = 220; // same as CSS
+    const gap = 20; // same as CSS
+    const gridWidth = grid.clientWidth;
+    const cardsPerRow = Math.floor((gridWidth + gap) / (cardMinWidth + gap));
+    return cardsPerRow * 2; // 2 full rows per page
+  }
 
-function renderPage() {
-  const itemsPerPage = getItemsPerPage();
-  grid.innerHTML = "";
+  function renderPage() {
+    const itemsPerPage = getItemsPerPage();
+    grid.innerHTML = "";
 
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = filteredBreweries.slice(start, end);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredBreweries.slice(start, end);
 
-  grid.style.justifyContent = "center"; // always center rows
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
+    });
 
-  pageItems.forEach(b => {
-    const breweryStatus = b.independent ? "Independent" : "Not Independent";
-    const card = document.createElement("div");
-    card.className = "brewery-card";
-    card.innerHTML = `
-      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-      <h2>${b.name}</h2>
-      <p>${b.city}, ${b.state}</p>
-      <p>${breweryStatus}</p>
-      <a href="/breweries/${b.slug}.html">View Brewery</a>
-    `;
-    grid.appendChild(card);
-  });
+    renderPagination(itemsPerPage);
+  }
 
-  renderPagination(itemsPerPage);
-}
-
-  // --- Render pagination buttons ---
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
     const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
+    if (pageCount <= 1) return;
 
-    for (let i = 1; i <= pageCount; i++) {
+    for (let page = 1; page <= pageCount; page++) {
       const btn = document.createElement("button");
-      btn.textContent = i;
+      btn.textContent = page;
       btn.classList.add("page-btn");
-      if (i === currentPage) btn.classList.add("active");
+      if (page === currentPage) {
+        btn.disabled = true;
+        btn.classList.add("active");
+      }
       btn.addEventListener("click", () => {
-        currentPage = i;
+        currentPage = page;
         renderPage();
       });
       pagination.appendChild(btn);
     }
   }
 
-  // --- Filter breweries ---
   function filterBreweries() {
     const search = searchBar.value.toLowerCase();
     const status = statusFilter.value;
@@ -343,21 +344,21 @@ function renderPage() {
   statusFilter.addEventListener("change", filterBreweries);
   stateFilter.addEventListener("change", filterBreweries);
 
-  // --- Handle resize ---
-  let resizeTimeout;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const oldItemsPerPage = getItemsPerPage();
-      const oldFirstItem = (currentPage - 1) * oldItemsPerPage;
-      const newItemsPerPage = getItemsPerPage();
-      currentPage = Math.floor(oldFirstItem / newItemsPerPage) + 1;
-      renderPage();
-    }, 150);
-  });
+  window.addEventListener("resize", renderPage);
 
-  // --- Initial render ---
-  renderPage();
+  filterBreweries();
+
+  // Burger menu toggle
+  const navToggle = document.getElementById("nav-toggle");
+  const navMenu = document.getElementById("nav-menu");
+
+  if (navToggle && navMenu) {
+    navToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("show");
+      const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", !expanded);
+    });
+  }
 });
 </script>
 </body>
