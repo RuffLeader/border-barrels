@@ -343,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- SHRINK BREWERY NAME TO FIT ---
     const nameEl = card.querySelector("h2");
-    fitTextToWidth(nameEl, card.clientWidth - 20); // 20px padding buffer
+    fitTextToWidth(nameEl, 12); // 12px min font
 
     renderPagination(itemsPerPage);
   }
