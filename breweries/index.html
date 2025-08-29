@@ -242,38 +242,58 @@
 
 <script src="/breweries.js"></script>
 <script>
-(() => {
-  const grid = document.getElementById("brewery-grid");
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("breweryGrid");
+  const searchBar = document.getElementById("searchBar");
+  const statusFilter = document.getElementById("statusFilter");
+  const stateFilter = document.getElementById("stateFilter");
   const pagination = document.getElementById("pagination");
-  let currentPage = 1;
-  let filteredBreweries = breweries;
 
-  // --- Figure out how many items per page (2 full rows) ---
+  let filteredBreweries = window.breweries || [];
+  let currentPage = 1;
+
+  // --- Populate status filter ---
+  ["", "Independent", "Not Independent"].forEach(optText => {
+    const opt = document.createElement("option");
+    opt.value = optText;
+    opt.textContent = optText === "" ? "All Status" : optText;
+    statusFilter.appendChild(opt);
+  });
+
+  // --- Populate state filter ---
+  const states = [...new Set(window.breweries.map(b => b.state))].sort();
+  states.forEach(state => {
+    const opt = document.createElement("option");
+    opt.value = state;
+    opt.textContent = state;
+    stateFilter.appendChild(opt);
+  });
+
+  // --- Calculate items per page (2 full rows) ---
   function getItemsPerPage() {
-    const cardWidth = 240; // card + gap
+    const cardWidth = 240; // 220px + ~20px gap
     const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-    return cardsPerRow * 2; // 2 rows exactly
+    return cardsPerRow * 2; // 2 full rows
   }
 
-  // --- Render one page ---
+  // --- Render page ---
   function renderPage() {
     const cardWidth = 240;
     const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
     const itemsPerPage = cardsPerRow * 2;
 
-    grid.innerHTML = ""; // clear old cards
+    grid.innerHTML = "";
 
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const pageItems = filteredBreweries.slice(start, end);
 
-    // Check if this is the last page and possibly incomplete
+    // Center last page if incomplete
     const totalPages = Math.ceil(filteredBreweries.length / itemsPerPage);
-    if (currentPage === totalPages && pageItems.length < itemsPerPage) {
-      grid.style.justifyContent = "center"; // center last row contents
-    } else {
-      grid.style.justifyContent = "start"; // normal rows fill left-to-right
-    }
+    grid.style.justifyContent =
+      currentPage === totalPages && pageItems.length < itemsPerPage
+        ? "center"
+        : "start";
 
     pageItems.forEach(b => {
       const breweryStatus = b.independent ? "Independent" : "Not Independent";
@@ -292,7 +312,7 @@
     renderPagination(itemsPerPage);
   }
 
-  // --- Render pagination controls ---
+  // --- Render pagination buttons ---
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
     const pageCount = Math.ceil(filteredBreweries.length / itemsPerPage);
@@ -300,6 +320,7 @@
     for (let i = 1; i <= pageCount; i++) {
       const btn = document.createElement("button");
       btn.textContent = i;
+      btn.classList.add("page-btn");
       if (i === currentPage) btn.classList.add("active");
       btn.addEventListener("click", () => {
         currentPage = i;
@@ -309,20 +330,47 @@
     }
   }
 
-  // --- Handle window resize ---
-  window.addEventListener("resize", () => {
-    const oldItemsPerPage = getItemsPerPage();
-    const oldPageFirstItem = (currentPage - 1) * oldItemsPerPage;
+  // --- Filter breweries ---
+  function filterBreweries() {
+    const search = searchBar.value.toLowerCase();
+    const status = statusFilter.value;
+    const state = stateFilter.value;
 
-    const newItemsPerPage = getItemsPerPage();
-    currentPage = Math.floor(oldPageFirstItem / newItemsPerPage) + 1;
+    filteredBreweries = window.breweries.filter(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      return (
+        b.name.toLowerCase().includes(search) &&
+        (status === "" || breweryStatus === status) &&
+        (state === "" || b.state === state)
+      );
+    });
 
+    currentPage = 1;
     renderPage();
+  }
+
+  searchBar.addEventListener("input", filterBreweries);
+  statusFilter.addEventListener("change", filterBreweries);
+  stateFilter.addEventListener("change", filterBreweries);
+
+  // --- Handle window resize ---
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const oldItemsPerPage = getItemsPerPage();
+      const oldFirstItem = (currentPage - 1) * oldItemsPerPage;
+
+      const newItemsPerPage = getItemsPerPage();
+      currentPage = Math.floor(oldFirstItem / newItemsPerPage) + 1;
+
+      renderPage();
+    }, 150);
   });
 
   // --- Initial render ---
-  renderPage();
-})();
+  filterBreweries();
+});
 </script>
 </body>
 </html>
