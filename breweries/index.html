@@ -122,6 +122,9 @@
     .brewery-card h2 {
       margin: 10px 0 5px;
       font-size: 20px;
+      white-space: nowrap; /* prevents wrapping */
+      overflow: hidden;
+      text-overflow: ellipsis; /* optional, adds "..." if too long */
     }
 
     .brewery-card p {
@@ -260,6 +263,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let filteredBreweries = [];
   let currentPage = 1;
 
+  function fitTextToWidth(el, maxWidth, minFontSize = 12) {
+    let fontSize = parseInt(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > maxWidth && fontSize > minFontSize) {
+      fontSize -= 1;
+      el.style.fontSize = fontSize + "px";
+    }
+  }
+
   // Populate status filter
   ["", "Independent", "Not Independent"].forEach(optText => {
     const opt = document.createElement("option");
@@ -327,6 +338,11 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       grid.appendChild(card);
     });
+
+    // --- SHRINK BREWERY NAME TO FIT ---
+    const nameEl = card.querySelector("h2");
+    fitTextToWidth(nameEl, card.clientWidth - 20); // 20px padding buffer
+  });
 
     renderPagination(itemsPerPage);
   }
