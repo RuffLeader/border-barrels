@@ -280,20 +280,18 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderPage() {
   const cardWidth = 240;
   const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-  const itemsPerPage = cardsPerRow * 2; // 2 rows max
+  const itemsPerPage = cardsPerRow * 2;
 
   grid.innerHTML = "";
 
+  // --- PAGINATE: only take items for the current page ---
   const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;  // <-- always slice exactly itemsPerPage
+  const end = start + itemsPerPage;
   const pageItems = filteredBreweries.slice(start, end);
 
-  // Center last page if incomplete
-  const totalPages = Math.ceil(filteredBreweries.length / itemsPerPage);
+  // --- CENTER if last page is incomplete ---
   grid.style.justifyContent =
-    currentPage === totalPages && pageItems.length < itemsPerPage
-      ? "center"
-      : "start";
+    pageItems.length < itemsPerPage ? "center" : "start";
 
   pageItems.forEach(b => {
     const breweryStatus = b.independent ? "Independent" : "Not Independent";
@@ -311,6 +309,7 @@ function renderPage() {
 
   renderPagination(itemsPerPage);
 }
+
 
   // --- Render pagination buttons ---
   function renderPagination(itemsPerPage) {
