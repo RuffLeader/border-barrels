@@ -302,38 +302,41 @@ document.addEventListener("DOMContentLoaded", () => {
     return cardsPerRow * 2; // 2 rows per page
   }
 
-  function renderPage() {
-    grid.innerHTML = "";
+ function renderPage() {
+  const isMobile = window.innerWidth <= 768;
 
-    let pageItems;
-    const isMobile = window.innerWidth <= 768;
+  grid.innerHTML = "";
 
-    if (isMobile) {
-      pageItems = filteredBreweries;       // show all on mobile
-      pagination.style.display = "none";   // hide pagination
-    } else {
-      const itemsPerPage = getItemsPerPage();
-      const start = (currentPage - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
-      pageItems = filteredBreweries.slice(start, end);
-      pagination.style.display = "flex";   // show pagination
-      renderPagination(itemsPerPage);
-    }
-
-    pageItems.forEach(b => {
-      const breweryStatus = b.independent ? "Independent" : "Not Independent";
-      const card = document.createElement("div");
-      card.className = "brewery-card";
-      card.innerHTML = `
-        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-        <h2>${b.name}</h2>
-        <p>${b.city}, ${b.state}</p>
-        <p>${breweryStatus}</p>
-        <a href="/breweries/${b.slug}.html">View Brewery</a>
-      `;
-      grid.appendChild(card);
-    });
+  let pageItems;
+  if (isMobile) {
+    // Mobile: show all breweries, no pagination
+    pageItems = filteredBreweries;
+    pagination.style.display = "none";
+  } else {
+    // Desktop: use 2 rows per page logic
+    const itemsPerPage = getItemsPerPage();
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    pageItems = filteredBreweries.slice(start, end);
+    pagination.style.display = "flex";
+    renderPagination(itemsPerPage);
   }
+
+  pageItems.forEach(b => {
+    const breweryStatus = b.independent ? "Independent" : "Not Independent";
+    const card = document.createElement("div");
+    card.className = "brewery-card";
+    card.innerHTML = `
+      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+      <h2>${b.name}</h2>
+      <p>${b.city}, ${b.state}</p>
+      <p>${breweryStatus}</p>
+      <a href="/breweries/${b.slug}.html">View Brewery</a>
+    `;
+    grid.appendChild(card);
+  });
+}
+
 
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
