@@ -269,49 +269,41 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
-  // --- Calculate items per page (2 full rows) ---
+  // --- Determine items per page (2 rows) ---
   function getItemsPerPage() {
-    const cardWidth = 240; // 220px + ~20px gap
+    const cardWidth = 240; // 220px card + ~gap
     const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-    return cardsPerRow * 2; // 2 full rows
+    return cardsPerRow * 2; // 2 rows max
   }
 
-  // --- Render page ---
-function renderPage() {
-const cardWidth = 240; // 220 + gap
-const cardsPerRow = Math.floor(grid.clientWidth / cardWidth);
-const itemsPerPage = cardsPerRow * 2; // 2 rows max
-const pageItems = filteredBreweries.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
-grid.style.justifyContent = pageItems.length < itemsPerPage ? 'center' : 'start';
+  // --- Render a page of breweries ---
+  function renderPage() {
+    const itemsPerPage = getItemsPerPage();
+    grid.innerHTML = "";
 
-  grid.innerHTML = "";
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredBreweries.slice(start, end);
 
-  // --- PAGINATE: only take items for the current page ---
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = filteredBreweries.slice(start, end);
+    // Center cards if last page has fewer than 2 rows
+    grid.style.justifyContent = pageItems.length < itemsPerPage ? "center" : "start";
 
-  // --- CENTER if last page is incomplete ---
-  grid.style.justifyContent =
-    pageItems.length < itemsPerPage ? "center" : "start";
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
+    });
 
-  pageItems.forEach(b => {
-    const breweryStatus = b.independent ? "Independent" : "Not Independent";
-    const card = document.createElement("div");
-    card.className = "brewery-card";
-    card.innerHTML = `
-      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-      <h2>${b.name}</h2>
-      <p>${b.city}, ${b.state}</p>
-      <p>${breweryStatus}</p>
-      <a href="/breweries/${b.slug}.html">View Brewery</a>
-    `;
-    grid.appendChild(card);
-  });
-
-  renderPagination(itemsPerPage);
-}
-
+    renderPagination(itemsPerPage);
+  }
 
   // --- Render pagination buttons ---
   function renderPagination(itemsPerPage) {
@@ -354,23 +346,21 @@ grid.style.justifyContent = pageItems.length < itemsPerPage ? 'center' : 'start'
   statusFilter.addEventListener("change", filterBreweries);
   stateFilter.addEventListener("change", filterBreweries);
 
-  // --- Handle window resize ---
+  // --- Handle resize ---
   let resizeTimeout;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       const oldItemsPerPage = getItemsPerPage();
       const oldFirstItem = (currentPage - 1) * oldItemsPerPage;
-
       const newItemsPerPage = getItemsPerPage();
       currentPage = Math.floor(oldFirstItem / newItemsPerPage) + 1;
-
       renderPage();
     }, 150);
   });
 
   // --- Initial render ---
-  filterBreweries();
+  renderPage();
 });
 </script>
 </body>
