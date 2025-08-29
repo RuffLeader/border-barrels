@@ -308,14 +308,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderPage() {
   grid.innerHTML = "";
 
+  if (filteredBreweries.length === 0) return; // nothing to show
+
   let pageItems;
+
   if (window.innerWidth > 768) {
     // Desktop: paginate 2 rows per page
     const itemsPerPage = getItemsPerPage();
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     pageItems = filteredBreweries.slice(start, end);
-
     renderPagination(itemsPerPage);
     pagination.style.display = "flex";
   } else {
@@ -338,6 +340,7 @@ function renderPage() {
     grid.appendChild(card);
   });
 }
+
 
   // Only render pagination on desktop
   if (window.innerWidth > 768) {
