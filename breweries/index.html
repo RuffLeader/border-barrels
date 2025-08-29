@@ -263,14 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let filteredBreweries = [];
   let currentPage = 1;
 
-  function fitTextToWidth(el, maxWidth, minFontSize = 12) {
-    let fontSize = parseInt(getComputedStyle(el).fontSize);
-    while (el.scrollWidth > maxWidth && fontSize > minFontSize) {
-      fontSize -= 1;
-      el.style.fontSize = fontSize + "px";
-    }
-  }
-
   // Populate status filter
   ["", "Independent", "Not Independent"].forEach(optText => {
     const opt = document.createElement("option");
@@ -313,6 +305,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const gridWidth = grid.clientWidth + gap;
     const cardsPerRow = Math.floor(gridWidth / cardWidth) || 1;
     return cardsPerRow * 2; // 2 rows per page
+  }
+
+  // --- Shrink text to fit function ---
+  function fitTextToWidth(el, minFontSize = 12) {
+    if (!el) return;
+    let fontSize = parseInt(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > el.clientWidth && fontSize > minFontSize) {
+      fontSize -= 1;
+      el.style.fontSize = fontSize + "px";
+    }
   }
 
   function renderPage() {
