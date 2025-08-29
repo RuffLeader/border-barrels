@@ -200,16 +200,6 @@
         display: flex;
       }
     }
-
-    @media (max-width: 768px) {
-      .brewery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-      #pagination {
-        display: none;
-      }
-    }
   </style>
 </head>
 <body>
@@ -305,54 +295,30 @@ document.addEventListener("DOMContentLoaded", () => {
     return cardsPerRow * 2; // 2 rows per page
   }
 
-function renderPage() {
-  grid.innerHTML = "";
-
-  if (filteredBreweries.length === 0) return; // nothing to show
-
-  let pageItems;
-
-  if (window.innerWidth > 768) {
-    // Desktop: paginate 2 rows per page
+  function renderPage() {
     const itemsPerPage = getItemsPerPage();
+    grid.innerHTML = "";
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    pageItems = filteredBreweries.slice(start, end);
+    const pageItems = filteredBreweries.slice(start, end);
+
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
+    });
+
     renderPagination(itemsPerPage);
-    pagination.style.display = "flex";
-  } else {
-    // Mobile: show all items, no pagination
-    pageItems = filteredBreweries;
-    pagination.style.display = "none";
   }
-
-  pageItems.forEach(b => {
-    const breweryStatus = b.independent ? "Independent" : "Not Independent";
-    const card = document.createElement("div");
-    card.className = "brewery-card";
-    card.innerHTML = `
-      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-      <h2>${b.name}</h2>
-      <p>${b.city}, ${b.state}</p>
-      <p>${breweryStatus}</p>
-      <a href="/breweries/${b.slug}.html">View Brewery</a>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-
-  // Only render pagination on desktop
-  if (window.innerWidth > 768) {
-    renderPagination(itemsPerPage);
-    pagination.style.display = "flex";
-  } else {
-    pagination.style.display = "none";
-  }
-}
-
-// Re-render on resize too
-window.addEventListener("resize", renderPage);
 
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
