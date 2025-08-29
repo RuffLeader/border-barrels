@@ -97,6 +97,9 @@
     .brewery-card {
       width: 220px;       /* fixed width */
       flex: 0 0 220px;    /* no grow, no shrink */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* pushes bottom-content down */
       background: #f9f9f9;
       border-radius: 12px;
       padding: 20px;
@@ -145,6 +148,12 @@
 
     .brewery-card .bottom-content {
       margin-top: auto; /* pushes this content to bottom */
+    }
+
+    .bottom-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     /* Pagination */
