@@ -277,40 +277,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Render page ---
-  function renderPage() {
-    const cardWidth = 240;
-    const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-    const itemsPerPage = cardsPerRow * 2;
+function renderPage() {
+  const cardWidth = 240;
+  const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
+  const itemsPerPage = cardsPerRow * 2; // 2 rows max
 
-    grid.innerHTML = "";
+  grid.innerHTML = "";
 
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = filteredBreweries.slice(start, end);
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;  // <-- always slice exactly itemsPerPage
+  const pageItems = filteredBreweries.slice(start, end);
 
-    // Center last page if incomplete
-    const totalPages = Math.ceil(filteredBreweries.length / itemsPerPage);
-    grid.style.justifyContent =
-      currentPage === totalPages && pageItems.length < itemsPerPage
-        ? "center"
-        : "start";
+  // Center last page if incomplete
+  const totalPages = Math.ceil(filteredBreweries.length / itemsPerPage);
+  grid.style.justifyContent =
+    currentPage === totalPages && pageItems.length < itemsPerPage
+      ? "center"
+      : "start";
 
-    pageItems.forEach(b => {
-      const breweryStatus = b.independent ? "Independent" : "Not Independent";
-      const card = document.createElement("div");
-      card.className = "brewery-card";
-      card.innerHTML = `
-        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-        <h2>${b.name}</h2>
-        <p>${b.city}, ${b.state}</p>
-        <p>${breweryStatus}</p>
-        <a href="/breweries/${b.slug}.html">View Brewery</a>
-      `;
-      grid.appendChild(card);
-    });
+  pageItems.forEach(b => {
+    const breweryStatus = b.independent ? "Independent" : "Not Independent";
+    const card = document.createElement("div");
+    card.className = "brewery-card";
+    card.innerHTML = `
+      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+      <h2>${b.name}</h2>
+      <p>${b.city}, ${b.state}</p>
+      <p>${breweryStatus}</p>
+      <a href="/breweries/${b.slug}.html">View Brewery</a>
+    `;
+    grid.appendChild(card);
+  });
 
-    renderPagination(itemsPerPage);
-  }
+  renderPagination(itemsPerPage);
+}
 
   // --- Render pagination buttons ---
   function renderPagination(itemsPerPage) {
