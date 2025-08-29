@@ -72,7 +72,7 @@ const breweries = [
   {
     name: "BentSpoke Brewing Co",
     city: "Braddon",
-    state: "Australian Capital Territory",
+    state: "ACT",
     logo: "/media/logos/bentspoke-brewing-co.png",
     website: "https://www.bentspokebrewing.com.au/",
     instagram: "https://www.instagram.com/BentSpokeBeer",
@@ -238,7 +238,7 @@ const breweries = [
   {
     name: "Capital Brewing Co",
     city: "Fyshwick",
-    state: "Australian Capital Territory",
+    state: "ACT",
     logo: "/media/logos/capital-brewing-co.png",
     website: "https://capitalbrewing.co/",
     instagram: "https://www.instagram.com/capitalbrewing",
@@ -276,11 +276,11 @@ const breweries = [
   {
     name: "Cypher Brewing Co",
     city: "Gungahlin",
-    state: "Australian Capital Territory",
+    state: "ACT",
     logo: "/media/logos/cypher-brewing-co.png",
     website: "https://www.cypherbrewing.com.au/",
     instagram: "https://www.instagram.com/cypherbrewingco",
-    description: "Cypher Brewing Co is an independent brewery located in Gungahlin, Australian Capital Territory. Established by a group of homebrewers, the brewery offers a diverse range of beers brewed on-site, including tropical IPAs and rich imperial stouts. The venue features a relaxed atmosphere, making it a popular spot for locals to enjoy craft beer. The brewery places a strong emphasis on community engagement, aiming to create a space where beer enthusiasts can gather and share their passion for quality brews. With its commitment to innovation and quality, Cypher Brewing Co has become a notable addition to Canberra's craft beer scene.",
+    description: "Cypher Brewing Co is an independent brewery located in Gungahlin, ACT. Established by a group of homebrewers, the brewery offers a diverse range of beers brewed on-site, including tropical IPAs and rich imperial stouts. The venue features a relaxed atmosphere, making it a popular spot for locals to enjoy craft beer. The brewery places a strong emphasis on community engagement, aiming to create a space where beer enthusiasts can gather and share their passion for quality brews. With its commitment to innovation and quality, Cypher Brewing Co has become a notable addition to Canberra's craft beer scene.",
     closed: false,
     independent: true,
     owner: null,
