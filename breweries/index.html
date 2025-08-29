@@ -200,6 +200,18 @@
         display: flex;
       }
     }
+
+    /* Mobile responsive grid: 2 cards per row */
+    @media (max-width: 768px) {
+      .brewery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      
+      #pagination {
+        display: none; /* hide pagination on mobile */
+      }
+    }
   </style>
 </head>
 <body>
@@ -272,36 +284,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function getItemsPerPage() {
     const style = getComputedStyle(grid);
     const gap = parseInt(style.getPropertyValue('gap')) || 20;
-
-    let cardWidth = 220; // fallback width
-
-    // Measure a temporary card if none exist yet
-    if (!grid.querySelector('.brewery-card')) {
-      const tempCard = document.createElement('div');
-      tempCard.className = 'brewery-card';
-      tempCard.style.visibility = 'hidden';
-      tempCard.style.position = 'absolute';
-      tempCard.style.width = '220px';
-      grid.appendChild(tempCard);
-      cardWidth = tempCard.offsetWidth + gap;
-      grid.removeChild(tempCard);
-    } else {
-      const card = grid.querySelector('.brewery-card');
-      cardWidth = card.offsetWidth + gap;
-    }
-
+    const cardWidth = 220 + gap; // fixed width + gap
     const gridWidth = grid.clientWidth + gap;
     const cardsPerRow = Math.floor(gridWidth / cardWidth) || 1;
     return cardsPerRow * 2; // 2 rows per page
   }
 
   function renderPage() {
-    const itemsPerPage = getItemsPerPage();
+    const isMobile = window.innerWidth <= 768;
     grid.innerHTML = "";
 
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = filteredBreweries.slice(start, end);
+    let pageItems;
+
+    if (isMobile) {
+      pageItems = filteredBreweries; // show all breweries on mobile
+    } else {
+      const itemsPerPage = getItemsPerPage();
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      pageItems = filteredBreweries.slice(start, end);
+    }
 
     pageItems.forEach(b => {
       const breweryStatus = b.independent ? "Independent" : "Not Independent";
@@ -317,7 +319,8 @@ document.addEventListener("DOMContentLoaded", () => {
       grid.appendChild(card);
     });
 
-    renderPagination(itemsPerPage);
+    if (!isMobile) renderPagination(getItemsPerPage());
+    else pagination.innerHTML = ""; // hide pagination on mobile
   }
 
   function renderPagination(itemsPerPage) {
@@ -380,6 +383,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-
 </body>
 </html>
