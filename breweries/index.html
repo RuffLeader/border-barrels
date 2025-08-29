@@ -306,12 +306,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 function renderPage() {
-  const itemsPerPage = getItemsPerPage();
   grid.innerHTML = "";
 
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = filteredBreweries.slice(start, end);
+  let pageItems;
+  if (window.innerWidth > 768) {
+    // Desktop: paginate 2 rows per page
+    const itemsPerPage = getItemsPerPage();
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    pageItems = filteredBreweries.slice(start, end);
+
+    renderPagination(itemsPerPage);
+    pagination.style.display = "flex";
+  } else {
+    // Mobile: show all items, no pagination
+    pageItems = filteredBreweries;
+    pagination.style.display = "none";
+  }
 
   pageItems.forEach(b => {
     const breweryStatus = b.independent ? "Independent" : "Not Independent";
@@ -326,6 +337,7 @@ function renderPage() {
     `;
     grid.appendChild(card);
   });
+}
 
   // Only render pagination on desktop
   if (window.innerWidth > 768) {
