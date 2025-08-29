@@ -269,37 +269,40 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
-function getItemsPerPage() {
-  // card width (including gap)
-  const cardWidth = 240; // 220px card + ~20px gap
-  const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-  return cardsPerRow * 2; // always 2 rows per page
-}
+  // --- Work out items per page (exactly 2 full rows) ---
+  function getItemsPerPage() {
+    const cardWidth = 240; // 220px + 20px gap
+    const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
+    return cardsPerRow * 2; // always 2 complete rows
+  }
 
-function renderPage() {
-  const itemsPerPage = getItemsPerPage();
-  grid.innerHTML = "";
+  function renderPage() {
+    const cardWidth = 240;
+    const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
+    const itemsPerPage = cardsPerRow * 2;
 
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = filteredBreweries.slice(start, end);
+    grid.innerHTML = "";
 
-  pageItems.forEach(b => {
-    const breweryStatus = b.independent ? "Independent" : "Not Independent";
-    const card = document.createElement("div");
-    card.className = "brewery-card";
-    card.innerHTML = `
-      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-      <h2>${b.name}</h2>
-      <p>${b.city}, ${b.state}</p>
-      <p>${breweryStatus}</p>
-      <a href="/breweries/${b.slug}.html">View Brewery</a>
-    `;
-    grid.appendChild(card);
-  });
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredBreweries.slice(start, end);
 
-  renderPagination(itemsPerPage);
-}
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
+    });
+
+    renderPagination(itemsPerPage);
+  }
 
   // --- Render pagination ---
   function renderPagination(itemsPerPage) {
