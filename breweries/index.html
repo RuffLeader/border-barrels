@@ -270,13 +270,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 function getItemsPerPage() {
-  // Read the grid’s current column setup
-  const gridStyles = window.getComputedStyle(grid);
-  const templateCols = gridStyles.getPropertyValue("grid-template-columns");
-
-  // Count how many columns are actually being rendered
-  const cardsPerRow = templateCols.split(" ").length;
-
+  // card width (including gap)
+  const cardWidth = 240; // 220px card + ~20px gap
+  const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
   return cardsPerRow * 2; // always 2 rows per page
 }
 
