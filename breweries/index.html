@@ -269,10 +269,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Determine items per page (2 rows) ---
- function getItemsPerPage() {
-  const cardWidth = 240; // card width + gap
+function getItemsPerPage() {
+  const cardWidth = 240; // 220px card + ~gap
   const cardsPerRow = Math.max(1, Math.floor(grid.clientWidth / cardWidth));
-  return cardsPerRow * 2; // always 2 rows
+  return cardsPerRow * 2; // exactly 2 rows worth
 }
 
 function renderPage() {
@@ -283,8 +283,7 @@ function renderPage() {
   const end = start + itemsPerPage;
   const pageItems = filteredBreweries.slice(start, end);
 
-  // always center
-  grid.style.justifyContent = "center";
+  grid.style.justifyContent = "center"; // always center rows
 
   pageItems.forEach(b => {
     const breweryStatus = b.independent ? "Independent" : "Not Independent";
