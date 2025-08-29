@@ -200,31 +200,6 @@
         display: flex;
       }
     }
-
-    @media (max-width: 768px) {
-      .brewery-card {
-        flex: 0 1 calc(50% - 10px); /* smaller cards, 2 per row */
-        min-height: auto;            /* allow height to shrink */
-        padding: 12px;               /* optional, smaller padding */
-      }
-    
-      .brewery-card img {
-        max-width: 80px;             /* smaller images */
-      }
-    
-      .brewery-card h2 {
-        font-size: 16px;             /* smaller text */
-      }
-    
-      .brewery-card p {
-        font-size: 12px;
-      }
-    
-      .brewery-card a {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -293,50 +268,57 @@ document.addEventListener("DOMContentLoaded", () => {
     stateFilter.appendChild(opt);
   });
 
+  // Calculate items per page: 2 rows per page
   function getItemsPerPage() {
     const style = getComputedStyle(grid);
     const gap = parseInt(style.getPropertyValue('gap')) || 20;
+
+    let cardWidth = 220; // fallback width
+
+    // Measure a temporary card if none exist yet
+    if (!grid.querySelector('.brewery-card')) {
+      const tempCard = document.createElement('div');
+      tempCard.className = 'brewery-card';
+      tempCard.style.visibility = 'hidden';
+      tempCard.style.position = 'absolute';
+      tempCard.style.width = '220px';
+      grid.appendChild(tempCard);
+      cardWidth = tempCard.offsetWidth + gap;
+      grid.removeChild(tempCard);
+    } else {
+      const card = grid.querySelector('.brewery-card');
+      cardWidth = card.offsetWidth + gap;
+    }
+
     const gridWidth = grid.clientWidth + gap;
-    const cardWidth = 220 + gap;
     const cardsPerRow = Math.floor(gridWidth / cardWidth) || 1;
     return cardsPerRow * 2; // 2 rows per page
   }
 
- function renderPage() {
-  const isMobile = window.innerWidth <= 768;
-
-  grid.innerHTML = "";
-
-  let pageItems;
-  if (isMobile) {
-    // Mobile: show all breweries, no pagination
-    pageItems = filteredBreweries;
-    pagination.style.display = "none";
-  } else {
-    // Desktop: use 2 rows per page logic
+  function renderPage() {
     const itemsPerPage = getItemsPerPage();
+    grid.innerHTML = "";
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    pageItems = filteredBreweries.slice(start, end);
-    pagination.style.display = "flex";
+    const pageItems = filteredBreweries.slice(start, end);
+
+    pageItems.forEach(b => {
+      const breweryStatus = b.independent ? "Independent" : "Not Independent";
+      const card = document.createElement("div");
+      card.className = "brewery-card";
+      card.innerHTML = `
+        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <h2>${b.name}</h2>
+        <p>${b.city}, ${b.state}</p>
+        <p>${breweryStatus}</p>
+        <a href="/breweries/${b.slug}.html">View Brewery</a>
+      `;
+      grid.appendChild(card);
+    });
+
     renderPagination(itemsPerPage);
   }
-
-  pageItems.forEach(b => {
-    const breweryStatus = b.independent ? "Independent" : "Not Independent";
-    const card = document.createElement("div");
-    card.className = "brewery-card";
-    card.innerHTML = `
-      ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
-      <h2>${b.name}</h2>
-      <p>${b.city}, ${b.state}</p>
-      <p>${breweryStatus}</p>
-      <a href="/breweries/${b.slug}.html">View Brewery</a>
-    `;
-    grid.appendChild(card);
-  });
-}
-
 
   function renderPagination(itemsPerPage) {
     pagination.innerHTML = "";
@@ -398,5 +380,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+
 </body>
 </html>
