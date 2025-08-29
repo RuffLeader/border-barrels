@@ -200,6 +200,16 @@
         display: flex;
       }
     }
+
+    @media (max-width: 768px) {
+      .brewery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      #pagination {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
