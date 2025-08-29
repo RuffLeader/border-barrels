@@ -339,11 +339,11 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
       grid.appendChild(card);
-    });
 
     // --- SHRINK BREWERY NAME TO FIT ---
     const nameEl = card.querySelector("h2");
     fitTextToWidth(nameEl, 12); // 12px min font
+    });
 
     renderPagination(itemsPerPage);
   }
