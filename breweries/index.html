@@ -250,6 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let filteredBreweries = [];
   let currentPage = 1;
+  const rowsPerPage = 2;
 
   // Populate status filter
   ["", "Independent", "Not Independent"].forEach(optText => {
@@ -269,11 +270,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function getItemsPerPage() {
-    const cardMinWidth = 220; // same as CSS
-    const gap = 20; // same as CSS
-    const gridWidth = grid.clientWidth;
-    const cardsPerRow = Math.floor((gridWidth + gap) / (cardMinWidth + gap));
-    return cardsPerRow * 2; // 2 full rows per page
+    const style = getComputedStyle(grid);
+    const gap = parseInt(style.getPropertyValue('gap')) || 20;
+    const card = grid.querySelector('.brewery-card');
+    let cardWidth = 220; // default width
+    if (card) {
+      const cardStyle = getComputedStyle(card);
+      cardWidth = card.offsetWidth + gap;
+    }
+    const gridWidth = grid.clientWidth + gap;
+    const cardsPerRow = Math.floor(gridWidth / cardWidth) || 1;
+    return cardsPerRow * rowsPerPage;
   }
 
   function renderPage() {
@@ -360,6 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 </script>
 </body>
 </html>
