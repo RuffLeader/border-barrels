@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const stateFilter = document.getElementById("stateFilter");
   const pagination = document.getElementById("pagination");
 
-  let filteredBreweries = window.breweries || [];
+  let filteredBreweries = breweries || [];
   let currentPage = 1;
 
   // --- Populate status filter ---
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Populate state filter ---
-  const states = [...new Set(window.breweries.map(b => b.state))].sort();
+  const states = [...new Set(breweries.map(b => b.state))].sort();
   states.forEach(state => {
     const opt = document.createElement("option");
     opt.value = state;
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const status = statusFilter.value;
     const state = stateFilter.value;
 
-    filteredBreweries = window.breweries.filter(b => {
+    filteredBreweries = breweries.filter(b => {
       const breweryStatus = b.independent ? "Independent" : "Not Independent";
       return (
         b.name.toLowerCase().includes(search) &&
