@@ -108,6 +108,13 @@
       height: 300px;  /* optional, keep cards uniform height */
     }
 
+    .logo-wrapper {
+      flex: 1; /* takes all free space above bottom-content */
+      display: flex;
+      justify-content: center; /* center horizontally */
+      align-items: center;     /* center vertically in that space */
+    }
+
     .brewery-card:hover {
       transform: scale(1.03);
     }
@@ -115,8 +122,6 @@
     .brewery-card img {
       max-height: 130px;
       max-width: 150px;
-      margin: 0 auto;
-      margin-bottom: auto; /* ensures it stays at the top */
       display: block;
     }
 
@@ -333,7 +338,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "brewery-card";
       card.innerHTML = `
-        ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        <div class="logo-wrapper">
+          ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
+        </div>
         <div class="bottom-content">
           <h2>${b.name}</h2>
           <p>${b.city}, ${b.state}</p>
