@@ -92,23 +92,37 @@
       </div>
 
       <div class="taprooms">
-        <h2>Taprooms</h2>
-        ${brewery.taprooms && brewery.taprooms.length > 0
-          ? brewery.taprooms.map(t => `
-              <p><strong>${t.name}</strong></p>
-              <iframe 
-                width="100%" 
-                height="300" 
-                style="border:0; border-radius:12px; margin-bottom: 1rem;" 
-                loading="lazy" 
-                allowfullscreen 
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed">
-              </iframe>
-            `).join('')
-          : '<p>No taprooms listed</p>'
-        }
+        <h2 id="taprooms-toggle" style="cursor: pointer;">Taprooms &#9660;</h2>
+        <div id="taprooms-content" style="display: none;">
+          ${brewery.taprooms && brewery.taprooms.length > 0
+            ? brewery.taprooms.map(t => `
+                <p><strong>${t.name}</strong></p>
+                <iframe 
+                  width="100%" 
+                  height="300" 
+                  style="border:0; border-radius:12px; margin-bottom: 1rem;" 
+                  loading="lazy" 
+                  allowfullscreen 
+                  referrerpolicy="no-referrer-when-downgrade"
+                  src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed">
+                </iframe>
+              `).join('')
+            : '<p>No taprooms listed</p>'
+          }
+        </div>
       </div>
+
+      // Taprooms dropdown toggle
+      const taproomsToggle = document.getElementById('taprooms-toggle');
+      const taproomsContent = document.getElementById('taprooms-content');
+      
+      if (taproomsToggle && taproomsContent) {
+        taproomsToggle.addEventListener('click', () => {
+          const isVisible = taproomsContent.style.display === 'block';
+          taproomsContent.style.display = isVisible ? 'none' : 'block';
+          taproomsToggle.innerHTML = `Taprooms ${isVisible ? '&#9660;' : '&#9650;'}`;
+        });
+      }
 
       <h2>Beers</h2>
       <div class="beer-list">
