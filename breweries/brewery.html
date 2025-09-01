@@ -93,11 +93,21 @@
 
       <div class="taprooms">
         <h2>Taprooms</h2>
-        <ul>
-          ${brewery.taprooms && brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
-            `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
-          ).join('') : '<li>None listed</li>'}
-        </ul>
+        ${brewery.taprooms && brewery.taprooms.length > 0
+          ? brewery.taprooms.map(t => `
+              <p><strong>${t.name}</strong></p>
+              <iframe 
+                width="100%" 
+                height="300" 
+                style="border:0; border-radius:12px; margin-bottom: 1rem;" 
+                loading="lazy" 
+                allowfullscreen 
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed">
+              </iframe>
+            `).join('')
+          : '<p>No taprooms listed</p>'
+        }
       </div>
 
       <h2>Beers</h2>
