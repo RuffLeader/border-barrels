@@ -51,32 +51,32 @@ const breweries = [
     ]
   },
   {
-    name: "Balter Brewing Company",
+    name: "Balter Brewing",
     city: "Currumbin",
     state: "Queensland",
     logo: "/media/logos/balter-brewing.png",
     website: "https://www.balter.com.au/",
     instagram: "https://www.instagram.com/balterbrewers",
-    description: "Balter Brewing Company is an Australian craft brewery based in Currumbin, Queensland, established in 2016 by a group of Australian surfing champions, including Mick Fanning, Joel Parkinson, Josh Kerr, and Bede Durbidge. The brewery was sold to Carlton & United Breweries in 2019. Balter Brewing Company offers a variety of beer styles, including their full-time beers such as XPA, which is described as a pale beer with a 5.0% ABV and 30 IBU, characterized by its bold hop flavors. Their brewery, known as Balter HQ, serves as a tasting house and event hub, providing a space for visitors to tour the facility, taste the beers, and enjoy special events, great music, food vans, and a fun crew.",
+    description: "Balter Brewing is an Australian craft brewery based in Currumbin, Queensland, established in 2016 by a group of Australian surfing champions, including Mick Fanning, Joel Parkinson, Josh Kerr, and Bede Durbidge. The brewery was sold to Carlton & United Breweries in 2019. Balter Brewing Company offers a variety of beer styles, including their full-time beers such as XPA, which is described as a pale beer with a 5.0% ABV and 30 IBU, characterized by its bold hop flavors. Their brewery, known as Balter HQ, serves as a tasting house and event hub, providing a space for visitors to tour the facility, taste the beers, and enjoy special events, great music, food vans, and a fun crew.",
     closed: false,
     independent: false,
     owner: "Carlton & United Breweries (Asahi Breweries)",
     taprooms: [
       {
-        name: "Balter Brewing Company",
+        name: "Balter Brewing",
         address: "14 Traders Way, Currumbin Waters QLD 4223",
         map: "https://maps.app.goo.gl/e26AHzHcgxctqae78"
       }
     ]
   },
   {
-    name: "BentSpoke Brewing Co",
+    name: "BentSpoke Brewing Co.",
     city: "Braddon",
     state: "ACT",
     logo: "/media/logos/bentspoke-brewing-co.png",
     website: "https://www.bentspokebrewing.com.au/",
     instagram: "https://www.instagram.com/BentSpokeBeer",
-    description: "BentSpoke Brewing Co is a Canberra-based brewing company founded in 2014 by brewers Richard Watkins and Tracy Margrain. The brewery operates a brewpub in the central Canberra suburb of Braddon and a commercial brewing and canning facility in the Canberra light-industrial estate of Mitchell. BentSpoke Brewing Co acknowledges the Ngunnawal peoples, the Traditional Custodians of the Canberra region, and recognizes their continuous connection to culture, community, and Country. Their brewpub showcases a significant range of Canberra and Australian-made spirits, and local farmers collect spent grain from the brewery as feed for their livestock.",
+    description: "BentSpoke Brewing Co. is a Canberra-based brewing company founded in 2014 by brewers Richard Watkins and Tracy Margrain. The brewery operates a brewpub in the central Canberra suburb of Braddon and a commercial brewing and canning facility in the Canberra light-industrial estate of Mitchell. BentSpoke Brewing Co acknowledges the Ngunnawal peoples, the Traditional Custodians of the Canberra region, and recognizes their continuous connection to culture, community, and Country. Their brewpub showcases a significant range of Canberra and Australian-made spirits, and local farmers collect spent grain from the brewery as feed for their livestock.",
     closed: false,
     independent: true,
     owner: null,
@@ -255,13 +255,13 @@ const breweries = [
     ]
   },
   {
-    name: "Co-Conspirators Brewing Company",
+    name: "Co-Conspirators Brewing Co",
     city: "Brunswick",
     state: "Victoria",
     logo: "/media/logos/co-conspirators-brewing-co.png",
     website: "https://coconspirators.com.au/",
     instagram: "https://www.instagram.com/coconspiratorsbeer",
-    description: "CoConspirators Brewing Co. started life in 2016 as a gypsy brewing collective in Melbourne. Each beer is represented by a playful 'character' – from The Matriarch to The Beancounter – telling stories through artwork and names as much as through taste. Their style is bold and inventive, with a focus on flavour-forward beers that challenge conventions and bring personality to the pint. While they began without a home, CoConspirators opened their own brewpub in Brunswick in 2021, giving fans a space to gather and enjoy their creations fresh from the tanks. Their beers have become well known across Australia for their creativity, clever branding, and knack for bringing people into the story behind each brew.",
+    description: "CoConspirators Brewing Co started life in 2016 as a gypsy brewing collective in Melbourne. Each beer is represented by a playful 'character' – from The Matriarch to The Beancounter – telling stories through artwork and names as much as through taste. Their style is bold and inventive, with a focus on flavour-forward beers that challenge conventions and bring personality to the pint. While they began without a home, CoConspirators opened their own brewpub in Brunswick in 2021, giving fans a space to gather and enjoy their creations fresh from the tanks. Their beers have become well known across Australia for their creativity, clever branding, and knack for bringing people into the story behind each brew.",
     closed: false,
     independent: true,
     owner: null,
@@ -330,7 +330,7 @@ const breweries = [
     taprooms: []
   },
   {
-    name: "Fox Friday Craft Brewery",
+    name: "Fox Friday Brewery",
     city: "Hobart",
     state: "Tasmania",
     logo: "/media/logos/fox-friday-brewery.png",
@@ -415,13 +415,13 @@ const breweries = [
     ]
   },
   {
-    name: "Hargreaves Hill",
+    name: "Hargreaves Hill Brewing Co.",
     city: "Yarra Glen",
     state: "Victoria",
     logo: "/media/logos/hargreaves-hill-brewing-co.png",
     website: "https://hargreaveshill.com.au/",
     instagram: "https://www.instagram.com/hargreaveshill",
-    description: "Hargreaves Hill Brewing Co is one of Australia's pioneering craft breweries, located in Yarra Glen, Victoria. The brewery is known for its dedication to classic brewing processes and styles, producing a range of beers that showcase both tradition and innovation. Hargreaves Hill Brewing Co offers a solid, award-winning core range, along with a variety of seasonal releases. The brewery's commitment to quality and craftsmanship has earned it a respected place in the Australian craft beer industry. Hargreaves Hill Brewing Co continues to be a destination for beer enthusiasts seeking well-crafted and flavorful beers.",
+    description: "Hargreaves Hill Brewing Co. is one of Australia's pioneering craft breweries, located in Yarra Glen, Victoria. The brewery is known for its dedication to classic brewing processes and styles, producing a range of beers that showcase both tradition and innovation. Hargreaves Hill Brewing Co offers a solid, award-winning core range, along with a variety of seasonal releases. The brewery's commitment to quality and craftsmanship has earned it a respected place in the Australian craft beer industry. Hargreaves Hill Brewing Co continues to be a destination for beer enthusiasts seeking well-crafted and flavorful beers.",
     closed: false,
     independent: true,
     owner: null,
@@ -523,7 +523,7 @@ const breweries = [
     ]
   },
   {
-    name: "Lost Palms Brewing Co.",
+    name: "Lost Palms Brewing Co",
     city: "Miami",
     state: "Queensland",
     logo: "/media/logos/lost-palms-brewing-co.png",
@@ -535,14 +535,14 @@ const breweries = [
     owner: null,
     taprooms: [
       {
-        name: "Lost Palms Brewing Co.",
+        name: "Lost Palms Brewing Co",
         address: "11 Oak Ave, Miami QLD 4220",
         map: "https://maps.app.goo.gl/6LEsFaq3CDhesgZ8A"
       }
     ]
   },
   {
-    name: "Mountain Culture Beer Co.",
+    name: "Mountain Culture Beer Co",
     city: "Katoomba",
     state: "New South Wales",
     logo: "/media/logos/mountain-culture-beer-co.png",
@@ -581,7 +581,7 @@ const breweries = [
     ]
   },
   {
-    name: "Noodledoof Brewing & Distilling Co.",
+    name: "Noodledoof Brewery & Distillery",
     city: "Koroit",
     state: "Victoria",
     logo: "/media/logos/noodledoof.png",
@@ -593,7 +593,7 @@ const breweries = [
     owner: null,
     taprooms: [
       {
-        name: "Noodledoof Brewing & Distilling Co.",
+        name: "Noodledoof Brewery & Distillery",
         address: "128 Commercial Rd, Koroit VIC 3282",
         map: "https://maps.app.goo.gl/7S1SzksysatTCyso7"
       }
@@ -706,19 +706,19 @@ const breweries = [
     ]
   },
   {
-    name: "Revel Brewing Co",
+    name: "Revel Brewing Co.",
     city: "Bulimba",
     state: "Queensland",
     logo: "/media/logos/revel-brewing-co.png",
     website: "https://revelbrewingco.com.au/",
     instagram: "https://www.instagram.com/Revelbrewingco",
-    description: "Revel Brewing Co is an independent brewery located in Morningside, Brisbane. Established in 2020, the brewery operates from the historic Commonwealth Acetate of Lime Factory, now known as Rivermakers. Revel Brewing Co focuses on crafting bold, award-winning beers that celebrate the local community and culture. Their offerings include a diverse range of styles, brewed with a commitment to quality and innovation. The brewery's Rivermakers location provides a spacious venue for patrons to enjoy their beers in a relaxed and welcoming environment. Revel Brewing Co is dedicated to fostering a sense of community, offering a place where locals and visitors alike can gather to appreciate craft beer.",
+    description: "Revel Brewing Co. is an independent brewery located in Morningside, Brisbane. Established in 2020, the brewery operates from the historic Commonwealth Acetate of Lime Factory, now known as Rivermakers. Revel Brewing Co focuses on crafting bold, award-winning beers that celebrate the local community and culture. Their offerings include a diverse range of styles, brewed with a commitment to quality and innovation. The brewery's Rivermakers location provides a spacious venue for patrons to enjoy their beers in a relaxed and welcoming environment. Revel Brewing Co is dedicated to fostering a sense of community, offering a place where locals and visitors alike can gather to appreciate craft beer.",
     closed: false,
     independent: true,
     owner: null,
     taprooms: [
       {
-        name: "Revel Brewing Co Rivermakers",
+        name: "Revel Brewing Co. Rivermakers",
         address: "82 Colmslie Rd, Morningside QLD 4170",
         map: "https://maps.app.goo.gl/UWaworiaqKcsekKb6"
       }
@@ -744,32 +744,32 @@ const breweries = [
     ]
   },
   {
-    name: "Shapeshifter Brewing Co",
+    name: "Shapeshifter Brewing Co.",
     city: "Findon",
     state: "South Australia",
     logo: "/media/logos/shapeshifter-brewing-co.png",
     website: "https://www.shapeshifterbrewing.com.au/",
     instagram: "https://www.instagram.com/shapeshifterbrewingco",
-    description: "Shapeshifter Brewing Co is a craft brewery located in Findon, South Australia. Established in 2018, the brewery is known for its focus on fresh, modern beers brewed in small batches. Their offerings include a mix of hop-forward, hazy styles and clean, crisp refreshing beers. The brewery's venue is family and dog-friendly, featuring pinball and arcade machines, as well as a dedicated kids' corner. Shapeshifter Brewing Co also hosts live entertainment from local musicians and features food trucks on weekends.",
+    description: "Shapeshifter Brewing Co. is a craft brewery located in Findon, South Australia. Established in 2018, the brewery is known for its focus on fresh, modern beers brewed in small batches. Their offerings include a mix of hop-forward, hazy styles and clean, crisp refreshing beers. The brewery's venue is family and dog-friendly, featuring pinball and arcade machines, as well as a dedicated kids' corner. Shapeshifter Brewing Co also hosts live entertainment from local musicians and features food trucks on weekends.",
     closed: false,
     independent: true,
     owner: null,
     taprooms: [
       {
-        name: "Shapeshifter Brewing Co",
+        name: "Shapeshifter Brewing Co.",
         address: "Unit 2/54 Crittenden Rd, Findon SA 5023",
         map: "https://maps.app.goo.gl/cLmyPurGiB5c7wLo6"
       }
     ]
   },
   {
-    name: "Shout Brewing Co",
+    name: "Shout Brewing Co.",
     city: "Islington",
     state: "New South Wales",
     logo: "/media/logos/shout-brewing-co.png",
     website: "https://www.shoutbrewing.com.au/",
     instagram: "https://www.instagram.com/shoutbrewing",
-    description: "Shout Brewing Co is an independent, family-owned craft brewery located in Islington, Newcastle, New South Wales. The brewery is committed to crafting a diverse range of fresh, pure, and innovative beers. Pride is taken in being independent, with the founders actively involved in the brewing process. The brewery's venue provides a welcoming environment for patrons to enjoy their beers. Shout Brewing Co is dedicated to contributing to the local craft beer scene in Newcastle, offering quality brews and fostering a sense of community.",
+    description: "Shout Brewing Co. is an independent, family-owned craft brewery located in Islington, Newcastle, New South Wales. The brewery is committed to crafting a diverse range of fresh, pure, and innovative beers. Pride is taken in being independent, with the founders actively involved in the brewing process. The brewery's venue provides a welcoming environment for patrons to enjoy their beers. Shout Brewing Co is dedicated to contributing to the local craft beer scene in Newcastle, offering quality brews and fostering a sense of community.",
     closed: false,
     independent: true,
     owner: null,
@@ -820,13 +820,13 @@ const breweries = [
     ]
   },
   {
-    name: "Sunday Road Brewing Co",
+    name: "Sunday Road Brewing Co.",
     city: "Kirrawee",
     state: "New South Wales",
     logo: "/media/logos/sunday-road-brewing-co.png",
     website: "https://sundayroadbrewing.com.au/",
     instagram: "https://www.instagram.com/sundayroadbrewing",
-    description: "Sunday Road Brewing Co is a 100% locally owned and proudly independent brewery located in Kirrawee, New South Wales. Born and raised in the Sutherland Shire, the brewery is committed to great beer as an extension of their dedication to family, good produce, sustainability, and community. The brewery's offerings include a range of award-winning beers, complemented by bar snacks and community events. Sunday Road Brewing Co has become a popular destination for locals and visitors alike, providing a space to enjoy quality brews in a relaxed and welcoming environment.",
+    description: "Sunday Road Brewing Co. is a 100% locally owned and proudly independent brewery located in Kirrawee, New South Wales. Born and raised in the Sutherland Shire, the brewery is committed to great beer as an extension of their dedication to family, good produce, sustainability, and community. The brewery's offerings include a range of award-winning beers, complemented by bar snacks and community events. Sunday Road Brewing Co has become a popular destination for locals and visitors alike, providing a space to enjoy quality brews in a relaxed and welcoming environment.",
     closed: false,
     independent: true,
     owner: null,
@@ -871,13 +871,13 @@ const breweries = [
     ]
   },
   {
-    name: "Working Title Brew Co",
+    name: "Working Title Brew Co.",
     city: "Newstead",
     state: "Queensland",
     logo: "/media/logos/working-title-brew-co.png",
     website: "https://workingtitlebrew.co/",
     instagram: "https://www.instagram.com/workingtitlebrew.co",
-    description: "Working Title Brew Co is a craft brewery located in Brisbane, Queensland. The brewery is known for its experimental approach to brewing, offering a range of innovative beers that push the boundaries of traditional styles. Their offerings include a variety of brews, often featuring unique ingredients and flavor profiles. The brewery's venue provides a space for patrons to enjoy their creations, with a focus on fostering a community of beer enthusiasts. Working Title Brew Co continues to contribute to Brisbane's dynamic craft beer scene, offering exciting and unconventional brews.",
+    description: "Working Title Brew Co. is a craft brewery located in Brisbane, Queensland. The brewery is known for its experimental approach to brewing, offering a range of innovative beers that push the boundaries of traditional styles. Their offerings include a variety of brews, often featuring unique ingredients and flavor profiles. The brewery's venue provides a space for patrons to enjoy their creations, with a focus on fostering a community of beer enthusiasts. Working Title Brew Co continues to contribute to Brisbane's dynamic craft beer scene, offering exciting and unconventional brews.",
     closed: false,
     independent: true,
     owner: null,
