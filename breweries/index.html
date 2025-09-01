@@ -345,8 +345,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <h2>${b.name}</h2>
           <p>${b.city}, ${b.state}</p>
           <p>${breweryStatus}</p>
-          <a href="brewery.html?name=${encodeURIComponent(brewery.name)}">
-            ${brewery.name}
+          <a href="brewery.html?name=${encodeURIComponent(b.name)}">
+            ${b.name}
           </a>
         </div>
       `;
