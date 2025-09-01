@@ -152,6 +152,21 @@
       background: #0040a0;
     }
 
+    .brewery-card .brewery-link {
+      all: unset;                /* removes all inherited styles */
+      color: #002157;            /* text color */
+      font-weight: bold;         /* keep heading weight */
+      display: inline-block;     
+      white-space: nowrap;       
+      overflow: hidden;          
+      text-overflow: ellipsis;   
+      cursor: pointer;           /* shows clickable pointer */
+    }
+    
+    .brewery-card .brewery-link:hover {
+      text-decoration: underline; /* underline on hover */
+    }
+
     .bottom-content {
       display: flex;
       flex-direction: column;
@@ -219,24 +234,6 @@
       #nav-menu.show {
         display: flex;
       }
-    }
-
-    .brewery-link {
-      color: #002157;          /* normal text color */
-      text-decoration: none;   /* remove underline */
-      background: none;        /* remove any background */
-      border: none;            /* remove any border */
-      padding: 0;              /* remove padding */
-      margin: 0;               /* remove margin */
-      display: inline-block;   /* allows width measurement */
-      white-space: nowrap;     /* keep on one line */
-      overflow: hidden;
-      text-overflow: ellipsis; /* show "..." if too long */
-      font-weight: bold;       /* optional, keep heading weight */
-    }
-    
-    .brewery-link:hover {
-      text-decoration: underline; /* just underline on hover */
     }
   </style>
 </head>
