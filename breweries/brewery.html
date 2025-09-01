@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Brewery Page</title>
+  <style>
+    /* Minimal styling — adapt based on your main CSS */
+    body { font-family: sans-serif; padding: 1rem; }
+    .logo { max-width: 200px; margin-bottom: 1rem; }
+    .beer-list { margin-top: 2rem; }
+    .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+    .beer-item img { width: 80px; }
+    .beer-info { flex: 1; }
+  </style>
+</head>
+<body>
+  <div id="brewery-container">Loading brewery...</div>
+  <script src="/breweries.js"></script>
+  <script src="/beers.js"></script>
+  <script>
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    function renderBreweryPage() {
+      const name = getQueryParam('name');
+      if (!name) {
+        document.getElementById('brewery-container').textContent = 'Brewery not found';
+        return;
+      }
+
+      const brewery = breweries.find(b => b.name === name);
+      if (!brewery) {
+        document.getElementById('brewery-container').textContent = 'Brewery not found';
+        return;
+      }
+
+      const page = document.getElementById('brewery-container');
+      page.innerHTML = `
+        <h1>${brewery.name}</h1>
+        <img class="logo" src="${brewery.logo || ''}" alt="${brewery.name} logo">
+        <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
+        <p>${brewery.description}</p>
+        <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
+        ${brewery.website ? `<p><a href="${brewery.website}" target="_blank">Website</a></p>` : ''}
+        ${brewery.instagram ? `<p><a href="${brewery.instagram}" target="_blank">Instagram</a></p>` : ''}
+        <h2>Taprooms</h2>
+        <ul>
+          ${brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
+            `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
+          ).join('') : '<li>None listed</li>'}
+        </ul>
+        <h2>Beers</h2>
+        <div class="beer-list">
+          ${
+            beers.filter(be => be.brewery === brewery.name)
+                 .map(be => `
+            <div class="beer-item">
+              <img src="${be.beerCanUrl || ''}" alt="${be.name}">
+              <div class="beer-info">
+                <strong>${be.name}</strong><br>
+                Style: ${be.style} • ABV: ${be.abv}%<br>
+                BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
+                Episode #: ${be.epnum}
+              </div>
+            </div>`).join('') || '<p>No beers listed for this brewery.</p>'
+          }
+        </div>
+      `;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderBreweryPage);
+  </script>
+</body>
+</html>
