@@ -220,6 +220,16 @@
         display: flex;
       }
     }
+
+    .brewery-link {
+      color: #002157;       /* match text color */
+      text-decoration: none; /* remove underline */
+    }
+    
+    .brewery-link:hover {
+      text-decoration: underline; /* subtle hover effect */
+    }
+
   </style>
 </head>
 <body>
@@ -343,7 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="bottom-content">
           <h2>
-            <a href="brewery.html?name=${encodeURIComponent(b.name)}">
+            <a href="brewery.html?name=${encodeURIComponent(b.name)}" class="brewery-link">
               ${b.name}
             </a>
           </h2>
