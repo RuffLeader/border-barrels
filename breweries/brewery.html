@@ -3,11 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Brewery Page</title>
+  <link rel="stylesheet" href="/style.css">
   <style>
-    body { font-family: 'Segoe UI', sans-serif; padding: 1rem; color: #002157; line-height: 1.6; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #002157;
+      margin: 0;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .brewery-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #f9f9f9;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
     .back-btn {
       display: inline-block;
-      margin-bottom: 16px;
+      margin-bottom: 1.5rem;
       padding: 8px 12px;
       background-color: #002157;
       color: white;
@@ -18,18 +36,74 @@
     }
     .back-btn:hover { background-color: #0040a0; }
 
-    .logo { max-width: 200px; margin-bottom: 1rem; display: block; }
-    h1 { margin: 0 0 1rem; }
-    .beer-list { margin-top: 2rem; }
-    .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
-    .beer-item img { width: 80px; }
-    .beer-info { flex: 1; }
-    a { color: #002157; text-decoration: none; }
-    a:hover { color: #ffb400; }
+    .logo {
+      max-width: 200px;
+      margin-bottom: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h1 {
+      margin: 0 0 1rem;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      margin: 0.5rem 0;
+    }
+
+    a {
+      color: #002157;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ffb400;
+    }
+
+    .taprooms ul {
+      list-style: none;
+      padding-left: 0;
+      margin-top: 0;
+    }
+
+    .taprooms li {
+      margin-bottom: 0.5rem;
+    }
+
+    .beer-list {
+      margin-top: 1rem;
+    }
+
+    .beer-item {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      background: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .beer-item img {
+      width: 80px;
+      border-radius: 4px;
+    }
+
+    .beer-info {
+      text-align: left;
+      flex: 1;
+    }
   </style>
 </head>
 <body>
-  <div id="brewery-container">Loading brewery...</div>
+  <div id="brewery-container" class="brewery-container">Loading brewery...</div>
 
   <script src="/breweries.js"></script>
   <script src="/beers.js"></script>
@@ -62,27 +136,33 @@
         <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
         ${brewery.website ? `<p><a href="${brewery.website}" target="_blank">Website</a></p>` : ''}
         ${brewery.instagram ? `<p><a href="${brewery.instagram}" target="_blank">Instagram</a></p>` : ''}
-        <h2>Taprooms</h2>
-        <ul>
-          ${brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
-            `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
-          ).join('') : '<li>None listed</li>'}
-        </ul>
-        <h2>Beers</h2>
-        <div class="beer-list">
-          ${
-            beers.filter(be => be.brewery === brewery.name)
-                 .map(be => `
-            <div class="beer-item">
-              <img src="${be.beerCanUrl || ''}" alt="${be.name}">
-              <div class="beer-info">
-                <strong>${be.name}</strong><br>
-                Style: ${be.style} • ABV: ${be.abv}%<br>
-                BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
-                Episode #: ${be.epnum}
-              </div>
-            </div>`).join('') || '<p>No beers listed for this brewery.</p>'
-          }
+
+        <div class="taprooms">
+          <h2>Taprooms</h2>
+          <ul>
+            ${brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
+              `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
+            ).join('') : '<li>None listed</li>'}
+          </ul>
+        </div>
+
+        <div class="beers">
+          <h2>Beers</h2>
+          <div class="beer-list">
+            ${
+              beers.filter(be => be.brewery === brewery.name)
+                   .map(be => `
+              <div class="beer-item">
+                <img src="${be.beerCanUrl || ''}" alt="${be.name}">
+                <div class="beer-info">
+                  <strong>${be.name}</strong><br>
+                  Style: ${be.style} • ABV: ${be.abv}%<br>
+                  BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
+                  Episode #: ${be.epnum}
+                </div>
+              </div>`).join('') || '<p>No beers listed for this brewery.</p>'
+            }
+          </div>
         </div>
       `;
     }
