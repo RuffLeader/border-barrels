@@ -5,12 +5,9 @@
   <title>Brewery Page</title>
   <link rel="stylesheet" href="/style.css">
   <style>
+    /* Brewery page-specific tweaks */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      color: #002157;
-      margin: 0;
       padding: 2rem 1rem;
-      line-height: 1.6;
       text-align: center;
     }
 
@@ -42,28 +39,6 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    h1 {
-      margin: 0 0 1rem;
-    }
-
-    h2 {
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      margin: 0.5rem 0;
-    }
-
-    a {
-      color: #002157;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #ffb400;
     }
 
     .taprooms ul {
@@ -99,6 +74,15 @@
     .beer-info {
       text-align: left;
       flex: 1;
+    }
+
+    a {
+      color: #002157;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #ffb400;
     }
   </style>
 </head>
@@ -152,22 +136,4 @@
             ${
               beers.filter(be => be.brewery === brewery.name)
                    .map(be => `
-              <div class="beer-item">
-                <img src="${be.beerCanUrl || ''}" alt="${be.name}">
-                <div class="beer-info">
-                  <strong>${be.name}</strong><br>
-                  Style: ${be.style} • ABV: ${be.abv}%<br>
-                  BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
-                  Episode #: ${be.epnum}
-                </div>
-              </div>`).join('') || '<p>No beers listed for this brewery.</p>'
-            }
-          </div>
-        </div>
-      `;
-    }
-
-    document.addEventListener('DOMContentLoaded', renderBreweryPage);
-  </script>
-</body>
-</html>
+              <div class="beer-ite
