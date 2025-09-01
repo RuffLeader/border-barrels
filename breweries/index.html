@@ -222,12 +222,16 @@
     }
 
     .brewery-link {
-      color: #002157;       /* match text color */
+      color: #002157;       /* normal text color */
       text-decoration: none; /* remove underline */
+      display: inline-block; /* allows width measurement */
+      white-space: nowrap;   /* keep on one line */
+      overflow: hidden;
+      text-overflow: ellipsis; /* fallback if too long */
     }
     
     .brewery-link:hover {
-      text-decoration: underline; /* subtle hover effect */
+      text-decoration: underline;
     }
 
   </style>
