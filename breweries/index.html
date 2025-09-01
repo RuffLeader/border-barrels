@@ -342,12 +342,13 @@ document.addEventListener("DOMContentLoaded", () => {
           ${b.logo ? `<img src="${b.logo}" alt="${b.name} Logo">` : ""}
         </div>
         <div class="bottom-content">
-          <h2>${b.name}</h2>
+          <h2>
+            <a href="brewery.html?name=${encodeURIComponent(b.name)}">
+              ${b.name}
+            </a>
+          </h2>
           <p>${b.city}, ${b.state}</p>
           <p>${breweryStatus}</p>
-          <a href="brewery.html?name=${encodeURIComponent(b.name)}">
-            View Brewery
-          </a>
         </div>
       `;
       grid.appendChild(card);
