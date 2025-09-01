@@ -10,8 +10,14 @@
     .container { max-width: 1100px; margin: 0 auto; padding: 1rem; text-align: center; }
     .back-button { display: inline-block; margin: 1rem 0; padding: 6px 12px; background: #002157; color: white; border-radius: 6px; font-weight: bold; }
     .back-button:hover { background: #004080; }
-    .brewery-logo { max-width: 200px; margin-bottom: 1rem; display: block; }
+    .brewery-logo { max-width: 200px; margin: 1rem auto; display: block; }
     h1 { margin-bottom: 0.5rem; }
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 1rem 0;
+    }
     .taprooms ul { padding-left: 1.2rem; text-align: left; display: inline-block; }
     .beer-list { margin-top: 2rem; text-align: left; }
     .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; background: #f9f9f9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
@@ -70,11 +76,15 @@
       <a class="back-button" href="index.html">&larr; Back to Breweries</a>
       <h1>${brewery.name}</h1>
       ${brewery.logo ? `<img class="brewery-logo" src="${brewery.logo}" alt="${brewery.name} logo">` : ''}
+
       <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
       <p>${brewery.description}</p>
       <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
-      ${brewery.website ? `<p><a href="${brewery.website}" target="_blank">Website</a></p>` : ''}
-      ${brewery.instagram ? `<p><a href="${brewery.instagram}" target="_blank">Instagram</a></p>` : ''}
+
+      <div class="links">
+        ${brewery.website ? `<a href="${brewery.website}" target="_blank">Website</a>` : ''}
+        ${brewery.instagram ? `<a href="${brewery.instagram}" target="_blank">Instagram</a>` : ''}
+      </div>
 
       <div class="taprooms">
         <h2>Taprooms</h2>
