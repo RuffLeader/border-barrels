@@ -4,17 +4,33 @@
   <meta charset="UTF-8">
   <title>Brewery Page</title>
   <style>
-    /* Minimal styling — adapt based on your main CSS */
-    body { font-family: sans-serif; padding: 1rem; }
-    .logo { max-width: 200px; margin-bottom: 1rem; }
+    body { font-family: 'Segoe UI', sans-serif; padding: 1rem; color: #002157; line-height: 1.6; }
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      background-color: #002157;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover { background-color: #0040a0; }
+
+    .logo { max-width: 200px; margin-bottom: 1rem; display: block; }
+    h1 { margin: 0 0 1rem; }
     .beer-list { margin-top: 2rem; }
     .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
     .beer-item img { width: 80px; }
     .beer-info { flex: 1; }
+    a { color: #002157; text-decoration: none; }
+    a:hover { color: #ffb400; }
   </style>
 </head>
 <body>
   <div id="brewery-container">Loading brewery...</div>
+
   <script src="/breweries.js"></script>
   <script src="/beers.js"></script>
   <script>
@@ -38,6 +54,7 @@
 
       const page = document.getElementById('brewery-container');
       page.innerHTML = `
+        <a href="/breweries/index.html" class="back-btn">← Back to Breweries</a>
         <h1>${brewery.name}</h1>
         <img class="logo" src="${brewery.logo || ''}" alt="${brewery.name} logo">
         <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
