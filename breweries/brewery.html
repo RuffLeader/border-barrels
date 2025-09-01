@@ -2,138 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Brewery Page</title>
+  <title>Brewery Page | Border Barrels</title>
   <link rel="stylesheet" href="/style.css">
   <style>
-    /* Brewery page-specific tweaks */
-    body {
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-
-    .brewery-container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #f9f9f9;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .back-btn {
-      display: inline-block;
-      margin-bottom: 1.5rem;
-      padding: 8px 12px;
-      background-color: #002157;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background-color 0.2s;
-    }
-    .back-btn:hover { background-color: #0040a0; }
-
-    .logo {
-      max-width: 200px;
-      margin-bottom: 1rem;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .taprooms ul {
-      list-style: none;
-      padding-left: 0;
-      margin-top: 0;
-    }
-
-    .taprooms li {
-      margin-bottom: 0.5rem;
-    }
-
-    .beer-list {
-      margin-top: 1rem;
-    }
-
-    .beer-item {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      margin-bottom: 1rem;
-      background: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    }
-
-    .beer-item img {
-      width: 80px;
-      border-radius: 4px;
-    }
-
-    .beer-info {
-      text-align: left;
-      flex: 1;
-    }
-
-    a {
-      color: #002157;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #ffb400;
-    }
+    /* Additional brewery-specific styling */
+    body { font-family: 'Segoe UI', sans-serif; color: #002157; margin: 0; padding: 0; line-height: 1.6; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 1rem; text-align: center; }
+    .back-button { display: inline-block; margin: 1rem 0; padding: 6px 12px; background: #002157; color: white; border-radius: 6px; font-weight: bold; }
+    .back-button:hover { background: #004080; }
+    .brewery-logo { max-width: 200px; margin-bottom: 1rem; display: block; }
+    h1 { margin-bottom: 0.5rem; }
+    .taprooms ul { padding-left: 1.2rem; text-align: left; display: inline-block; }
+    .beer-list { margin-top: 2rem; text-align: left; }
+    .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; background: #f9f9f9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .beer-item img { width: 80px; object-fit: contain; }
+    .beer-info { flex: 1; font-size: 14px; }
+    a { text-decoration: none; color: #002157; }
+    a:hover { color: #ffb400; }
   </style>
 </head>
 <body>
-  <div id="brewery-container" class="brewery-container">Loading brewery...</div>
 
-  <script src="/breweries.js"></script>
-  <script src="/beers.js"></script>
-  <script>
-    function getQueryParam(name) {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
+<header>
+  <div class="container">
+    <h1>Border Barrels</h1>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/beers.html">Beers</a>
+      <a href="/episodes.html">Episodes</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about.html">About Us</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container" id="brewery-container">
+  Loading brewery...
+</div>
+
+<footer>
+  <p>© 2025 Border Barrels</p>
+</footer>
+
+<script src="/breweries.js"></script>
+<script src="/beers.js"></script>
+<script>
+  function getQueryParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  function renderBreweryPage() {
+    const name = decodeURIComponent(getQueryParam('name'));
+    if (!name) {
+      document.getElementById('brewery-container').textContent = 'Brewery not found';
+      return;
     }
 
-    function renderBreweryPage() {
-      const name = getQueryParam('name');
-      if (!name) {
-        document.getElementById('brewery-container').textContent = 'Brewery not found';
-        return;
-      }
+    const brewery = breweries.find(b => b.name === name);
+    if (!brewery) {
+      document.getElementById('brewery-container').textContent = 'Brewery not found';
+      return;
+    }
 
-      const brewery = breweries.find(b => b.name === name);
-      if (!brewery) {
-        document.getElementById('brewery-container').textContent = 'Brewery not found';
-        return;
-      }
+    const page = document.getElementById('brewery-container');
+    page.innerHTML = `
+      <a class="back-button" href="index.html">&larr; Back to Breweries</a>
+      <h1>${brewery.name}</h1>
+      ${brewery.logo ? `<img class="brewery-logo" src="${brewery.logo}" alt="${brewery.name} logo">` : ''}
+      <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
+      <p>${brewery.description}</p>
+      <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
+      ${brewery.website ? `<p><a href="${brewery.website}" target="_blank">Website</a></p>` : ''}
+      ${brewery.instagram ? `<p><a href="${brewery.instagram}" target="_blank">Instagram</a></p>` : ''}
 
-      const page = document.getElementById('brewery-container');
-      page.innerHTML = `
-        <a href="/breweries/index.html" class="back-btn">← Back to Breweries</a>
-        <h1>${brewery.name}</h1>
-        <img class="logo" src="${brewery.logo || ''}" alt="${brewery.name} logo">
-        <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
-        <p>${brewery.description}</p>
-        <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
-        ${brewery.website ? `<p><a href="${brewery.website}" target="_blank">Website</a></p>` : ''}
-        ${brewery.instagram ? `<p><a href="${brewery.instagram}" target="_blank">Instagram</a></p>` : ''}
+      <div class="taprooms">
+        <h2>Taprooms</h2>
+        <ul>
+          ${brewery.taprooms && brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
+            `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
+          ).join('') : '<li>None listed</li>'}
+        </ul>
+      </div>
 
-        <div class="taprooms">
-          <h2>Taprooms</h2>
-          <ul>
-            ${brewery.taprooms.length > 0 ? brewery.taprooms.map(t =>
-              `<li><a href="${t.map}" target="_blank">${t.name}: ${t.address}</a></li>`
-            ).join('') : '<li>None listed</li>'}
-          </ul>
-        </div>
+      <h2>Beers</h2>
+      <div class="beer-list">
+        ${
+          beers.filter(be => be.brewery === brewery.name)
+               .map(be => `
+            <div class="beer-item">
+              ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
+              <div class="beer-info">
+                <strong>${be.name}</strong><br>
+                Style: ${be.style} • ABV: ${be.abv}%<br>
+                BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
+                Episode #: ${be.epnum}
+              </div>
+            </div>`).join('') || '<p>No beers listed for this brewery.</p>'
+        }
+      </div>
+    `;
+  }
 
-        <div class="beers">
-          <h2>Beers</h2>
-          <div class="beer-list">
-            ${
-              beers.filter(be => be.brewery === brewery.name)
-                   .map(be => `
-              <div class="beer-ite
+  document.addEventListener('DOMContentLoaded', renderBreweryPage);
+</script>
+
+</body>
+</html>
