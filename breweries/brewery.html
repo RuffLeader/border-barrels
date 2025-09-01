@@ -112,18 +112,6 @@
         </div>
       </div>
 
-      // Taprooms dropdown toggle
-      const taproomsToggle = document.getElementById('taprooms-toggle');
-      const taproomsContent = document.getElementById('taprooms-content');
-      
-      if (taproomsToggle && taproomsContent) {
-        taproomsToggle.addEventListener('click', () => {
-          const isVisible = taproomsContent.style.display === 'block';
-          taproomsContent.style.display = isVisible ? 'none' : 'block';
-          taproomsToggle.innerHTML = `Taprooms ${isVisible ? '&#9660;' : '&#9650;'}`;
-        });
-      }
-
       <h2>Beers</h2>
       <div class="beer-list">
         ${
@@ -141,6 +129,18 @@
         }
       </div>
     `;
+
+          // Taprooms dropdown toggle
+      const taproomsToggle = document.getElementById('taprooms-toggle');
+      const taproomsContent = document.getElementById('taprooms-content');
+      
+      if (taproomsToggle && taproomsContent) {
+        taproomsToggle.addEventListener('click', () => {
+          const isVisible = taproomsContent.style.display === 'block';
+          taproomsContent.style.display = isVisible ? 'none' : 'block';
+          taproomsToggle.innerHTML = `Taprooms ${isVisible ? '&#9660;' : '&#9650;'}`;
+        });
+      }
   }
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
