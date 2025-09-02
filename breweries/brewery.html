@@ -5,25 +5,14 @@
   <title>Brewery Page | Border Barrels</title>
   <link rel="stylesheet" href="/style.css">
   <style>
-    /* Additional brewery-specific styling */
     body { font-family: 'Segoe UI', sans-serif; color: #002157; margin: 0; padding: 0; line-height: 1.6; }
     .container { max-width: 1100px; margin: 0 auto; padding: 1rem; text-align: center; }
     .back-button { display: inline-block; margin: 1rem 0; padding: 6px 12px; background: #002157; color: white; border-radius: 6px; font-weight: bold; }
     .back-button:hover { background: #004080; }
     .brewery-logo { max-width: 200px; margin: 1rem auto; display: block; }
     h1 { margin-bottom: 0.5rem; }
-    .links {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 1rem 0;
-    }
-    .links a {
-      font-weight: bold;
-      text-decoration: underline;
-      font-size: 1.2rem;
-    }
-    .taprooms ul { padding-left: 1.2rem; text-align: left; display: inline-block; }
+    .links { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; }
+    .links a { font-weight: bold; text-decoration: underline; font-size: 1.2rem; }
     .beer-list { margin-top: 2rem; text-align: left; }
     .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; background: #f9f9f9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
     .beer-item img { width: 80px; object-fit: contain; }
@@ -31,100 +20,23 @@
     a { text-decoration: none; color: #002157; }
     a:hover { color: #ffb400; }
     footer { text-align: center; }
+
     /* Taproom flip cards */
-    .flip-card {
-      width: 100%;
-      max-width: 400px;
-      height: 250px;  /* fixed height to prevent jumping */
-      perspective: 1000px;
-      margin: 1rem auto;
-      cursor: pointer;
-      position: relative; /* ensure children absolute positioning is relative to this */
-    }
-    
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-    }
-    
-    .flip-card.flipped .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-    
-    .flip-card-front,
-    .flip-card-back {
-      position: absolute; /* absolute to prevent page jump */
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      top: 0;  /* ensure both front and back align exactly */
-      left: 0;
-    }
-
-    .flip-card-front img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    
-    .flip-card-front {
-      cursor: pointer;
-      position: relative;
-    }
-    
-    .taproom-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0,0,0,0.5);
-      color: #fff;
-      text-align: center;
-      font-weight: bold;
-      padding: 0.5rem;
-      font-size: 1.1rem;
-    }
-    
-    .flip-card-back {
-      transform: rotateY(180deg);
-    }
-
-    
-    .flip-card-back iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      pointer-events: none; /* prevents accidental scroll inside iframe */
-    }
-    
-    .back-overlay {
-      position: absolute;
-      top: 10px;
-      right: 10px; /* top-right corner */
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      z-index: 2; /* on top of iframe */
-    }
-    
-    @media (max-width: 600px) {
-      .flip-card { max-width: 300px; height: 180px; }
-    }
-    @media (min-width: 1200px) {
-      .flip-card { max-width: 500px; height: 300px; }
-    }
-
+    .flip-card { width: 100%; max-width: 400px; height: 250px; perspective: 1000px; margin: 1rem auto; cursor: pointer; position: relative; }
+    .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; top: 0; left: 0; backface-visibility: hidden; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .flip-card-front { position: relative; display: flex; align-items: flex-end; justify-content: center; }
+    .flip-card-front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .taproom-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: #fff; text-align: center; font-weight: bold; padding: 0.5rem; font-size: 1.1rem; }
+    .flip-card-back { transform: rotateY(180deg); position: relative; }
+    .flip-card-back iframe { width: 100%; height: 100%; border: 0; }
+    .back-overlay { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem; cursor: pointer; z-index: 2; }
+    @media (max-width: 600px) { .flip-card { max-width: 300px; height: 180px; } }
+    @media (min-width: 1200px) { .flip-card { max-width: 500px; height: 300px; } }
+    .taprooms-heading { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 1.4rem; font-weight: bold; cursor: pointer; margin: 1.5rem 0 1rem; }
+    .taproom-toggle { font-size: 1rem; transition: transform 0.3s ease; }
+    .taprooms-heading.open .taproom-toggle { transform: rotate(180deg); }
   </style>
 </head>
 <body>
@@ -160,23 +72,15 @@
 
   function renderBreweryPage() {
     const name = decodeURIComponent(getQueryParam('name'));
-    if (!name) {
-      document.getElementById('brewery-container').textContent = 'Brewery not found';
-      return;
-    }
-
+    if (!name) { document.getElementById('brewery-container').textContent = 'Brewery not found'; return; }
     const brewery = breweries.find(b => b.name === name);
-    if (!brewery) {
-      document.getElementById('brewery-container').textContent = 'Brewery not found';
-      return;
-    }
+    if (!brewery) { document.getElementById('brewery-container').textContent = 'Brewery not found'; return; }
 
     const page = document.getElementById('brewery-container');
     page.innerHTML = `
       <a class="back-button" href="index.html">&larr; Back to Breweries</a>
       <h1>${brewery.name}</h1>
       ${brewery.logo ? `<img class="brewery-logo" src="${brewery.logo}" alt="${brewery.name} logo">` : ''}
-
       <p><strong>Location:</strong> ${brewery.city}, ${brewery.state}</p>
       <p>${brewery.description}</p>
       <p><strong>Status:</strong> ${brewery.independent ? 'Independent' : 'Not Independent'}</p>
@@ -196,51 +100,37 @@
               <div class="flip-card" data-index="${index}">
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    ${t.photo 
-                      ? `<img src="${t.photo}" alt="${t.name}" class="taproom-photo">` 
-                      : `<div class="taproom-placeholder">${t.name}</div>`}
+                    ${t.photo ? `<img src="${t.photo}" alt="${t.name}" class="taproom-photo">` : `<div class="taproom-placeholder">${t.name}</div>`}
                     <div class="taproom-overlay">${t.name}</div>
                   </div>
                   <div class="flip-card-back">
-                    <iframe 
-                      loading="lazy"
-                      allowfullscreen
-                      referrerpolicy="no-referrer-when-downgrade"
-                      src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed">
-                    </iframe>
-                    <div class="back-overlay">↩ Back</div>
+                    <iframe loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed"></iframe>
                   </div>
                 </div>
               </div>
-            `).join('')
-            : '<p>No taprooms listed</p>'
-          }
+            `).join('') : '<p>No taprooms listed</p>'}
         </div>
       </div>
 
       <h2>Beers</h2>
       <div class="beer-list">
-        ${
-          beers.filter(be => be.brewery === brewery.name)
-               .map(be => `
-            <div class="beer-item">
-              ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
-              <div class="beer-info">
-                <strong>${be.name}</strong><br>
-                Style: ${be.style} • ABV: ${be.abv}%<br>
-                BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
-                Episode #: ${be.epnum}
-              </div>
-            </div>`).join('') || '<p>No beers listed for this brewery.</p>'
-        }
+        ${beers.filter(be => be.brewery === brewery.name).map(be => `
+          <div class="beer-item">
+            ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
+            <div class="beer-info">
+              <strong>${be.name}</strong><br>
+              Style: ${be.style} • ABV: ${be.abv}%<br>
+              BBBR Score: ${be.bbbrsScore} • Untappd: ${be.untappdScore}<br>
+              Episode #: ${be.epnum}
+            </div>
+          </div>`).join('') || '<p>No beers listed for this brewery.</p>'}
       </div>
     `;
 
-    // Toggle dropdown
+    // Taprooms toggle
     const heading = document.querySelector('.taprooms-heading');
     const toggle = document.getElementById('taprooms-toggle');
     const content = document.getElementById('taprooms-content');
-    
     if (heading && toggle && content) {
       heading.addEventListener('click', () => {
         const isVisible = content.style.display === 'block';
@@ -252,19 +142,20 @@
     // Flip cards
     document.querySelectorAll('.flip-card').forEach(card => {
       const inner = card.querySelector('.flip-card-inner');
-    
-      // Front: click flips to back
+
+      // Front click flips to back
       card.querySelector('.flip-card-front').addEventListener('click', (e) => {
         e.stopPropagation();
         inner.classList.add('flipped');
       });
-    
-      // Back: click overlay flips back
+
+      // Add back overlay button
       const backOverlay = document.createElement('div');
       backOverlay.className = 'back-overlay';
       backOverlay.textContent = '← Back';
       card.querySelector('.flip-card-back').appendChild(backOverlay);
-    
+
+      // Click overlay flips back
       backOverlay.addEventListener('click', (e) => {
         e.stopPropagation();
         inner.classList.remove('flipped');
