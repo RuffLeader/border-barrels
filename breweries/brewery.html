@@ -54,32 +54,43 @@
     }
 
     .beer-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       padding: 16px;
       text-align: center;
       transition: transform 0.2s ease;
+      height: 100%;
     }
 
     .beer-card:hover { transform: translateY(-5px); }
 
     .beer-card img {
-      width: 100px;
-      height: auto;
-      margin-bottom: 10px;
+      max-width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      margin: auto 0;
     }
 
-    .beer-card h3 {
-      margin: 10px 0;
-      font-size: 1.2rem;
+    .beer-info {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .beer-info h3 {
+      margin: 8px 0 4px;
+      font-size: 1.1rem;
       color: #002157;
     }
 
-    .beer-card p {
-      margin: 5px 0;
+    .beer-info p {
+      margin: 2px 0;
+      font-size: 0.9rem;
       color: #555;
-      font-size: 0.95rem;
     }
   </style>
 </head>
@@ -164,11 +175,13 @@
         ${beers.filter(be => be.brewery === brewery.name).map(be => `
           <div class="beer-card">
             ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
-            <h3>${be.name}</h3>
-            <p><strong>Style:</strong> ${be.style}</p>
-            <p><strong>ABV:</strong> ${be.abv}%</p>
-            <p><strong>BBBR Score:</strong> ${be.bbbrsScore} • <strong>Untappd:</strong> ${be.untappdScore}</p>
-            <p><strong>Episode #:</strong> ${be.epnum}</p>
+            <div class="beer-info">
+              <h3>${be.name}</h3>
+              <p><strong>Style:</strong> ${be.style}</p>
+              <p><strong>ABV:</strong> ${be.abv}%</p>
+              <p><strong>BBBR Score:</strong> ${be.bbbrsScore} • <strong>Untappd:</strong> ${be.untappdScore}</p>
+              <p><strong>Episode #:</strong> ${be.epnum}</p>
+            </div>
           </div>`).join('') || '<p>No beers listed for this brewery.</p>'}
       </div>
     `;
