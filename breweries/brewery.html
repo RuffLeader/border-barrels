@@ -146,15 +146,15 @@
       const inner = card.querySelector('.flip-card-inner');
       const front = card.querySelector('.flip-card-front');
       const backBtn = card.querySelector('.back-overlay');
-
+    
       front.addEventListener('click', (e) => {
         e.stopPropagation();
-        inner.classList.add('flipped');
+        card.classList.add('flipped'); // <-- add class to card, not inner
       });
-
+    
       backBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        inner.classList.remove('flipped');
+        card.classList.remove('flipped'); // <-- remove from card
       });
     });
   }
