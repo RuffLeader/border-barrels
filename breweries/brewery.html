@@ -70,6 +70,25 @@
       height: 100%;
       border: 0;
     }
+    .taprooms-heading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.4rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 1.5rem 0 1rem;
+    }
+    
+    .taproom-toggle {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .taprooms-heading.open .taproom-toggle {
+      transform: rotate(180deg); /* flip arrow when open */
+    }
 
     @media (max-width: 600px) {
       .flip-card { max-width: 300px; height: 180px; }
@@ -139,7 +158,9 @@
       </div>
 
       <div class="taprooms-section">
-        <button id="taprooms-toggle">Taprooms ▾</button>
+        <h2 class="taprooms-heading">
+          Taprooms <span id="taprooms-toggle" class="taproom-toggle">▾</span>
+        </h2>
         <div id="taprooms-content" style="display: none;">
           ${brewery.taprooms && brewery.taprooms.length > 0
             ? brewery.taprooms.map((t, index) => `
@@ -185,13 +206,15 @@
     `;
 
     // Toggle dropdown
+    const heading = document.querySelector('.taprooms-heading');
     const toggle = document.getElementById('taprooms-toggle');
     const content = document.getElementById('taprooms-content');
-    if (toggle && content) {
-      toggle.addEventListener('click', () => {
+    
+    if (heading && toggle && content) {
+      heading.addEventListener('click', () => {
         const isVisible = content.style.display === 'block';
         content.style.display = isVisible ? 'none' : 'block';
-        toggle.innerHTML = `Taprooms ${isVisible ? '▾' : '▴'}`;
+        heading.classList.toggle('open', !isVisible);
       });
     }
 
