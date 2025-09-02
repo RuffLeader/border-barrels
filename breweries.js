@@ -14,7 +14,8 @@ const breweries = [
       {
         name: "Aether Brewing",
         address: "340 Melton Rd, Northgate QLD 4013",
-        map: "https://maps.app.goo.gl/zrAUYUWSnavn29R37"
+        map: "https://maps.app.goo.gl/zrAUYUWSnavn29R37",
+        photo: "/media/taprooms/aether-taproom.jpg"
       }
     ]
   },
@@ -46,7 +47,8 @@ const breweries = [
       {
         name: "Bacchus Brewing Co.",
         address: "1/2 Christine Pl, Capalaba QLD 4157",
-        map: "https://maps.app.goo.gl/3nmaDiRSHPqcn8cR9"
+        map: "https://maps.app.goo.gl/3nmaDiRSHPqcn8cR9",
+        photo: "/media/taprooms/bacchus-taproom.jpg"
       }
     ]
   },
@@ -65,7 +67,8 @@ const breweries = [
       {
         name: "Balter Brewing",
         address: "14 Traders Way, Currumbin Waters QLD 4223",
-        map: "https://maps.app.goo.gl/e26AHzHcgxctqae78"
+        map: "https://maps.app.goo.gl/e26AHzHcgxctqae78",
+        photo: "/media/taprooms/balter-taproom.jpg"
       }
     ]
   },
@@ -84,7 +87,8 @@ const breweries = [
       {
         name: "BentSpoke Brewing Co.",
         address: "48/38 Mort St, Braddon ACT 2612",
-        map: "https://maps.app.goo.gl/3uViHmT2uXWMrTGs8"
+        map: "https://maps.app.goo.gl/3uViHmT2uXWMrTGs8",
+        photo: "/media/taprooms/bentspoke-taproom.jpg"
       }
     ]
   },
@@ -103,7 +107,8 @@ const breweries = [
       {
         name: "Big Shed Brewing",
         address: "1154 Old Port Rd, Royal Park SA 5014",
-        map: "https://maps.app.goo.gl/MfxKVcuMbctZgfH36"
+        map: "https://maps.app.goo.gl/MfxKVcuMbctZgfH36",
+        photo: "/media/taprooms/big-shed-taproom.jpeg"
       }
     ]
   },
@@ -122,17 +127,20 @@ const breweries = [
       {
         name: "Torquay Mexican Cantina & Margaritaville",
         address: "26 Bell St, Torquay VIC 3228",
-        map: "https://maps.app.goo.gl/e9jdqitgTKNoYVL28"
+        map: "https://maps.app.goo.gl/e9jdqitgTKNoYVL28",
+        photo: "/media/taprooms/blackmans-torquay.jpeg"
       },
       {
         name: "Geelong Beer Bar",
         address: "29/8 Lewalan St, Grovedale VIC 3216",
-        map: "https://maps.app.goo.gl/SDDGWrEkcVq3zPzm8"
+        map: "https://maps.app.goo.gl/SDDGWrEkcVq3zPzm8",
+        photo: "/media/taprooms/blackmans-geelong.jpg"
       },
       {
         name: "Ocean Grove Beer & Burger Bar",
         address: "82 The Terrace, Ocean Grove VIC 3226",
-        map: "https://maps.app.goo.gl/dwHVXrQm1fgvpHje7"
+        map: "https://maps.app.goo.gl/dwHVXrQm1fgvpHje7",
+        photo: "/media/taprooms/blackmans-ocean-grove.png"
       }
     ]
   },
@@ -151,7 +159,8 @@ const breweries = [
       {
         name: "Bracket Brewing",
         address: "2/48 Addison Rd, Marrickville NSW 2204",
-        map: "https://maps.app.goo.gl/2moxtzW6RKbr6uMq8"
+        map: "https://maps.app.goo.gl/2moxtzW6RKbr6uMq8",
+        photo: "/media/taprooms/bracket-taproom.jpg"
       }
     ]
   },
@@ -170,17 +179,20 @@ const breweries = [
       {
         name: "Beechworth",
         address: "Enter via laneway, 42 Ford St, Beechworth VIC 3747",
-        map: "https://maps.app.goo.gl/EoHwFX46Xs7gitx47"
+        map: "https://maps.app.goo.gl/EoHwFX46Xs7gitx47",
+        photo: "/media/taprooms/bridge-road-beechworth.jpg"
       },
       {
         name: "Brunswick",
         address: "137/141 Nicholson St, Brunswick East VIC 3057",
-        map: "https://maps.app.goo.gl/r5LDdHt8rnLxXFgT6"
+        map: "https://maps.app.goo.gl/r5LDdHt8rnLxXFgT6",
+        photo: "/media/taprooms/bridge-road-brunswick.jpg"
       },
       {
         name: "Melbourne Airport",
         address: "Terminal 1 Departure Dr, Melbourne Airport VIC 3045",
-        map: "https://maps.app.goo.gl/fvK4d2jidi9vLsac9"
+        map: "https://maps.app.goo.gl/fvK4d2jidi9vLsac9",
+        photo: "/media/taprooms/bridge-road-airport.jpg"
       }
     ]
   },
@@ -199,7 +211,8 @@ const breweries = [
       {
         name: "Bright Brewery",
         address: "121 Great Alpine Rd, Bright VIC 3741",
-        map: "https://maps.app.goo.gl/akGdpJDCxAhgNxP3A"
+        map: "https://maps.app.goo.gl/akGdpJDCxAhgNxP3A",
+        photo: "/media/taprooms/bright-taproom.png"
       }
     ]
   },
@@ -218,7 +231,8 @@ const breweries = [
       {
         name: "Bucketty's Brewing Co.",
         address: "26 Orchard Rd, Brookvale NSW 2100",
-        map: "https://maps.app.goo.gl/nmvkK4KbTwEzhZ9y6"
+        map: "https://maps.app.goo.gl/nmvkK4KbTwEzhZ9y6",
+        photo: "/media/taprooms/buckettys-taproom.jpg"
       }
     ]
   },
@@ -250,7 +264,8 @@ const breweries = [
       {
         name: "Capital Brewing Co",
         address: "Building 3/1 Dairy Rd, Fyshwick ACT 2609",
-        map: "https://maps.app.goo.gl/nTQCUP5hD9KHDCTNA"
+        map: "https://maps.app.goo.gl/nTQCUP5hD9KHDCTNA",
+        photo: "/media/taprooms/capital-taproom.jpeg"
       }
     ]
   },
@@ -269,7 +284,8 @@ const breweries = [
       {
         name: "Co-Conspirators Brewpub",
         address: "377 Victoria St, Brunswick VIC 3056",
-        map: "https://maps.app.goo.gl/SjzgsTib5aS7RZd68"
+        map: "https://maps.app.goo.gl/SjzgsTib5aS7RZd68",
+        photo: "/media/taprooms/co-conspirators-taproom.jpg"
       }
     ]
   },
@@ -288,7 +304,8 @@ const breweries = [
       {
         name: "Cypher Brewing Co",
         address: "Unit 3/35 Hinder St, Gungahlin ACT 2912",
-        map: "https://maps.app.goo.gl/hjtz3zG9eS2qqHm6A"
+        map: "https://maps.app.goo.gl/hjtz3zG9eS2qqHm6A",
+        photo: "/media/taprooms/cypher-taproom.jpg"
       }
     ]
   },
@@ -307,12 +324,14 @@ const breweries = [
       {
         name: "Dainton Brewery",
         address: "560 Frankston - Dandenong Rd, Carrum Downs VIC 3201",
-        map: "https://maps.app.goo.gl/EJxFLpeWK2K8SUjv7"
+        map: "https://maps.app.goo.gl/EJxFLpeWK2K8SUjv7",
+        photo: "/media/taprooms/dainton-carrum-downs.jpg"
       },
       {
         name: "Dainton Taphouse Croydon",
         address: "13 Lacey St, Croydon VIC 3136",
-        map: "https://maps.app.goo.gl/TmJ4U6P1j5tA3jfK9"
+        map: "https://maps.app.goo.gl/TmJ4U6P1j5tA3jfK9",
+        photo: "/media/taprooms/dainton-croydon.jpg"
       }
     ]
   },
@@ -357,7 +376,8 @@ const breweries = [
       {
         name: "Future Brewing",
         address: "82 May St, St Peters NSW 2044",
-        map: "https://maps.app.goo.gl/FuRqQk12S3MaciDS7"
+        map: "https://maps.app.goo.gl/FuRqQk12S3MaciDS7",
+        photo: "/media/taprooms/future-taproom.jpg"
       }
     ]
   },
@@ -376,22 +396,26 @@ const breweries = [
       {
         name: "Garage Project Aro Cellar Door",
         address: "68/70 Aro Street, Aro Valley, Wellington 6021, New Zealand",
-        map: "https://maps.app.goo.gl/711CbjUxT6UErNPY9"
+        map: "https://maps.app.goo.gl/711CbjUxT6UErNPY9",
+        photo: "/media/taprooms/garage-project-aro-cellar.jpg"
       },
       {
         name: "Garage Project Aro Taproom: 91 Aro",
         address: "91 Aro Street, Aro Valley, Wellington 6021, New Zealand",
-        map: "https://maps.app.goo.gl/L4iS5S5uVhPuVjL29"
+        map: "https://maps.app.goo.gl/L4iS5S5uVhPuVjL29",
+        photo: "/media/taprooms/garage-project-aro-taproom.jpg"
       },
       {
         name: "Garage Project Taproom & Cellar Door Kingsland",
         address: "357 New North Road, Kingsland, Auckland 1021, New Zealand",
-        map: "https://maps.app.goo.gl/dUHpfA6tX1tDMGZAA"
+        map: "https://maps.app.goo.gl/dUHpfA6tX1tDMGZAA",
+        photo: "/media/taprooms/garage-project-kingsland.jpg"
       },
       {
         name: "Garage Project Wild Workshop Taproom & Cellar Door",
         address: "7 Furness Lane, Te Aro, Wellington 6011, New Zealand",
-        map: "https://maps.app.goo.gl/U1RfEznDXXNtAQ79A"
+        map: "https://maps.app.goo.gl/U1RfEznDXXNtAQ79A",
+        photo: "/media/taprooms/garage-project-wild-workshop.jpg"
       }
     ]
   },
@@ -410,7 +434,8 @@ const breweries = [
       {
         name: "Good Land Brewing Co",
         address: "12 Standing Dr, Traralgon East VIC 3844",
-        map: "https://maps.app.goo.gl/QaDqxC9JKMNcf9eu9"
+        map: "https://maps.app.goo.gl/QaDqxC9JKMNcf9eu9",
+        photo: "/media/taprooms/good-land-taproom.jpeg"
       }
     ]
   },
@@ -442,7 +467,8 @@ const breweries = [
       {
         name: "Hawkers Beer",
         address: "167 Henty St, Reservoir VIC 3073",
-        map: "https://maps.app.goo.gl/ZSqqic7DErh3GZbC8"
+        map: "https://maps.app.goo.gl/ZSqqic7DErh3GZbC8",
+        photo: "/media/taprooms/hawkers-taproom.jpg"
       }
     ]
   },
@@ -461,7 +487,8 @@ const breweries = [
       {
         name: "Hop Nation Brewing Co.",
         address: "Unit 6/107-109 Whitehall St, Footscray VIC 3011",
-        map: "https://maps.app.goo.gl/Y2ePFzd83Nhi66Zd7"
+        map: "https://maps.app.goo.gl/Y2ePFzd83Nhi66Zd7",
+        photo: "/media/taprooms/hop-nation-taproom.jpg"
       }
     ]
   },
@@ -480,7 +507,8 @@ const breweries = [
       {
         name: "Jervis Bay Brewing Co",
         address: "3 Duranbah Dr, Huskisson NSW 2540",
-        map: "https://maps.app.goo.gl/MA7Xdb6ypYEa2gmBA"
+        map: "https://maps.app.goo.gl/MA7Xdb6ypYEa2gmBA",
+        photo: "/media/taprooms/jervis-bay-taproom.jpeg"
       }
     ]
   },
@@ -499,7 +527,8 @@ const breweries = [
       {
         name: "KAIJU! Beer & Pizza",
         address: "27 Hume St, Huntingdale VIC 3166",
-        map: "https://maps.app.goo.gl/yVaaEcSFbzM1NQ8r5"
+        map: "https://maps.app.goo.gl/yVaaEcSFbzM1NQ8r5",
+        photo: "/media/taprooms/kaiju-taproom.jpg"
       }
     ]
   },
@@ -518,7 +547,8 @@ const breweries = [
       {
         name: "Kicks Brewing",
         address: "31 Shepherd St, Marrickville NSW 2204",
-        map: "https://maps.app.goo.gl/ffidcsjKAmRMoZze7"
+        map: "https://maps.app.goo.gl/ffidcsjKAmRMoZze7",
+        photo: "/media/taprooms/kicks-taproom.jpg"
       }
     ]
   },
@@ -537,7 +567,8 @@ const breweries = [
       {
         name: "Lost Palms Brewing Co",
         address: "11 Oak Ave, Miami QLD 4220",
-        map: "https://maps.app.goo.gl/6LEsFaq3CDhesgZ8A"
+        map: "https://maps.app.goo.gl/6LEsFaq3CDhesgZ8A",
+        photo: "/media/taprooms/lost-palms-taproom.jpg"
       }
     ]
   },
@@ -556,27 +587,32 @@ const breweries = [
       {
         name: "Katoomba Brewpub",
         address: "23-25 Parke St, Katoomba NSW 2780",
-        map: "https://maps.app.goo.gl/JPpGb5wwcpaWAFb39"
+        map: "https://maps.app.goo.gl/JPpGb5wwcpaWAFb39",
+        photo: "/media/taprooms/mountain-culture-katoomba.jpg"
       },
       {
         name: "Redfern Pub",
         address: "158 Regent St, Redfern NSW 2016",
-        map: "https://maps.app.goo.gl/L7AbmDSgoy4ZzY776"
+        map: "https://maps.app.goo.gl/L7AbmDSgoy4ZzY776",
+        photo: "/media/taprooms/mountain-culture-redfern.jpg"
       },
       {
         name: "Melbourne Brewpub",
         address: "148/150 Murphy St, Richmond VIC 3121",
-        map: "https://maps.app.goo.gl/Nq9FvhrmJpLUMx1cA"
+        map: "https://maps.app.goo.gl/Nq9FvhrmJpLUMx1cA",
+        photo: "/media/taprooms/mountain-culture-melbourne.jpg"
       },
       {
         name: "Hobart Taproom",
         address: "105 Murray St, Hobart TAS 7000",
-        map: "https://maps.app.goo.gl/avkULNboPQN5NjoL6"
+        map: "https://maps.app.goo.gl/avkULNboPQN5NjoL6",
+        photo: "/media/taprooms/mountain-culture-hobart.jpg"
       },
       {
         name: "Emu Plains Taproom",
         address: "35 David Rd, Emu Plains NSW 2750",
-        map: "https://maps.app.goo.gl/VavF1J7UwgxE3rDn7"
+        map: "https://maps.app.goo.gl/VavF1J7UwgxE3rDn7",
+        photo: "/media/taprooms/mountain-culture-emu-plains.jpg"
       }
     ]
   },
@@ -595,7 +631,8 @@ const breweries = [
       {
         name: "Noodledoof Brewery & Distillery",
         address: "128 Commercial Rd, Koroit VIC 3282",
-        map: "https://maps.app.goo.gl/7S1SzksysatTCyso7"
+        map: "https://maps.app.goo.gl/7S1SzksysatTCyso7",
+        photo: "/media/taprooms/noodledoof-taproom.jpg"
       }
     ]
   },
@@ -614,7 +651,8 @@ const breweries = [
       {
         name: "Ocean Reach Brewing",
         address: "47 Thompson Ave, Cowes VIC 3922",
-        map: "https://maps.app.goo.gl/QC3hS1qhHqRfDd1w6"
+        map: "https://maps.app.goo.gl/QC3hS1qhHqRfDd1w6",
+        photo: "/media/taprooms/ocean-reach-taproom.jpg"
       }
     ]
   },
@@ -633,7 +671,8 @@ const breweries = [
       {
         name: "One Drop Brewing Co",
         address: "5 Erith St, Botany NSW 2019",
-        map: "https://maps.app.goo.gl/ZX9DqsTgdMWwVTfWA"
+        map: "https://maps.app.goo.gl/ZX9DqsTgdMWwVTfWA",
+        photo: "/media/taprooms/one-drop-taproom.jpg"
       }
     ]
   },
@@ -652,22 +691,26 @@ const breweries = [
       {
         name: "Pirate Life Headquarters",
         address: "18 Baker St, Port Adelaide SA 5015",
-        map: "https://maps.app.goo.gl/Fgt7d6my6EmqPE6L6"
+        map: "https://maps.app.goo.gl/Fgt7d6my6EmqPE6L6",
+        photo: "/media/taprooms/pirate-life-headquarters.jpg"
       },
       {
         name: "Pirate Life South Melbourne",
         address: "139-145 Market St, South Melbourne VIC 3205",
-        map: "https://maps.app.goo.gl/Qg5osdv3Xk2FY5tVA"
+        map: "https://maps.app.goo.gl/Qg5osdv3Xk2FY5tVA",
+        photo: "/media/taprooms/pirate-life-melbourne.jpg"
       },
       {
         name: "Pirate Life Microbrewery",
         address: "SkyCity Adelaide, 125 North Terrace, Adelaide SA 5000",
-        map: "https://maps.app.goo.gl/GJdmMY55tyxhJTia6"
+        map: "https://maps.app.goo.gl/GJdmMY55tyxhJTia6",
+        photo: "/media/taprooms/pirate-life-skycity.jpg"
       },
       {
         name: "Pirate Life Perth",
         address: "TOMA/440 Murray St, Perth WA 6000",
-        map: "https://maps.app.goo.gl/M1ia8Zet1YqD3vy66"
+        map: "https://maps.app.goo.gl/M1ia8Zet1YqD3vy66",
+        photo: "/media/taprooms/pirate-life-perth.jpg"
       }
     ]
   },
@@ -686,22 +729,26 @@ const breweries = [
       {
         name: "Range Brewing Taproom",
         address: "4 Byres St, Newstead QLD 4006",
-        map: "https://maps.app.goo.gl/t5iz1rSxJR91fdsy9"
+        map: "https://maps.app.goo.gl/t5iz1rSxJR91fdsy9",
+        photo: "/media/taprooms/range-newstead.jpg"
       },
       {
         name: "Patio by Range Brewing",
         address: "146 Baroona Rd, Paddington QLD 4064",
-        map: "https://maps.app.goo.gl/jxak2vRRZS6zsY4G6"
+        map: "https://maps.app.goo.gl/jxak2vRRZS6zsY4G6",
+        photo: "/media/taprooms/range-patio.jpg"
       },
       {
         name: "The Bethnal",
         address: "6 Byres St, Newstead QLD 4006",
-        map: "https://maps.app.goo.gl/fd1XzoCRYZcKBSHC6"
+        map: "https://maps.app.goo.gl/fd1XzoCRYZcKBSHC6",
+        photo: "/media/taprooms/range-bethnal.jpg"
       },
       {
         name: "Rays by Range Brewing",
         address: "4 Newman Ave, Camp Hill QLD 4152",
-        map: "https://maps.app.goo.gl/BHwYpMo5UoSygiM78"
+        map: "https://maps.app.goo.gl/BHwYpMo5UoSygiM78",
+        photo: "/media/taprooms/range-rays.jpg"
       }
     ]
   },
@@ -720,7 +767,8 @@ const breweries = [
       {
         name: "Revel Brewing Co. Rivermakers",
         address: "82 Colmslie Rd, Morningside QLD 4170",
-        map: "https://maps.app.goo.gl/UWaworiaqKcsekKb6"
+        map: "https://maps.app.goo.gl/UWaworiaqKcsekKb6",
+        photo: "/media/taprooms/revel-taproom.jpg"
       }
     ]
   },
@@ -739,7 +787,8 @@ const breweries = [
       {
         name: "Seeker Brewing",
         address: "Shop 4/1 Industrial Rd, Unanderra NSW 2526",
-        map: "https://maps.app.goo.gl/gddMX5jHGyWKhT526"
+        map: "https://maps.app.goo.gl/gddMX5jHGyWKhT526",
+        photo: "/media/taprooms/seeker-taproom.jpg"
       }
     ]
   },
@@ -758,7 +807,8 @@ const breweries = [
       {
         name: "Shapeshifter Brewing Co.",
         address: "Unit 2/54 Crittenden Rd, Findon SA 5023",
-        map: "https://maps.app.goo.gl/cLmyPurGiB5c7wLo6"
+        map: "https://maps.app.goo.gl/cLmyPurGiB5c7wLo6",
+        photo: "/media/taprooms/shapeshifter-taproom.jpeg"
       }
     ]
   },
@@ -777,7 +827,8 @@ const breweries = [
       {
         name: "Shout Brewing",
         address: "22 Clyde St, Islington NSW 2296",
-        map: "https://maps.app.goo.gl/2eSdBaDAm2dA2TxD6"
+        map: "https://maps.app.goo.gl/2eSdBaDAm2dA2TxD6",
+        photo: "/media/taprooms/shout-taproom.jpg"
       }
     ]
   },
@@ -796,7 +847,8 @@ const breweries = [
       {
         name: "SixTwelve Brewing",
         address: "Warehouse 3/132 Tolley Rd, St Agnes SA 5097",
-        map: "https://maps.app.goo.gl/gti3pPV7Q1okzHGc6"
+        map: "https://maps.app.goo.gl/gti3pPV7Q1okzHGc6",
+        photo: "/media/taprooms/sixtwelve-taproom.jpg"
       }
     ]
   },
@@ -815,7 +867,8 @@ const breweries = [
       {
         name: "Small Gods Taproom",
         address: "2/2 Shaddock Street, Eden Terrace, Auckland 1021, New Zealand",
-        map: "https://maps.app.goo.gl/Z14eUWDVb4uzSMna7"
+        map: "https://maps.app.goo.gl/Z14eUWDVb4uzSMna7",
+        photo: "/media/taprooms/small-gods-taproom.jpg"
       }
     ]
   },
@@ -834,7 +887,8 @@ const breweries = [
       {
         name: "Sunday Road Brewing",
         address: "147 Bath Rd, Kirrawee NSW 2232",
-        map: "https://maps.app.goo.gl/fkVKioEhRnLPnLGbA"
+        map: "https://maps.app.goo.gl/fkVKioEhRnLPnLGbA",
+        photo: "/media/taprooms/sunday-road-taproom.jpeg"
       }
     ]
   },
@@ -866,7 +920,8 @@ const breweries = [
       {
         name: "Tar Barrel Brewery & Distillery",
         address: "72 Watt Rd, Mornington VIC 3931",
-        map: "https://maps.app.goo.gl/cxNqZXAq6dL2JBCc8"
+        map: "https://maps.app.goo.gl/cxNqZXAq6dL2JBCc8",
+        photo: "/media/taprooms/tar-barrel-taproom.jpg"
       }
     ]
   },
@@ -885,7 +940,8 @@ const breweries = [
       {
         name: "Working Title Brew Co.",
         address: "85 Doggett St, Newstead QLD 4006",
-        map: "https://maps.app.goo.gl/Q6QnWuYGEQPoBkc37"
+        map: "https://maps.app.goo.gl/Q6QnWuYGEQPoBkc37",
+        photo: "/media/taprooms/working-title-taproom.jpg"
       }
     ]
   },
@@ -904,12 +960,14 @@ const breweries = [
       {
         name: "Your Mates Warana",
         address: "41 Technology Dr, Warana QLD 4575",
-        map: "https://maps.app.goo.gl/uRUkXuzAu11u5K329"
+        map: "https://maps.app.goo.gl/uRUkXuzAu11u5K329",
+        photo: "/media/taprooms/your-mates-warana.jpg"
       },
       {
         name: "Crackerjack Cooroy",
         address: "5 Opal St, Cooroy QLD 4563",
-        map: "https://maps.app.goo.gl/Nw7MFpFCHCSXPmWGA"
+        map: "https://maps.app.goo.gl/Nw7MFpFCHCSXPmWGA",
+        photo: "/media/taprooms/your-mates-crackerjack.jpg"
       }
     ]
   }
