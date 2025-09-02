@@ -21,25 +21,25 @@
     .links a {
       font-weight: bold;
       text-decoration: underline;
-      font-size: 1.2rem; /* slightly bigger */
+      font-size: 1.2rem;
     }
-    .taprooms ul { padding-left: 1.2rem; text-align: left; display: inline-block; }
     .beer-list { margin-top: 2rem; text-align: left; }
     .beer-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; background: #f9f9f9; padding: 10px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
     .beer-item img { width: 80px; object-fit: contain; }
     .beer-info { flex: 1; font-size: 14px; }
     a { text-decoration: none; color: #002157; }
     a:hover { color: #ffb400; }
-    footer {text-align: center; }
-    .taproom-card {
+    footer { text-align: center; }
+    /* Taproom flip cards */
+    .flip-card {
       width: 100%;
-      max-width: 400px;   /* larger card on desktop */
-      height: 250px;      /* base height */
+      max-width: 400px;
+      height: 250px;
       perspective: 1000px;
       margin: 1rem auto;
+      cursor: pointer;
     }
-    
-    .taproom-inner {
+    .flip-card-inner {
       position: relative;
       width: 100%;
       height: 100%;
@@ -47,12 +47,10 @@
       transition: transform 0.8s;
       transform-style: preserve-3d;
     }
-    
-    .taproom-card:hover .taproom-inner {
+    .flip-card.flipped .flip-card-inner {
       transform: rotateY(180deg);
     }
-    
-    .taproom-front, .taproom-back {
+    .flip-card-front, .flip-card-back {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -61,33 +59,22 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    
-    .taproom-front img {
+    .flip-card-front img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
-    .taproom-back iframe {
+    .flip-card-back iframe {
       width: 100%;
       height: 100%;
       border: 0;
     }
-    
-    /* 📱 Mobile */
+
     @media (max-width: 600px) {
-      .taproom-card {
-        max-width: 300px;
-        height: 180px;
-      }
+      .flip-card { max-width: 300px; height: 180px; }
     }
-    
-    /* 💻 Large desktop */
     @media (min-width: 1200px) {
-      .taproom-card {
-        max-width: 500px;
-        height: 300px;
-      }
+      .flip-card { max-width: 500px; height: 300px; }
     }
   </style>
 </head>
@@ -149,10 +136,10 @@
         ${brewery.website ? `<a href="${brewery.website}" target="_blank">Website</a>` : ''}
         ${brewery.instagram ? `<a href="${brewery.instagram}" target="_blank">Instagram</a>` : ''}
       </div>
-      
-      <div class="taprooms">
-        <h2>Taprooms</h2>
-        <div class="taprooms-grid">
+
+      <div class="taprooms-section">
+        <button id="taprooms-toggle">Taprooms ▾</button>
+        <div id="taprooms-content" style="display: none;">
           ${brewery.taprooms && brewery.taprooms.length > 0
             ? brewery.taprooms.map((t, index) => `
               <div class="flip-card" data-index="${index}">
@@ -164,11 +151,8 @@
                   </div>
                   <div class="flip-card-back">
                     <iframe 
-                      width="100%" 
-                      height="100%" 
-                      style="border:0; border-radius:12px;" 
-                      loading="lazy" 
-                      allowfullscreen 
+                      loading="lazy"
+                      allowfullscreen
                       referrerpolicy="no-referrer-when-downgrade"
                       src="https://www.google.com/maps?q=${encodeURIComponent(t.address)}&output=embed">
                     </iframe>
@@ -199,22 +183,23 @@
       </div>
     `;
 
-          // Taprooms dropdown toggle
-      const taproomsToggle = document.getElementById('taprooms-toggle');
-      const taproomsContent = document.getElementById('taprooms-content');
-      
-      if (taproomsToggle && taproomsContent) {
-        taproomsToggle.addEventListener('click', () => {
-          const isVisible = taproomsContent.style.display === 'block';
-          taproomsContent.style.display = isVisible ? 'none' : 'block';
-          taproomsToggle.innerHTML = `Taprooms ${isVisible ? '&#9660;' : '&#9650;'}`;
-        });
-      }
-      document.querySelectorAll('.flip-card').forEach(card => {
-        card.addEventListener('click', () => {
-          card.classList.toggle('flipped');
-        });
+    // Toggle dropdown
+    const toggle = document.getElementById('taprooms-toggle');
+    const content = document.getElementById('taprooms-content');
+    if (toggle && content) {
+      toggle.addEventListener('click', () => {
+        const isVisible = content.style.display === 'block';
+        content.style.display = isVisible ? 'none' : 'block';
+        toggle.innerHTML = `Taprooms ${isVisible ? '▾' : '▴'}`;
       });
+    }
+
+    // Flip cards on click (mobile + desktop)
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+      });
+    });
   }
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
