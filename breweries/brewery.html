@@ -169,20 +169,31 @@
 
     const page = document.getElementById('brewery-container');
 
-    // Filter beers for this brewery
     const breweryBeers = beers.filter(be => be.brewery === brewery.name);
 
-    // Calculate global BBBRS ranks (higher score = better rank)
-    beers
-      .slice()
-      .sort((a, b) => b.bbbrsScore - a.bbbrsScore)
-      .forEach((be, index) => be.bbbrsRank = index + 1);
+    // Function to calculate tie-aware ranks
+    function calculateRanks(beersArray, scoreKey, rankKey) {
+      const sorted = beersArray.slice().sort((a, b) => b[scoreKey] - a[scoreKey]);
+      let currentRank = 1;
+      let prevScore = null;
+      let skip = 0;
 
-    // Calculate global Untappd ranks (higher score = better rank)
-    beers
-      .slice()
-      .sort((a, b) => b.untappdScore - a.untappdScore)
-      .forEach((be, index) => be.untappdRank = index + 1);
+      sorted.forEach((be, index) => {
+        if (be[scoreKey] === prevScore) {
+          be[rankKey] = currentRank;
+          skip++;
+        } else {
+          currentRank += skip;
+          be[rankKey] = currentRank;
+          skip = 1;
+          prevScore = be[scoreKey];
+        }
+      });
+    }
+
+    // Calculate global ranks
+    calculateRanks(beers, 'bbbrsScore', 'bbbrsRank');
+    calculateRanks(beers, 'untappdScore', 'untappdRank');
 
     page.innerHTML = `
       <a class="back-button" href="index.html">&larr; Back to Breweries</a>
