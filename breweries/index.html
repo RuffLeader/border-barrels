@@ -340,6 +340,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Calculate items per page: 2 rows per page
   function getItemsPerPage() {
+    // On mobile, show all breweries (no row limit)
+    if (window.innerWidth <= 768) {
+      return filteredBreweries.length; 
+    }
+  
+    // Desktop/tablet: keep 2 rows per page
     const style = getComputedStyle(grid);
     const gap = parseInt(style.getPropertyValue('gap')) || 20;
 
