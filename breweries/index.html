@@ -241,6 +241,35 @@
         display: flex;
       }
     }
+
+    /* Mobile-specific card adjustments */
+    @media (max-width: 600px) {
+      .brewery-card {
+        width: 150px;       /* make card narrower */
+        flex: 0 0 150px;    /* fix size */
+        height: auto;       /* shrink height */
+        padding: 10px;
+      }
+    
+      .brewery-card img {
+        max-height: 80px;   /* smaller logo */
+        max-width: 100px;
+      }
+    
+      .brewery-card h2 {
+        font-size: 14px;
+        white-space: normal; /* allow wrapping */
+      }
+    
+      /* Hide extra info (city, state, status) */
+      .brewery-card p {
+        display: none;
+      }
+    
+      .bottom-content {
+        gap: 0; /* reduce spacing */
+      }
+    }
   </style>
 </head>
 <body>
