@@ -84,12 +84,15 @@
     max-width: 1200px;
   }
 
-  .hub-card {
+  .hub-card-brew {
     flex: 1 1 400px;
     max-width: 500px;
     height: 300px;
-    background-color: white;
-    color: #002157;
+    background-image: url('/media/generic-brewery.jpg'); /* 👈 your image path */
+    background-size: cover;   /* make it fill the button */
+    background-position: center; /* center the image */
+    background-repeat: no-repeat;
+    color: white;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -103,13 +106,40 @@
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
   }
 
-  .hub-card:hover {
+  .hub-card-brew:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+  }
+
+  .hub-card-beer {
+    flex: 1 1 400px;
+    max-width: 500px;
+    height: 300px;
+    background-image: url('/media/generic-beer.jpg'); /* 👈 your image path */
+    background-size: cover;   /* make it fill the button */
+    background-position: center; /* center the image */
+    background-repeat: no-repeat;
+    color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+
+  .hub-card-beer:hover {
     transform: scale(1.05);
     box-shadow: 0 12px 28px rgba(0,0,0,0.45);
   }
 
   @media (max-width: 768px) {
-    .hub-card {
+    .hub-card-brew, .hub-card-beer {
       height: 200px;
       font-size: 1.5rem;
     }
@@ -137,8 +167,8 @@
 
   <main class="hub-wrapper">
     <div class="hub-container">
-      <a href="/breweries/index.html" class="hub-card">Browse Breweries</a>
-      <a href="/beers.html" class="hub-card">Browse Beers</a>
+      <a href="/breweries/index.html" class="hub-card-brew">Browse Breweries</a>
+      <a href="/beers.html" class="hub-card-beer">Browse Beers</a>
     </div>
   </main>
 
