@@ -172,14 +172,14 @@
     // Filter beers for this brewery
     const breweryBeers = beers.filter(be => be.brewery === brewery.name);
 
-    // Calculate BBBRS ranks (higher score = better rank)
-    breweryBeers
+    // Calculate global BBBRS ranks (higher score = better rank)
+    beers
       .slice()
       .sort((a, b) => b.bbbrsScore - a.bbbrsScore)
       .forEach((be, index) => be.bbbrsRank = index + 1);
 
-    // Calculate Untappd ranks (higher score = better rank)
-    breweryBeers
+    // Calculate global Untappd ranks (higher score = better rank)
+    beers
       .slice()
       .sort((a, b) => b.untappdScore - a.untappdScore)
       .forEach((be, index) => be.untappdRank = index + 1);
@@ -283,7 +283,5 @@
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
 </script>
-
-
 </body>
 </html>
