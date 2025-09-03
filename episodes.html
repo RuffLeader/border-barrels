@@ -70,7 +70,7 @@ main {
 }
 
 /* === Controls (Search + Sort) === */
-#controls {
+#commands {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +80,7 @@ main {
   max-width: 500px;
 }
 
-#controls input#search {
+#commands input#search {
   width: 300px;
   padding: 0.6em 0.8em;
   font-size: 1rem;
@@ -90,7 +90,7 @@ main {
   box-sizing: border-box;
 }
 
-#controls button#toggleOrder {
+#commands button#toggleOrder {
   background-color: #002157;
   color: white;
   border: 1px solid #002157;
@@ -101,12 +101,12 @@ main {
   box-sizing: border-box;
 }
 
-#controls button#toggleOrder:hover {
+#commands button#toggleOrder:hover {
   background-color: #004080;
   border-color: #004080;
 }
 
-#controls button#toggleOrder:active {
+#commands button#toggleOrder:active {
   background-color: #001a40;
   border-color: #001a40;
 }
@@ -320,13 +320,13 @@ main {
   }
 
   /* Make search and toggle button match height */
-  #controls {
+  #commands {
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  #controls input#search,
-  #controls button#toggleOrder {
+  #commands input#search,
+  #commands button#toggleOrder {
     width: 100%;
     box-sizing: border-box;
     font-size: 1rem;
@@ -365,7 +365,7 @@ main {
     </div>
   </header>
 
-<div id="controls">
+<div id="commands">
   <input type="text" id="search" placeholder="Search episodes..." />
   <button id="toggleOrder">Show Oldest First</button>
 </div>
