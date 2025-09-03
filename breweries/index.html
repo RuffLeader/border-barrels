@@ -409,6 +409,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // near the top of your DOMContentLoaded in index.html
+  const urlParams = new URLSearchParams(window.location.search);
+  currentPage = parseInt(urlParams.get('page')) || 1;
+
   function filterBreweries() {
     const search = searchBar.value.toLowerCase();
     const status = statusFilter.value;
