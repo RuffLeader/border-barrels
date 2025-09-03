@@ -12,6 +12,9 @@
       margin: 0;
       padding: 0;
       line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     
     .container {
@@ -64,6 +67,15 @@
       color: #ffb400;
     }
 
+   .hub-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 4rem 1rem; /* adds vertical spacing above and below cards */
+    min-height: calc(100vh -  headerHeight - footerHeight); /* optional */
+  }
+
   .hub-container {
     display: flex;
     flex-wrap: wrap;
@@ -106,6 +118,7 @@
 </style>
 </head>
 <body>
+<body>
   <header>
     <div class="container">
       <h1>Breweries</h1>
@@ -123,11 +136,13 @@
       </nav>
     </div>
   </header>
-  
-  <div class="hub-container">
-    <a href="/breweries/index.html" class="hub-card">Browse Breweries</a>
-    <a href="/beers.html" class="hub-card">Browse Beers</a>
-  </div>
+
+  <main class="hub-wrapper">
+    <div class="hub-container">
+      <a href="/breweries/index.html" class="hub-card">Browse Breweries</a>
+      <a href="/beers.html" class="hub-card">Browse Beers</a>
+    </div>
+  </main>
 
   <footer>
     <p>© 2025 Border Barrels</p>
