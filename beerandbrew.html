@@ -5,75 +5,74 @@
 <title>Border Barrels Hub</title>
 <link rel="stylesheet" href="/style.css">
 <style>
- <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      color: #002157;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1rem;
-      text-align: center;
-    }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    color: #002157;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+  }
 
-    header {
-      background-color: #002157;
-      color: white;
-      padding: 1rem 0;
-      position: relative;
-      z-index: 1000;
-    }
-    
-    header .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin: 1rem 0 0.5rem;
-      letter-spacing: 1px;
-    }
-    
-    footer {
-      background-color: #002157;
-      color: #ffffff;
-      padding: 2rem 0;
-      border-top: 2px solid #e0e0e0;
-      font-size: 0.9rem;
-      text-align: center;
-    }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+  }
 
-    nav a {
-      margin: 0 1rem;
-      font-size: 1rem;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 0.5rem;
-    }
+  header {
+    background-color: #002157;
+    color: white;
+    padding: 1rem 0;
+    position: relative;
+    z-index: 1000;
+  }
 
-    nav a:hover {
-      color: #ffb400;
-    }
+  header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-   .hub-wrapper {
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 1rem 0 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  footer {
+    background-color: #002157;
+    color: #ffffff;
+    padding: 2rem 0;
+    border-top: 2px solid #e0e0e0;
+    font-size: 0.9rem;
+    text-align: center;
+    flex-shrink: 0; /* Prevent shrinking */
+  }
+
+  nav a {
+    margin: 0 1rem;
+    font-size: 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.5rem;
+  }
+
+  nav a:hover {
+    color: #ffb400;
+  }
+
+  main.hub-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
-    padding: 4rem 1rem; /* adds vertical spacing above and below cards */
-    min-height: calc(100vh -  headerHeight - footerHeight); /* optional */
+    flex: 1; /* Take remaining space */
+    padding: 4rem 1rem; /* Vertical spacing above/below cards */
   }
 
   .hub-container {
@@ -118,7 +117,6 @@
 </style>
 </head>
 <body>
-<body>
   <header>
     <div class="container">
       <h1>Breweries</h1>
@@ -147,14 +145,15 @@
   <footer>
     <p>© 2025 Border Barrels</p>
   </footer>
-<script>
-     // Mobile nav toggle
-    const navToggle = document.getElementById("nav-toggle");
-    const navMenu = document.getElementById("nav-menu");
 
-    navToggle.addEventListener("click", () => {
-      navMenu.classList.toggle("show");
-    });
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById("nav-toggle");
+  const navMenu = document.getElementById("nav-menu");
+
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("show");
+  });
 </script>
 </body>
 </html>
