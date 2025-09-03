@@ -253,6 +253,13 @@
       </div>
     `;
 
+    // Preserve the last visited breweries page
+    const savedPage = sessionStorage.getItem("breweryPage");
+    const backButton = page.querySelector(".back-button");
+    if (savedPage && backButton) {
+      backButton.href = `index.html?page=${savedPage}`;
+    }
+
     // Taprooms toggle
     const heading = document.querySelector('.taprooms-heading');
     const toggle = document.getElementById('taprooms-toggle');
