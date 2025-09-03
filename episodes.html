@@ -70,13 +70,18 @@ main {
 }
 
 /* === Controls (Search + Sort) === */
+.commands-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem 0;
+}
+
 #commands {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  margin: 2rem 0;
-  width: max-content;
 }
 
 #commands input#search {
@@ -363,10 +368,11 @@ main {
       </nav>
     </div>
   </header>
-
-<div id="commands">
-  <input type="text" id="search" placeholder="Search episodes..." />
-  <button id="toggleOrder">Show Oldest First</button>
+<div class="commands-wrapper">
+  <div id="commands">
+    <input type="text" id="search" placeholder="Search episodes..." />
+    <button id="toggleOrder">Show Oldest First</button>
+  </div>
 </div>
 <div id="episode-grid"></div>
 <div id="pagination"></div>
