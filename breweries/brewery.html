@@ -250,6 +250,18 @@
         card.classList.remove('flipped'); 
       });
     });
+
+    // AFTER the flip card logic (or anywhere after the beers-grid is rendered)
+    document.querySelectorAll('.beer-info h3').forEach(el => {
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+      const maxHeight = lineHeight * 2;
+      let fontSize = parseFloat(getComputedStyle(el).fontSize);
+    
+      while (el.scrollHeight > maxHeight && fontSize > 10) { // minimum font size
+        fontSize -= 1;
+        el.style.fontSize = fontSize + 'px';
+      }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
