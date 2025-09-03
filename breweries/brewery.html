@@ -168,6 +168,22 @@
     if (!brewery) { document.getElementById('brewery-container').textContent = 'Brewery not found'; return; }
 
     const page = document.getElementById('brewery-container');
+
+    // Filter beers for this brewery
+    const breweryBeers = beers.filter(be => be.brewery === brewery.name);
+
+    // Calculate BBBRS ranks (higher score = better rank)
+    breweryBeers
+      .slice()
+      .sort((a, b) => b.bbbrsScore - a.bbbrsScore)
+      .forEach((be, index) => be.bbbrsRank = index + 1);
+
+    // Calculate Untappd ranks (higher score = better rank)
+    breweryBeers
+      .slice()
+      .sort((a, b) => b.untappdScore - a.untappdScore)
+      .forEach((be, index) => be.untappdRank = index + 1);
+
     page.innerHTML = `
       <a class="back-button" href="index.html">&larr; Back to Breweries</a>
       <h1>${brewery.name}</h1>
@@ -208,23 +224,7 @@
 
       <h2>Beers</h2>
       <div id="beers-grid">
-        // Filter beers for this brewery
-        const breweryBeers = beers.filter(be => be.brewery === brewery.name);
-        
-        // Calculate BBBRS ranks (higher score = better rank)
-        breweryBeers
-          .slice() // clone array
-          .sort((a, b) => b.bbbrsScore - a.bbbrsScore)
-          .forEach((be, index) => be.bbbrsRank = index + 1);
-        
-        // Calculate Untappd ranks (higher score = better rank)
-        breweryBeers
-          .slice()
-          .sort((a, b) => b.untappdScore - a.untappdScore)
-          .forEach((be, index) => be.untappdRank = index + 1);
-        
-        // Use breweryBeers to render cards
-        breweryBeers.map(be => `
+        ${breweryBeers.map(be => `
           <div class="beer-card">
             ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
             <div class="beer-info">
@@ -235,8 +235,7 @@
               <p><strong>Rank:</strong> BBBRS #${be.bbbrsRank} • Untappd #${be.untappdRank}</p>
               <p><strong>Episode No.:</strong> ${be.epnum}</p>
             </div>
-          </div>
-        `).join('') || '<p>No beers listed for this brewery.</p>'}
+          </div>`).join('') || '<p>No beers listed for this brewery.</p>'}
       </div>
     `;
 
@@ -257,25 +256,25 @@
       const inner = card.querySelector('.flip-card-inner');
       const front = card.querySelector('.flip-card-front');
       const backBtn = card.querySelector('.back-overlay');
-    
+
       front.addEventListener('click', (e) => {
         e.stopPropagation();
-        card.classList.add('flipped'); 
+        card.classList.add('flipped');
       });
-    
+
       backBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        card.classList.remove('flipped'); 
+        card.classList.remove('flipped');
       });
     });
 
-    // AFTER the flip card logic (or anywhere after the beers-grid is rendered)
+    // Shrink beer name if more than 2 lines
     document.querySelectorAll('.beer-info h3').forEach(el => {
       const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
       const maxHeight = lineHeight * 2;
       let fontSize = parseFloat(getComputedStyle(el).fontSize);
-    
-      while (el.scrollHeight > maxHeight && fontSize > 10) { // minimum font size
+
+      while (el.scrollHeight > maxHeight && fontSize > 10) {
         fontSize -= 1;
         el.style.fontSize = fontSize + 'px';
       }
@@ -284,6 +283,7 @@
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
 </script>
+
 
 </body>
 </html>
