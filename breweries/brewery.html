@@ -170,7 +170,9 @@
 
     const page = document.getElementById('brewery-container');
 
-    const breweryBeers = beers.filter(be => be.brewery === brewery.name);
+    const breweryBeers = beers
+      .filter(be => be.brewery === brewery.name)
+      .sort((a, b) => a.epnum - b.epnum); // sorts ascending by episode number
 
     // Function to calculate tie-aware ranks
     function calculateRanks(beersArray, scoreKey, rankKey) {
