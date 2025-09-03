@@ -377,6 +377,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- SHRINK BREWERY NAME TO FIT ---
     const nameEl = card.querySelector("h2");
     fitTextToWidth(nameEl, 12); // 12px min font
+
+    // --- SAVE CURRENT PAGE ---
+    const breweryLink = card.querySelector(".brewery-link");
+    breweryLink.addEventListener("click", () => {
+      sessionStorage.setItem("breweryPage", currentPage);
+    });
     });
 
     renderPagination(itemsPerPage);
