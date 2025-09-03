@@ -208,7 +208,23 @@
 
       <h2>Beers</h2>
       <div id="beers-grid">
-        ${beers.filter(be => be.brewery === brewery.name).map(be => `
+        // Filter beers for this brewery
+        const breweryBeers = beers.filter(be => be.brewery === brewery.name);
+        
+        // Calculate BBBRS ranks (higher score = better rank)
+        breweryBeers
+          .slice() // clone array
+          .sort((a, b) => b.bbbrsScore - a.bbbrsScore)
+          .forEach((be, index) => be.bbbrsRank = index + 1);
+        
+        // Calculate Untappd ranks (higher score = better rank)
+        breweryBeers
+          .slice()
+          .sort((a, b) => b.untappdScore - a.untappdScore)
+          .forEach((be, index) => be.untappdRank = index + 1);
+        
+        // Use breweryBeers to render cards
+        breweryBeers.map(be => `
           <div class="beer-card">
             ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
             <div class="beer-info">
@@ -216,9 +232,11 @@
               <p><strong>Style:</strong> ${be.style}</p>
               <p><strong>ABV:</strong> ${be.abv}%</p>
               <p><strong>BBBRS:</strong> ${be.bbbrsScore} • <strong>Untappd:</strong> ${be.untappdScore}</p>
+              <p><strong>Rank:</strong> BBBRS #${be.bbbrsRank} • Untappd #${be.untappdRank}</p>
               <p><strong>Episode No.:</strong> ${be.epnum}</p>
             </div>
-          </div>`).join('') || '<p>No beers listed for this brewery.</p>'}
+          </div>
+        `).join('') || '<p>No beers listed for this brewery.</p>'}
       </div>
     `;
 
