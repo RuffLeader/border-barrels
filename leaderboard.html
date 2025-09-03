@@ -279,41 +279,49 @@
 
     /* === Header === */
     header.site-header {
-      background-color: #002157; /* match style.css */
+      background-color: #002157; /* main site header color */
       color: #ffffff;
       width: 100%;
-      padding: 1rem 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 0.5rem 0;
       position: relative;
       z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* subtle shadow */
     }
     
     header.site-header .container {
       max-width: 1100px;
       width: 95%;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 0 auto;
     }
     
     header.site-header h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      margin: 0;
       color: #fff;
+      margin: 0;
+      letter-spacing: 1px;
     }
     
-    /* Nav links in header */
+    header.site-header nav#nav-menu {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+    
     header.site-header nav#nav-menu a {
       color: #fff;
       text-decoration: none;
-      margin-left: 1rem;
+      padding: 0.5rem 0;
+      transition: color 0.3s ease;
+      text-align: center;
     }
+    
     header.site-header nav#nav-menu a:hover {
-      color: #f0a830;
+      color: #f0a830; /* amber accent */
     }
     
     /* Burger button */
@@ -326,22 +334,17 @@
       cursor: pointer;
       z-index: 1100;
     }
+    
     #nav-toggle:focus {
-      outline: 2px solid #ffb400;
+      outline: 2px solid #f0a830;
       outline-offset: 2px;
     }
+    
     #nav-toggle .burger {
       width: 25px;
       height: 3px;
       background: white;
       border-radius: 2px;
-    }
-    
-    /* Desktop nav layout */
-    header.site-header nav#nav-menu {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
     }
     
     /* === Footer === */
@@ -370,6 +373,7 @@
         background-color: #002157;
         padding: 10px 0;
         border-bottom: 2px solid #e0e0e0;
+        text-align: center; /* center links when expanded */
       }
     
       header.site-header nav#nav-menu.show {
@@ -377,8 +381,11 @@
       }
     
       header.site-header nav#nav-menu a {
-        padding: 0.75rem 1.5rem;
+        padding: 0.75rem 0;
         font-size: 1.1rem;
+        display: block;
+        width: 100%;
+        text-align: center; /* ensures centered text on mobile */
       }
     }
 
