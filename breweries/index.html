@@ -386,6 +386,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     renderPagination(itemsPerPage);
+
+    // --- UPDATE URL WITHOUT RELOADING ---
+    const url = new URL(window.location);
+    url.searchParams.set('page', currentPage);
+    window.history.replaceState({}, '', url);
   }
 
   function renderPagination(itemsPerPage) {
