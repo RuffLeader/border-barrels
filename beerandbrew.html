@@ -88,7 +88,7 @@
     flex: 1 1 400px;
     max-width: 500px;
     height: 300px;
-    background-image: url('/media/generic-brewery.jpg'); /* 👈 your image path */
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/media/generic-brewery.jpg');
     background-size: cover;   /* make it fill the button */
     background-position: center; /* center the image */
     background-repeat: no-repeat;
@@ -113,23 +113,11 @@
     box-shadow: 0 12px 28px rgba(0,0,0,0.45);
   }
 
-  .hub-card-brew::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba (0,0,0,0.4);
-  }
-
-  .hub-card-brew span {
-    position: relative;
-    z-index: 1;
-  }
-
   .hub-card-beer {
     flex: 1 1 400px;
     max-width: 500px;
     height: 300px;
-    background-image: url('/media/generic-beer.jpg'); /* 👈 your image path */
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/media/generic-beer.jpg');
     background-size: cover;   /* make it fill the button */
     background-position: center; /* center the image */
     background-repeat: no-repeat;
@@ -152,18 +140,6 @@
   .hub-card-beer:hover {
     transform: scale(1.05);
     box-shadow: 0 12px 28px rgba(0,0,0,0.45);
-  }
-
-  .hub-card-beer::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba (0,0,0,0.4);
-  }
-
-  .hub-card-beer span {
-    position: relative;
-    z-index: 1;
   }
 
   @media (max-width: 768px) {
