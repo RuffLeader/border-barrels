@@ -413,11 +413,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   currentPage = parseInt(urlParams.get('page')) || 1;
 
-  function filterBreweries() {
+  function filterBreweries(resetPage = true) {
     const search = searchBar.value.toLowerCase();
     const status = statusFilter.value;
     const state = stateFilter.value;
-
+  
     filteredBreweries = breweries.filter(b => {
       const breweryStatus = b.independent ? "Independent" : "Not Independent";
       return (
@@ -426,14 +426,22 @@ document.addEventListener("DOMContentLoaded", () => {
         (state === "" || b.state === state)
       );
     });
-
-    currentPage = 1;
+  
+    if (resetPage) currentPage = 1;  // only reset when user changes search/filter
     renderPage();
   }
-
-  searchBar.addEventListener("input", filterBreweries);
-  statusFilter.addEventListener("change", filterBreweries);
-  stateFilter.addEventListener("change", filterBreweries);
+  
+  // Read page from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  currentPage = parseInt(urlParams.get('page')) || 1;
+  
+  // Initial render without resetting page
+  filterBreweries(false);
+  
+  // Event listeners for filters/search
+  searchBar.addEventListener("input", () => filterBreweries(true));
+  statusFilter.addEventListener("change", () => filterBreweries(true));
+  stateFilter.addEventListener("change", () => filterBreweries(true));
 
   window.addEventListener("resize", renderPage);
 
