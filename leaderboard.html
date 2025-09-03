@@ -648,7 +648,7 @@
       </button>
       <nav id="nav-menu">
         <a href="index.html">Home</a>
-        <a href="beers.html">Beers</a>
+        <a href="/beerandbrew.html">Beers & Breweries</a>
         <a href="episodes.html">Episodes</a>
         <a href="/blog/index.html">Blog</a>
         <a href="about.html">About Us</a>
@@ -710,7 +710,7 @@
   </div>
   <div id="recent-additions" class="leaderboard-section">
     <h2>Most Recent Additions</h2>
-    <div id="recent-card" class="recent-additions"></div>
+    <div id="recent-card"></div>
   </div>
   </main>
   <!-- === Footer === -->
@@ -830,7 +830,7 @@
     beersThisEp.forEach((beer, i) => {
       const rankClass = i === 0 ? 'rank1' : i === 1 ? 'rank2' : i === 2 ? 'rank3' : '';
       const beerCard = document.createElement('div');
-      beerCard.className = `beer-card #${rankClass}`;
+      beerCard.className = `beer-card ${rankClass}`;
       beerCard.innerHTML = `
         <div class="beer-rank">#${getBeerRank(beer, 'bbbrsScore')}</div>
         <img class="beer-image" src="${beer.beerCanUrl}" alt="${beer.name}" />
