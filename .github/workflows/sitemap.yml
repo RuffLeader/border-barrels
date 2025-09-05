@@ -10,10 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the repo
       - uses: actions/checkout@v3
 
-      - name: Install sitemap generator
-        run: npm install -g sitemap-generator-cli
+      # 2. Generate sitemap.xml in the repo root
+      - name: Generate dynamic sitemap
+        run: |
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
+          echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
+          
+          # Loop through all HTML files in the repo root and subfolders
+          find . -name "*.html" -not -path "./.github/*" -not -name "sitemap.xml" | while read file; do
+            # Remove leading ./ and convert to URL path
+            path=$(echo $file | sed 's|^\./||')
+            url="https://borderbarrels.com/$path"
+            echo "  <url><loc>$url</loc></url>" >> sitemap.xml
+          done
+          
+          echo '</urlset>' >> sitemap.xml
 
-      - name: Generate sitemap
-        run: sitemap-generator https://borderbarrels.com -o ./sitemap.xml
+      # 3. Commit the sitemap.xml back to the repo
+      - name: Commit sitemap
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update sitemap [skip ci]"
+          file_pattern: "sitemap.xml"
