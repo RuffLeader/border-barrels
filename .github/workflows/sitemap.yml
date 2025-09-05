@@ -25,3 +25,5 @@ jobs:
           git add ./public/sitemap.xml
           git commit -m "Update sitemap [skip ci]" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
