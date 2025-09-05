@@ -3,7 +3,7 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - main   # or 'master' if that's your default branch
+      - main
 
 jobs:
   build:
@@ -22,7 +22,8 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add /public/sitemap.xml
+          git add public/sitemap.xml
           git commit -m "Update sitemap [skip ci]" || echo "No changes to commit"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+
 
