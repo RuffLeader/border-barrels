@@ -1,0 +1,27 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - main   # or 'master' if that's your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install sitemap generator
+        run: npm install -g sitemap-generator-cli
+
+      - name: Generate sitemap
+        run: sitemap-generator https://borderbarrels.com -o ./public/sitemap.xml
+
+      - name: Commit sitemap
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add ./public/sitemap.xml
+          git commit -m "Update sitemap [skip ci]" || echo "No changes to commit"
+          git push
