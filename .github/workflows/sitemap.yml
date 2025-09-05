@@ -3,20 +3,17 @@ name: Generate Sitemap
 on:
   push:
     branches:
-      - main  # runs whenever you push to main
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo
       - uses: actions/checkout@v3
 
-      # 2. Install sitemap generator globally
-      - name: Install sitemap-generator-cli
+      - name: Install sitemap generator
         run: npm install -g sitemap-generator-cli
 
-      # 3. Generate sitemap directly into public/ folder
       - name: Generate sitemap
-        run: sitemap-generator https://borderbarrels.com -o /sitemap.xml
+        run: sitemap-generator https://borderbarrels.com -o ./sitemap.xml
