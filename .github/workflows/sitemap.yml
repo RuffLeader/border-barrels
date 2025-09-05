@@ -1,4 +1,4 @@
-name: Generate Sitemap for Netlify
+name: Deploy Sitemap to Netlify
 
 on:
   push:
@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repo
       - uses: actions/checkout@v3
 
-      # 1. Generate sitemap.xml in the root of the repo
+      # 2. Generate sitemap.xml
       - name: Generate sitemap
         run: |
           echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
@@ -23,12 +24,13 @@ jobs:
           done
           echo '</urlset>' >> sitemap.xml
 
-      # 2. (Optional) Deploy to Netlify via Netlify CLI
+      # 3. Install Netlify CLI
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      # 4. Deploy to Netlify
       - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v1.2
-        with:
-          publish-dir: '.'        # folder containing index.html and sitemap.xml
-          production-deploy: true
+        run: netlify deploy --dir=. --prod --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
