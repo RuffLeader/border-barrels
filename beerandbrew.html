@@ -206,10 +206,8 @@
   }
 
   .featured-beer-card {
-    margin-top: 3rem;
-    flex: 1 1 400px;
-    max-width: 500px;
-    height: 300px;
+    margin-top: 2rem;
+    width: 100%; /* Take full container width */
     background: white;
     border: 2px solid rgba(218,165,32,0.5);
     border-radius: 20px;
@@ -228,7 +226,7 @@
   .featured-beer-card img {
     height: 100%;
     width: auto;
-    max-width: 40%;
+    max-width: 250px;
     object-fit: contain;
     background: #f9f9f9;
     padding: 1rem;
@@ -237,31 +235,31 @@
   
   .featured-beer-info {
     flex: 1;
-    padding: 1rem;
+    padding: 1.5rem;
     text-align: left;
     color: #002157;
   }
   
   .featured-beer-info h2 {
     margin: 0 0 0.5rem;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     color: #002157;
   }
   
   .featured-beer-info h3 {
     margin: 0.2rem 0 0.8rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #ffb400;
   }
   
   .featured-beer-info p {
     margin: 0.25rem 0;
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
   
   .featured-beer-info .score {
     margin-top: 0.6rem;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: #002157;
   }
@@ -290,10 +288,9 @@
     <div class="hub-container">
       <a href="/beers.html" class="hub-card-beer">Browse Beers</a>
       <a href="/breweries/index.html" class="hub-card-brew">Browse Breweries</a>
+      <div id="featured-beer-container"></div>
     </div>
   </main>
-
-  <div id="featured-beer-container"></div>
 
   <footer>
     <p>© 2025 Border Barrels</p>
