@@ -298,11 +298,13 @@
       container.innerHTML = `
         <div class="featured-beer-card">
           <h2>🍺 Featured Beer</h2>
-          <h3>${randomBeer["Beer Name"]} – ${randomBeer["Brewery"]}</h3>
-          <p><strong>Style:</strong> ${randomBeer.Style}</p>
-          <p><strong>ABV:</strong> ${randomBeer.ABV}</p>
-          <p><strong>Episode:</strong> ${randomBeer["Episode No."]}</p>
-          <p class="score">BBBRS Score: ${randomBeer["BBBRS Score"]}</p>
+          <img src="${randomBeer.beerCanUrl}" alt="${randomBeer.name}" style="max-width:150px; margin:1rem auto; display:block;" />
+          <h3>${randomBeer.name}</h3>
+          <p><strong>Brewery:</strong> ${randomBeer.brewery}</p>
+          <p><strong>Style:</strong> ${randomBeer.style}</p>
+          <p><strong>ABV:</strong> ${randomBeer.abv}%</p>
+          <p><strong>Episode:</strong> ${randomBeer.epnum}</p>
+          <p class="score">BBBRS Score: ${randomBeer.bbbrsScore} | Untappd: ${randomBeer.untappdScore}</p>
         </div>
       `;
     }
