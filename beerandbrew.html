@@ -207,7 +207,8 @@
 
   .featured-beer-card {
     margin-top: 2rem;
-    width: 100%; /* Take full container width */
+    width: calc(500px * 2 + 40px); /* match two cards + gap */
+    max-width: 100%; /* don’t overflow on smaller screens */
     background: white;
     border: 2px solid rgba(218,165,32,0.5);
     border-radius: 20px;
@@ -262,6 +263,23 @@
     font-size: 1.1rem;
     font-weight: bold;
     color: #002157;
+  }
+  @media (max-width: 1100px) {
+    .featured-beer-card {
+      width: 100%;
+      flex-direction: column; /* stack image above info */
+      height: auto;
+    }
+  
+    .featured-beer-card img {
+      max-width: 100%;
+      border-right: none;
+      border-bottom: 2px solid rgba(218,165,32,0.3);
+    }
+  
+    .featured-beer-info {
+      text-align: center;
+    }
   }
 </style>
 </head>
