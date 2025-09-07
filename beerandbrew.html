@@ -225,15 +225,16 @@
   }
   
   .featured-beer-card img {
-    height: 100%;
+    height: 80%;
     width: auto;
     max-width: 250px;
     object-fit: contain;
-    margin: 1rem 2rem;             /* spacing around the can */
-    padding: 0.5rem;               /* subtle padding inside */
+    margin: 1rem 0 1rem 3rem;      /* top 1rem, right 0, bottom 1rem, left 3rem */
+    padding: 0.5rem;               
     filter: drop-shadow(0 0 15px #002157); /* navy glow */
-    background: none;              /* no solid background */
-    border: none;                  /* no border */
+    background: none;              
+    border: none;                  
+    transition: filter 0.3s ease;  /* glow still transitions if needed */
   }
   
   .featured-beer-info {
