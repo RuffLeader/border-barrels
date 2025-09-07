@@ -327,27 +327,36 @@
     navMenu.classList.toggle("show");
   });
 
-    // Pick random beer from beers.js
+  // Pick random beer from beers.js
   function getRandomBeer(beers) {
     const index = Math.floor(Math.random() * beers.length);
     return beers[index];
+  }
+
+  // Calculate rank based on a specific key
+  function getRank(array, beer, key) {
+    const sorted = [...array].sort((a, b) => b[key] - a[key]);
+    return sorted.findIndex(b => b.id === beer.id) + 1;
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     if (typeof beers !== "undefined" && Array.isArray(beers) && beers.length > 0) {
       const randomBeer = getRandomBeer(beers);
 
+      const bbbrsRank = getRank(beers, randomBeer, "bbbrsScore");
+      const untappdRank = getRank(beers, randomBeer, "untappdScore");
+
       const container = document.getElementById("featured-beer-container");
       container.innerHTML = `
         <div class="featured-beer-card">
-          <img src="${randomBeer.beerCanUrl}" alt="${randomBeer.name}" style="max-width:150px; margin:1rem auto; display:block;" />
+          <img src="${randomBeer.beerCanUrl}" alt="${randomBeer.name}" />
           <div class="featured-beer-info">
-            <h3>${randomBeer.name}</h3>
-            <p><strong>Brewery:</strong> ${randomBeer.brewery}</p>
-            <p><strong>Style:</strong> ${randomBeer.style}</p>
-            <p><strong>ABV:</strong> ${randomBeer.abv}%</p>
-            <p><strong>Episode:</strong> ${randomBeer.epnum}</p>
-            <p class="score">BBBRS: ${randomBeer.bbbrsScore} | Untappd: ${randomBeer.untappdScore}</p>
+            <h3>${randomBeer.brewery}</h3>
+            <h2>${randomBeer.name}</h2>
+            <p>${randomBeer.style} | ${randomBeer.abv}%</p>
+            <p>Episode Number: ${randomBeer.epnum}</p>
+            <p>BBBRS: ${randomBeer.bbbrsScore} | Untappd: ${randomBeer.untappdScore}</p>
+            <p>BBBRS Rank: ${bbbrsRank} | Untappd Rank: ${untappdRank}</p>
           </div>
         </div>
       `;
