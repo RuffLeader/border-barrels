@@ -204,6 +204,42 @@
       font-size: 1.5rem;
     }
   }
+
+  .featured-beer-card {
+    margin-top: 3rem;
+    max-width: 700px;
+    width: 100%;
+    background: white;
+    border: 2px solid rgba(218,165,32,0.5);
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .featured-beer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+  }
+  
+  .featured-beer-card h2 {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    color: #002157;
+  }
+  
+  .featured-beer-card p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+  }
+  
+  .featured-beer-card .score {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffb400;
+  }
 </style>
 </head>
 <body>
@@ -232,10 +268,13 @@
     </div>
   </main>
 
+  <div id="featured-beer-container"></div>
+
   <footer>
     <p>© 2025 Border Barrels</p>
   </footer>
 
+<script src="/beers.js"></script>
 <script>
   // Mobile nav toggle
   const navToggle = document.getElementById("nav-toggle");
@@ -243,6 +282,30 @@
 
   navToggle.addEventListener("click", () => {
     navMenu.classList.toggle("show");
+  });
+
+    // Pick random beer from beers.js
+  function getRandomBeer(beers) {
+    const index = Math.floor(Math.random() * beers.length);
+    return beers[index];
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof beers !== "undefined" && Array.isArray(beers) && beers.length > 0) {
+      const randomBeer = getRandomBeer(beers);
+
+      const container = document.getElementById("featured-beer-container");
+      container.innerHTML = `
+        <div class="featured-beer-card">
+          <h2>🍺 Featured Beer</h2>
+          <h3>${randomBeer["Beer Name"]} – ${randomBeer["Brewery"]}</h3>
+          <p><strong>Style:</strong> ${randomBeer.Style}</p>
+          <p><strong>ABV:</strong> ${randomBeer.ABV}</p>
+          <p><strong>Episode:</strong> ${randomBeer["Episode No."]}</p>
+          <p class="score">BBBRS Score: ${randomBeer["BBBRS Score"]}</p>
+        </div>
+      `;
+    }
   });
 </script>
 </body>
