@@ -207,8 +207,8 @@
 
   .featured-beer-card {
     margin-top: 2rem;
-    width: calc(500px * 2 + 40px); /* match two cards + gap */
-    max-width: 100%; /* don’t overflow on smaller screens */
+    width: calc(500px * 2 + 40px);
+    max-width: 100%;
     background: white;
     border: 2px solid rgba(218,165,32,0.5);
     border-radius: 20px;
@@ -216,6 +216,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding-left: 5rem; /* moves all content (including image) right */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
