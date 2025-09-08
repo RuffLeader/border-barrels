@@ -358,6 +358,17 @@
     return sorted.findIndex(b => b.id === beer.id) + 1;
   }
 
+  // Function to shrink text to fit one line
+  function fitTextToOneLine(element, minFontSize = 12) {
+    const parentWidth = element.parentElement.offsetWidth;
+    let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+
+    while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+      fontSize--;
+      element.style.fontSize = fontSize + "px";
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     if (typeof beers !== "undefined" && Array.isArray(beers) && beers.length > 0) {
       const randomBeer = getRandomBeer(beers);
@@ -379,32 +390,21 @@
           </div>
         </div>
       `;
+
+      // ✅ Now adjust titles *after* the beer is injected
+      const adjustTitles = () => {
+        document.querySelectorAll(".featured-beer-info h3, .featured-beer-info h2")
+          .forEach(el => {
+            el.style.fontSize = ""; // reset
+            fitTextToOneLine(el, 14);
+          });
+      };
+
+      adjustTitles();
+      window.addEventListener("resize", adjustTitles);
     }
   });
-
-  function fitTextToOneLine(element, minFontSize = 12) {
-  const parentWidth = element.parentElement.offsetWidth;
-  let fontSize = parseInt(window.getComputedStyle(element).fontSize);
-
-  // Shrink font size until it fits or reaches minFontSize
-  while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
-    fontSize--;
-    element.style.fontSize = fontSize + "px";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const adjustTitles = () => {
-    document.querySelectorAll(".featured-beer-info h3, .featured-beer-info h2")
-      .forEach(el => {
-        el.style.fontSize = ""; // reset first
-        fitTextToOneLine(el, 14); // won’t shrink smaller than 14px
-      });
-  };
-
-  adjustTitles();
-  window.addEventListener("resize", adjustTitles); // re-check on resize
-});
 </script>
+
 </body>
 </html>
