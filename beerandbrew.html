@@ -259,6 +259,8 @@
     text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
     color: #ffb400;
     margin-bottom: 0; /* was default ~1rem */
+    white-space: nowrap;   /* force text onto one line */
+    overflow: hidden;      /* prevent wrapping overflow */
   }
 
   .featured-beer-info h2 {
@@ -268,6 +270,8 @@
     text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
     color: #ffb400;
     margin-top: 0; /* remove the gap between h3 and h2 */
+    white-space: nowrap;   /* force text onto one line */
+    overflow: hidden;      /* prevent wrapping overflow */
   }
   
   .featured-beer-info p {
@@ -377,6 +381,30 @@
       `;
     }
   });
+
+  function fitTextToOneLine(element, minFontSize = 12) {
+  const parentWidth = element.parentElement.offsetWidth;
+  let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+
+  // Shrink font size until it fits or reaches minFontSize
+  while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+    fontSize--;
+    element.style.fontSize = fontSize + "px";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const adjustTitles = () => {
+    document.querySelectorAll(".featured-beer-info h3, .featured-beer-info h2")
+      .forEach(el => {
+        el.style.fontSize = ""; // reset first
+        fitTextToOneLine(el, 14); // won’t shrink smaller than 14px
+      });
+  };
+
+  adjustTitles();
+  window.addEventListener("resize", adjustTitles); // re-check on resize
+});
 </script>
 </body>
 </html>
