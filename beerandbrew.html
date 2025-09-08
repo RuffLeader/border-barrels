@@ -259,8 +259,9 @@
     text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
     color: #ffb400;
     margin-bottom: 0; /* was default ~1rem */
-    white-space: nowrap;   /* force text onto one line */
-    overflow: hidden;      /* prevent wrapping overflow */
+    white-space: nowrap;      /* force single line */
+    display: block;           /* makes sure width is respected */
+    overflow: hidden;         /* prevent spillover */
   }
 
   .featured-beer-info h2 {
@@ -270,8 +271,9 @@
     text-shadow: 0 0 5px rgba(240, 168, 48, 0.7);
     color: #ffb400;
     margin-top: 0; /* remove the gap between h3 and h2 */
-    white-space: nowrap;   /* force text onto one line */
-    overflow: hidden;      /* prevent wrapping overflow */
+    white-space: nowrap;      /* force single line */
+    display: block;           /* makes sure width is respected */
+    overflow: hidden;         /* prevent spillover */
   }
   
   .featured-beer-info p {
