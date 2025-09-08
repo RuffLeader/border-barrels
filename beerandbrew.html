@@ -364,7 +364,7 @@
   function fitTextToOneLine(element, minFontSize = 12) {
     const parentWidth = element.parentElement.offsetWidth;
     let fontSize = parseInt(window.getComputedStyle(element).fontSize);
-
+console.log("Checking:", element.textContent, "scrollWidth:", element.scrollWidth, "parentWidth:", parentWidth);
     while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
       fontSize--;
       element.style.fontSize = fontSize + "px";
