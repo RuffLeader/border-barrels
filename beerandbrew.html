@@ -363,9 +363,7 @@
   }
 
 function fitTextToOneLine(element, minFontSize = 12) {
-  // measure against the card, not the flex child
-  const card = element.closest(".featured-beer-card");
-  const availableWidth = card.clientWidth - 40; // padding buffer
+  const availableWidth = 750; // fixed width target
   let fontSize = parseInt(window.getComputedStyle(element).fontSize);
 
   console.log("Checking:", element.textContent,
