@@ -360,16 +360,19 @@
     return sorted.findIndex(b => b.id === beer.id) + 1;
   }
 
-  // Function to shrink text to fit one line
-  function fitTextToOneLine(element, minFontSize = 12) {
-    const parentWidth = element.parentElement.offsetWidth;
-    let fontSize = parseInt(window.getComputedStyle(element).fontSize);
-console.log("Checking:", element.textContent, "scrollWidth:", element.scrollWidth, "parentWidth:", parentWidth);
-    while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
-      fontSize--;
-      element.style.fontSize = fontSize + "px";
-    }
+function fitTextToOneLine(element, minFontSize = 12) {
+  const parentWidth = element.closest(".featured-beer-info").clientWidth; // use container width
+  let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+
+  console.log("Checking:", element.textContent, 
+              "scrollWidth:", element.scrollWidth, 
+              "parentWidth:", parentWidth);
+
+  while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+    fontSize--;
+    element.style.fontSize = fontSize + "px";
   }
+}
 
   document.addEventListener("DOMContentLoaded", () => {
     if (typeof beers !== "undefined" && Array.isArray(beers) && beers.length > 0) {
