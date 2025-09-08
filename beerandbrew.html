@@ -361,14 +361,16 @@
   }
 
 function fitTextToOneLine(element, minFontSize = 12) {
-  const parentWidth = element.closest(".featured-beer-info").clientWidth; // use container width
+  // measure against the card, not the flex child
+  const card = element.closest(".featured-beer-card");
+  const availableWidth = card.clientWidth - 40; // padding buffer
   let fontSize = parseInt(window.getComputedStyle(element).fontSize);
 
-  console.log("Checking:", element.textContent, 
-              "scrollWidth:", element.scrollWidth, 
-              "parentWidth:", parentWidth);
+  console.log("Checking:", element.textContent,
+              "scrollWidth:", element.scrollWidth,
+              "availableWidth:", availableWidth);
 
-  while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+  while (element.scrollWidth > availableWidth && fontSize > minFontSize) {
     fontSize--;
     element.style.fontSize = fontSize + "px";
   }
