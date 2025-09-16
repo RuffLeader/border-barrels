@@ -31,6 +31,30 @@
     cards.forEach(c => (c.style.height = maxHeight + 'px'));
   }
 
+  // --- NEW: Equalize across multiple leaderboards ---
+  function equalizeAllLeaderboards(groupSelector) {
+    const containers = document.querySelectorAll(groupSelector);
+    if (!containers.length) return;
+
+    // reset heights
+    containers.forEach(container => {
+      container.querySelectorAll('.beer-card').forEach(c => (c.style.height = 'auto'));
+    });
+
+    // find tallest
+    let maxHeight = 0;
+    containers.forEach(container => {
+      container.querySelectorAll('.beer-card').forEach(c => {
+        if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
+      });
+    });
+
+    // apply tallest
+    containers.forEach(container => {
+      container.querySelectorAll('.beer-card').forEach(c => (c.style.height = maxHeight + 'px'));
+    });
+  }
+
   // --- Beer leaderboards ---
   function topBeersByScore(scoreKey) {
     return beers
@@ -77,7 +101,7 @@
     requestAnimationFrame(() => {
       li.style.opacity = '1';
       li.style.transform = 'translateY(0)';
-      fitTextToTwoLines(name); // ← ensures beer name fits 2 lines
+      fitTextToTwoLines(name);
     });
   }
 
@@ -111,51 +135,48 @@
       .slice(0, 10);
   }
 
-function renderListBrewery(brew, rank, container, scoreKey, delay) {
-  const li = createEl('li', 'beer-card');
-  if (rank <= 3) li.classList.add(`rank${rank}`);
+  function renderListBrewery(brew, rank, container, scoreKey, delay) {
+    const li = createEl('li', 'beer-card');
+    if (rank <= 3) li.classList.add(`rank${rank}`);
 
-  li.style.opacity = '0';
-  li.style.transform = 'translateY(15px)';
-  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  if (delay) li.style.transitionDelay = delay + 'ms';
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(15px)';
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) li.style.transitionDelay = delay + 'ms';
 
-  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-  li.appendChild(rankDiv);
+    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+    li.appendChild(rankDiv);
 
-  const img = createEl('img', 'beer-image');
-  img.src = brew.logoUrl || '';
-  img.alt = `${brew.name} logo`;
-  li.appendChild(img);
+    const img = createEl('img', 'beer-image');
+    img.src = brew.logoUrl || '';
+    img.alt = `${brew.name} logo`;
+    li.appendChild(img);
 
-  const info = createEl('div', 'beer-info');
-  const name = createEl('div', 'beer-name', brew.name);
-  info.appendChild(name);
+    const info = createEl('div', 'beer-info');
+    const name = createEl('div', 'beer-name', brew.name);
+    info.appendChild(name);
 
-  const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} Beers Reviewed`);
-  info.appendChild(breweryMeta);
+    const breweryMeta = createEl('div', 'brewery-name', `${brew.beerCount} Beers Reviewed`);
+    info.appendChild(breweryMeta);
 
-  const meta = createEl('div', 'beer-meta');
-  // Episodes at bottom
-  const episodes = createEl('div', '', `Episode Number: ${brew.epnum?.join(', ') || 'N/A'}`);
-  meta.appendChild(episodes);
-  info.appendChild(meta);
+    const meta = createEl('div', 'beer-meta');
+    const episodes = createEl('div', '', `Episode Number: ${brew.epnum?.join(', ') || 'N/A'}`);
+    meta.appendChild(episodes);
+    info.appendChild(meta);
 
-  li.appendChild(info);
+    li.appendChild(info);
 
-  // Score on the right, like beer cards
-  const score = createEl('div', 'beer-score', brew.avgScore.toFixed(2));
-  li.appendChild(score);
+    const score = createEl('div', 'beer-score', brew.avgScore.toFixed(2));
+    li.appendChild(score);
 
-  container.appendChild(li);
+    container.appendChild(li);
 
-  requestAnimationFrame(() => {
-    li.style.opacity = '1';
-    li.style.transform = 'translateY(0)';
-    fitTextToTwoLines(name);
-  });
-}
-
+    requestAnimationFrame(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+      fitTextToTwoLines(name);
+    });
+  }
 
   function renderBreweryLeaderboard(scoreKey, listId) {
     const listContainer = document.getElementById(listId);
@@ -169,10 +190,10 @@ function renderListBrewery(brew, rank, container, scoreKey, delay) {
   }
 
   // --- Style leaderboards ---
-function topStylesByScore(scoreKey) {
-  const stylesMap = {};
+  function topStylesByScore(scoreKey) {
+    const stylesMap = {};
 
-  beers.forEach(beer => {
+    beers.forEach(beer => {
       if (typeof beer[scoreKey] === 'number' && beer.style) {
         if (!stylesMap[beer.style]) {
           stylesMap[beer.style] = { 
@@ -196,114 +217,111 @@ function topStylesByScore(scoreKey) {
       .map(s => ({
         ...s,
         avgScore: s.totalScore / s.count,
-        beers: s.beers.sort((a, b) => b.score - a.score) // high → low
+        beers: s.beers.sort((a, b) => b.score - a.score)
       }))
-      .filter(s => s.count > 1) // only keep styles with at least 2 beers
+      .filter(s => s.count > 1)
       .sort((a, b) => b.avgScore - a.avgScore)
       .slice(0, 10);
   }
 
-function renderListStyle(style, rank, container, scoreKey, delay) {
-  const li = createEl('li', 'beer-card');
-  if (rank <= 3) li.classList.add(`rank${rank}`);
+  function renderListStyle(style, rank, container, scoreKey, delay) {
+    const li = createEl('li', 'beer-card');
+    if (rank <= 3) li.classList.add(`rank${rank}`);
 
-  li.style.opacity = '0';
-  li.style.transform = 'translateY(15px)';
-  li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  if (delay) li.style.transitionDelay = delay + 'ms';
+    li.style.opacity = '0';
+    li.style.transform = 'translateY(15px)';
+    li.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    if (delay) li.style.transitionDelay = delay + 'ms';
 
-  const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
-  li.appendChild(rankDiv);
+    const rankDiv = createEl('div', 'beer-rank', `#${rank}`);
+    li.appendChild(rankDiv);
 
-  // Placeholder image for style
-  const img = createEl('img', 'beer-image');
-  img.src = styles[style.name] || '/media/styles/placeholder.png';
-  img.alt = `${style.name} icon`;
-  li.appendChild(img);
+    const img = createEl('img', 'beer-image');
+    img.src = styles[style.name] || '/media/styles/placeholder.png';
+    img.alt = `${style.name} icon`;
+    li.appendChild(img);
 
-  const info = createEl('div', 'beer-info');
-  const name = createEl('div', 'beer-name', style.name);
-  info.appendChild(name);
+    const info = createEl('div', 'beer-info');
+    const name = createEl('div', 'beer-name', style.name);
+    info.appendChild(name);
 
-  const count = createEl('div', 'brewery-name', `${style.count} Beers Reviewed`);
-  info.appendChild(count);
-  li.appendChild(info);
+    const count = createEl('div', 'brewery-name', `${style.count} Beers Reviewed`);
+    info.appendChild(count);
+    li.appendChild(info);
 
-  const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
-  li.appendChild(score);
+    const score = createEl('div', 'beer-score', style.avgScore.toFixed(2));
+    li.appendChild(score);
 
-  // --- Tooltip ---
-  const tooltip = createEl('div', 'style-tooltip');
-  tooltip.style.position = 'absolute';
-  tooltip.style.background = '#002157'; // navy
-  tooltip.style.color = '#fff';
-  tooltip.style.padding = '0.6rem';
-  tooltip.style.borderRadius = '8px';
-  tooltip.style.fontSize = '0.8rem';
-  tooltip.style.maxWidth = 'none'; // full card width
-  tooltip.style.zIndex = 1000;
-  tooltip.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6)';
-  tooltip.style.display = 'none';
-  tooltip.style.textAlign = 'center';      // ← center all text
-  tooltip.style.lineHeight = '1.4em';     // optional: improve readability
-  tooltip.innerHTML = style.beers
-    .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — <span style="color:#f0a830">${b.score.toFixed(2)}</span></div>`)
-    .join('');
+    // Tooltip
+    const tooltip = createEl('div', 'style-tooltip');
+    tooltip.style.position = 'absolute';
+    tooltip.style.background = '#002157';
+    tooltip.style.color = '#fff';
+    tooltip.style.padding = '0.6rem';
+    tooltip.style.borderRadius = '8px';
+    tooltip.style.fontSize = '0.8rem';
+    tooltip.style.maxWidth = 'none';
+    tooltip.style.zIndex = 1000;
+    tooltip.style.boxShadow = '0 6px 20px rgba(0,0,0,0.6)';
+    tooltip.style.display = 'none';
+    tooltip.style.textAlign = 'center';
+    tooltip.style.lineHeight = '1.4em';
+    tooltip.innerHTML = style.beers
+      .map(b => `<div><strong>${b.brewery}</strong>: ${b.name} — <span style="color:#f0a830">${b.score.toFixed(2)}</span></div>`)
+      .join('');
   
-  document.body.appendChild(tooltip);
+    document.body.appendChild(tooltip);
 
-  let hoverTimeout;
-  let isOpen = false;
+    let hoverTimeout;
+    let isOpen = false;
 
-  function showTooltip() {
-    clearTimeout(hoverTimeout);
-    const rect = li.getBoundingClientRect();
+    function showTooltip() {
+      clearTimeout(hoverTimeout);
+      const rect = li.getBoundingClientRect();
+      tooltip.style.width = rect.width + 'px';
+      tooltip.style.display = 'block';
+      tooltip.style.left = rect.left + window.scrollX + 'px';
+      tooltip.style.top = rect.bottom + window.scrollY + 'px';
+      isOpen = true;
+    }
 
-    tooltip.style.width = rect.width + 'px'; // match card width
-    tooltip.style.display = 'block';
-    tooltip.style.left = rect.left + window.scrollX + 'px';
-    tooltip.style.top = rect.bottom + window.scrollY + 'px';
-    isOpen = true;
+    function hideTooltip() {
+      hoverTimeout = setTimeout(() => {
+        tooltip.style.display = 'none';
+        isOpen = false;
+      }, 100);
+    }
+
+    li.addEventListener('click', () => {
+      if (!isOpen) showTooltip();
+      else hideTooltip();
+    });
+
+    li.addEventListener('mouseleave', hideTooltip);
+    tooltip.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
+    tooltip.addEventListener('mouseleave', hideTooltip);
+
+    container.appendChild(li);
+
+    requestAnimationFrame(() => {
+      li.style.opacity = '1';
+      li.style.transform = 'translateY(0)';
+      fitTextToTwoLines(name);
+    });
   }
 
-  function hideTooltip() {
-    hoverTimeout = setTimeout(() => {
-      tooltip.style.display = 'none';
-      isOpen = false;
-    }, 100);
+  function renderStyleLeaderboard(scoreKey, listId) {
+    const listContainer = document.getElementById(listId);
+    if (!listContainer) return;
+    const top10 = topStylesByScore(scoreKey);
+    listContainer.innerHTML = '';
+    top10.forEach((style, idx) => {
+      renderListStyle(style, idx + 1, listContainer, scoreKey, idx * 100);
+    });
+    setTimeout(() => equalizeCardHeights(listId), 50);
   }
 
-  // Click toggles tooltip
-  li.addEventListener('click', () => {
-    if (!isOpen) showTooltip();
-    else hideTooltip();
-  });
-
-  // Close when leaving card or tooltip
-  li.addEventListener('mouseleave', hideTooltip);
-  tooltip.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
-  tooltip.addEventListener('mouseleave', hideTooltip);
-
-  container.appendChild(li);
-
-  requestAnimationFrame(() => {
-    li.style.opacity = '1';
-    li.style.transform = 'translateY(0)';
-    fitTextToTwoLines(name);
-  });
-}
-
-function renderStyleLeaderboard(scoreKey, listId) {
-  const listContainer = document.getElementById(listId);
-  if (!listContainer) return;
-  const top10 = topStylesByScore(scoreKey);
-  listContainer.innerHTML = '';
-  top10.forEach((style, idx) => {
-    renderListStyle(style, idx + 1, listContainer, scoreKey, idx * 100);
-  });
-  setTimeout(() => equalizeCardHeights(listId), 50);
-}
-
+  // --- Init ---
   document.addEventListener('DOMContentLoaded', () => {
     renderBeerLeaderboard('untappdScore', 'beer-leaderboard-untappd');
     renderBeerLeaderboard('bbbrsScore', 'beer-leaderboard-bbbrs');
@@ -314,6 +332,12 @@ function renderStyleLeaderboard(scoreKey, listId) {
     renderStyleLeaderboard('untappdScore', 'style-leaderboard-untappd');
     renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
 
+    // 🔥 Equalize across groups
+    setTimeout(() => {
+      equalizeAllLeaderboards('#beer-leaderboard-untappd, #brewery-leaderboard-untappd, #style-leaderboard-untappd');
+      equalizeAllLeaderboards('#beer-leaderboard-bbbrs, #brewery-leaderboard-bbbrs, #style-leaderboard-bbbrs');
+    }, 150);
+
     document.querySelectorAll('.leaderboard-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
         const content = btn.nextElementSibling;
@@ -322,7 +346,6 @@ function renderStyleLeaderboard(scoreKey, listId) {
         if (!isOpen) {
           content.classList.add('open');
     
-          // Add close button if it doesn't exist
           if (!content.querySelector('.leaderboard-close')) {
             const closeBtn = document.createElement('button');
             closeBtn.textContent = 'Close Leaderboard';
