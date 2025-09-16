@@ -617,6 +617,26 @@ const breweries = [
     ]
   },
   {
+    name: "Mountain Monk Brewers",
+    city: "Mount Beauty",
+    state: "Victoria",
+    logo: "/media/logos/mountain-monk.png",
+    website: "https://www.mountainmonkbrewers.com.au/",
+    instagram: "https://www.instagram.com/mountainmonkbrewers/",
+    description: "Nestled into the base of Victoria’s highest mountain, Mount Bogong, lies the picturesque township of Mount Beauty. Back in 2017, after being closed for 2 years, Mount Beauty’s local watering hole reopened its doors as West Peak Hotel, a family-owned business, brothers Steve and Mick, and cousin Matt, alongside their partners Bec, Steph and Lucy purchased the once thriving Mount Beauty Workman’s Club. However, they weren’t satisfied just yet and, rather, they wanted to create something more to really put their beautiful town on the map. With a passion for craft beer, prior knowledge and expertise, in 2022, the family decided to open up a 1,000 litre, three-vessel Brewtique brewery on site, thereby utilising the region’s crystal clear mountain water and quality hope and grain to make some bloody delicious beer. With more than ten beer varieties on offer and award-winning food up for grabs, Mountain Monk Brewers have become a destination of their own. The business is family-owned and the only accredited wholly veteran-owned brewery in Australia.",
+    closed: false,
+    independent: true,
+    owner: null,
+    taprooms: [
+      {
+        name: "Mountain Monk Brewers",
+        address: "1 Lakeside Ave, Mount Beauty VIC 3699",
+        map: "https://maps.app.goo.gl/UptpNQst7USsMQgj7",
+        photo: "/media/taprooms/mountain-monk-taproom.jpg"
+      }
+    ]
+  },
+  {
     name: "Noodledoof Brewery & Distillery",
     city: "Koroit",
     state: "Victoria",
