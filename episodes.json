@@ -606,5 +606,13 @@
     "spotifyUrl": "https://open.spotify.com/episode/4yckQsQyEnjNG5b0imJI94",
     "appleUrl": "https://podcasts.apple.com/au/podcast/beercast-76-deeds-brewing/id1559619911?i=1000721447807",
     "description": "This week we take a little trip down memory lane, while also sampling 3 MASSIVE!! stouts from craft beer OG's Deeds Brewing."
+  },
+  {
+    "number": 77,
+    "title": "Mountain Monk Brewers Showcase",
+    "youtubeId": "y_Jtk5r3Yjg",
+    "spotifyUrl": "https://open.spotify.com/episode/2BeCUA3tOs3cIL8JnkQkBH",
+    "appleUrl": null,
+    "description": "Well, we finally did it. If we thought assisting in a brew day was our goal, then how did we forget that consuming the result was the ultimate dream?!"
   }
 ]
