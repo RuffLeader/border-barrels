@@ -191,7 +191,11 @@ const beers = [
   { id: 190, name: "Bubble Trouble Tutti Frutti Ice Cream Sour", brewery: "Working Title Brew Co.", abv: 6, style: "Sour", bbbrsScore: 16.17, untappdScore: 4.08, beerCanUrl: "/media/beers/bubble-trouble.png", epnum: 28 },
   { id: 191, name: "Reign Supreme Affogato & Cream Ale", brewery: "Working Title Brew Co.", abv: 7, style: "Cream Ale", bbbrsScore: 15.92, untappdScore: 3.75, beerCanUrl: "/media/beers/reign-supreme.png", epnum: 28 },
   { id: 192, name: "Shakedown Lime Milkshake DIPA", brewery: "Working Title Brew Co.", abv: 8.5, style: "IPA", bbbrsScore: 16, untappdScore: 3.92, beerCanUrl: "/media/beers/shakedown.png", epnum: 28 },
-  { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "/media/beers/larry-pale.png", epnum: 71 }
+  { id: 193, name: "Larry", brewery: "Your Mates Brewing Co", abv: 4.5, style: "Pale Ale", bbbrsScore: 17.42, untappdScore: 2.83, beerCanUrl: "/media/beers/larry-pale.png", epnum: 71 },
+  { id: 194, name: "Victoria's High Country Brewery Trail Rule 47 Black Cali Pils", brewery: "Mountain Monk Brewers", abv: 5.8, style: "Pilsner", bbbrsScore: 22.75, untappdScore: 4.5, beerCanUrl: "/media/beers/rule-47-2025.png", epnum: 77 },
+  { id: 195, name: "Bavarian Pilsner", brewery: "Mountain Monk Brewers", abv: 5, style: "Pilsner", bbbrsScore: 22.08, untappdScore: 4.25, beerCanUrl: "/media/beers/bavarian-pilsner.png", epnum: 77 },
+  { id: 196, name: "Dunkel Weizen", brewery: "Mountain Monk Brewers", abv: 4.8, style: "Wheat Beer", bbbrsScore: 21.25, untappdScore: 4.17, beerCanUrl: "/media/beers/dunkel-weizen.png", epnum: 77 },
+  { id: 197, name: "Holy Lager!", brewery: "Mountain Monk Brewers", abv: 4.8, style: "Lager", bbbrsScore: 21, untappdScore: 4, beerCanUrl: "/media/beers/holy-lager.png", epnum: 77 }
 ];
 
 const brewery = [
@@ -224,6 +228,7 @@ const brewery = [
   { name: "Kicks Brewing", bbbrsScoreAvg: 20.25, untappdScoreAvg: 4, logoUrl: "/media/logos/kicks-brewing.png", epnum: [49] },
   { name: "Lost Palms Brewing Co", bbbrsScoreAvg: 17.28, untappdScoreAvg: 3.98, logoUrl: "/media/logos/lost-palms-brewing-co.png", epnum: [30] },
   { name: "Mountain Culture Beer Co", bbbrsScoreAvg: 21.02, untappdScoreAvg: 4.25, logoUrl: "/media/logos/mountain-culture-beer-co.png", epnum: [31, 40, 41, 71] },
+  { name: "Mountain Monk Brewers", bbbrsScoreAvg: 21.77, untappdScoreAvg: 4.23, logoUrl: "/media/logos/mountain-monk.png", epnum: [77] },
   { name: "Noodledoof Brewery & Distillery", bbbrsScoreAvg: 20.77, untappdScoreAvg: 3.92, logoUrl: "/media/logos/noodledoof.png", epnum: [64] },
   { name: "Ocean Reach Brewing", bbbrsScoreAvg: 21.98, untappdScoreAvg: 4.31, logoUrl: "/media/logos/ocean-reach-brewing.png", epnum: [69] },
   { name: "One Drop Brewing Co.", bbbrsScoreAvg: 21.03, untappdScoreAvg: 4.11, logoUrl: "/media/logos/one-drop-brewing-co.png", epnum: [34, 39] },
