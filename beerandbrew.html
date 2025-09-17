@@ -228,6 +228,22 @@
     transform: translateY(-5px);
     box-shadow: 0 12px 28px rgba(0,0,0,0.3);
   }
+
+  /* Overlay to match other cards */
+  .featured-beer-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+    z-index: 0;
+  }
+  
+  /* Ensure content (image + text) stays above overlay */
+  .featured-beer-card img,
+  .featured-beer-info {
+    position: relative;
+    z-index: 1;
+  }
   
   .featured-beer-card img {
     height: 80%;
@@ -252,7 +268,7 @@
     justify-content: center; /* vertical centering */
     align-items: center;     /* horizontal centering */
     text-align: center;      /* center text */
-    color: #002157;
+    color: white;
     max-width: 100%;    /* don’t let it grow wider than the card */
     box-sizing: border-box;
   }
@@ -261,47 +277,35 @@
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 0.02em;
-    color: #ffb400;
+    color: white;
     margin-bottom: 0; /* was default ~1rem */
     white-space: nowrap;      /* force single line */
     display: block;           /* makes sure width is respected */
     overflow: hidden;         /* prevent spillover */
-    
-    /* Glow effect */
-    text-shadow: 
-      0 0 8px rgba(255, 180, 0, 0.9),   /* bright inner glow */
-      0 0 15px rgba(255, 180, 0, 0.6),  /* medium halo */
-      0 0 25px rgba(255, 255, 255, 0.5); /* subtle outer white glow */
   }
 
   .featured-beer-info h2 {
     font-weight: 800;
     font-size: 2rem;
     letter-spacing: 0.02em;
-    color: #ffb400;
+    color: white;
     margin-top: 0; /* remove the gap between h3 and h2 */
     white-space: nowrap;      /* force single line */
     display: block;           /* makes sure width is respected */
     overflow: hidden;         /* prevent spillover */
-
-    /* Glow effect */
-    text-shadow: 
-      0 0 8px rgba(255, 180, 0, 0.9),   /* bright inner glow */
-      0 0 15px rgba(255, 180, 0, 0.6),  /* medium halo */
-      0 0 25px rgba(255, 255, 255, 0.5); /* subtle outer white glow */
   }
   
   .featured-beer-info p {
     margin: 0.25rem 0;
     font-size: 1rem;
-    color: #ffb400;
+    color: white;
   }
   
   .featured-beer-info .score {
     margin-top: 0.6rem;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #ffb400;
+    color: white;
   }
   @media (max-width: 1100px) {
     .featured-beer-card {
