@@ -209,7 +209,6 @@
     margin-top: 0;
     width: calc(500px * 2 + 40px); /* same width as two cards + gap */
     max-width: 100%;
-    background: #002157;
     border: 2px solid rgba(218,165,32,0.5);
     border-radius: 20px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
@@ -219,6 +218,10 @@
     padding-left: 5rem; /* moves content (including image) right */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box; /* include padding in width */
+    background-image: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/media/barrel.jpg');
+    background-size: cover;   /* make it fill the button */
+    background-position: center; /* center the image */
+    background-repeat: no-repeat;
   }
   
   .featured-beer-card:hover {
