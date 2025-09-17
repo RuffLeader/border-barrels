@@ -228,22 +228,6 @@
     transform: translateY(-5px);
     box-shadow: 0 12px 28px rgba(0,0,0,0.3);
   }
-
-  /* Overlay to match other cards */
-  .featured-beer-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-    z-index: 0;
-  }
-  
-  /* Ensure content (image + text) stays above overlay */
-  .featured-beer-card img,
-  .featured-beer-info {
-    position: relative;
-    z-index: 1;
-  }
   
   .featured-beer-card img {
     height: 80%;
