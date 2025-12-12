@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beer Cartel Advent Calendar 2025</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .beer-card {
+      perspective: 1200px;
+      width: 100%;
+      height: 520px;
+    }
+
+    .beer-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.7s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .beer-card.flipped .beer-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .beer-card-front, .beer-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .beer-card-front img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .beer-details {
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+
+    .beer-blurb {
+      font-style: italic;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    .beer-card-back {
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+
+    .reviews {
+      text-align: left;
+    }
+
+    .scores {
+      margin-top: 1rem;
+      text-align: left;
+    }
+
+    .day-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 class="page-title">Beer Cartel Advent Calendar 2025</h1>
+      <nav id="nav-menu" class="nav-links">
+        <a href="/index.html">Home</a>
+        <a href="/beerandbrew.html">Beers & Breweries</a>
+        <a href="/episodes.html">Episodes</a>
+        <a href="/blog/index.html">Blog</a>
+        <a href="/about.html">About Us</a>
+      </nav>
+      <button id="nav-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="cards-container">
+
+    <!-- Day 1 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 1</div>
+          <img src="/media/advent/day1.jpg" alt="Day 1 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> Mountain Culture Beer Co<br>
+            <strong>State:</strong> New South Wales<br>
+            <strong>Beer Name:</strong> Sauvin Ice<br>
+            <strong>Style:</strong> Double Cold IPA<br>
+            <strong>ABV:</strong> 8%
+          </div>
+          <div class="beer-blurb">
+            This Double Cold IPA starts with a light malt base, fermented using house lager yeast for a clean, refined body. Double dry-hopped with Cryo Nelson Sauvin delivering gooseberry, passionfruit and lychee.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> Forgot to write one<br><br>
+            <strong>Sarah:</strong> Hudson forgot to ask her
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 4.5<br>Can Art: 3.75<br>Blurb: 4.25<br>Value: 5<br>Untappd: 4.5<br>
+            <strong>Total:</strong> 22
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 2</div>
+          <img src="/media/advent/day2.jpg" alt="Day 2 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> KAIJU! Beer<br>
+            <strong>State:</strong> Victoria<br>
+            <strong>Beer Name:</strong> Tundra Struck<br>
+            <strong>Style:</strong> Cold Pale Ale<br>
+            <strong>ABV:</strong> 4.5%
+          </div>
+          <div class="beer-blurb">
+            A super-clean malt profile carrying juicy tropical fruit including citrus, pineapple, mango and papaya atop a crisp, lean malt base.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> “This kind of tastes like if Carlton Dry wasn’t absolute dogshit... I could have 600 of these.”<br><br>
+            <strong>Sarah:</strong> “It’s nice for me, someone who doesn’t like beer, but the flavours are kind of weak.”
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 4.75<br>Can Art: 4<br>Blurb: 3<br>Value: 3<br>Untappd: 3.75<br>
+            <strong>Total:</strong> 18.5
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 3</div>
+          <img src="/media/advent/day3.jpg" alt="Day 3 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> Molly Rose Brewing<br>
+            <strong>State:</strong> Victoria<br>
+            <strong>Beer Name:</strong> Bierchen #1<br>
+            <strong>Style:</strong> Altbier<br>
+            <strong>ABV:</strong> 4.8%
+          </div>
+          <div class="beer-blurb">
+            A beautiful amber bier using lager-like brewing to emulate a Düsseldorf Altbier—rich malt character, clean finish, cold-conditioned for weeks.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> “Toned down malt and biscuit flavours... would love it bolder.”<br><br>
+            <strong>Sarah:</strong> “Bit plain. It just tastes like a beer.”
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 4<br>Can Art: 3.25<br>Blurb: 3.75<br>Value: 3.25<br>Untappd: 3.75<br>
+            <strong>Total:</strong> 18
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 4</div>
+          <img src="/media/advent/day4.jpg" alt="Day 4 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> Sailors Grave<br>
+            <strong>State:</strong> Victoria<br>
+            <strong>Beer Name:</strong> The Shimmering Sparkling Ocean Ale<br>
+            <strong>Style:</strong> Sparkling Ocean Ale<br>
+            <strong>ABV:</strong> 5%
+          </div>
+          <div class="beer-blurb">
+            Brewed with Cape Conran seawater—floral, estery, crisp with a light malt backbone and a lick of salty tang.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> “Summer in a can... reminds me of drinking Coopers Sparkling at the Aus Open.”<br><br>
+            <strong>Sarah:</strong> “Ough, that’s nice… is it sour? Slightly?”
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 4.5<br>Can Art: 3.75<br>Blurb: 3.75<br>Value: 3.25<br>Untappd: 3.5<br>
+            <strong>Total:</strong> 18.75
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 5</div>
+          <img src="/media/advent/day5.jpg" alt="Day 5 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> Banks Brewing<br>
+            <strong>State:</strong> Victoria<br>
+            <strong>Beer Name:</strong> Who Would Want to Soak a Rope in Kerosene<br>
+            <strong>Style:</strong> West Coast IPA<br>
+            <strong>ABV:</strong> 6.2%
+          </div>
+          <div class="beer-blurb">
+            A bright, clear, resinous and citrus-forward West Coast IPA with intense hop character.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> “Wowee, what a West Coast!... I’d be happy with an Advent Calendar that’s just 24 of these.”<br><br>
+            <strong>Sarah:</strong> “That’s nice, that’s really nice.”
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 5<br>Can Art: 3.25<br>Blurb: 4<br>Value: 4<br>Untappd: 4.75<br>
+            <strong>Total:</strong> 21
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div class="beer-card-front">
+          <div class="day-label">Day 6</div>
+          <img src="/media/advent/day6.jpg" alt="Day 6 Beer" />
+          <div class="beer-details">
+            <strong>Brewery:</strong> Hawkers Beer<br>
+            <strong>State:</strong> Victoria<br>
+            <strong>Beer Name:</strong> Contested Origins<br>
+            <strong>Style:</strong> Oat Cream IPA<br>
+            <strong>ABV:</strong> 8%
+          </div>
+          <div class="beer-blurb">
+            A pavlova-inspired Oat Cream IPA with Mosaic hops, passionfruit and vanilla.
+          </div>
+        </div>
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> “Very fruity, very sweet... tastes thicker than a standard beer.”<br><br>
+            <strong>Sarah:</strong> “Like a creamy peach.”
+          </div>
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 5<br>Can Art: 3.75<br>Blurb: 4.5<br>Value: 5<br>Untappd: 4<br>
+            <strong>Total:</strong> 22.25
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 7 -->
+    <div class="beer-card" onclick="this.classList.toggle('flipped')">
+      <div class="beer-card-inner">
+        <div
+          <img src="/media/advent/day1.jpg" alt="Beer Day 1" />
+
+          <div class="beer-details">
+            <strong>Brewery:</strong> Mountain Culture Beer Co<br>
+            <strong>State:</strong> New South Wales<br>
+            <strong>Beer Name:</strong> Sauvin Ice<br>
+            <strong>Style:</strong> Double Cold IPA<br>
+            <strong>ABV:</strong> 8%
+          </div>
+
+          <div class="beer-blurb">
+            This Double Cold IPA starts with a light malt base... (example blurb)
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="beer-card-back">
+          <div class="reviews">
+            <strong>Hudson:</strong> Forgot to write one<br><br>
+            <strong>Sarah:</strong> Hudson forgot to ask her
+          </div>
+
+          <div class="scores">
+            <strong>BBBRS Scores:</strong><br>
+            As Advertised: 4.5<br>
+            Can Art: 3.75<br>
+            Blurb: 4.25<br>
+            Value: 5<br>
+            Untappd: 4.5<br>
+            <strong>Total:</strong> 22
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
