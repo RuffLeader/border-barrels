@@ -218,53 +218,7 @@ body {
   </div>
 </header>
 
-<div class="cards-container">
-
-<!-- ===== DAY 1 ===== -->
-<div class="flip-card">
-  <div class="flip-card-inner">
-
-    <div class="flip-card-front">
-      <div class="card-shell" onclick="this.closest('.flip-card').classList.add('flipped')">
-        <div class="day-heading">Day 1</div>
-        <img src="/media/advent/day1.jpg" alt="Sauvin Ice">
-        <div class="beer-info">
-          <h3>Sauvin Ice</h3>
-          <p><strong>Brewery:</strong> Mountain Culture Beer Co</p>
-          <p><strong>Style:</strong> Double Cold IPA</p>
-          <p><strong>ABV:</strong> 8%</p>
-          <p class="beer-blurb">
-            Clean lager fermentation with Cryo Nelson Sauvin delivering gooseberry,
-            passionfruit and lychee.
-          </p>
-        </div>
-        <div class="tap-overlay">Tap to flip</div>
-      </div>
-    </div>
-
-    <div class="flip-card-back">
-      <div class="scores">
-        <strong>BBBRS Scores</strong><br>
-        As Advertised: 4.5<br>
-        Can Art: 3.75<br>
-        Blurb: 4.25<br>
-        Value: 5<br>
-        Untappd: 4.5<br>
-        <strong>Total: 22</strong>
-      </div>
-
-      <div class="reviews">
-        <p><strong>Hudson:</strong> Forgot to write one</p>
-        <p><strong>Sarah:</strong> Hudson forgot to ask her</p>
-      </div>
-
-      <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
-    </div>
-
-  </div>
-</div>
-
-</div>
+<div class="cards-container" id="cards-container"></div>
 
 <footer>
   <div class="container">
@@ -275,6 +229,81 @@ body {
 <script>
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
+
+const container = document.getElementById("cards-container");
+
+for (let day = 1; day <= 24; day++) {
+
+  const beer = adventBeers.find(b => b.day === day);
+
+  if (!beer) {
+    renderPlaceholder(day);
+  } else if (beer.placeholder) {
+    renderPlaceholder(day);
+  } else {
+    renderBeer(beer);
+  }
+}
+
+function renderBeer(beer) {
+  container.innerHTML += `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+
+      <div class="flip-card-front">
+        <div class="card-shell" onclick="this.closest('.flip-card').classList.add('flipped')">
+          <div class="day-heading">Day ${beer.day}</div>
+          ${beer.image ? `<img src="${beer.image}" alt="${beer.beerName}">` : ''}
+          <div class="beer-info">
+            <h3>${beer.beerName}</h3>
+            <p><strong>Brewery:</strong> ${beer.brewery}</p>
+            <p><strong>Style:</strong> ${beer.style}</p>
+            <p><strong>ABV:</strong> ${beer.abv}</p>
+            <p class="beer-blurb">${beer.blurb || ""}</p>
+          </div>
+          <div class="tap-overlay">Tap to flip</div>
+        </div>
+      </div>
+
+      <div class="flip-card-back">
+        <div class="scores">
+          <strong>BBBRS Scores</strong><br>
+          As Advertised: ${beer.scores.advertised}<br>
+          Can Art: ${beer.scores.canArt}<br>
+          Blurb: ${beer.scores.blurb}<br>
+          Value: ${beer.scores.value}<br>
+          Untappd: ${beer.scores.untappd}<br>
+          <strong>Total: ${beer.scores.total}</strong>
+        </div>
+
+        <div class="reviews">
+          <p><strong>Hudson:</strong> ${beer.reviews.hudson}</p>
+          <p><strong>Sarah:</strong> ${beer.reviews.sarah}</p>
+        </div>
+
+        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+function renderPlaceholder(day) {
+  container.innerHTML += `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <div class="card-shell">
+          <div class="day-heading">Day ${day}</div>
+          <div class="beer-info">
+            <h3>Coming Soon</h3>
+            <p>Beer not yet opened</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
 
 navToggle.addEventListener("click", () => {
   navMenu.classList.toggle("show");
