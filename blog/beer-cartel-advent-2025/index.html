@@ -30,7 +30,7 @@ body {
 .flip-card {
   perspective: 1000px;
   width: 100%;
-  height: 600px;
+  height: 800px;
 }
 
 .flip-card-inner {
@@ -58,13 +58,11 @@ body {
 .card-shell {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   background: linear-gradient(160deg, #001537, #002157);
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-  padding-bottom: 32px; /* ← THIS fixes it */
-  padding: 20px 16px;
+  padding: 20px 16px 32px;
   height: 100%;
   text-align: center;
   position: relative;
@@ -93,33 +91,36 @@ body {
   max-height: 160px;
   object-fit: contain;
   filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
-  margin-bottom: auto;
 }
 
-/* INFO PANEL */
+/* INFO PANEL — FIXED HEIGHT & CENTRED */
 .beer-info {
-  margin-top: auto;
+  height: 500px;                  /* 🔒 fixed height */
   width: 100%;
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;        /* ↕ vertical centering */
+  align-items: center;            /* ↔ horizontal centering */
+
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(6px);
-  padding: 14px;
+  padding: 24px;
   border-radius: 12px;
 }
 
+/* TEXT */
 .beer-info h3 {
-  margin: 6px 0 8px;
-  font-size: 1.15rem;
+  margin: 6px 0 10px;
+  font-size: 1.3rem;
   font-weight: bold;
   color: #ffffff;
-  min-height: 2.6em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .beer-info p {
-  margin: 4px 0;
-  font-size: 0.9rem;
+  margin: 6px 0;
+  font-size: 0.95rem;
   color: #f0f0f0;
 }
 
@@ -129,10 +130,15 @@ body {
 
 /* BLURB */
 .beer-blurb {
-  margin-top: 8px;
-  font-size: 0.85rem;
+  margin-top: 12px;
+  font-size: 0.9rem;
   font-style: italic;
   color: #e6e6e6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* TAP OVERLAY */
@@ -237,20 +243,12 @@ body {
 <script>
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
-
 const container = document.getElementById("cards-container");
 
 for (let day = 1; day <= 24; day++) {
-
   const beer = adventBeers.find(b => b.day === day);
-
-  if (!beer) {
-    renderPlaceholder(day);
-  } else if (beer.placeholder) {
-    renderPlaceholder(day);
-  } else {
-    renderBeer(beer);
-  }
+  if (!beer || beer.placeholder) renderPlaceholder(day);
+  else renderBeer(beer);
 }
 
 function renderBeer(beer) {
@@ -262,6 +260,7 @@ function renderBeer(beer) {
         <div class="card-shell" onclick="this.closest('.flip-card').classList.add('flipped')">
           <div class="day-heading">Day ${beer.day}</div>
           ${beer.image ? `<img src="${beer.image}" alt="${beer.beerName}">` : ''}
+
           <div class="beer-info">
             <h3>${beer.beerName}</h3>
             <p><strong>Brewery:</strong> ${beer.brewery}</p>
@@ -269,6 +268,7 @@ function renderBeer(beer) {
             <p><strong>ABV:</strong> ${beer.abv}</p>
             <p class="beer-blurb">${beer.blurb || ""}</p>
           </div>
+
           <div class="tap-overlay">Tap to flip</div>
         </div>
       </div>
