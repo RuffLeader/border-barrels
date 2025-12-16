@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Beer Cartel Advent Calendar 2025 | Border Barrels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" href="/style.css">
 
 <style>
@@ -11,7 +12,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  background: #ffffff;
+  color: #002157;
 }
 
 /* GRID */
@@ -201,13 +202,25 @@ body {
 
 <header>
   <div class="container">
-    <h1>Beer Cartel Advent Calendar 2025</h1>
+    <h1 class="page-title">Beer Cartel Advent Calendar 2025</h1>
+    <nav id="nav-menu" class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/beerandbrew.html">Beers & Breweries</a>
+      <a href="/episodes.html">Episodes</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about.html">About Us</a>
+    </nav>
+    <button id="nav-toggle" aria-label="Toggle navigation">
+      <span class="burger"></span>
+      <span class="burger"></span>
+      <span class="burger"></span>
+    </button>
   </div>
 </header>
 
 <div class="cards-container">
 
-<!-- ================= DAY 1 ================= -->
+<!-- ===== DAY 1 ===== -->
 <div class="flip-card">
   <div class="flip-card-inner">
 
@@ -218,7 +231,6 @@ body {
         <div class="beer-info">
           <h3>Sauvin Ice</h3>
           <p><strong>Brewery:</strong> Mountain Culture Beer Co</p>
-          <p><strong>State:</strong> New South Wales</p>
           <p><strong>Style:</strong> Double Cold IPA</p>
           <p><strong>ABV:</strong> 8%</p>
           <p class="beer-blurb">
@@ -237,7 +249,7 @@ body {
         Can Art: 3.75<br>
         Blurb: 4.25<br>
         Value: 5<br>
-        Untappd: 4.5<br><br>
+        Untappd: 4.5<br>
         <strong>Total: 22</strong>
       </div>
 
@@ -252,9 +264,22 @@ body {
   </div>
 </div>
 
-<!-- ===== DUPLICATE DAY BLOCK FOR DAYS 2–6 ===== -->
-
 </div>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Border Barrels</p>
+  </div>
+</footer>
+
+<script>
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
+
+navToggle.addEventListener("click", () => {
+  navMenu.classList.toggle("show");
+});
+</script>
 
 </body>
 </html>
