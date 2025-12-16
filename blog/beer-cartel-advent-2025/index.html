@@ -26,7 +26,7 @@ body {
   padding: 1rem;
 }
 
-/* FLIP WRAPPER */
+/* FLIP */
 .flip-card {
   perspective: 1000px;
   width: 100%;
@@ -56,7 +56,7 @@ body {
 /* BACK */
 .flip-card-back {
   transform: rotateY(180deg);
-  background: #fff;
+  background: #ffffff;
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -77,7 +77,26 @@ body {
   font-size: 0.95rem;
 }
 
-/* TAP TO FLIP OVERLAY */
+/* DAY HEADING */
+.day-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffb400;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* BLURB */
+.beer-blurb {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #e6e6e6;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* TAP TO FLIP */
 .tap-overlay {
   position: absolute;
   inset: 0;
@@ -85,7 +104,7 @@ body {
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,0.25);
-  color: #fff;
+  color: #ffffff;
   font-weight: bold;
   font-size: 1.1rem;
   opacity: 0;
@@ -97,19 +116,6 @@ body {
   opacity: 1;
 }
 
-/* DAY LABEL */
-.day-label {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: rgba(255,255,255,0.15);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: bold;
-  color: #fff;
-  backdrop-filter: blur(4px);
-}
-
 /* DESKTOP HOVER LIFT ONLY */
 @media (hover: hover) and (pointer: fine) {
   .flip-card-front .beer-card:hover {
@@ -118,7 +124,7 @@ body {
   }
 }
 
-/* PLACEHOLDER */
+/* PLACEHOLDERS */
 .placeholder {
   opacity: 0.45;
 }
@@ -135,13 +141,13 @@ body {
 
 <div class="cards-container">
 
-<!-- ===================== DAY 1 ===================== -->
+<!-- ================= DAY 1 ================= -->
 <div class="flip-card">
   <div class="flip-card-inner">
 
     <div class="flip-card-front">
       <div class="beer-card" onclick="this.closest('.flip-card').classList.add('flipped')">
-        <div class="day-label">Day 1</div>
+        <div class="day-heading">Day 1</div>
         <img src="/media/advent/day1.jpg" alt="Sauvin Ice">
         <div class="beer-info">
           <h3>Sauvin Ice</h3>
@@ -149,6 +155,11 @@ body {
           <p><strong>State:</strong> New South Wales</p>
           <p><strong>Style:</strong> Double Cold IPA</p>
           <p><strong>ABV:</strong> 8%</p>
+          <p class="beer-blurb">
+            This Double Cold IPA starts with a light malt base, fermented using house
+            lager yeast for a clean, refined body. Double dry-hopped with Cryo Nelson
+            Sauvin delivering gooseberry, passionfruit and lychee.
+          </p>
         </div>
         <div class="tap-overlay">Tap to flip</div>
       </div>
@@ -166,13 +177,13 @@ body {
   </div>
 </div>
 
-<!-- ===================== DAY 2 ===================== -->
+<!-- ================= DAY 2 ================= -->
 <div class="flip-card">
   <div class="flip-card-inner">
 
     <div class="flip-card-front">
       <div class="beer-card" onclick="this.closest('.flip-card').classList.add('flipped')">
-        <div class="day-label">Day 2</div>
+        <div class="day-heading">Day 2</div>
         <img src="/media/advent/day2.jpg" alt="Tundra Struck">
         <div class="beer-info">
           <h3>Tundra Struck</h3>
@@ -180,6 +191,10 @@ body {
           <p><strong>State:</strong> Victoria</p>
           <p><strong>Style:</strong> Cold Pale Ale</p>
           <p><strong>ABV:</strong> 4.5%</p>
+          <p class="beer-blurb">
+            A super-clean malt profile carrying juicy tropical fruit including citrus,
+            pineapple, mango and papaya atop a crisp, lean malt base.
+          </p>
         </div>
         <div class="tap-overlay">Tap to flip</div>
       </div>
@@ -197,39 +212,9 @@ body {
   </div>
 </div>
 
-<!-- ===================== DAY 3 ===================== -->
-<div class="flip-card">
-  <div class="flip-card-inner">
-    <div class="flip-card-front">
-      <div class="beer-card" onclick="this.closest('.flip-card').classList.add('flipped')">
-        <div class="day-label">Day 3</div>
-        <img src="/media/advent/day3.jpg" alt="Bierchen #1">
-        <div class="beer-info">
-          <h3>Bierchen #1</h3>
-          <p><strong>Brewery:</strong> Molly Rose</p>
-          <p><strong>State:</strong> Victoria</p>
-          <p><strong>Style:</strong> Altbier</p>
-          <p><strong>ABV:</strong> 4.8%</p>
-        </div>
-        <div class="tap-overlay">Tap to flip</div>
-      </div>
-    </div>
-    <div class="flip-card-back">
-      <div class="scores">BBBRS Total: <strong>18</strong></div>
-      <div class="reviews">
-        <p><strong>Hudson:</strong> “Wish it was bolder.”</p>
-        <p><strong>Sarah:</strong> “Just tastes like beer.”</p>
-      </div>
-      <button class="back-overlay" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
-    </div>
-  </div>
-</div>
+<!-- ===== DAYS 3–6: SAME STRUCTURE (READY TO DUPLICATE) ===== -->
 
-<!-- ===================== DAYS 4–6 ===================== -->
-<!-- Repeat exact pattern above (already validated) -->
-
-<!-- ===================== PLACEHOLDERS 7–24 ===================== -->
-<!-- COPY THIS BLOCK AND JUST FILL IN DATA -->
+<!-- ===== PLACEHOLDERS DAYS 7–24 ===== -->
 <script>
 for (let i = 7; i <= 24; i++) {
   document.write(`
@@ -237,20 +222,21 @@ for (let i = 7; i <= 24; i++) {
     <div class="flip-card-inner">
       <div class="flip-card-front">
         <div class="beer-card">
-          <div class="day-label">Day ${i}</div>
+          <div class="day-heading">Day ${i}</div>
           <img src="/media/advent/placeholder.png" alt="Coming soon">
           <div class="beer-info">
             <h3>Coming Soon</h3>
             <p><strong>Brewery:</strong> —</p>
             <p><strong>Style:</strong> —</p>
             <p><strong>ABV:</strong> —</p>
+            <p class="beer-blurb">Beer will be revealed soon 🍻</p>
           </div>
         </div>
       </div>
       <div class="flip-card-back">
         <div class="scores">Not reviewed yet</div>
         <div class="reviews">
-          <p>Check back after this beer is opened 🍻</p>
+          <p>Check back after this beer is opened.</p>
         </div>
       </div>
     </div>
