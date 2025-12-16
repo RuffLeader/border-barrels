@@ -4,15 +4,14 @@
 <meta charset="UTF-8">
 <title>Beer Cartel Advent Calendar 2025 | Border Barrels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <link rel="stylesheet" href="/style.css">
 
 <style>
 body {
   font-family: 'Segoe UI', sans-serif;
-  color: #002157;
   margin: 0;
   padding: 0;
+  background: #ffffff;
 }
 
 /* GRID */
@@ -30,7 +29,7 @@ body {
 .flip-card {
   perspective: 1000px;
   width: 100%;
-  height: 420px;
+  height: 430px;
 }
 
 .flip-card-inner {
@@ -51,30 +50,31 @@ body {
   inset: 0;
   backface-visibility: hidden;
   border-radius: 16px;
+  overflow: hidden;
 }
 
-/* BACK */
-.flip-card-back {
-  transform: rotateY(180deg);
-  background: #ffffff;
-  padding: 18px;
+/* BREWERY CARD BACKING */
+.card-shell {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
+  background: linear-gradient(160deg, #001537, #002157);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  padding: 20px 16px;
+  height: 100%;
   text-align: center;
+  position: relative;
+  color: #ffffff;
 }
 
-.scores {
-  font-weight: bold;
-  border-bottom: 1px solid rgba(0,0,0,0.15);
-  padding-bottom: 10px;
-}
-
-.reviews {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  font-size: 0.95rem;
+/* DESKTOP HOVER */
+@media (hover: hover) and (pointer: fine) {
+  .card-shell:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+  }
 }
 
 /* DAY HEADING */
@@ -83,7 +83,46 @@ body {
   font-weight: bold;
   color: #ffb400;
   margin-bottom: 10px;
-  text-align: center;
+}
+
+/* IMAGE */
+.card-shell img {
+  max-width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
+  margin-bottom: auto;
+}
+
+/* INFO PANEL */
+.beer-info {
+  margin-top: auto;
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.beer-info h3 {
+  margin: 6px 0 8px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  color: #ffffff;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beer-info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #f0f0f0;
+}
+
+.beer-info p strong {
+  color: #ffb400;
 }
 
 /* BLURB */
@@ -92,41 +131,68 @@ body {
   font-size: 0.85rem;
   font-style: italic;
   color: #e6e6e6;
-  line-height: 1.4;
-  text-align: center;
 }
 
-/* TAP TO FLIP */
+/* TAP OVERLAY */
 .tap-overlay {
   position: absolute;
   inset: 0;
+  background: rgba(0,0,0,0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.25);
-  color: #ffffff;
   font-weight: bold;
   font-size: 1.1rem;
+  color: #ffffff;
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
 }
 
-.flip-card-front:hover .tap-overlay {
+.card-shell:hover .tap-overlay {
   opacity: 1;
 }
 
-/* DESKTOP HOVER LIFT ONLY */
-@media (hover: hover) and (pointer: fine) {
-  .flip-card-front .beer-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
-  }
+/* BACK */
+.flip-card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, #001537, #002157);
+  color: #ffffff;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
 }
 
-/* PLACEHOLDERS */
-.placeholder {
-  opacity: 0.45;
+/* SCORES */
+.scores {
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  padding-bottom: 10px;
+}
+
+.scores strong {
+  color: #ffb400;
+}
+
+/* REVIEWS */
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.95rem;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -146,7 +212,7 @@ body {
   <div class="flip-card-inner">
 
     <div class="flip-card-front">
-      <div class="beer-card" onclick="this.closest('.flip-card').classList.add('flipped')">
+      <div class="card-shell" onclick="this.closest('.flip-card').classList.add('flipped')">
         <div class="day-heading">Day 1</div>
         <img src="/media/advent/day1.jpg" alt="Sauvin Ice">
         <div class="beer-info">
@@ -156,9 +222,8 @@ body {
           <p><strong>Style:</strong> Double Cold IPA</p>
           <p><strong>ABV:</strong> 8%</p>
           <p class="beer-blurb">
-            This Double Cold IPA starts with a light malt base, fermented using house
-            lager yeast for a clean, refined body. Double dry-hopped with Cryo Nelson
-            Sauvin delivering gooseberry, passionfruit and lychee.
+            Clean lager fermentation with Cryo Nelson Sauvin delivering gooseberry,
+            passionfruit and lychee.
           </p>
         </div>
         <div class="tap-overlay">Tap to flip</div>
@@ -166,84 +231,28 @@ body {
     </div>
 
     <div class="flip-card-back">
-      <div class="scores">BBBRS Total: <strong>22</strong></div>
+      <div class="scores">
+        <strong>BBBRS Scores</strong><br>
+        As Advertised: 4.5<br>
+        Can Art: 3.75<br>
+        Blurb: 4.25<br>
+        Value: 5<br>
+        Untappd: 4.5<br><br>
+        <strong>Total: 22</strong>
+      </div>
+
       <div class="reviews">
         <p><strong>Hudson:</strong> Forgot to write one</p>
         <p><strong>Sarah:</strong> Hudson forgot to ask her</p>
       </div>
-      <button class="back-overlay" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
+
+      <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
     </div>
 
   </div>
 </div>
 
-<!-- ================= DAY 2 ================= -->
-<div class="flip-card">
-  <div class="flip-card-inner">
-
-    <div class="flip-card-front">
-      <div class="beer-card" onclick="this.closest('.flip-card').classList.add('flipped')">
-        <div class="day-heading">Day 2</div>
-        <img src="/media/advent/day2.jpg" alt="Tundra Struck">
-        <div class="beer-info">
-          <h3>Tundra Struck</h3>
-          <p><strong>Brewery:</strong> KAIJU!</p>
-          <p><strong>State:</strong> Victoria</p>
-          <p><strong>Style:</strong> Cold Pale Ale</p>
-          <p><strong>ABV:</strong> 4.5%</p>
-          <p class="beer-blurb">
-            A super-clean malt profile carrying juicy tropical fruit including citrus,
-            pineapple, mango and papaya atop a crisp, lean malt base.
-          </p>
-        </div>
-        <div class="tap-overlay">Tap to flip</div>
-      </div>
-    </div>
-
-    <div class="flip-card-back">
-      <div class="scores">BBBRS Total: <strong>18.5</strong></div>
-      <div class="reviews">
-        <p><strong>Hudson:</strong> “If Carlton Dry wasn’t dogshit…”</p>
-        <p><strong>Sarah:</strong> “Nice, but weak flavours.”</p>
-      </div>
-      <button class="back-overlay" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
-    </div>
-
-  </div>
-</div>
-
-<!-- ===== DAYS 3–6: SAME STRUCTURE (READY TO DUPLICATE) ===== -->
-
-<!-- ===== PLACEHOLDERS DAYS 7–24 ===== -->
-<script>
-for (let i = 7; i <= 24; i++) {
-  document.write(`
-  <div class="flip-card placeholder">
-    <div class="flip-card-inner">
-      <div class="flip-card-front">
-        <div class="beer-card">
-          <div class="day-heading">Day ${i}</div>
-          <img src="/media/advent/placeholder.png" alt="Coming soon">
-          <div class="beer-info">
-            <h3>Coming Soon</h3>
-            <p><strong>Brewery:</strong> —</p>
-            <p><strong>Style:</strong> —</p>
-            <p><strong>ABV:</strong> —</p>
-            <p class="beer-blurb">Beer will be revealed soon 🍻</p>
-          </div>
-        </div>
-      </div>
-      <div class="flip-card-back">
-        <div class="scores">Not reviewed yet</div>
-        <div class="reviews">
-          <p>Check back after this beer is opened.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  `);
-}
-</script>
+<!-- ===== DUPLICATE DAY BLOCK FOR DAYS 2–6 ===== -->
 
 </div>
 
