@@ -18,7 +18,7 @@ body {
 /* GRID */
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 260px);
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
   justify-content: center;
   gap: 30px;
   max-width: 1200px;
@@ -194,6 +194,12 @@ body {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
