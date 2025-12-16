@@ -177,8 +177,6 @@ body {
   flex-direction: column;
   gap: 4px;
   margin-top: 8px;
-  font-size: 0.9rem;
-  color: #e6e6e6;
   text-align: center;
 }
 
@@ -187,12 +185,31 @@ body {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  font-size: 0.95rem;       /* matches style-abv font size */
+  font-weight: 500;         /* medium weight similar to style-abv */
+}
+
+.beer-scores .line span {
+  display: flex;
+  gap: 4px;
+}
+
+.beer-scores .line span strong,
+.beer-scores .line span.label {
+  color: #ffb400;           /* gold for labels */
+  font-weight: 500;
+}
+
+.beer-scores .line span.value {
+  color: #f0f0f0;           /* light text for scores */
+  font-weight: 500;
 }
 
 .beer-scores .line.total {
   justify-content: center;
   font-weight: bold;
   color: #ffb400;
+  font-size: 0.95rem;
 }
   
 /* REVIEWS */
@@ -293,20 +310,20 @@ function renderBeer(beer) {
               <strong>ABV:</strong> ${beer.abv}
             </p>
 
-            <div class="beer-scores">
-              <div class="line">
-                <span>As Advertised: ${beer.scores.advertised}</span>
-                <span>Can Art: ${beer.scores.canArt}</span>
-                <span>Blurb: ${beer.scores.blurb}</span>
-              </div>
-              <div class="line">
-                <span>Value: ${beer.scores.value}</span>
-                <span>Untappd: ${beer.scores.untappd}</span>
-              </div>
-              <div class="line total">
-                <strong>Total: ${beer.scores.total}</strong>
-              </div>
+          <div class="beer-scores">
+            <div class="line">
+              <span><span class="label">As Advertised:</span> <span class="value">${beer.scores.advertised}</span></span>
+              <span><span class="label">Can Art:</span> <span class="value">${beer.scores.canArt}</span></span>
+              <span><span class="label">Blurb:</span> <span class="value">${beer.scores.blurb}</span></span>
             </div>
+            <div class="line">
+              <span><span class="label">Value:</span> <span class="value">${beer.scores.value}</span></span>
+              <span><span class="label">Untappd:</span> <span class="value">${beer.scores.untappd}</span></span>
+            </div>
+            <div class="line total">
+              <strong>Total: ${beer.scores.total}</strong>
+            </div>
+          </div>
 
           </div>
 
