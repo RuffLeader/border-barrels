@@ -208,6 +208,18 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.style-abv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap; /* safe on small screens */
+}
+
+.style-abv .divider {
+  color: rgba(255,255,255,0.5);
+}
 </style>
 </head>
 
@@ -264,8 +276,11 @@ function renderBeer(beer) {
           <div class="beer-info">
             <h3>${beer.beerName}</h3>
             <p><strong>Brewery:</strong> ${beer.brewery}</p>
-            <p><strong>Style:</strong> ${beer.style}</p>
-            <p><strong>ABV:</strong> ${beer.abv}</p>
+            <p class="style-abv">
+              <strong>Style:</strong> ${beer.style}
+              <span class="divider">•</span>
+              <strong>ABV:</strong> ${beer.abv}
+            </p>
             <p class="beer-blurb">${beer.blurb || ""}</p>
           </div>
 
