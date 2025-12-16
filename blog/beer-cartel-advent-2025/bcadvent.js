@@ -35,7 +35,7 @@ const adventBeers = [
     scores: {
       advertised: 4.75,
       canArt: 4,
-      blurb: 3 (No Blurb),
+      blurb: 3,
       value: 3,
       untappd: 3.75,
       total: 18.5
