@@ -279,8 +279,17 @@ function renderBeer(beer) {
               <strong>Style:</strong> ${beer.style}
               <span class="divider">•</span>
               <strong>ABV:</strong> ${beer.abv}
+              <div class="scores">
+                <strong>BBBRS Scores</strong><br>
+                As Advertised: ${beer.scores.advertised}<br>
+                Can Art: ${beer.scores.canArt}<br>
+                Blurb: ${beer.scores.blurb}<br>
+                Value: ${beer.scores.value}<br>
+                Untappd: ${beer.scores.untappd}<br>
+                <strong>Total: ${beer.scores.total}</strong>
+            </div>
             </p>
-            <p class="beer-blurb">${beer.blurb || ""}</p>
+            
           </div>
 
           <div class="tap-overlay">Tap to flip</div>
@@ -288,16 +297,7 @@ function renderBeer(beer) {
       </div>
 
       <div class="flip-card-back">
-        <div class="scores">
-          <strong>BBBRS Scores</strong><br>
-          As Advertised: ${beer.scores.advertised}<br>
-          Can Art: ${beer.scores.canArt}<br>
-          Blurb: ${beer.scores.blurb}<br>
-          Value: ${beer.scores.value}<br>
-          Untappd: ${beer.scores.untappd}<br>
-          <strong>Total: ${beer.scores.total}</strong>
-        </div>
-
+        <p class="beer-blurb">${beer.blurb || ""}</p>
         <div class="reviews">
           <p><strong>Hudson:</strong> ${beer.reviews.hudson}</p>
           <p><strong>Sarah:</strong> ${beer.reviews.sarah}</p>
