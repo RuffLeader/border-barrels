@@ -2,336 +2,336 @@ const adventBeers = [
   {
     day: 1,
     image: "/media/carwyncanvent/day-1.png",
-    beerName: "Sauvin Ice",
-    brewery: "Mountain Culture Beer Co.",
-    style: "Double Cold IPA",
-    abv: "8%",
-    blurb: "This Double Cold IPA starts with a light malt base, fermented using our house lager yeast for a clean, refined body. A huge double dry hop of Cryo Nelson Sauvin from New Zealand provides gooseberries, passionfruit and lychee that is perfect for our warm festive season. Bright, crisp and dry body showcasing pure hop expression. Nelson Sauvin delivers gooseberry, passionfruit and lychee with hints of tropical fruit. Firm bitterness and clean finish make it sharp, aromatic and highly drinkable.",
+    beerName: "Big In Sheboygan",
+    brewery: "Banks Brewing",
+    style: "Oat Cream Triple IPA",
+    abv: "10%",
+    blurb: "A lot of citrus at first, with a background of creamy papaya and stonefruit. A bit like a candy shop, with multiple layers and an aroma that fills the room. Maaaasive beer! The booze is definitely there but it is cushioned (or “pillowed” wink wink) by a solid sweetness that leads to a mildly candied finish with a bitter aftertaste, reminding you that this is not boost juice but an actual bangin IPA.",
 
     scores: {
-      advertised: 4.5,
-      canArt: 3.75,
-      blurb: 4.25,
+      advertised: 4.75,
+      canArt: 3.5,
+      blurb: 3.75,
       value: 5,
       untappd: 4.5,
-      total: 22
+      total: 21.5
     },
 
     reviews: {
-      hudson: "Forgot to write one",
-      sarah: "Hudson forgot to ask her"
+      hudson: "HOLY BOOZEY! The 10% absolutely smacks you right in the chops. Even with this beer fueling me as though it’s Unleaded 97 in my SUV, it is smooth like great Jazz and oh so sweet, like revenge on those that have caused a great betrayal",
+      sarah: "Tastes really nice, tastes just like a tropical juice. Is that what you’re after?"
     }
   },
 
   {
     day: 2,
     image: "/media/carwyncanvent/day-2.png",
-    beerName: "Tundra Struck",
-    brewery: "KAIJU! Beer",
-    style: "Cold Pale Ale",
-    abv: "4.5%",
-    blurb: "A super-clean malt profile carrying a shipload of juicy tropical fruit flavours including citrus, pineapple, mango, and a hint of papaya, all resting atop a crisp and lean malt base. Crafted from Pale, Carahell, and Carpils malts and hopped with Simcoe (US), Cascade (AUS), Mosaic (US), Citra Cryo (US), and Citra (US), it delivers a vibrant, refreshing, and perfectly balanced drinking experience. With an IBU of 35 and a Gold Medal win at the Australian International Beer Awards 2024, this brew stands tall as a true showcase of tropical brilliance and clean, modern craftsmanship.",
+    beerName: "Hoppy Farmhouse Estate Ale",
+    brewery: "Devilbend Farm Beer Co",
+    style: "Farmhouse Ale",
+    abv: "5%",
+    blurb: "The funk and earthy aromas dominate, with notes of wet hay, musk, pomme and light citrus in the background. Quite phenolic and refreshing, a great example of a Farmhouse Ale with Pale Ale drinkability. This beer really encapsulates the “Paddock to Pint” (or in the case of Canvent “Country to Can”) ethos that they live by, with as many elements from each beer as possible grown at the brewery farm.",
 
     scores: {
-      advertised: 4.75,
-      canArt: 4,
-      blurb: 3,
+      advertised: 4.5,
+      canArt: 3.75,
+      blurb: 4.5,
       value: 3,
-      untappd: 3.75,
-      total: 18.5
+      untappd: 3.25,
+      total: 19
     },
 
     reviews: {
-      hudson: "This kind of tastes like if Carlton Dry wasn’t absolute dogshit. I could have (at a minimum) 600 of these after mowing the lawn. Enough body and taste to satisfy the Ale lovers, and enough crispness for the Lager lovers.",
-      sarah: "*Smacks-lips* It’s nice for me, someone who doesn’t particularly like beer, but it’s also weak, the flavours are kind of weak."
+      hudson: "Forgot to write a review.",
+      sarah: "Hudson forgot to ask for a review."
     }
   },
 
   {
     day: 3,
     image: "/media/carwyncanvent/day-3.png",
-    beerName: "Bierchen #1",
-    brewery: "Molly Rose Brewing",
-    style: "Altbier",
-    abv: "4.8%",
-    blurb: "A beautiful amber bier made with lager brewing techniques to imitate a lager but also be an ale in the style of a Dusseldorf Altbier. Pale and roasted Voyager malts give a rich but clean malt character and a traditional German Ale yeast fermented cold and cold conditioned for weeks and weeks give the clean refreshing finish. A perfect pairing to a Roast Turkey/Duck/Goose/Ham or the end of a long day.",
+    beerName: "Raze",
+    brewery: "Cypher Brewing Co",
+    style: "West Coast IPA",
+    abv: "7%",
+    blurb: "Big Pineapple and Vinous straight out of the bat, with underlying diesel notes. Certainly fruity, with some orange citrus and punchy resin, supported by a sweet background bready malt. The bitterness is moderate, true to the modern versions of the West Coast style. Delicious!",
 
     scores: {
-      advertised: 4,
-      canArt: 3.25,
-      blurb: 3.75,
-      value: 3.25,
-      untappd: 3.75,
-      total: 18
+      advertised: 4.5,
+      canArt: 4.75,
+      blurb: 4,
+      value: 4.5,
+      untappd: 4.5,
+      total: 22.25
     },
 
     reviews: {
-      hudson: "Toned down malt and biscuit flavours, reminiscent of a classic Amber Ale but ultimately dialed back. Right up my alley flavour wise but would love it to be bolder. May just be the Altbier style, of which I’m not completely familiar.",
-      sarah: "*Stares blankly into void* *Still staring* *Shrugs shoulders* Bit plain, it just tastes like a beer."
+      hudson: "As soon as it was poured into the glass I was worried, it is so light in colour. As soon as my nose  was touched by its sweet aromas, my worry was alleviated. This is a brilliant West Coast IPA, full of your typical resin, piney, and dank flavours. Never judge a beer by its colour.",
+      sarah: "It’s very bitter, it’s like, very bitter. Not sure about that one."
     }
   },
 
   {
     day: 4,
     image: "/media/carwyncanvent/day-4.png",
-    beerName: "The Shimmering Sparkling Ocean Ale",
-    brewery: "Sailors Grave Brewing",
-    style: "Sparkling Ocean Ale",
-    abv: "5%",
-    blurb: "An Australian Sparkling Ale brewed with fresh seawater from the Cape Conran Coastline down in Sou' East Gippsland.  Floral, estery and crisp with a light malt backbone and a lick of salty tang.",
+    beerName: "Pavaclicious",
+    brewery: "Phat Brew Club",
+    style: "Pavlova Sour",
+    abv: "6%",
+    blurb: "This could not get any closer to what the artwork says! Massive strawberry and kiwi, with notes of pasito and some rosewater in the background. Super juicy, with a solid acidity that balances that sweet fruit character. Not absurdly thick for the pastry sour style, which just adds to its massive drinkability.",
 
     scores: {
-      advertised: 4.5,
-      canArt: 3.75,
-      blurb: 3.75,
-      value: 3.25,
-      untappd: 3.5,
-      total: 18.75
+      advertised: 5,
+      canArt: 4.5,
+      blurb: 4.25,
+      value: 3.75,
+      untappd: 4.5,
+      total: 22
     },
 
     reviews: {
-      hudson: "Summer in a can, this makes me think I’m sitting at the Aus Open on Show Court 1 watching the 30th seed face an unseeded Russian guy. Probably cos I did that one time whilst drinking a Coopers Sparkling Ale.",
-      sarah: "Ough, that’s nice… but like hit the back of my throat, like, the flavour. Is it sour? Slightly? I don’t know if sours the right word. Yeah, not bad."
+      hudson: "This is more Pav than Matthew. If a pav was sour and also beer, this is what it would be. I’ve never been happier to steal an NZ tradition more than the pav.",
+      sarah: "That’s sour. Tastes like berries. Once the sour’s gone, it’s nice."
     }
   },
 
   {
     day: 5,
     image: "/media/carwyncanvent/day-5.png",
-    beerName: "Who Would Want To Soak A Rope In Kerosene",
-    brewery: "Banks Brewing",
-    style: "West Coast IPA",
-    abv: "6.2%",
-    blurb: "This West Coast IPA is bright, clear and brimming with hop intensity, bringing resinous pine, zesty citrus and ripe tropical fruit to the fore.",
+    beerName: "A Deal for Good",
+    brewery: "Good Land Brewing Co x Adroit Theory",
+    style: "Barrel Blend Dark Ale",
+    abv: "14.8%",
+    blurb: "What a nose! Burnt Basque Cheesecake, Chocolate Wafer Sticks, Dark Fruit, Toffee, Dark Caramel, Vanilla. And as it warms up you get light Bourbon and Coconut, with a Cinnamon-like heat. It gets better and better the longer you keep on going back to it. Big bitter roasty finish that adds balance and gives it both dimension and length, without letting it get too cloying.",
 
     scores: {
       advertised: 5,
-      canArt: 3.25,
-      blurb: 4,
-      value: 4,
+      canArt: 3.75,
+      blurb: 4.5,
+      value: 5,
       untappd: 4.75,
-      total: 21
+      total: 23
     },
 
     reviews: {
-      hudson: "Wowee, what a West Coast! An abundance of pine, and fruit, this is as good as it can get. I would honestly be happy with an Advent Calendar that just turns out to be 24 of these.",
-      sarah: "That’s nice, I like it. It’s just a really nice tasting beer."
+      hudson: "Just read the lyrics to the chorus of Rocket Man by Elton John, except I am a literal hybrid Rocket-Man who is fuelled by rocket fuel and/or this monstrous beer. It’s kind of like if Vanilla Essence was poured into the strongest stout you’ve ever had, and then topped off with coconut distilled in Diesel and spirits. This is 100% the most complex beer I’ve ever had, both in production, and in my feelings. My heart is saying yum, but my head is saying, what the fuck are you doing to us.",
+      sarah: "Smells like an espresso martini, but like a beer version. *Keels over and coughs* That is awful. Does it have whiskey in it? It’s hitting my throat and my oesophagus, the burn of drinking a shot of whiskey. Ughhhhh yucky! *5 mins later* It’s sitting in my heart, like it’s hurting, it’s actually hurting."
     }
   },
 
   {
     day: 6,
     image: "/media/carwyncanvent/day-6.png",
-    beerName: "Contested Origins",
-    brewery: "Hawkers Beer",
-    style: "Oat Cream IPA",
-    abv: "8%",
-    blurb: "Where did the legendary Pavlova originate? Some say NZ. Some say Australia. You know the correct answer in your heart, and your heart alone. Dry-hopped with Mosaic and complemented by additions of passionfruit and vanilla, the origin of your enjoyment is this can.",
+    beerName: "Dream State",
+    brewery: "Allday Brewing Co",
+    style: "Hazy IIPA",
+    abv: "8.5%",
+    blurb: "This Double Hazy has notes of Orange Creamsicle & Yellow Peach, with Rock Melon Rind. The bitterness is definitely present, reminding us that this is not a NEIPA but a Hazy that does not mess around. The booze does lets itself notice, but it’s enjoyable nonetheless. Big and Bold. What a debut!",
 
     scores: {
-      advertised: 5,
-      canArt: 3.75,
-      blurb: 4.5,
+      advertised: 4.5,
+      canArt: 4,
+      blurb: 3,
       value: 5,
-      untappd: 4,
-      total: 22.25
+      untappd: 4.25,
+      total: 20.75
     },
 
     reviews: {
-      hudson: "Very fruity, very sweet, the combination of pavlova and oat cream IPA has it so sweet that it tastes thicker than a standard beer. A huge bundle of flavours like your favourite Christmas Pav should be.",
-      sarah: "*Contemplates* It’s nice, but I don’t know what the flavour is. *Goes for round 2 for the first time ever, huge scenes* I like it, but I don’t know what the fruit is. Like a creamy peach is what I’m tasting."
+      hudson: "Juicy, boozy, tropical, slightly dank. It has the properties of both a melt-in-your-mouth hazy IPA, and a thick punch-in-your-mouth IIPA. A wonderful experience for my tastebuds.",
+      sarah: "Is that it? *Pointing at can* It tastes thick, like, I don’t know what like, but it just tastes thick. Not like milk, but you know, that consistency. It’s pretty nice."
     }
   },
 
   {
     day: 7,
     image: "/media/carwyncanvent/day-7.png",
-    beerName: "Last Exit West",
-    brewery: "Range Brewing",
-    style: "California IPA",
-    abv: "6.6%",
-    blurb: "A crisp & fruity Cali IPA brewed for the Beer Cartel Advent Calendar. We've gone with a heavy dry-hop of Rakau, Eclipse & Krush to deliver waves of tropical and citrus fruits, with a little hit of NZ dank to round things out.",
+    beerName: "Fruity Wonderland",
+    brewery: "Hiker Brewing Co",
+    style: "Tropical West Coast IPA",
+    abv: "7%",
+    blurb: "What a treat to finish off week one! Brewed with Citra and Mosaic Cryo and loaded with different fruit terpenes. It smells wonderful, with notes of “Prescribed” Gummies, Mango, Pineapple Lollies, Passionfruit & Peach. It has a solid bitter backbone like an old school IPA, but without the taste. Slick in texture but refreshing. Truly a 'fruity wonderland'.",
 
     scores: {
-      advertised: 4.25,
-      canArt: 3.5,
-      blurb: 4,
-      value: 4,
-      untappd: 4,
-      total: 19.75
+      advertised: 5,
+      canArt: 5,
+      blurb: 3,
+      value: 4.5,
+      untappd: 4.75,
+      total: 22.25
     },
 
     reviews: {
-      hudson: "This has similar tones to a Cold IPA or West Coast Pilsner, light and refreshing, but still hosting the notable flavours that reflect the West Coast style.",
-      sarah: "That’s nice. It’s kind of all I have to say on that. It’s nice, nice light beer."
+      hudson: "Tropical is an absolute understatement, this is the most tropical. Like if a tropical island went to an even better tropical island for its summer holiday. Juicy, piney, gorgeous.",
+      sarah: "Smells nice. Ooooh it’s strong. Flavour. *Two sips* I’m trying to work out what I’m tasting. No don’t put that in! Is it wheaty? Hoppy? It’s earthy. Dirt? That’s not the right word."
     }
   },
 
   {
     day: 8,
     image: "/media/carwyncanvent/day-8.png",
-    beerName: "American Brown Ale",
-    brewery: "Philter Brewing",
-    style: "American Brown Ale",
+    beerName: "Czechlist",
+    brewery: "Slow Lane Brewing",
+    style: "Czech Pilsner",
     abv: "5.5%",
-    blurb: "A classic malt driven American Brown Ale. Chocolate, caramel and nutty, mild bitterness and distinct US Hop flavour.",
+    blurb: "The nose is Bready, with a light spiciness carried by some herbal & grassy hop notes. Medium bodied, with a mild sweetness that’s quickly covered by a solid bitterness that carries till the end of the sip and lingers slightly. A great refreshing start for this week, it’s a school night after all.",
 
     scores: {
       advertised: 5,
       canArt: 3.5,
-      blurb: 4.25,
-      value: 3.75,
+      blurb: 4.75,
+      value: 3.5,
       untappd: 4.75,
-      total: 21.25
+      total: 21.5
     },
 
     reviews: {
-      hudson: "Toffee, malt and biscuits, oh my! This is one I could drink forever. I saw, on the line, that some people’s cans were a bit how ya goin’, luckily, mine was not. And it was filled with this nectar.",
-      sarah: "I don’t like dark beers, but it tastes a bit nutty. I don’t really like dark beers."
+      hudson: "Saaz is instantly recognisable, earthy and spicy. I also taste some banana, and a hint of nuts. Maybe I’m the one that’s nuts, nuts for this beer!",
+      sarah: "That’s really nice. That’s all I’ve got, that’s nice."
     }
   },
 
   {
     day: 9,
     image: "/media/carwyncanvent/day-9.png",
-    beerName: "Little Hopper",
-    brewery: "Ocean Reach Brewing",
-    style: "Black IPA",
+    beerName: "Liquid Hot Magma",
+    brewery: "Rocky Ridge Brewing Co.",
+    style: "Belgian Lava Cake Stout",
     abv: "7%",
-    blurb: "Bold yet balanced, Little Hopper struts in with roasted coffee & dark chocolate malts, then cheekily flips the script with a lively mix of hops. Zesty citrus, tropical fruit, & pine tease their way through the smooth malt backbone, finishing crisp and complex. Built on a base of pale and roasted malts, this beer delivers a smooth roast character with notes of coffee and dark cocoa. Late additions of Mosaic, Citra, and Simcoe hops contribute bright layers of citrus, tropical fruit, and pine. Fermented clean with American ale yeast to highlight balance between the malt richness and hop expression. Finishes dry with moderate bitterness and a crisp edge.",
+    blurb: "A traditional Belgian yeast with a massive modern twist. Notes of Burnt Chocolate, 99% Chocolate, Brownie Crust and some lovely Pomegranate esters that come forward as it warms up. Drinks as a tasty but richer dry stout with an extra roasty kick. Beware as the alcohol is very well hidden, this magma won’t burn you, but it might hit later!",
 
     scores: {
-      advertised: 4.5,
+      advertised: 5,
       canArt: 3.75,
-      blurb: 4.25,
-      value: 4.75,
-      untappd: 4.25,
-      total: 21.5
+      blurb: 3,
+      value: 4.5,
+      untappd: 4.75,
+      total: 21
     },
 
     reviews: {
-      hudson: "Full of roasted coffee it seems. But the classic subtle hoppy flavours. Unfortunately, with Black IPAs the roasty flavours are usually so strong it’s difficult to get much else. Fortunately, I love that flavour, so this is yum as!",
-      sarah: "“*Recoiled at the smell* *Shuddered after tasting* *Began laughing* What are you writing? I don’t really like dark beers, I’m sorry."
+      hudson: "Decadent without being too rich, like a wonderful chocolate cake with notes of caramel, and possibly coffee? Because it isn’t so rich, it’s quite easy to drink, and really allows the flavours to hit hard.",
+      sarah: "Oh what is that aftertaste? I mean it’s probably one of the better dark beers I’ve tasted. Is it nutty slightly? A chocolate nutty taste."
     }
   },
 
   {
     day: 10,
     image: "/media/carwyncanvent/day-10.png",
-    beerName: "Deck The Helles",
-    brewery: "White Bay Brewery",
-    style: "Helles Lager",
-    abv: "4.7%",
-    blurb: "A clean drinking Helles Lager that melds old world malt with new world malts from New Zealand. Built on a solid base of Noble German varieties Hallertauer, Mittelfrüh and Spalt. A no nonsense easy drinking lager with a golden hue that you could easily find in Munich's Hofbrauhaus.",
+    beerName: "Endless Sky",
+    brewery: "Range Brewing",
+    style: "California IPA",
+    abv: "6%",
+    blurb: "Tropical paradise in a can! Underripe Pineapple, Meyer Lemons, Honeydew, Light resin. Massive drinkability on this one, as the style dictates. Easy mid-week treat with delicious.",
 
     scores: {
       advertised: 4.75,
-      canArt: 4,
+      canArt: 3.75,
       blurb: 4,
-      value: 3.25,
+      value: 3.5,
       untappd: 4.5,
       total: 20.5
     },
 
     reviews: {
-      hudson: "All the notes of a lager, but thicker and juicier. I don’t know if it’s the Helles or just me, but I get banana bread out of this one.",
-      sarah: "That’s nice, that’s really nice. *When asked for tasting notes* I don’t know flavours, it tastes like beer."
+      hudson: "Crispy. Super, super tropical, I assume thanks in large part to the Citra Hyperboost. If they put that in a large NEIPA, I might not ever drink anything ever again.",
+      sarah: "It’s nice. Easy to drink. Got a bit of orange, or peach, or stone fruit. It’s a very summery beer. I reckon that’s easier to drink after mowing the lawns than the one you said earlier in the week."
     }
   },
 
   {
     day: 11,
     image: "/media/carwyncanvent/day-11.png",
-    beerName: "Altbier",
-    brewery: "Reckless Brewing Co.",
-    style: "Red Ale",
-    abv: "4.7%",
-    blurb: "Forget the tinsel and glitter - this beer is all about tradition. Albier (literally “Old Beer”) hails from Düsseldorf, Germany, where the locals have been perfecting it for centuries. Malty, toasty, with a crisp finish that sneaks in like the last carol of the night. Crack it, raise a glass & lets countdown to Christmas! A dark copper-colored ale, known for being a malty and smooth, yet balanced beer with a crisp, lager-like finish. It is fermented with top-fermenting yeast at a moderate temperature but then cold-aged, which results in its brilliant clarity and clean taste.",
+    beerName: "Yarra Red",
+    brewery: "RWarrandyte Brewing Co",
+    style: "Hoppy Red Ale",
+    abv: "5.6%",
+    blurb: "Notes of Strawberry Jam, Dates, Caramel and Table Red Grapes with an underlying tropical character. It has a toasty assertive bitterness, with Berry Compote flavour but very easy drinking. Definitely a modern take on an American Red Ale, with tropical notes all around a big malty base. Old school craft meets modern hype! Delish!",
 
     scores: {
-      advertised: 4.25,
-      canArt: 5,
-      blurb: 4.5,
+      advertised: 4.5,
+      canArt: 3.5,
+      blurb: 4.75,
       value: 3.5,
-      untappd: 3.75,
-      total: 21
+      untappd: 4.25,
+      total: 20.5
     },
 
     reviews: {
-      hudson: "Malty as ever, this is very reminiscent of a Red Ale, and I’m probably showing my lack of knowledge saying that. It does taste smokier than a standard red though.",
-      sarah: "“*Owl hoot* Has that got whisky in it? No, not whisky, something strong. Bourbon or something? It’s got a smokey whisky flavour."
+      hudson: "Extremely light Red Ale, seems almost a Red IPA. Bitter with flavours of tropical and stone fruits. This is just really fresh and a lovely drink.",
+      sarah: "That’s strong. It’s not bad."
     }
   },
 
   {
     day: 12,
     image: "/media/carwyncanvent/day-12.png",
-    beerName: "Triple Decoction Czech Pilsner",
-    brewery: "Devilbend Farm Beer Co",
-    style: "Czech Pilsner",
-    abv: "5%",
-    blurb: "Czech Pilsner is brewed with a triple decoction process. Brewed with our farm-grown pilsner malt and using the traditional triple decoction method, this Czech Pilsner is a rich expression of heritage and craft. Deep malt complexity meets a crisp, clean finish, highlighting the grain’s full flavor. Smooth, golden, and refined. This lager is a tribute to classic technique and homegrown ingredients.",
+    beerName: "Pow Wow",
+    brewery: "One Drop Brewing Co x RaR Brewing",
+    style: "Smoothie Cream Sour",
+    abv: "6.4%",
+    blurb: "Just look at that pour and those slow creeping bubbles trying to escape. This is thick thick thiiiiiiiick!!! Notes of Blackberry Yogurt, Apricot, Light Thyme and Banana with a light Coconut aftertaste. A solid acidity cuts through that cake sweetness, and it brings balance to an impressive beer.",
 
     scores: {
-      advertised: 4.75,
-      canArt: 3.75,
-      blurb: 4.25,
-      value: 3.5,
-      untappd: 4.5,
-      total: 20.75
+      advertised: 5,
+      canArt: 4.25,
+      blurb: 4.75,
+      value: 4,
+      untappd: 4.75,
+      total: 22.75
     },
 
     reviews: {
-      hudson: "Genuinely my favourite lager style, the triple decoction also seems to add like a marzipan type flavour. Luscious and crispy.",
-      sarah: "Quite nice, it feels very light. Is it light? Doesn't have a strong beer taste which is nice. My kind of beer."
+      hudson: "Thick boi! This poured like an actual smoothie, and looked like blueberry juice. A luscious and velvety mouthfeel, with an absolute barrage of berry and tropical flavours. Not so sweet that it is off putting, and also not super sour that it crinkles your face. Still, it’s bloody delicious.",
+      sarah: "That is so thick. But really nice, genuinely just takes like a berry smoothie with a slight hint of sour. Drinking a beer this thick is unusual."
     }
   },
 
   {
     day: 13,
     image: "/media/carwyncanvent/day-13.png",
-    beerName: "Surfin' Santas",
-    brewery: "The Coastal Brewing Company",
-    style: "Double Red IPA",
-    abv: "8.4%",
-    blurb: "A bold and expressive Double Red IPA that strikes the perfect balance between deep malt richness and hop intensity meaning that whatever was on your Christmas wish list you will be happy with what the Surfin’ Santas delivered! Brewed with Citra, Cryo Mosaic and Simcoe hops.",
+    beerName: "Baltic Porter",
+    brewery: "The Albert Brewery",
+    style: "Baltic Porter",
+    abv: "6.7%",
+    blurb: "Notes of Chocolate, Brownie Ends, Nuts, Light Toffee with some Pomegranate & Dark Cherry esters as it warms up. Dark fruit character in mouth with roasty bitterness. Rich but still only medium bodied, honestly what a delicious beer.",
 
     scores: {
-      advertised: 5,
-      canArt: 4,
+      advertised: 4.5,
+      canArt: 3.5,
       blurb: 3,
-      value: 5,
-      untappd: 4.75,
-      total: 21.75
+      value: 4.25,
+      untappd: 3.75,
+      total: 19
     },
 
     reviews: {
-      hudson: "This beer is the colour that Simmo says his hair is, whenever someone calls him a ginger. 'It's Auburn' he woudl tell everyone. Flavour wise, this is an absolute gem, subtly malty, but stone fruit seems to come to the fore. Much like Simmo's auburn hair, this is wonderful. Having said Auburn however many times now, I think Simmo's new nickname should be Aubie, after the Auburn Tigers mascot. Because Simmo seems to do as much work promoting Auburn as their mascot does.",
-      sarah: "*Shakes head* I don't like that."
+      hudson: "Smokey, coffee, chocolate and a perfect amount of carbonation. Easy drinking, and non-offensive, a really approachable porter.",
+      sarah: "It’s alright, it’s not bad. It doesn’t have a normal heavy and strong taste like a dark beer. It’s not too bad."
     }
   },
 
   {
     day: 14,
     image: "/media/carwyncanvent/day-14.png",
-    beerName: "Ode To Bitter",
-    brewery: "Slow Lane Brewing",
-    style: "Hoppy Belgian Blonde",
-    abv: "5%",
-    blurb: "An ode to bitterness, Belgian style. This beer is our tribute to the sharp, hoppy edge that’s often hidden beneath the softer side of Belgian ales. Crisp, complex and uncompromising, Ode to Bitter is here to bring bitterness back into fashion. Brewed with a traditional Belgian yeast strain, it delivers lively aromas of spice and fruit, before giving way to a firm, lingering hop bitterness.",
+    beerName: "Hoppy Lil' Accident",
+    brewery: "Bridge Road Brewers x Firestone Walker Brewing Company",
+    style: "West Coast Pilsner",
+    abv: "6.1%",
+    blurb: "A true delicious hoppy beer. Tropical delight on the nose with massive fruit character packed into this lager. Notes of Pineapple, Guava, Melon & Canned Peaches. Really refreshing, with a pleasing herbal bitterness and some lemongrass notes in the finish.",
 
     scores: {
-      advertised: 4.5,
-      canArt: 3.75,
-      blurb: 4.25,
-      value: 3.5,
-      untappd: 3.5,
-      total: 19.5
+      advertised: 4.75,
+      canArt: 5,
+      blurb: 4.5,
+      value: 3.75,
+      untappd: 4.75,
+      total: 22.75
     },
 
     reviews: {
-      hudson: "This is a weird pairing for me, Belgian ale flavours, but hoppy. Not Bad. Good review, Hudson.",
-      sarah: "Eugh, looking at it, it's very see through, so I thought it'd be weak. But it has a very strong flavour, it's not good."
+      hudson: "I’ll tell you what, this beer is absolutely wonderful! The perfect blend of hoppy, crisp and fullness. A delight for the buds.",
+      sarah: "That’s pretty nice, very refreshing. Not a very strong beer taste."
     }
   },
   
