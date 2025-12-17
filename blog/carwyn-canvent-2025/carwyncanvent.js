@@ -358,6 +358,30 @@ const adventBeers = [
       sarah: "I like that. That's really nice, it doesn't taste like a beer. It's just a very light refreshing drink, without the normal beer aftertaste or anything."
     }
   },
+
+  {
+    day: 16,
+    image: "/media/carwyncanvent/day-16.png",
+    beerName: "Brit Pop",
+    brewery: "Holgate Brewhouse",
+    style: "Modern English IPA",
+    abv: "6.6%",
+    blurb: "The colour indicates that this will be a somewhat malty beer. Notes of Orange Rind, Marmalade, Biscuit & Breadcrust. In mouth, it’s Resinous & Herbal with light Bergamot coming through. So good! Truly one of the few breweries to always nail English styles, so this new-age twist with some modern English hops ticks all the boxes! Cheers and Cheerio!⁠",
+
+    scores: {
+      advertised: 4.75,
+      canArt: 4.25,
+      blurb: 4.75,
+      value: 4.25,
+      untappd: 4.5,
+      total: 22.5
+    },
+
+    reviews: {
+      hudson: "A hell of a lot of stone fruit and resin flavour. This is reminiscent of a West Coast IPA but slightly smoother and less bitter.",
+      sarah: "I don't like that. I don't know why. I don't know, I just don't like it. I know it's not a sour, but it tastes a little bit sour. Not for me."
+    }
+  },
   
   {
     day: 2,
