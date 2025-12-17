@@ -285,7 +285,7 @@ const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
 const container = document.getElementById("cards-container");
 
-for (let day = 1; day <= 24; day++) {
+for (let day = 1; day <= 25; day++) {
   const beer = adventBeers.find(b => b.day === day);
   if (!beer || beer.placeholder) renderPlaceholder(day);
   else renderBeer(beer);
