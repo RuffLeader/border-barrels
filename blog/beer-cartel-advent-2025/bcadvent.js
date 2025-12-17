@@ -211,7 +211,7 @@ const adventBeers = [
 
     reviews: {
       hudson: "Full of roasted coffee it seems. But the classic subtle hoppy flavours. Unfortunately, with Black IPAs the roasty flavours are usually so strong it’s difficult to get much else. Fortunately, I love that flavour, so this is yum as!",
-      sarah: "“*Recoiled at the smell* *Shuddered after tasting* *Began laughing* What are you writing? I don’t really like dark beers, I’m sorry."
+      sarah: "*Recoiled at the smell* *Shuddered after tasting* *Began laughing* What are you writing? I don’t really like dark beers, I’m sorry."
     }
   },
 
@@ -259,7 +259,7 @@ const adventBeers = [
 
     reviews: {
       hudson: "Malty as ever, this is very reminiscent of a Red Ale, and I’m probably showing my lack of knowledge saying that. It does taste smokier than a standard red though.",
-      sarah: "“*Owl hoot* Has that got whisky in it? No, not whisky, something strong. Bourbon or something? It’s got a smokey whisky flavour."
+      sarah: "*Owl hoot* Has that got whisky in it? No, not whisky, something strong. Bourbon or something? It’s got a smokey whisky flavour."
     }
   },
 
