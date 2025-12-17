@@ -334,6 +334,30 @@ const adventBeers = [
       sarah: "That’s pretty nice, very refreshing. Not a very strong beer taste."
     }
   },
+
+  {
+    day: 15,
+    image: "/media/carwyncanvent/day-15.png",
+    beerName: "Cherry BOMG (Beaker Oh My God)",
+    brewery: "KAIJU! Beer",
+    style: "Cherry Terpene Sour",
+    abv: "5.5%",
+    blurb: "Notes of Bomg Water Slurpee, Candy, Pastilles, Strawberry Kush & High-biscus Tea. Some malty bready notes in the background, with a soft acidity that gives it a dry finish. A fruity beer that leaves us ready to tackle the week ahead!",
+
+    scores: {
+      advertised: 5,
+      canArt: 4.75,
+      blurb: 3,
+      value: 3.5,
+      untappd: 5,
+      total: 21.25
+    },
+
+    reviews: {
+      hudson: "The smell had me a bit worried, but the taste is absolutely incredible. Sour cherries that rounds out so smoothly. This is a truly special beer.",
+      sarah: "I like that. That's really nice, it doesn't taste like a beer. It's just a very light refreshing drink, without the normal beer aftertaste or anything."
+    }
+  },
   
   {
     day: 2,
