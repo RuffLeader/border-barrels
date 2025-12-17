@@ -1,7 +1,7 @@
 const adventBeers = [
   {
     day: 1,
-    image: "/media/advent-bc/day-1.png",
+    image: "/media/carwyncanvent/day-1.png",
     beerName: "Sauvin Ice",
     brewery: "Mountain Culture Beer Co.",
     style: "Double Cold IPA",
@@ -25,7 +25,7 @@ const adventBeers = [
 
   {
     day: 2,
-    image: "/media/advent-bc/day-2.png",
+    image: "/media/carwyncanvent/day-2.png",
     beerName: "Tundra Struck",
     brewery: "KAIJU! Beer",
     style: "Cold Pale Ale",
@@ -49,7 +49,7 @@ const adventBeers = [
 
   {
     day: 3,
-    image: "/media/advent-bc/day-3.png",
+    image: "/media/carwyncanvent/day-3.png",
     beerName: "Bierchen #1",
     brewery: "Molly Rose Brewing",
     style: "Altbier",
@@ -73,7 +73,7 @@ const adventBeers = [
 
   {
     day: 4,
-    image: "/media/advent-bc/day-4.png",
+    image: "/media/carwyncanvent/day-4.png",
     beerName: "The Shimmering Sparkling Ocean Ale",
     brewery: "Sailors Grave Brewing",
     style: "Sparkling Ocean Ale",
@@ -97,7 +97,7 @@ const adventBeers = [
 
   {
     day: 5,
-    image: "/media/advent-bc/day-5.png",
+    image: "/media/carwyncanvent/day-5.png",
     beerName: "Who Would Want To Soak A Rope In Kerosene",
     brewery: "Banks Brewing",
     style: "West Coast IPA",
@@ -121,7 +121,7 @@ const adventBeers = [
 
   {
     day: 6,
-    image: "/media/advent-bc/day-6.png",
+    image: "/media/carwyncanvent/day-6.png",
     beerName: "Contested Origins",
     brewery: "Hawkers Beer",
     style: "Oat Cream IPA",
@@ -145,7 +145,7 @@ const adventBeers = [
 
   {
     day: 7,
-    image: "/media/advent-bc/day-7.png",
+    image: "/media/carwyncanvent/day-7.png",
     beerName: "Last Exit West",
     brewery: "Range Brewing",
     style: "California IPA",
@@ -169,7 +169,7 @@ const adventBeers = [
 
   {
     day: 8,
-    image: "/media/advent-bc/day-8.png",
+    image: "/media/carwyncanvent/day-8.png",
     beerName: "American Brown Ale",
     brewery: "Philter Brewing",
     style: "American Brown Ale",
@@ -193,7 +193,7 @@ const adventBeers = [
 
   {
     day: 9,
-    image: "/media/advent-bc/day-9.png",
+    image: "/media/carwyncanvent/day-9.png",
     beerName: "Little Hopper",
     brewery: "Ocean Reach Brewing",
     style: "Black IPA",
@@ -217,7 +217,7 @@ const adventBeers = [
 
   {
     day: 10,
-    image: "/media/advent-bc/day-10.png",
+    image: "/media/carwyncanvent/day-10.png",
     beerName: "Deck The Helles",
     brewery: "White Bay Brewery",
     style: "Helles Lager",
@@ -241,7 +241,7 @@ const adventBeers = [
 
   {
     day: 11,
-    image: "/media/advent-bc/day-11.png",
+    image: "/media/carwyncanvent/day-11.png",
     beerName: "Altbier",
     brewery: "Reckless Brewing Co.",
     style: "Red Ale",
@@ -265,7 +265,7 @@ const adventBeers = [
 
   {
     day: 12,
-    image: "/media/advent-bc/day-12.png",
+    image: "/media/carwyncanvent/day-12.png",
     beerName: "Triple Decoction Czech Pilsner",
     brewery: "Devilbend Farm Beer Co",
     style: "Czech Pilsner",
@@ -289,7 +289,7 @@ const adventBeers = [
 
   {
     day: 13,
-    image: "/media/advent-bc/day-13.png",
+    image: "/media/carwyncanvent/day-13.png",
     beerName: "Surfin' Santas",
     brewery: "The Coastal Brewing Company",
     style: "Double Red IPA",
@@ -313,7 +313,7 @@ const adventBeers = [
 
   {
     day: 14,
-    image: "/media/advent-bc/day-14.png",
+    image: "/media/carwyncanvent/day-14.png",
     beerName: "Ode To Bitter",
     brewery: "Slow Lane Brewing",
     style: "Hoppy Belgian Blonde",
