@@ -1,1 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Carwyn Canvent 2025 | Border Barrels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="stylesheet" href="/style.css">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #002157;
+}
+
+/* GRID */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  padding: 1rem;
+}
+
+/* FLIP */
+.flip-card {
+  perspective: 1000px;
+  width: 100%;
+  height: 600px;
+}
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* BREWERY CARD BACKING */
+.card-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(160deg, #001537, #002157);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  padding: 20px 16px 32px;
+  height: 100%;
+  text-align: center;
+  position: relative;
+  color: #ffffff;
+}
+
+/* DESKTOP HOVER */
+@media (hover: hover) and (pointer: fine) {
+  .card-shell:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+  }
+}
+
+/* DAY HEADING */
+.day-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffb400;
+  margin-bottom: 10px;
+}
+
+/* IMAGE */
+.card-shell img {
+  max-width: 100%;
+  max-height: 270px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
+}
+
+/* INFO PANEL — FIXED HEIGHT & CENTRED */
+.beer-info {
+  height: 300px;                  /* 🔒 fixed height */
+  width: 100%;
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;        /* ↕ vertical centering */
+  align-items: center;            /* ↔ horizontal centering */
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  padding: 5px;
+  border-radius: 12px;
+}
+
+/* TEXT */
+.beer-info h3 {
+  margin: 6px 0 10px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.beer-info p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #f0f0f0;
+}
+
+.beer-info p strong {
+  color: #ffb400;
+}
+
+/* BLURB */
+.beer-blurb {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #e6e6e6;
+
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+/* TAP OVERLAY */
+.tap-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card-shell:hover .tap-overlay {
+  opacity: 1;
+}
+
+/* BACK */
+.flip-card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, #001537, #002157);
+  color: #ffffff;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.beer-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.beer-scores .line {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.95rem;       /* matches style-abv font size */
+  font-weight: 500;         /* medium weight similar to style-abv */
+}
+
+.beer-scores .line span {
+  display: flex;
+  gap: 4px;
+}
+
+.beer-scores .line span strong,
+.beer-scores .line span.label {
+  color: #ffb400;           /* gold for labels */
+  font-weight: 500;
+}
+
+.beer-scores .line span.value {
+  color: #f0f0f0;           /* light text for scores */
+  font-weight: 500;
+}
+
+.beer-scores .line.total {
+  justify-content: center;
+  font-weight: bold;
+  color: #ffb400;
+  font-size: 1.3rem;
+}
+  
+/* REVIEWS */
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.95rem;
+}
+
+/* BACK BUTTON */
+.back-btn {
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.style-abv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap; /* safe on small screens */
+}
+
+.style-abv .divider {
+  color: rgba(255,255,255,0.5);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <h1 class="page-title">Carwyn Canvent</h1>
+    <nav id="nav-menu" class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/beerandbrew.html">Beers & Breweries</a>
+      <a href="/episodes.html">Episodes</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about.html">About Us</a>
+    </nav>
+    <button id="nav-toggle" aria-label="Toggle navigation">
+      <span class="burger"></span>
+      <span class="burger"></span>
+      <span class="burger"></span>
+    </button>
+  </div>
+</header>
+
+<div class="cards-container" id="cards-container"></div>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Border Barrels</p>
+  </div>
+</footer>
+
+<script src="/blog/carwyn-canvent-2025/carwyncanvent.js"></script>
+<script>
+const navToggle = document.getElementById("nav-toggle");
+const navMenu = document.getElementById("nav-menu");
+const container = document.getElementById("cards-container");
+
+for (let day = 1; day <= 24; day++) {
+  const beer = adventBeers.find(b => b.day === day);
+  if (!beer || beer.placeholder) renderPlaceholder(day);
+  else renderBeer(beer);
+}
+
+function renderBeer(beer) {
+  container.innerHTML += `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+
+      <div class="flip-card-front">
+        <div class="card-shell" onclick="this.closest('.flip-card').classList.add('flipped')">
+          <div class="day-heading">Day ${beer.day}</div>
+          ${beer.image ? `<img src="${beer.image}" alt="${beer.beerName}">` : ''}
+
+          <div class="beer-info">
+            <h3>${beer.beerName}</h3>
+            <p><strong>Brewery:</strong> ${beer.brewery}</p>
+            <p class="style-abv">
+              <strong>Style:</strong> ${beer.style}
+              <span class="divider">•</span>
+              <strong>ABV:</strong> ${beer.abv}
+            </p>
+
+          <div class="beer-scores">
+            <div class="line">
+              <span><span class="label">As Advertised:</span> <span class="value">${beer.scores.advertised}</span></span>
+              <span><span class="label">Can Art:</span> <span class="value">${beer.scores.canArt}</span></span>
+              <span><span class="label">Blurb:</span> <span class="value">${beer.scores.blurb}</span></span>
+            </div>
+            <div class="line">
+              <span><span class="label">Value:</span> <span class="value">${beer.scores.value}</span></span>
+              <span><span class="label">Untappd:</span> <span class="value">${beer.scores.untappd}</span></span>
+            </div>
+            <div class="line total">
+              <strong>BBBRS Total: ${beer.scores.total}</strong>
+            </div>
+          </div>
+
+          </div>
+
+          <div class="tap-overlay">Tap to flip</div>
+        </div>
+      </div>
+
+      <div class="flip-card-back">
+        <p class="beer-blurb">${beer.blurb || ""}</p>
+        <div class="reviews">
+          <p><strong>Hudson:</strong> ${beer.reviews.hudson}</p>
+          <p><strong>Sarah:</strong> ${beer.reviews.sarah}</p>
+        </div>
+
+        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+function renderPlaceholder(day) {
+  container.innerHTML += `
+  <div class="flip-card">
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <div class="card-shell">
+          <div class="day-heading">Day ${day}</div>
+          <div class="beer-info">
+            <h3>Coming Soon</h3>
+            <p>Beer not yet opened</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+navToggle.addEventListener("click", () => {
+  navMenu.classList.toggle("show");
+});
+</script>
+
+</body>
+</html>
