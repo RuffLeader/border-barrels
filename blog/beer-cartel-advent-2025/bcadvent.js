@@ -334,6 +334,30 @@ const adventBeers = [
       sarah: "Eugh, looking at it, it's very see through, so I thought it'd be weak. But it has a very strong flavour, it's not good."
     }
   },
+
+  {
+    day: 15,
+    image: "/media/advent-bc/day-15.png",
+    beerName: "ESB",
+    brewery: "Hop Nation Brewing Co",
+    style: "Extra Special Bitter",
+    abv: "5.5%",
+    blurb: "Brewed with Australian and UK malts, this ESB brings rich flavours of raisin, toffee, and fruitcake spice, balanced by citrusy, herbal notes from East Kent Goldings hops. Classic, complex, and deeply satisfying.",
+
+    scores: {
+      advertised: 4.5,
+      canArt: 3.5,
+      blurb: 4,
+      value: 3.25,
+      untappd: 3.75,
+      total: 19
+    },
+
+    reviews: {
+      hudson: "Bitter, toffee flavour. Forget putting hair on your chest, this'll put it on your oesophagus.",
+      sarah: "Tastes like it's got red wine in it. It just tastes like someone has poured beer and red wine into the one cup."
+    }
+  },
   
   {
     day: 2,
