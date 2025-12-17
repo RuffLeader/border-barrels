@@ -283,7 +283,7 @@ const adventBeers = [
 
     reviews: {
       hudson: "Thick boi! This poured like an actual smoothie, and looked like blueberry juice. A luscious and velvety mouthfeel, with an absolute barrage of berry and tropical flavours. Not so sweet that it is off putting, and also not super sour that it crinkles your face. Still, it’s bloody delicious.",
-      sarah: "That is so thick. But really nice, genuinely just takes like a berry smoothie with a slight hint of sour. Drinking a beer this thick is unusual."
+      sarah: "That is so thick. But really nice, genuinely just tastes like a berry smoothie with a slight hint of sour. Drinking a beer this thick is unusual."
     }
   },
 
