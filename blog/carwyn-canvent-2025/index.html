@@ -145,6 +145,9 @@ body {
   font-weight: bold;
   color: #ffffff;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .beer-info p {
@@ -463,6 +466,28 @@ function renderPlaceholder(day) {
 navToggle.addEventListener("click", () => {
   navMenu.classList.toggle("show");
 });
+
+function fitBeerNames() {
+  const titles = document.querySelectorAll('.beer-info h3');
+
+  titles.forEach(title => {
+    const maxFont = 1.3;   // rem — your current size
+    const minFont = 0.95;  // rem — smallest allowed
+    const step = 0.05;
+
+    let fontSize = maxFont;
+    title.style.fontSize = fontSize + 'rem';
+
+    // Reduce font size until text fits on one line
+    while (title.scrollWidth > title.clientWidth && fontSize > minFont) {
+      fontSize -= step;
+      title.style.fontSize = fontSize + 'rem';
+    }
+  });
+}
+
+// Run after render
+fitBeerNames();
 </script>
 
 </body>
