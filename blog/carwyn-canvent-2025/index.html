@@ -15,7 +15,7 @@ body {
   color: #002157;
 }
 
-  .post-header {
+   .post-header {
       position: relative;
       height: 300px;
       background-size: cover;
@@ -140,16 +140,18 @@ body {
 
 /* TEXT */
 .beer-info h3 {
-  margin: 6px 0 10px;
+  margin: 4px 0 6px;
   font-size: 1.3rem;
   font-weight: bold;
   color: #ffffff;
+  line-height: 1.2;
 }
 
 .beer-info p {
-  margin: 6px 0;
+  margin: 3px 0;
   font-size: 0.95rem;
   color: #f0f0f0;
+  line-height: 1.25;
 }
 
 .beer-info p strong {
@@ -275,6 +277,37 @@ body {
 
 .style-abv .divider {
   color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 700px) {
+  .beer-info {
+    height: auto;
+    padding: 8px 6px;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 700px) {
+  .beer-scores {
+    gap: 2px;
+    margin-top: 4px;
+  }
+
+  .beer-scores .line {
+    font-size: 0.85rem;
+    gap: 8px;
+  }
+
+  .beer-scores .line.total {
+    font-size: 1.1rem;
+    margin-top: 2px;
+  }
+}
+
+@media (max-width: 700px) {
+  .card-shell img {
+    max-height: 200px;
+  }
 }
 </style>
 </head>
