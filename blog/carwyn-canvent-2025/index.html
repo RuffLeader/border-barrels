@@ -15,6 +15,34 @@ body {
   color: #002157;
 }
 
+  .post-header {
+      position: relative;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+    .post-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .post-header h1 {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+    }
+    .post-meta {
+      text-align: center;
+      margin: 1rem 0;
+      color: #777;
+    }
+
 /* GRID */
 .cards-container {
   display: grid;
@@ -255,7 +283,7 @@ body {
 
 <header>
   <div class="container">
-    <h1 class="page-title">Carwyn Canvent</h1>
+    <h1 class="page-title">Blog</h1>
     <nav id="nav-menu" class="nav-links">
       <a href="/index.html">Home</a>
       <a href="/beerandbrew.html">Beers & Breweries</a>
@@ -271,6 +299,15 @@ body {
   </div>
 </header>
 
+    <!-- Header image & title will be injected -->
+  <div id="post-header" class="post-header">
+    <h1 id="post-title">Loading...</h1>
+  </div>
+
+  <div class="post-meta">
+    <small id="post-date"></small>
+  </div>
+
 <div class="cards-container" id="cards-container"></div>
 
 <footer>
@@ -281,6 +318,34 @@ body {
 
 <script src="/blog/carwyn-canvent-2025/carwyncanvent.js"></script>
 <script>
+
+      async function loadPost() {
+      const res = await fetch('/blog/posts.json');
+      const posts = await res.json();
+
+      // Get current slug from URL path
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      const slug = pathParts[pathParts.length - 1]; // last part before /
+
+      // Find post data
+      const post = posts.find(p => p.slug === slug);
+
+      if (post) {
+        // Set header background
+        const header = document.getElementById('post-header');
+        header.style.backgroundImage = `url(${post.image})`;
+
+        // Set title + date
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-date').textContent =
+          new Date(post.date).toLocaleDateString();
+
+        // Update <title> for SEO
+        document.title = `${post.title} | Border Barrels Blog`;
+      }
+    }
+
+    loadPost();
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
 const container = document.getElementById("cards-container");
