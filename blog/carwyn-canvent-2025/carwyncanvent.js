@@ -382,6 +382,78 @@ const adventBeers = [
       sarah: "I don't like that. I don't know why. I don't know, I just don't like it. I know it's not a sour, but it tastes a little bit sour. Not for me."
     }
   },
+
+  {
+    day: 17,
+    image: "/media/carwyncanvent/day-17.png",
+    beerName: "Grapefruit Pale Ale",
+    brewery: "Duncan's Brewing",
+    style: "Grapefruit Pale Ale",
+    abv: "4.5%",
+    blurb: "A light and refreshing brew, with flavours resembling Grapefruit Pith, Pineapple Skin, and supported by some Bready malts – total old school vibes in this beer! It’s great to see something brewed across the ditch making it into Canvent. Who should we invite next year???",
+
+    scores: {
+      advertised: 5,
+      canArt: 3.75,
+      blurb: 4,
+      value: 2.5,
+      untappd: 4,
+      total: 19.25
+    },
+
+    reviews: {
+      hudson: "Grapefruit juice with some beer around the edges. This is bitter, but balanced. Super interesting beer.",
+      sarah: "That's quite nice. It's very fruity and juicy. Quite nice, refreshing flavours."
+    }
+  },
+
+  {
+    day: 18,
+    image: "/media/carwyncanvent/day-18.png",
+    beerName: "Fruit Brute",
+    brewery: "Bowden Brewing",
+    style: "Fruited Brut IPA",
+    abv: "6%",
+    blurb: "Big dose of mango nectar with a light forest fruit background. Although there’s big sweet fruit notes, it manages to have pretty good dryness overall and reach a satisfying balance. Medium light bodied. Spritzy & clean.⁠",
+
+    scores: {
+      advertised: 5,
+      canArt: 4.75,
+      blurb: 5,
+      value: 3.75,
+      untappd: 4.5,
+      total: 23
+    },
+
+    reviews: {
+      hudson: "Dry like a white wine, but flavours like a tropical fruit juice. This is super smashable, which is dangerous at 6%.",
+      sarah: "What's that smell like? It tastes exactly like the cut up peaches you get in those little juice cups from school."
+    }
+  },
+
+  {
+    day: 19,
+    image: "/media/carwyncanvent/day-19.png",
+    beerName: "All I Want For Xmas Is True",
+    brewery: "SURE BREWING x 8 Wired",
+    style: "Imperial NZ Pilsner",
+    abv: "7.1%",
+    blurb: "Notes of Lemon, Lychee, Apricot & Riesling with a hint of underlying Rosewater. Rather punchy, with that classic bitter finish of a Pilsner taken into Imperial territory. Lightly warming, but still quite refreshing. Delicious!⁠⁠",
+
+    scores: {
+      advertised: 3.75,
+      canArt: 4.25,
+      blurb: 4,
+      value: 4.5,
+      untappd: 4,
+      total: 20.5
+    },
+
+    reviews: {
+      hudson: "The imperialness gives it an alcoholic burn in the throat. Not many traditional pilsner flavours because of the bulk. Still a yummy beer though.",
+      sarah: "Ooh, that's nice. It's got a strong aftertaste, but not bad."
+    }
+  },
   
   {
     day: 2,
