@@ -358,6 +358,102 @@ const adventBeers = [
       sarah: "Tastes like it's got red wine in it. It just tastes like someone has poured beer and red wine into the one cup."
     }
   },
+
+  {
+    day: 16,
+    image: "/media/advent-bc/day-16.png",
+    beerName: "Grinch Juice",
+    brewery: "Wooden Axe Brewing Co",
+    style: "Oat Cream IPA",
+    abv: "6.8%",
+    blurb: "Grinch Juice isn't just here to warm your heart - it's here to steal it. This cheeky Oat Cream IPA is loaded with creamy oats and lactose, then dosed with flaked coconut and pandan for a tropical green twist that even Whoville would fight over. Waves of coconut milk, vanilla cream, and green pandan up front, transitioning to zesty lime, ripe mango, and melon from the Sabro hops. The pandan adds a soft, custardy sweetness and an almond-like note that melds seamlessly with the hop character. Layered sweetness with a balanced finish and slight green hue.",
+
+    scores: {
+      advertised: 4.25,
+      canArt: 4,
+      blurb: 4,
+      value: 4.75,
+      untappd: 4.25,
+      total: 21.25
+    },
+
+    reviews: {
+      hudson: "So thick and so sweet, heaps of lactose, coconut and oat flavour. This is a bit different, but yummy. I wonder if it's the pandan that gives it the slightly different flavour as well as the colour.",
+      sarah: "Tastes like mango."
+    }
+  },
+
+  {
+    day: 17,
+    image: "/media/advent-bc/day-17.png",
+    beerName: "Hazy Holidays",
+    brewery: "Sea Legs Brewing Co.",
+    style: "Hazy Pale Ale",
+    abv: "4.9%",
+    blurb: "Brewed in collaboration with our friends at Beer Cartel for their 2025 Advent Calendar, this juicy NZ Hazy Pale brings sunshine to your glass. Pouring a vibrant golden haze with fluffy foam and loaded with Nectaron, Rakau and Nelson Sauvin hops, it bursts with tropical fruit and ripe pineapple over a smooth, balanced malt base. Hazy holidays!",
+
+    scores: {
+      advertised: 4.5,
+      canArt: 4.5,
+      blurb: 4,
+      value: 3.25,
+      untappd: 3.75,
+      total: 20
+    },
+
+    reviews: {
+      hudson: "Flavours are really nice, but it is a touch thin for me. Really do wish this was just a touch juicier.",
+      sarah: "Umm, it's okay. Tropical and not bad."
+    }
+  },
+
+  {
+    day: 18,
+    image: "/media/advent-bc/day-18.png",
+    beerName: "Irish Stout",
+    brewery: "Aether Brewing",
+    style: "Irish Stout",
+    abv: "4.5%",
+    blurb: "Our Irish Stout is a smooth, full-flavoured dark beer crafted with the Australian climate in mind. Rich enough to satisfy stout lovers, yet light enough to enjoy year-round. Pouring deep and inviting, it opens with aromas of chocolate and roasted coffee, followed by a clean yeast profile that lets the malt character shine. Each sip delivers layers of dark chocolate and espresso, finishing dry and refreshing with just the right touch of roast. Medium to low carbonation keeps it silky and sessionable, making it the perfect companion for both warm afternoons and cool nights. Full-bodied but never heavy, this is a stout built for maximum enjoyment with minimal fuss, a beer that’s as easy to drink as it is to love. From the first taste, you’ll feel like you’ve got the luck of the Irish, carried down a chocolate-and-coffee river to the pot of gold at the end of a heatwave.",
+
+    scores: {
+      advertised: 5,
+      canArt: 5,
+      blurb: 3,
+      value: 3,
+      untappd: 5,
+      total: 21
+    },
+
+    reviews: {
+      hudson: "The Irish Stout is truly the greatest style of beer in history. Smooth and thick, just a flavour sensation for the tastebuds.",
+      sarah: "It's like a very weak dark beer, it's not a normal dark beer."
+    }
+  },
+
+  {
+    day: 19,
+    image: "/media/advent-bc/day-19.png",
+    beerName: "The Ryemare Before Christmas",
+    brewery: "Akasha Brewing Company",
+    style: "DDH Rye Pale Ale",
+    abv: "5%",
+    blurb: "The Ryemare Before Christmas is a festive Rye Pale Ale with a deliciously dark twist. Earthy, herbal rye meets a light roast, while Riwaka and Eclipse hops bring mandarin, pine, grapefruit, and tropical notes. A brew perfectly suited for misfits, mayhem, and a little Christmas magic.",
+
+    scores: {
+      advertised: 4.25,
+      canArt: 3.75,
+      blurb: 5,
+      value: 3.5,
+      untappd: 3.75,
+      total: 20.25
+    },
+
+    reviews: {
+      hudson: "The rye gives it a really nice toastiness/roasty flavour, but it still has the typical pale ale flavours. It's a touch odd, but pretty good.",
+      sarah: "Sarah went to bed before this was opened."
+    }
+  },
   
   {
     day: 2,
