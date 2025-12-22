@@ -454,6 +454,30 @@ const adventBeers = [
       sarah: "Sarah went to bed before this was opened."
     }
   },
+
+  {
+    day: 20,
+    image: "/media/advent-bc/day-20.png",
+    beerName: "Baa-Ram-Brew",
+    brewery: "Seven Mile Brewing Co.",
+    style: "New Zealand IPA",
+    abv: "6.5%",
+    blurb: "Triple Dry-hopped IPA with NZ Cascade, Paradisi, Riwaka & Nelson Sauvin.  Pours a pale yellow with bright peach, lemonade and citrus aromas.  Light malt body with floral, zesty and punchy gooseberries - finishes dry with a sharp hop bitterness.",
+
+    scores: {
+      advertised: 5,
+      canArt: 5,
+      blurb: 4,
+      value: 4.5,
+      untappd: 5,
+      total: 23.5
+    },
+
+    reviews: {
+      hudson: "Malt and pine like a West Coast, but a tropical undertone like a NEIPA, this is fantastic. I thoroughly enjoy the flavour combination. 50 of these please!",
+      sarah: "It's not terrible, tastes like, fruity, like mangoey, peachy or stone fruit. Which I love, I just don't really like this beer."
+    }
+  },
   
   {
     day: 2,
