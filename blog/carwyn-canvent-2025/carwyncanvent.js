@@ -454,6 +454,54 @@ const adventBeers = [
       sarah: "Ooh, that's nice. It's got a strong aftertaste, but not bad."
     }
   },
+
+  {
+    day: 20,
+    image: "/media/carwyncanvent/day-20.png",
+    beerName: "Birra Vino Rosso",
+    brewery: "Stomping Ground Brewing Co.",
+    style: "Beer & Wine Hybrid",
+    abv: "6.8%",
+    blurb: "Gorgeous light ruby & magenta colour. With fruity and vinous notes in nose, is this a beer? Yes, but also not quite. Flavours of strawberry, blueberry and raspberry, with a light cellar-like mustiness. Pretty clean funk and nice dry tannins. This beer just calls for a sunny day in the park!⁠⁠⁠",
+
+    scores: {
+      advertised: 5,
+      canArt: 3.5,
+      blurb: 4.25,
+      value: 4.25,
+      untappd: 4.75,
+      total: 21.75
+    },
+
+    reviews: {
+      hudson: "This is actually gorgeous. On first sip I was instantly taken to a hot summers day in the gardens of a beautiful winery. Lovely red wine flavours with the spritz and carbonation of beer.",
+      sarah: "It just tastes like red wine, it's weak red wine. I'm not a big red wine drinker, so not for me. But that's what it tastes like."
+    }
+  },
+
+  {
+    day: 21,
+    image: "/media/carwyncanvent/day-21.png",
+    beerName: "Gravy Beer",
+    brewery: "Reckless Brewing Co.",
+    style: "Herb Ale",
+    abv: "6%",
+    blurb: "Notes of Rosemary, Toast & Light Biscuit Sweetness. Smell reminiscent of your Italian Nonna’s Herb pantry. There’s an impression of savouriness but with a solid malt sweetness all around, with a nice herbal bitterness in the finish.⁠ We wouldn’t have expected such a refreshing and drinkable beer from this aroma, but there it is, it’s not gravy, it’s a fantastic and well-balanced beer.⁠ But just in case that you DO want some gravy, this beer happens to be designed to be turned into it! Just keep an eye out for Reckless and their socials and they will demonstrate how.",
+
+    scores: {
+      advertised: 5,
+      canArt: 4.25,
+      blurb: 4.25,
+      value: 3.75,
+      untappd: 3.75,
+      total: 21
+    },
+
+    reviews: {
+      hudson: "Incredibly, this isn't awful. It's actually, dare I say it, quite good. The rosemary and thyme are absolutely front and centre, and somehow despite it being beer with those ingredients, it is really quite good. Colour me surprised.",
+      sarah: "It's weird, I don't know what it tastes like. It doesn't taste like a beer, but it's unusual."
+    }
+  },
   
   {
     day: 2,
