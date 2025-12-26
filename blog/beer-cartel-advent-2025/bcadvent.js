@@ -478,6 +478,102 @@ const adventBeers = [
       sarah: "It's not terrible, tastes like, fruity, like mangoey, peachy or stone fruit. Which I love, I just don't really like this beer."
     }
   },
+
+  {
+    day: 21,
+    image: "/media/advent-bc/day-21.png",
+    beerName: "Sticke Altbier",
+    brewery: "King River Brewing",
+    style: "Sticke Altbier",
+    abv: "7.5%",
+    blurb: "Our amazing Altbier was missing only one thing, so at the top of our list this year was… more malt! Sticke Altbier is a stronger ‘imperial’ version of one of our beloved core beers that we created exclusively for Beer Cartel to provide a super luxurious and malty beer to enjoy this Christmas period.",
+
+    scores: {
+      advertised: 4.75,
+      canArt: 3.5,
+      blurb: 4.5,
+      value: 5,
+      untappd: 4.5,
+      total: 22.25
+    },
+
+    reviews: {
+      hudson: "Sweet and very malty. I don't know how to explain it, but it kind of reminds me of a sticky date pudding. But it doesn't really taste like one.",
+      sarah: "That probably is one of he worst ones. I don't like that."
+    }
+  },
+
+  {
+    day: 22,
+    image: "/media/advent-bc/day-22.png",
+    beerName: "Robust Porter",
+    brewery: "Boatrocker Brewers & Distillers",
+    style: "Robust Porter",
+    abv: "4%",
+    blurb: "A classic style originating from 18th century Britain. Robust Porter is a style that is rare these days, and whilst dark, has a balanced malt profile, with a classic English hop flavour. The yeast esters provide subtle fruitiness.",
+
+    scores: {
+      advertised: 5,
+      canArt: 5,
+      blurb: 3.75,
+      value: 2.75,
+      untappd: 4.75,
+      total: 21.25
+    },
+
+    reviews: {
+      hudson: "Roasted chocolate goodness. It's like a chocolate milk only beery. Perfect blend of toasty malt and chocolate/coffee alongside.",
+      sarah: "Tastes like VB, tastes like dark VB."
+    }
+  },
+
+  {
+    day: 23,
+    image: "/media/advent-bc/day-23.png",
+    beerName: "Spider Pig",
+    brewery: "Bridge Road Brewers",
+    style: "Dip Hop IPA",
+    abv: "5.8%",
+    blurb: "A bright, hop-forward IPA loaded with lime, citrus, and tropical fruit. Smooth bitterness, clean finish. Does whatever a Dip Hop does! Bright, clean and hoppy with aromas of lime, citrus, melon, tropical and stone fruit on the palette.",
+
+    scores: {
+      advertised: 4.5,
+      canArt: 4.25,
+      blurb: 3.25,
+      value: 3.75,
+      untappd: 5,
+      total: 20.75
+    },
+
+    reviews: {
+      hudson: "Just a really easy clean IPA with West Coast characteristics. I can see this being a gateway for IPA drinkers into the big bad world of IPA variants.",
+      sarah: "It's alright, a nice light beer. Tasty."
+    }
+  },
+
+  {
+    day: 24,
+    image: "/media/advent-bc/day-24.png",
+    beerName: "Midnight Shift",
+    brewery: "Good Land Brewing Co",
+    style: "Whisky Barrel Aged Barley Wine",
+    abv: "12.2%",
+    blurb: "Australian whisky barrel-aged barleywine pours deep and rich, with bold notes of caramel, raisin, dried fruit, and vanilla. The whisky barrels add oak warmth and subtle spice, creating a layered beer that's both indulgent and contemplative, making it strong and smooth, while aged for 11 months in ex-American and French oak Starward Whisky barrels.",
+
+    scores: {
+      advertised: 4.75,
+      canArt: 5,
+      blurb: 5,
+      value: 5,
+      untappd: 4.75,
+      total: 24.5
+    },
+
+    reviews: {
+      hudson: "Huuuuuuuuggggge. Barrel ageing a barleywine just gives it so much more punch and sweetness, without adding too much alcohol burn. This is a sipper for sure.",
+      sarah: "Eugh. Eugh! Is it like plums or something? I don't like that."
+    }
+  },
   
   {
     day: 2,
