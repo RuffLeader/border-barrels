@@ -576,14 +576,26 @@ const adventBeers = [
   },
   
   {
-    day: 2,
-    image: "/media/advent-bc/day2.jpg",
-    beerName: "Placeholder Beer",
-    brewery: "TBC",
-    style: "TBC",
-    abv: "—",
-    blurb: "Beer not yet reviewed.",
+    day: 25,
+    image: "/media/advent-bc/day-25.png",
+    beerName: "Trippin Noël",
+    brewery: "Frenchies Brewery",
+    style: "Belgian Strong Dark Ale",
+    abv: "9%",
+    blurb: "A Belgian style Christmas Ale with notes of rum raisin and spice.",
 
-    placeholder: true
+    scores: {
+      advertised: 4.75,
+      canArt: 4,
+      blurb: 5,
+      value: 5,
+      untappd: 4.75,
+      total: 23.5
+    },
+
+    reviews: {
+      hudson: "For 9% this tastes so light and smooth, like a spicy rum & raisin ice cream but with heavy notes of a Belgian tripel.",
+      sarah: "*Coughs* Awww, it's not bad, but there's an odd taste in there, is it plums or something? It's not bad though, just a taste I wasn't expecting."
+    }
   }
 ];
