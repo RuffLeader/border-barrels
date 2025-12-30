@@ -502,6 +502,78 @@ const adventBeers = [
       sarah: "It's weird, I don't know what it tastes like. It doesn't taste like a beer, but it's unusual."
     }
   },
+
+  {
+    day: 22,
+    image: "/media/carwyncanvent/day-22.png",
+    beerName: "Double Take",
+    brewery: "Molly Rose Brewing",
+    style: "Flanders Style Brown",
+    abv: "5.4%",
+    blurb: "Has a bit of a Sherry-like nose, with some Dry Cherries and Caramel Biscuits in mouth. As it warms up, some Botanical aromas show up, alongside flavours of Light Toffee & mild Balsamic. The malty sweetness dries out with a solid bitterness that dies out, leaving a lingering cracker flavour.⁠",
+
+    scores: {
+      advertised: 5,
+      canArt: 3.25,
+      blurb: 4,
+      value: 3.5,
+      untappd: 4,
+      total: 19.75
+    },
+
+    reviews: {
+      hudson: "Tart, like Jamie. I've not had a Flanders with a brown base, only ever red, so this is interesting. You can really taste the gin cherries, that almost give a red wine taste.",
+      sarah: "Another one that smells like red wine. Ugh, that's gross. Yuck, what is that?"
+    }
+  },
+
+  {
+    day: 23,
+    image: "/media/carwyncanvent/day-23.png",
+    beerName: "Haven't The Foggiest",
+    brewery: "Bodriggy Brewing Co.",
+    style: "Hazy IIIPA",
+    abv: "9%",
+    blurb: "Big beer for the penultimate can! Lashings of Papaya, Rockmelon, and light Lemongrass. In flavour we find Passionfruit Compote, Canned Mango & Preserved Lemon. A really solid hop character coming from these CIP 014 hops. Medium full bodied, with the booze somewhat noticeable, but really well integrated, especially for such a big beer! Wow Bodriggy, this is such a treat!⁠⁠",
+
+    scores: {
+      advertised: 4.75,
+      canArt: 3.75,
+      blurb: 5,
+      value: 5,
+      untappd: 4,
+      total: 22.5
+    },
+
+    reviews: {
+      hudson: "Mouthfeel of syrup, this is super piney and resiny. Very, very sweet. It kind of looks like mango juice. This is really nice.",
+      sarah: "Haugh, haugh, that's worse than the last one (Boatrocker Robust Porter). I don't like that one."
+    }
+  },
+
+  {
+    day: 24,
+    image: "/media/carwyncanvent/day-24.png",
+    beerName: "Whisky Barrel Aged Belgian Dark Strong",
+    brewery: "King River Brewing x Backwoods Distilling Co",
+    style: "Whisky Barrel Aged Belgian Dark Strong",
+    abv: "11%",
+    blurb: "As soon as we pour, we can tell it’s the perfect Day 24 beer with its festive roasted chestnut aroma. The flavour matches the nose nicely: well-rounded notes of Caramelized Banana, Treacle, Molasses, Sticky Date Pudding, Prunes & Caramel fudge with a bag of spice attached to it. Keeps and keeps providing us with beautiful rich notes as it warms up. The flavour has some Liquor vibes, and it’s definitely big and boozy (like the day deserves). Finishes off-dry with a light oaky bitterness. What a Xmas Eve banger!⁠⁠⁠",
+
+    scores: {
+      advertised: 4.75,
+      canArt: 5,
+      blurb: 5,
+      value: 5,
+      untappd: 4.5,
+      total: 24.25
+    },
+
+    reviews: {
+      hudson: "Lovely sweet whisky flavour compliments the taste of fruit cake. This is basically the nightcap after a long Christmas Day! Indulgent.",
+      sarah: "*Coughs and keels over* That's horrible, what the fuck is that? *Washes mouth out with water* What is that? The flavour?"
+    }
+  },
   
   {
     day: 2,
