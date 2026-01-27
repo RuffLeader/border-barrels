@@ -18,6 +18,8 @@ jobs:
           node-version: 20
 
       - name: Generate iCal
+        env:
+          CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
         run: |
           node scripts/generateTop25.mjs
 
