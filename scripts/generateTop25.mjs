@@ -29,7 +29,7 @@ END:VCALENDAR`;
 async function getTop25Teams() {
   console.log("Fetching Top 25 from CollegeBasketballData.com...");
 
-  console.log("Using CBBD API key:", process.env.CBBD_API_KEY ? "yes" : "no");
+  console.log("Using CBB API key:", process.env.CBB_API_KEY ? "yes" : "no");
   
   const res = await fetch(
     `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
