@@ -16,7 +16,7 @@ async function fetchJSON(url) {
   return res.json();
 }
 
-// Get Top 25 teams
+// Get current AP Top 25 teams
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE}/rankings`);
   const apTop25 = rankings
@@ -31,10 +31,11 @@ async function getTop25Teams() {
   }));
 }
 
-// Get upcoming games for a team
+// Get all games for a team in the current season
 async function getTeamGames(teamId) {
-  const today = new Date().toISOString().split("T")[0];
-  const games = await fetchJSON(`${BASE}/games?teamId=${teamId}&startDate=${today}`);
+  const season = new Date().getFullYear(); // current year as season
+  const seasonType = "regular";           // regular season
+  const games = await fetchJSON(`${BASE}/games?teamId=${teamId}&season=${season}&seasonType=${seasonType}`);
   return games;
 }
 
@@ -72,7 +73,7 @@ END:VCALENDAR`;
 
   for (const g of allGames) {
     if (!g.startDate || !g.homeTeamId || !g.awayTeamId) continue;
-    if (new Date(g.startDate) < new Date()) continue;
+    if (new Date(g.startDate) < new Date()) continue; // skip past games
 
     const uid = `ncaa-${g.id}@borderbarrels`;
     if (seen.has(uid)) continue;
@@ -84,6 +85,7 @@ END:VCALENDAR`;
     const summary = `${homeRank ? "#" + homeRank + " " : ""}${g.homeTeam} vs ${awayRank ? "#" + awayRank + " " : ""}${g.awayTeam}`;
     const start = formatDate(g.startDate);
     const end = formatDate(new Date(new Date(g.startDate).getTime() + 2 * 60 * 60 * 1000).toISOString());
+    const location = g.venue || "";
 
     events.push(`
 BEGIN:VEVENT
@@ -95,12 +97,12 @@ DTSTART:${start}
 DTEND:${end}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
-LOCATION:${g.venue || ""}
+LOCATION:${location}
 END:VEVENT
 `);
   }
 
-  // Sort events by date
+  // Sort events by start date
   events.sort((a, b) => {
     const aStart = a.match(/DTSTART:(\d+)/)[1];
     const bStart = b.match(/DTSTART:(\d+)/)[1];
