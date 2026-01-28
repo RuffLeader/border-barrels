@@ -61,61 +61,64 @@ async function getTop25Teams() {
 
 /* ---------------- SCHEDULE ---------------- */
 
-async function getFutureGames(top25) {
-  const res = await fetch(
-    "https://www.espn.com.au/mens-college-basketball/schedule",
-    { headers: { "User-Agent": "Mozilla/5.0" } }
-  );
-  const html = await res.text();
-  const $ = cheerio.load(html);
-
+async function getFutureGames(top25Set, rankMap) {
   const events = [];
   const seen = new Set();
 
-  $("table tbody tr").each((_, row) => {
-    const dateAttr = $(row).attr("data-date");
-    if (!dateAttr) return;
+  const today = new Date();
+  const end = END_DATE;
 
-    const gameDate = new Date(dateAttr);
-    if (isNaN(gameDate) || gameDate > END_DATE) return;
+  for (
+    let d = new Date(today);
+    d <= end;
+    d.setDate(d.getDate() + 1)
+  ) {
+    const ymd = d.toISOString().slice(0, 10).replace(/-/g, "");
 
-    const teamLinks = $(row).find("a.AnchorLink");
-    if (teamLinks.length < 2) return;
+    const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/scoreboard?dates=${ymd}`;
+    const res = await fetch(url);
+    const data = await res.json();
 
-    const away = $(teamLinks[0]).text().trim();
-    const home = $(teamLinks[1]).text().trim();
+    for (const e of data.events ?? []) {
+      const comp = e.competitions?.[0];
+      if (!comp) continue;
 
-    const awayNorm = normalize(away);
-    const homeNorm = normalize(home);
+      const teams = comp.competitors;
+      if (teams.length !== 2) continue;
 
-    const awayRank = top25.find(t => t.norm === awayNorm)?.rank;
-    const homeRank = top25.find(t => t.norm === homeNorm)?.rank;
+      const away = teams.find(t => t.homeAway === "away");
+      const home = teams.find(t => t.homeAway === "home");
 
-    if (!awayRank && !homeRank) return;
+      const awayName = away.team.displayName;
+      const homeName = home.team.displayName;
 
-    const uid = `${dateAttr}-${awayNorm}-${homeNorm}`;
-    if (seen.has(uid)) return;
-    seen.add(uid);
+      if (!top25Set.has(awayName) && !top25Set.has(homeName)) continue;
 
-    const summary =
-      `${awayRank ? "#" + awayRank + " " : ""}${away}` +
-      " vs " +
-      `${homeRank ? "#" + homeRank + " " : ""}${home}`;
+      const uid = e.id;
+      if (seen.has(uid)) continue;
+      seen.add(uid);
 
-    const start = new Date(gameDate);
-    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+      const start = new Date(e.date);
+      const endDate = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-    events.push(`
+      const summary =
+        `${rankMap.get(awayName) ? "#" + rankMap.get(awayName) + " " : ""}${awayName}` +
+        " vs " +
+        `${rankMap.get(homeName) ? "#" + rankMap.get(homeName) + " " : ""}${homeName}`;
+
+      events.push(`
 BEGIN:VEVENT
-UID:${uid}
+UID:${uid}@borderbarrels
 DTSTAMP:${formatICSDate(start)}
 DTSTART:${formatICSDate(start)}
-DTEND:${formatICSDate(end)}
+DTEND:${formatICSDate(endDate)}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
+LOCATION:${comp.venue?.fullName || ""}
 END:VEVENT
 `);
-  });
+    }
+  }
 
   return events;
 }
