@@ -1,9 +1,11 @@
 import fs from "fs";
 
-const CBB_API_KEY = process.env.CBB_API_KEY;
+const CBB_API_KEY = process.env.CBB_API_KEY; // Top 25 rankings
+const BAL_API_KEY = process.env.BAL_API_KEY; // Balldontlie NCAAB (optional, mostly free)
 const BASE_CBB = "https://api.collegebasketballdata.com";
-const BASE_BAL = "https://www.balldontlie.io/ncaab/v1/teams";
+const BASE_BAL = "https://www.balldontlie.io/ncaab/v1";
 
+// Check API key
 if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
 
 // Ensure public folder exists
@@ -11,13 +13,14 @@ if (!fs.existsSync("public")) fs.mkdirSync("public", { recursive: true });
 
 const headersCBB = { Authorization: `Bearer ${CBB_API_KEY}` };
 
+// Fetch JSON helper
 async function fetchJSON(url, headers = {}) {
   const res = await fetch(url, { headers });
   if (!res.ok) throw new Error(`API error ${res.status} for ${url}`);
   return res.json();
 }
 
-// Get Top 25 teams from CBB
+// 1️⃣ Get current AP Top 25 teams from CBB
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE_CBB}/rankings`, headersCBB);
   const apTop25 = rankings
@@ -32,7 +35,7 @@ async function getTop25Teams() {
   }));
 }
 
-// Get all NCAAB teams from Balldontlie
+// 2️⃣ Get all NCAAB teams from Balldontlie
 async function getBalTeams() {
   const data = await fetchJSON(`${BASE_BAL}/teams`);
   return data.data.map(t => ({
@@ -41,18 +44,19 @@ async function getBalTeams() {
   }));
 }
 
-// Match CBB team names to Balldontlie IDs automatically
+// 3️⃣ Map CBB Top 25 names to Balldontlie team IDs automatically
 function mapCbbToBal(top25, balTeams) {
   const map = new Map();
   top25.forEach(team => {
+    // Try exact match or partial match
     const match = balTeams.find(b => b.name.includes(team.cbbName) || team.cbbName.includes(b.name));
     if (match) map.set(team.cbbId, match.balId);
-    else console.warn("No Balldontlie match for", team.cbbName);
+    else console.warn("No Balldontlie match for:", team.cbbName);
   });
   return map;
 }
 
-// Get future games for a Balldontlie team
+// 4️⃣ Fetch future games for a Balldontlie team (paginated)
 async function getTeamGamesBal(balId) {
   const today = new Date().toISOString().split("T")[0];
   let allGames = [];
@@ -70,12 +74,12 @@ async function getTeamGamesBal(balId) {
   return allGames;
 }
 
-// Format iCal date
+// 5️⃣ Format iCal date
 function formatDate(dateStr) {
   return dateStr.replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// Build iCal content
+// 6️⃣ Build ICS content
 function buildICS(events) {
   return `BEGIN:VCALENDAR
 VERSION:2.0
@@ -86,12 +90,14 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
+// 7️⃣ Main
 (async () => {
+  // Fetch Top 25 & Balldontlie teams
   const top25 = await getTop25Teams();
   const balTeams = await getBalTeams();
   const cbbToBal = mapCbbToBal(top25, balTeams);
 
-  // Map for rank lookup
+  // Map for quick rank lookup
   const rankMap = new Map();
   top25.forEach(t => rankMap.set(t.cbbId, t.rank));
 
@@ -102,7 +108,7 @@ END:VCALENDAR`;
   const allGames = allGamesArrays.flat();
 
   console.log("Total games fetched:", allGames.length);
-  console.log("Sample:", allGames.slice(0, 5));
+  console.log("Sample of first 5 games:", allGames.slice(0, 5));
 
   const seenGameIds = new Set();
   const events = [];
@@ -111,7 +117,7 @@ END:VCALENDAR`;
     if (seenGameIds.has(g.id)) continue;
     seenGameIds.add(g.id);
 
-    // Check if either team is Top 25
+    // Only include games where at least one team is Top 25
     const homeCbbId = Array.from(cbbToBal.entries()).find(([, val]) => val === g.home_team.id)?.[0];
     const awayCbbId = Array.from(cbbToBal.entries()).find(([, val]) => val === g.visitor_team.id)?.[0];
     if (!homeCbbId && !awayCbbId) continue;
@@ -139,7 +145,7 @@ END:VEVENT
 `);
   }
 
-  // Sort events
+  // Sort events chronologically
   events.sort((a, b) => {
     const aStart = a.match(/DTSTART:(\d+)/)[1];
     const bStart = b.match(/DTSTART:(\d+)/)[1];
