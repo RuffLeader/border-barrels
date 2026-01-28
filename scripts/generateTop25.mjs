@@ -2,7 +2,7 @@ import fs from "fs";
 
 const CBB_API_KEY = process.env.CBB_API_KEY;
 const BASE_CBB = "https://api.collegebasketballdata.com";
-const BASE_BAL = "https://www.balldontlie.io/api/v1";
+const BASE_BAL = "https://www.balldontlie.io/ncaab/v1/teams";
 
 if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
 
