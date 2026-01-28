@@ -20,7 +20,7 @@ async function fetchJSON(url, { allow400 = false } = {}) {
 
 async function getTop25Teams() {
   const url =
-    "https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/rankings";
+    "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/rankings";
 
   const data = await fetchJSON(url);
 
