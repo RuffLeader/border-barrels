@@ -11,24 +11,17 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
+function normalize(str) {
+  return str.toLowerCase().replace(/[^a-z\s]/g, "").trim();
+}
+
 function buildICS(events) {
   return `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Border Barrels//NCAA Top 25//EN
 CALSCALE:GREGORIAN
-REFRESH-INTERVAL;VALUE=DURATION:PT6H
 ${events.join("\n")}
 END:VCALENDAR`;
-}
-
-/* ---------------- NORMALIZATION ---------------- */
-
-function normalizeTeam(name) {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
 }
 
 /* ---------------- TOP 25 ---------------- */
@@ -39,14 +32,15 @@ async function getTop25Teams() {
   const $ = cheerio.load(html);
 
   const teams = [];
+
   $(".Table__TR").each((_, row) => {
-    const rank = $(row).find(".Table__TD:nth-child(1)").text().trim();
-    const name = $(row).find(".Table__TD:nth-child(2) a").text().trim();
+    const rank = $(row).find("td").first().text().trim();
+    const name = $(row).find("a").first().text().trim();
     if (rank && name) {
       teams.push({
         rank: Number(rank),
         name,
-        norm: normalizeTeam(name),
+        norm: normalize(name),
       });
     }
   });
@@ -56,7 +50,7 @@ async function getTop25Teams() {
 
 /* ---------------- SCHEDULE ---------------- */
 
-async function getFutureGames(top25, rankMap) {
+async function getFutureGames(top25) {
   const res = await fetch("https://www.espn.com/mens-college-basketball/schedule");
   const html = await res.text();
   const $ = cheerio.load(html);
@@ -64,37 +58,40 @@ async function getFutureGames(top25, rankMap) {
   const events = [];
   const seen = new Set();
 
-  $("section.Card").each((_, section) => {
-    const dateText = $(section).find("h2").text().trim();
-    const gameDate = new Date(dateText);
+  $("table tbody tr").each((_, row) => {
+    const dateAttr = $(row).attr("data-date");
+    if (!dateAttr) return;
+
+    const gameDate = new Date(dateAttr);
     if (isNaN(gameDate) || gameDate > END_DATE) return;
 
-    $(section)
-      .find("tbody tr")
-      .each((_, row) => {
-        const matchup = $(row).find("td:nth-child(2)").text().trim();
-        if (!matchup) return;
+    const teamLinks = $(row).find("a.AnchorLink");
+    if (teamLinks.length < 2) return;
 
-        const matchupNorm = normalizeTeam(matchup);
+    const away = $(teamLinks[0]).text().trim();
+    const home = $(teamLinks[1]).text().trim();
 
-        // find Top 25 teams mentioned anywhere in matchup text
-        const matched = top25.filter(t =>
-          matchupNorm.includes(t.norm)
-        );
+    const awayNorm = normalize(away);
+    const homeNorm = normalize(home);
 
-        if (matched.length === 0) return;
+    const awayRank = top25.find(t => t.norm === awayNorm)?.rank;
+    const homeRank = top25.find(t => t.norm === homeNorm)?.rank;
 
-        const uid = `${gameDate.toISOString()}-${matchupNorm}`;
-        if (seen.has(uid)) return;
-        seen.add(uid);
+    if (!awayRank && !homeRank) return;
 
-        const summary = matchup;
+    const uid = `${dateAttr}-${awayNorm}-${homeNorm}`;
+    if (seen.has(uid)) return;
+    seen.add(uid);
 
-        const start = new Date(gameDate);
-        start.setHours(12, 0, 0, 0);
-        const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    const summary =
+      `${awayRank ? "#" + awayRank + " " : ""}${away}` +
+      " vs " +
+      `${homeRank ? "#" + homeRank + " " : ""}${home}`;
 
-        events.push(`
+    const start = new Date(gameDate);
+    const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+
+    events.push(`
 BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${formatICSDate(start)}
@@ -104,7 +101,6 @@ SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
 END:VEVENT
 `);
-      });
   });
 
   return events;
@@ -117,10 +113,8 @@ END:VEVENT
   const top25 = await getTop25Teams();
   console.log(`Found ${top25.length} teams`);
 
-  const rankMap = new Map(top25.map(t => [t.norm, t.rank]));
-
   console.log("Fetching schedule...");
-  const events = await getFutureGames(top25, rankMap);
+  const events = await getFutureGames(top25);
 
   events.sort((a, b) =>
     a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
