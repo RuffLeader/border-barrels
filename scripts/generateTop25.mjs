@@ -63,6 +63,10 @@ END:VCALENDAR`;
   const allGamesArrays = await Promise.all(teams.map(t => getTeamGames(t.teamId)));
   const allGames = allGamesArrays.flat();
 
+  // TEMP LOG for debugging
+  console.log("Total games fetched:", allGames.length);
+  console.log("Sample of first 5 games:", allGames.slice(0,5));
+
   const seen = new Set();
   const events = [];
 
