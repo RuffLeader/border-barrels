@@ -11,9 +11,8 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// normalize names for matching
-function normalize(name) {
-  return name.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+function normalize(str) {
+  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
 
 function buildICS(events) {
@@ -25,119 +24,127 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
-/* ---------------- TOP 25 ---------------- */
+/* ---------------- GET TOP 25 TEAMS ---------------- */
 
 async function getTop25Teams() {
-  const url = "https://www.espn.com.au/mens-college-basketball/rankings";
-  const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
-  const html = await res.text();
-  const $ = cheerio.load(html);
-
-  const teams = [];
-
-  $("table tbody tr").each((_, row) => {
-    const tds = $(row).find("td");
-    if (tds.length < 2) return;
-
-    const rank = $(tds[0]).text().trim();
-    const name = $(tds[1]).find("a").text().trim();
-    if (!rank || !name || isNaN(rank)) return;
-
-    teams.push({
-      rank: Number(rank),
-      name,
-      norm: normalize(name),
-    });
-  });
-
-  console.log(`Parsed ${teams.length} ranked teams`);
-  return teams.slice(0, 25);
+  console.log("Fetching Top 25 from CollegeBasketballData.com...");
+  const url = "https://api.collegebasketballdata.com/rankings?year=" + new Date().getFullYear() + "&seasonType=regular&week=1";
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch Top 25: ${res.status}`);
+  }
+  const data = await res.json();
+  const top25 = data
+    .filter(r => r.poll === "AP Top 25")
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 25)
+    .map(t => ({
+      rank: t.rank,
+      name: t.team,
+      norm: normalize(t.team)
+    }));
+  top25.forEach(t => console.log(`  #${t.rank} ${t.name}`));
+  return top25;
 }
 
-/* ---------------- SCHEDULE ---------------- */
+/* ---------------- GET TEAM FUTURE GAMES FROM ESPN ---------------- */
 
-async function getFutureGames(top25) {
-  const events = [];
-  const seen = new Set();
+async function getTeamGames(team) {
+  const normName = team.norm;
+  const url = `https://www.espn.com/mens-college-basketball/team/_/id/${team.id}/${team.name.replace(/\s+/g, "-").toLowerCase()}`;
+  console.log(`Fetching schedule for ${team.name} from ${url}`);
 
-  // create set and rank map using normalized names
-  const top25Set = new Set(top25.map(t => t.norm));
-  const rankMap = new Map(top25.map(t => [t.norm, t.rank]));
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    const html = await res.text();
+    const $ = cheerio.load(html);
 
-  const today = new Date();
-  const end = END_DATE;
+    const games = [];
 
-  for (let d = new Date(today); d <= end; d.setDate(d.getDate() + 1)) {
-    const ymd = d.toISOString().slice(0, 10).replace(/-/g, "");
+    $("section.Schedule__Games tbody tr").each((_, row) => {
+      const tds = $(row).find("td");
+      if (tds.length < 2) return;
 
-    const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/scoreboard?dates=${ymd}`;
-    try {
-      const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
-      const data = await res.json();
+      const dateText = $(tds[0]).text().trim();
+      const opponentText = $(tds[1]).text().trim();
+      if (!dateText || !opponentText) return;
 
-      for (const e of data.events ?? []) {
-        const comp = e.competitions?.[0];
-        if (!comp) continue;
+      const gameDate = new Date(dateText);
+      if (isNaN(gameDate.getTime()) || gameDate > END_DATE) return;
 
-        const teams = comp.competitors;
-        if (teams.length !== 2) continue;
+      // Determine home/away
+      let homeName, awayName;
+      if (opponentText.startsWith("@")) {
+        homeName = opponentText.replace("@", "").trim();
+        awayName = team.name;
+      } else if (opponentText.startsWith("vs")) {
+        homeName = team.name;
+        awayName = opponentText.replace("vs", "").trim();
+      } else {
+        homeName = team.name;
+        awayName = opponentText;
+      }
 
-        const away = teams.find(t => t.homeAway === "away");
-        const home = teams.find(t => t.homeAway === "home");
+      games.push({ id: `${team.name}-${gameDate.toISOString()}`, date: gameDate, homeName, awayName });
+    });
 
-        // use shortDisplayName and normalize
-        const awayName = normalize(away.team.shortDisplayName);
-        const homeName = normalize(home.team.shortDisplayName);
+    console.log(`  Found ${games.length} future games for ${team.name}`);
+    return games;
+  } catch (err) {
+    console.warn(`Failed to fetch games for ${team.name}: ${err.message}`);
+    return [];
+  }
+}
 
-        // skip if no Top 25 team involved
-        if (!top25Set.has(awayName) && !top25Set.has(homeName)) continue;
+/* ---------------- MAIN ---------------- */
 
-        const uid = e.id;
-        if (seen.has(uid)) continue;
-        seen.add(uid);
+(async () => {
+  try {
+    const top25 = await getTop25Teams();
+    const top25Set = new Set(top25.map(t => t.name));
+    const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
-        const start = new Date(e.date);
-        const endDate = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+    console.log("Fetching future games for Top 25 teams...");
+    const allGamesArrays = await Promise.all(top25.map(t => getTeamGames(t)));
+    let allGames = allGamesArrays.flat();
 
-        const summary =
-          `${rankMap.get(awayName) ? "#" + rankMap.get(awayName) + " " : ""}${away.team.shortDisplayName}` +
-          " vs " +
-          `${rankMap.get(homeName) ? "#" + rankMap.get(homeName) + " " : ""}${home.team.shortDisplayName}`;
+    // Only keep games with at least one Top 25 team
+    allGames = allGames.filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
 
-        events.push(`
+    // Remove duplicates (same home/away/date)
+    const seen = new Set();
+    const events = [];
+
+    for (const g of allGames) {
+      const uid = `${g.homeName}-${g.awayName}-${g.date.toISOString()}`;
+      if (seen.has(uid)) continue;
+      seen.add(uid);
+
+      const start = g.date;
+      const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+      const summary =
+        `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} vs ` +
+        `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
+
+      events.push(`
 BEGIN:VEVENT
 UID:${uid}@borderbarrels
 DTSTAMP:${formatICSDate(start)}
 DTSTART:${formatICSDate(start)}
-DTEND:${formatICSDate(endDate)}
+DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
-LOCATION:${comp.venue?.fullName || ""}
 END:VEVENT
 `);
-      }
-    } catch (err) {
-      console.warn(`Failed to fetch games for ${ymd}: ${err.message}`);
     }
+
+    events.sort((a, b) =>
+      a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
+    );
+
+    fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events));
+    console.log(`Generated ${events.length} Top 25 events`);
+  } catch (err) {
+    console.error("Error generating Top 25 ICS:", err);
   }
-
-  return events;
-}
-
-/* ---------------- RUN ---------------- */
-
-(async () => {
-  console.log("Fetching AP Top 25...");
-  const top25 = await getTop25Teams();
-  console.log(`Found ${top25.length} teams`);
-
-  console.log("Fetching schedule...");
-  const events = await getFutureGames(top25);
-
-  events.sort((a, b) =>
-    a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
-  );
-
-  fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events));
-  console.log(`Generated ${events.length} Top 25 events`);
 })();
