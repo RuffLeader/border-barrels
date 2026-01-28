@@ -33,8 +33,8 @@ async function getTop25Teams() {
 
 // Get all games for a team in the current season
 async function getTeamGames(teamId) {
-  const season = new Date().getFullYear(); // current year as season
-  const seasonType = "regular";           // regular season
+  const season = new Date().getFullYear();
+  const seasonType = "regular";
   const games = await fetchJSON(`${BASE}/games?teamId=${teamId}&season=${season}&seasonType=${seasonType}`);
   return games;
 }
@@ -60,36 +60,40 @@ END:VCALENDAR`;
   const teamMap = new Map();
   teams.forEach(t => teamMap.set(t.teamId, t));
 
-  // Fetch all team games in parallel
+  // Fetch all games for all Top 25 teams in parallel
   const allGamesArrays = await Promise.all(teams.map(t => getTeamGames(t.teamId)));
   const allGames = allGamesArrays.flat();
 
-  // TEMP LOG for debugging
   console.log("Total games fetched:", allGames.length);
   console.log("Sample of first 5 games:", allGames.slice(0,5));
 
-  const seen = new Set();
+  const seenGameIds = new Set();
   const events = [];
 
   for (const g of allGames) {
     if (!g.startDate || !g.homeTeamId || !g.awayTeamId) continue;
     if (new Date(g.startDate) < new Date()) continue; // skip past games
 
-    const uid = `ncaa-${g.id}@borderbarrels`;
-    if (seen.has(uid)) continue;
-    seen.add(uid);
+    // Only include games where at least one team is in Top 25
+    if (!teamMap.has(g.homeTeamId) && !teamMap.has(g.awayTeamId)) continue;
 
+    // Remove duplicates
+    if (seenGameIds.has(g.id)) continue;
+    seenGameIds.add(g.id);
+
+    // Dynamic ranks in summary
     const homeRank = teamMap.get(g.homeTeamId)?.rank;
     const awayRank = teamMap.get(g.awayTeamId)?.rank;
 
     const summary = `${homeRank ? "#" + homeRank + " " : ""}${g.homeTeam} vs ${awayRank ? "#" + awayRank + " " : ""}${g.awayTeam}`;
+
     const start = formatDate(g.startDate);
     const end = formatDate(new Date(new Date(g.startDate).getTime() + 2 * 60 * 60 * 1000).toISOString());
     const location = g.venue || "";
 
     events.push(`
 BEGIN:VEVENT
-UID:${uid}
+UID:ncaa-${g.id}@borderbarrels
 SEQUENCE:0
 STATUS:CONFIRMED
 DTSTAMP:${start}
