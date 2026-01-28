@@ -1,12 +1,12 @@
 name: Generate Top 25 iCal
 
+# Schedule workflow to run every Tuesday 9:00 AM Melbourne time
 on:
-  push:
-    branches:
-      - main
   schedule:
-    - cron: '0 0 * * *'  # daily at midnight UTC
-  workflow_dispatch:     # manual run option
+    # Cron is in UTC. Melbourne is UTC+11 in Daylight Time, UTC+10 in Standard Time.
+    # We'll use UTC+11 as approximate; adjust if needed.
+    - cron: '22 22 * * 1'  # Tuesday 9:00 AM AEDT ≈ Monday 10:00 PM UTC
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
   build:
@@ -14,26 +14,26 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: Generate Top 25 iCal
+      - name: Install dependencies
+        run: |
+          npm install node-fetch@3 cheerio
+
+      - name: Generate Top 25 ICS
         env:
           CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
-          BAL_API_KEY: ${{ secrets.BAL_API_KEY }}
         run: node scripts/generateTop25.mjs
 
-      - name: Build site
-        run: npm run build || echo "Skipping build because package.json not found"
-
       - name: Deploy to Netlify
-        run: |
-          npm install -g netlify-cli
-          netlify deploy --dir=public --prod --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
+        uses: netlify/actions/cli@v1
+        with:
+          args: deploy --dir=public --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
