@@ -18,6 +18,8 @@ jobs:
       - run: npm install
 
       - run: node scripts/generateTop25.mjs
+        env:
+          CBBD_API_KEY: ${{ secrets.CBBD_API_KEY }}
 
       - run: |
           git config user.name github-actions
