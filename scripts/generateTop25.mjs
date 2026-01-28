@@ -26,11 +26,16 @@ async function fetchJSON(url) {
 // 1️⃣ Get current AP Top 25
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE}/rankings`);
-  console.log(JSON.stringify(rankings, null, 2)); // <--- debug
-  const ap = rankings.find(r => r.poll === "AP Top 25");
-  return ap.ranks.map(r => ({
-    team: r.school,
-    rank: r.rank,
+  
+  // Filter only AP Top 25
+  const apTop25 = rankings
+    .filter(r => r.pollType === "AP Top 25")
+    .sort((a, b) => a.ranking - b.ranking) // ensure correct order
+    .slice(0, 25); // top 25 only, just in case
+
+  return apTop25.map(r => ({
+    team: r.team,
+    rank: r.ranking,
     teamId: r.teamId
   }));
 }
