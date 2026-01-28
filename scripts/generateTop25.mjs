@@ -1,6 +1,5 @@
 import fs from "fs";
 import fetch from "node-fetch";
-import * as cheerio from "cheerio";
 
 const PUBLIC_DIR = "public";
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
@@ -11,6 +10,7 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
+// normalize team names for matching
 function normalize(str) {
   return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
@@ -44,19 +44,24 @@ async function getTop25Teams() {
   const data = await res.json();
   const apTop25 = data.filter(r => r.pollType === "AP Top 25").slice(0, 25);
 
-  return apTop25.map(t => ({
+  const teams = apTop25.map(t => ({
     rank: t.ranking,
     name: t.team,
     norm: normalize(t.team),
   }));
+
+  console.log("Top 25 CBBD teams:", teams.map(t => t.name).join(", "));
+  return teams;
 }
 
 /* ---------------- GET ESPN TEAM MAP ---------------- */
 async function getESPNTeamsMap() {
+  console.log("Fetching ESPN teams map...");
   const res = await fetch(
     "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams"
   );
   const data = await res.json();
+
   const map = new Map();
 
   for (const sport of data.sports ?? []) {
@@ -70,7 +75,6 @@ async function getESPNTeamsMap() {
           }
         }
       }
-
       // Case 2: league has teams directly
       if (Array.isArray(league.teams)) {
         for (const teamObj of league.teams) {
@@ -81,14 +85,15 @@ async function getESPNTeamsMap() {
     }
   }
 
-  return map; // key = normalized name, value = { id, displayName, ... }
+  console.log(`Mapped ${map.size} ESPN teams`);
+  return map;
 }
 
 /* ---------------- GET TEAM FUTURE GAMES ---------------- */
 async function getTeamGames(team, espnMap) {
   const espnTeam = espnMap.get(team.norm);
-  if (!espnTeam) {
-    console.warn("No ESPN match for", team.name);
+  if (!espnTeam || !espnTeam.id) {
+    console.warn(`No ESPN match or ID for team: ${team.name}`);
     return [];
   }
 
@@ -98,7 +103,6 @@ async function getTeamGames(team, espnMap) {
   try {
     const res = await fetch(url);
     const data = await res.json();
-
     const now = new Date();
     const games = [];
 
@@ -133,20 +137,20 @@ async function getTeamGames(team, espnMap) {
 (async () => {
   try {
     const top25 = await getTop25Teams();
-    console.log(`Found ${top25.length} Top 25 teams`);
+    const top25Set = new Set(top25.map(t => t.name));
+    const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
     const espnMap = await getESPNTeamsMap();
-    console.log("Fetched ESPN team map");
 
     console.log("Fetching future games for Top 25 teams...");
     const allGamesArrays = await Promise.all(top25.map(t => getTeamGames(t, espnMap)));
     let allGames = allGamesArrays.flat();
 
-    const top25Set = new Set(top25.map(t => t.name));
+    // Only keep games with at least one Top 25 team
     allGames = allGames.filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
 
+    // Remove duplicates
     const seen = new Set();
-    const rankMap = new Map(top25.map(t => [t.name, t.rank]));
     const events = [];
 
     for (const g of allGames) {
