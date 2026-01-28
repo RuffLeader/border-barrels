@@ -26,6 +26,7 @@ async function fetchJSON(url) {
 // 1️⃣ Get current AP Top 25
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE}/rankings`);
+  console.log(JSON.stringify(rankings, null, 2)); // <--- debug
   const ap = rankings.find(r => r.poll === "AP Top 25");
   return ap.ranks.map(r => ({
     team: r.school,
