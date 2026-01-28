@@ -1,23 +1,13 @@
 import fs from "fs";
-import fetch from "node-fetch";
-import * as cheerio from "cheerio";
 
-const CBB_API_KEY = process.env.CBB_API_KEY;
-if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
+const OUTPUT_FILE = "top25.ics";
 
-// Ensure public folder exists
-if (!fs.existsSync("public")) fs.mkdirSync("public", { recursive: true });
+/* ---------- helpers ---------- */
 
-const BASE_CBB = "https://api.collegebasketballdata.com";
-
-// --------------------
-// Helper: fetch JSON
 async function fetchJSON(url, { allow400 = false } = {}) {
   const res = await fetch(url);
 
-  if (res.status === 400 && allow400) {
-    return null; // ESPN "no schedule" response
-  }
+  if (res.status === 400 && allow400) return null;
 
   if (!res.ok) {
     throw new Error(`API error ${res.status} for ${url}`);
@@ -26,149 +16,91 @@ async function fetchJSON(url, { allow400 = false } = {}) {
   return res.json();
 }
 
-// --------------------
-// 1️⃣ Get Top 25 teams from CBB
+/* ---------- get AP Top 25 from ESPN ---------- */
+
 async function getTop25Teams() {
-  const rankings = await fetchJSON(`${BASE_CBB}/rankings`, { Authorization: `Bearer ${CBB_API_KEY}` });
-  const apTop25 = rankings
-    .filter(r => r.pollType === "AP Top 25")
-    .sort((a, b) => a.ranking - b.ranking)
-    .slice(0, 25);
+  const url =
+    "https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/rankings";
 
-  return apTop25.map(r => ({
-    name: r.team.toLowerCase(),
-    rank: r.ranking
-  }));
+  const data = await fetchJSON(url);
+
+  const apPoll = data.rankings.find(r => r.name === "AP Top 25");
+
+  return apPoll.ranks
+    .filter(r => r.rank <= 25)
+    .map(r => ({
+      name: r.team.displayName,
+      id: r.team.id
+    }));
 }
 
-// --------------------
-// 2️⃣ Fetch all NCAA D-I teams from ESPN
-async function getAllEpsnTeams() {
-  const res = await fetch("https://www.espn.com/mens-college-basketball/teams");
-  const html = await res.text();
-  const $ = cheerio.load(html);
-  const teams = [];
+/* ---------- schedules ---------- */
 
-  $("a.AnchorLink").each((i, el) => {
-    const href = $(el).attr("href");
-    const name = $(el).text();
-    const match = href?.match(/team\/_\/id\/(\d+)/);
-    if (match) {
-      const id = Number(match[1]);
-      teams.push({ name: name.toLowerCase(), id });
-    }
-  });
-
-  return teams;
-}
-
-// --------------------
-// 3️⃣ Match Top 25 teams to ESPN IDs
-function mapTop25ToESPN(top25, espnTeams) {
-  const map = new Map();
-  top25.forEach(t => {
-    const match = espnTeams.find(e => e.name.includes(t.name) || t.name.includes(e.name));
-    if (match) map.set(t.name, match.id);
-    else console.warn("No ESPN match for:", t.name);
-  });
-  return map;
-}
-
-// --------------------
-// 4️⃣ Fetch future games for a team from ESPN
 async function getTeamGamesESPN(teamId) {
-  const today = new Date().toISOString().split("T")[0];
   const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/teams/${teamId}/schedule`;
+
   const data = await fetchJSON(url, { allow400: true });
-  if (!data.events) return [];
-  return data.events.filter(e => new Date(e.date) >= new Date());
+  if (!data || !data.events) return [];
+
+  return data.events;
 }
 
-// --------------------
-// 5️⃣ Format date for iCal
-function formatDate(dateStr) {
-  return dateStr.replace(/[-:]/g, "").split(".")[0] + "Z";
+/* ---------- ICS ---------- */
+
+function toICSDate(dateStr) {
+  return new Date(dateStr).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// --------------------
-// 6️⃣ Build iCal
-function buildICS(events) {
-  return `BEGIN:VCALENDAR
+/* ---------- main ---------- */
+
+const top25 = await getTop25Teams();
+const teamIds = new Set(top25.map(t => t.id));
+
+const gamesById = new Map();
+
+await Promise.all(
+  [...teamIds].map(async teamId => {
+    const games = await getTeamGamesESPN(teamId);
+
+    for (const game of games) {
+      if (!game.date) continue;
+      if (new Date(game.date) < new Date()) continue;
+
+      const homeId = game.competitions[0].competitors.find(c => c.homeAway === "home")?.team?.id;
+      const awayId = game.competitions[0].competitors.find(c => c.homeAway === "away")?.team?.id;
+
+      // Only include games involving a Top 25 team
+      if (!teamIds.has(homeId) && !teamIds.has(awayId)) continue;
+
+      gamesById.set(game.id, game); // dedupe here
+    }
+  })
+);
+
+/* ---------- build ICS ---------- */
+
+let ics = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Border Barrels//NCAA Top 25//EN
+PRODID:-//Top 25 NCAAB//EN
 CALSCALE:GREGORIAN
-REFRESH-INTERVAL;VALUE=DURATION:PT6H
-${events.join("\n")}
-END:VCALENDAR`;
+`;
+
+for (const game of gamesById.values()) {
+  const comp = game.competitions[0];
+  const home = comp.competitors.find(c => c.homeAway === "home").team.displayName;
+  const away = comp.competitors.find(c => c.homeAway === "away").team.displayName;
+
+  ics += `BEGIN:VEVENT
+UID:${game.id}@top25
+DTSTAMP:${toICSDate(game.date)}
+DTSTART:${toICSDate(game.date)}
+SUMMARY:${away} @ ${home}
+END:VEVENT
+`;
 }
 
-// --------------------
-// 7️⃣ Main
-(async () => {
-  const top25 = await getTop25Teams();
-  console.log("Top 25 teams:", top25.map(t => t.name));
+ics += "END:VCALENDAR";
 
-  const espnTeams = await getAllEpsnTeams();
-  console.log("Fetched ESPN teams:", espnTeams.length);
+fs.writeFileSync(OUTPUT_FILE, ics);
 
-  const espnMap = mapTop25ToESPN(top25, espnTeams);
-
-  const rankMap = new Map();
-  top25.forEach(t => rankMap.set(t.name, t.rank));
-
-  // Fetch all games in parallel
-  const allGamesArrays = await Promise.all(
-    Array.from(espnMap.values()).map(teamId => getTeamGamesESPN(teamId))
-  );
-  const allGames = allGamesArrays.flat();
-
-  console.log("Total games fetched:", allGames.length);
-  console.log("Sample first 5 games:", allGames.slice(0, 5));
-
-  const seenGameIds = new Set();
-  const events = [];
-
-  for (const g of allGames) {
-    if (seenGameIds.has(g.id)) continue;
-    seenGameIds.add(g.id);
-
-    const homeComp = g.competitions[0].competitors.find(c => c.homeAway === "home");
-    const awayComp = g.competitions[0].competitors.find(c => c.homeAway === "away");
-    const homeName = homeComp.team.displayName.toLowerCase();
-    const awayName = awayComp.team.displayName.toLowerCase();
-
-    const homeRank = rankMap.get(homeName);
-    const awayRank = rankMap.get(awayName);
-
-    if (!homeRank && !awayRank) continue;
-
-    const summary = `${homeRank ? "#" + homeRank + " " : ""}${homeComp.team.displayName} vs ${awayRank ? "#" + awayRank + " " : ""}${awayComp.team.displayName}`;
-    const start = formatDate(g.date);
-    const end = formatDate(new Date(new Date(g.date).getTime() + 2 * 60 * 60 * 1000).toISOString());
-    const location = g.competitions[0].venue?.fullName || "";
-
-    events.push(`
-BEGIN:VEVENT
-UID:espn-${g.id}@borderbarrels
-SEQUENCE:0
-STATUS:CONFIRMED
-DTSTAMP:${start}
-DTSTART:${start}
-DTEND:${end}
-SUMMARY:${summary}
-DESCRIPTION:AP Top 25 Game
-LOCATION:${location}
-END:VEVENT
-`);
-  }
-
-  // Sort events chronologically
-  events.sort((a, b) => {
-    const aStart = a.match(/DTSTART:(\d+)/)[1];
-    const bStart = b.match(/DTSTART:(\d+)/)[1];
-    return aStart.localeCompare(bStart);
-  });
-
-  fs.writeFileSync("public/top25.ics", buildICS(events));
-  console.log(`Generated ${events.length} events for Top 25 games`);
-})();
+console.log(`Generated ${gamesById.size} events for Top 25 games`);
