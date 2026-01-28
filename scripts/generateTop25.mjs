@@ -11,8 +11,9 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-function normalize(str) {
-  return str.toLowerCase().replace(/[^a-z\s]/g, "").trim();
+// normalize names for matching
+function normalize(name) {
+  return name.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
 
 function buildICS(events) {
@@ -28,12 +29,7 @@ END:VCALENDAR`;
 
 async function getTop25Teams() {
   const url = "https://www.espn.com.au/mens-college-basketball/rankings";
-  const res = await fetch(url, {
-    headers: {
-      "User-Agent": "Mozilla/5.0"
-    }
-  });
-
+  const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
   const html = await res.text();
   const $ = cheerio.load(html);
 
@@ -45,7 +41,6 @@ async function getTop25Teams() {
 
     const rank = $(tds[0]).text().trim();
     const name = $(tds[1]).find("a").text().trim();
-
     if (!rank || !name || isNaN(rank)) return;
 
     teams.push({
@@ -61,52 +56,55 @@ async function getTop25Teams() {
 
 /* ---------------- SCHEDULE ---------------- */
 
-async function getFutureGames(top25Set, rankMap) {
+async function getFutureGames(top25) {
   const events = [];
   const seen = new Set();
+
+  // create set and rank map using normalized names
+  const top25Set = new Set(top25.map(t => t.norm));
+  const rankMap = new Map(top25.map(t => [t.norm, t.rank]));
 
   const today = new Date();
   const end = END_DATE;
 
-  for (
-    let d = new Date(today);
-    d <= end;
-    d.setDate(d.getDate() + 1)
-  ) {
+  for (let d = new Date(today); d <= end; d.setDate(d.getDate() + 1)) {
     const ymd = d.toISOString().slice(0, 10).replace(/-/g, "");
 
     const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/scoreboard?dates=${ymd}`;
-    const res = await fetch(url);
-    const data = await res.json();
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+      const data = await res.json();
 
-    for (const e of data.events ?? []) {
-      const comp = e.competitions?.[0];
-      if (!comp) continue;
+      for (const e of data.events ?? []) {
+        const comp = e.competitions?.[0];
+        if (!comp) continue;
 
-      const teams = comp.competitors;
-      if (teams.length !== 2) continue;
+        const teams = comp.competitors;
+        if (teams.length !== 2) continue;
 
-      const away = teams.find(t => t.homeAway === "away");
-      const home = teams.find(t => t.homeAway === "home");
+        const away = teams.find(t => t.homeAway === "away");
+        const home = teams.find(t => t.homeAway === "home");
 
-      const awayName = away.team.displayName;
-      const homeName = home.team.displayName;
+        // use shortDisplayName and normalize
+        const awayName = normalize(away.team.shortDisplayName);
+        const homeName = normalize(home.team.shortDisplayName);
 
-      if (!top25Set.has(awayName) && !top25Set.has(homeName)) continue;
+        // skip if no Top 25 team involved
+        if (!top25Set.has(awayName) && !top25Set.has(homeName)) continue;
 
-      const uid = e.id;
-      if (seen.has(uid)) continue;
-      seen.add(uid);
+        const uid = e.id;
+        if (seen.has(uid)) continue;
+        seen.add(uid);
 
-      const start = new Date(e.date);
-      const endDate = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+        const start = new Date(e.date);
+        const endDate = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-      const summary =
-        `${rankMap.get(awayName) ? "#" + rankMap.get(awayName) + " " : ""}${awayName}` +
-        " vs " +
-        `${rankMap.get(homeName) ? "#" + rankMap.get(homeName) + " " : ""}${homeName}`;
+        const summary =
+          `${rankMap.get(awayName) ? "#" + rankMap.get(awayName) + " " : ""}${away.team.shortDisplayName}` +
+          " vs " +
+          `${rankMap.get(homeName) ? "#" + rankMap.get(homeName) + " " : ""}${home.team.shortDisplayName}`;
 
-      events.push(`
+        events.push(`
 BEGIN:VEVENT
 UID:${uid}@borderbarrels
 DTSTAMP:${formatICSDate(start)}
@@ -117,6 +115,9 @@ DESCRIPTION:AP Top 25 Game
 LOCATION:${comp.venue?.fullName || ""}
 END:VEVENT
 `);
+      }
+    } catch (err) {
+      console.warn(`Failed to fetch games for ${ymd}: ${err.message}`);
     }
   }
 
