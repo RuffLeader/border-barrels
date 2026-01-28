@@ -10,9 +10,9 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// normalize team names for matching
+// normalize team names for matching / ESPN URLs
 function normalize(str) {
-  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+  return str.toLowerCase().replace(/[^a-z0-9]/g, "").trim();
 }
 
 function buildICS(events) {
@@ -34,9 +34,7 @@ async function getTop25Teams() {
 
   const res = await fetch(
     `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
-    {
-      headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` },
-    }
+    { headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` } }
   );
 
   if (!res.ok) throw new Error(`Failed to fetch Top 25: ${res.status}`);
@@ -54,59 +52,39 @@ async function getTop25Teams() {
   return teams;
 }
 
-/* ---------------- GET ESPN TEAM MAP ---------------- */
-async function getESPNTeamsMap() {
-  console.log("Fetching ESPN teams map...");
-  const res = await fetch(
-    "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams"
-  );
-  const data = await res.json();
+/* ---------------- GET TEAM FUTURE GAMES (TEAM-SPECIFIC ESPN API) ---------------- */
+async function getTeamGames(team) {
+  // Fallback map for tricky team names
+  const fallback = {
+    "stjohns": "stjohns",
+    "northcarolina": "unc",
+    "texastech": "texastech",
+    "pitt": "pittsburgh",
+  };
 
-  const map = new Map();
-
-  for (const sport of data.sports ?? []) {
-    for (const league of sport.leagues ?? []) {
-      // Case 1: league has conferences
-      if (Array.isArray(league.conferences)) {
-        for (const conf of league.conferences) {
-          for (const teamObj of conf.teams ?? []) {
-            const team = teamObj.team;
-            map.set(normalize(team.displayName), team);
-          }
-        }
-      }
-      // Case 2: league has teams directly
-      if (Array.isArray(league.teams)) {
-        for (const teamObj of league.teams) {
-          const team = teamObj.team;
-          map.set(normalize(team.displayName), team);
-        }
-      }
-    }
-  }
-
-  console.log(`Mapped ${map.size} ESPN teams`);
-  return map;
-}
-
-/* ---------------- GET TEAM FUTURE GAMES ---------------- */
-async function getTeamGames(team, espnMap) {
-  const espnTeam = espnMap.get(team.norm);
-  if (!espnTeam || !espnTeam.id) {
-    console.warn(`No ESPN match or ID for team: ${team.name}`);
-    return [];
-  }
-
-  const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${espnTeam.id}/schedule`;
-  console.log(`Fetching schedule for ${team.name} from ${url}`);
+  const espnName = fallback[team.norm] || team.norm;
+  const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${espnName}`;
+  console.log(`Fetching ESPN data for ${team.name} from ${url}`);
 
   try {
     const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ESPN team: ${res.status}`);
     const data = await res.json();
+    const espnTeam = data.team;
+    if (!espnTeam) throw new Error("No team object in ESPN response");
+
+    // Get schedule URL
+    const scheduleUrl = espnTeam.links?.find(l => l.rel?.includes("schedule"))?.href;
+    if (!scheduleUrl) throw new Error("No schedule link found");
+
+    console.log(`Fetching schedule for ${team.name} from ${scheduleUrl}`);
+    const scheduleRes = await fetch(scheduleUrl);
+    const scheduleData = await scheduleRes.json();
+
     const now = new Date();
     const games = [];
 
-    for (const e of data.events ?? []) {
+    for (const e of scheduleData.events ?? []) {
       const comp = e.competitions?.[0];
       if (!comp) continue;
 
@@ -140,10 +118,8 @@ async function getTeamGames(team, espnMap) {
     const top25Set = new Set(top25.map(t => t.name));
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
-    const espnMap = await getESPNTeamsMap();
-
     console.log("Fetching future games for Top 25 teams...");
-    const allGamesArrays = await Promise.all(top25.map(t => getTeamGames(t, espnMap)));
+    const allGamesArrays = await Promise.all(top25.map(t => getTeamGames(t)));
     let allGames = allGamesArrays.flat();
 
     // Only keep games with at least one Top 25 team
@@ -164,16 +140,14 @@ async function getTeamGames(team, espnMap) {
         `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} vs ` +
         `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
 
-      events.push(`
-BEGIN:VEVENT
+      events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
 DTSTAMP:${formatICSDate(start)}
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
-END:VEVENT
-`);
+END:VEVENT`);
     }
 
     events.sort((a, b) =>
