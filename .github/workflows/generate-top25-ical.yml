@@ -2,38 +2,25 @@ name: Generate Top 25 ICS
 
 on:
   schedule:
-    # Every Tuesday at 9:00am Melbourne time (UTC+11)
-    - cron: '0 22 * * 1'
+    - cron: "0 21 * * 2" # Tuesday 9am Melbourne (UTC+11)
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Generate Top 25 ICS
-        run: node scripts/generateTop25.mjs
-        env:
-          CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
-
-      - name: Commit and push ICS
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "Update Top 25 ICS"
-          commit_user_name: "github-actions"
-          commit_user_email: "github-actions@users.noreply.github.com"
-          file_pattern: "public/top25.ics"
+      - run: npm install
+      - run: node scripts/generateTop25.mjs
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add public/top25.ics
+          git commit -m "Update AP Top 25 calendar" || exit 0
+          git push
 
       - name: Deploy to Netlify
         env:
