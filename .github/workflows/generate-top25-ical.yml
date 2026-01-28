@@ -24,6 +24,7 @@ jobs:
       - name: Generate Top 25 iCal
         env:
           CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
+          BAL_API_KEY: ${{ secrets.BAL_API_KEY }}
         run: node scripts/generateTop25.mjs
 
       - name: Build site
