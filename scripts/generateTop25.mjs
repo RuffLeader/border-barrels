@@ -8,8 +8,8 @@ if (!API_KEY) {
 }
 
 // Ensure docs folder exists
-if (!fs.existsSync("docs")) {
-  fs.mkdirSync("docs", { recursive: true });
+if (!fs.existsSync("public")) {
+  fs.mkdirSync("public", { recursive: true });
 }
 
 const headers = {
@@ -120,7 +120,7 @@ END:VEVENT
   });
 
   const ics = buildICS(events);
-  fs.writeFileSync("docs/top25.ics", ics);
+  fs.writeFileSync("public/top25.ics", ics);
 
   console.log(`Generated ${events.length} events for Top 25 games`);
 })();
