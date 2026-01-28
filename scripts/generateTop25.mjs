@@ -1,19 +1,19 @@
 // scripts/generateTop25.mjs
 import fs from "fs";
-import * as cheerio from "cheerio";
+import puppeteer from "puppeteer";
 import fetch from "node-fetch";
 
-const BASE_URL = "https://www.espn.com/mens-college-basketball";
 const PUBLIC_DIR = "public";
-
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+
+const RANKINGS_URL = "https://www.espn.com.au/mens-college-basketball/rankings";
 
 // Format date for iCal
 function formatDate(date) {
   return new Date(date).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// Build iCal file
+// Build iCal
 function buildICS(events) {
   return `BEGIN:VCALENDAR
 VERSION:2.0
@@ -24,32 +24,38 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
-// 1️⃣ Scrape AP Top 25
+// 1️⃣ Scrape Top 25 with Puppeteer
 async function getTop25Teams() {
-  const res = await fetch(`${BASE_URL}/rankings`);
-  const html = await res.text();
-  const $ = cheerio.load(html);
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.goto(RANKINGS_URL, { waitUntil: "networkidle0" });
 
-  const teams = [];
+  // Wait for rankings to render
+  await page.waitForSelector("section.rankings__list-item");
 
-  $("section.rankings__list-item").each((i, el) => {
-    if (i >= 25) return;
-
-    const rank = parseInt($(el).find("span.rank").first().text().trim());
-    const name = $(el).find("a.AnchorLink").text().trim();
-    const teamUrl = $(el).find("a.AnchorLink").attr("href"); // /team/_/id/150/duke-blue-devils
-    const match = teamUrl?.match(/\/id\/(\d+)\//);
-    const id = match ? parseInt(match[1]) : null;
-
-    if (rank && name && id) {
-      teams.push({ id, name, rank });
-    }
+  // Extract teams and ESPN IDs
+  const teams = await page.evaluate(() => {
+    const result = [];
+    document.querySelectorAll("section.rankings__list-item").forEach((el, i) => {
+      if (i >= 25) return;
+      const rankEl = el.querySelector("span.rank");
+      const linkEl = el.querySelector("a.AnchorLink");
+      if (!rankEl || !linkEl) return;
+      const rank = parseInt(rankEl.textContent.trim());
+      const name = linkEl.textContent.trim();
+      const href = linkEl.getAttribute("href"); // e.g., /team/_/id/150/duke-blue-devils
+      const match = href?.match(/\/id\/(\d+)\//);
+      const id = match ? parseInt(match[1]) : null;
+      if (rank && name && id) result.push({ id, name, rank });
+    });
+    return result;
   });
 
+  await browser.close();
   return teams;
 }
 
-// 2️⃣ Fetch future games for a team
+// 2️⃣ Get future games for a team
 async function getTeamFutureGames(team) {
   try {
     const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${team.id}/schedule`);
@@ -69,7 +75,7 @@ async function getTeamFutureGames(team) {
           homeName: home.team.displayName,
           awayId: away.team.id,
           awayName: away.team.displayName,
-          venue: comp.venue?.fullName || ""
+          venue: comp.venue?.fullName || "",
         };
       });
   } catch (err) {
@@ -81,37 +87,39 @@ async function getTeamFutureGames(team) {
 (async () => {
   console.log("Fetching Top 25 teams...");
   const top25 = await getTop25Teams();
+  console.log(`Found ${top25.length} Top 25 teams`);
+
   const top25Ids = new Set(top25.map(t => t.id));
   const rankMap = new Map(top25.map(t => [t.id, t.rank]));
-
-  console.log(`Found ${top25.length} Top 25 teams`);
 
   const seen = new Set();
   const events = [];
 
-  for (const team of top25) {
-    const teamGames = await getTeamFutureGames(team);
-    for (const g of teamGames) {
-      const uid = `ncaa-${g.id}@borderbarrels`;
-      if (seen.has(uid)) continue;
+  // Fetch all future games in parallel
+  const teamGamesArrays = await Promise.all(top25.map(t => getTeamFutureGames(t)));
+  const allGames = teamGamesArrays.flat();
 
-      // Only include games where at least one team is in Top 25
-      if (!top25Ids.has(g.homeId) && !top25Ids.has(g.awayId)) continue;
+  for (const g of allGames) {
+    const uid = `ncaa-${g.id}@borderbarrels`;
+    if (seen.has(uid)) continue;
 
-      seen.add(uid);
+    // Only include games where at least one team is in Top 25
+    if (!top25Ids.has(g.homeId) && !top25Ids.has(g.awayId)) continue;
 
-      const homeRank = rankMap.get(g.homeId);
-      const awayRank = rankMap.get(g.awayId);
+    seen.add(uid);
 
-      const summary =
-        `${homeRank ? "#" + homeRank + " " : ""}${g.homeName}` +
-        ` vs ` +
-        `${awayRank ? "#" + awayRank + " " : ""}${g.awayName}`;
+    const homeRank = rankMap.get(g.homeId);
+    const awayRank = rankMap.get(g.awayId);
 
-      const start = formatDate(g.date);
-      const end = formatDate(new Date(new Date(g.date).getTime() + 2 * 60 * 60 * 1000));
+    const summary =
+      `${homeRank ? "#" + homeRank + " " : ""}${g.homeName}` +
+      ` vs ` +
+      `${awayRank ? "#" + awayRank + " " : ""}${g.awayName}`;
 
-      events.push(`
+    const start = formatDate(g.date);
+    const end = formatDate(new Date(new Date(g.date).getTime() + 2 * 60 * 60 * 1000));
+
+    events.push(`
 BEGIN:VEVENT
 UID:${uid}
 SEQUENCE:0
@@ -124,7 +132,6 @@ DESCRIPTION:AP Top 25 Game
 LOCATION:${g.venue}
 END:VEVENT
 `);
-    }
   }
 
   // Sort events by date
