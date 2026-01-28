@@ -33,7 +33,7 @@ async function getTop25Teams() {
     `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
     {
       headers: {
-        Authorization: `Bearer ${process.env.CBBD_API_KEY}`, // <--- Put your API key in GitHub Secrets
+        Authorization: `Bearer ${process.env.CBB_API_KEY}`, // <--- Put your API key in GitHub Secrets
       },
     }
   );
