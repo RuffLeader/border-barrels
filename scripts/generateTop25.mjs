@@ -59,14 +59,28 @@ async function getESPNTeamsMap() {
   const data = await res.json();
   const map = new Map();
 
-  for (const league of data.sports[0].leagues) {
-    for (const conf of league.conferences) {
-      for (const teamObj of conf.teams) {
-        const team = teamObj.team;
-        map.set(normalize(team.displayName), team);
+  for (const sport of data.sports ?? []) {
+    for (const league of sport.leagues ?? []) {
+      // Case 1: league has conferences
+      if (Array.isArray(league.conferences)) {
+        for (const conf of league.conferences) {
+          for (const teamObj of conf.teams ?? []) {
+            const team = teamObj.team;
+            map.set(normalize(team.displayName), team);
+          }
+        }
+      }
+
+      // Case 2: league has teams directly
+      if (Array.isArray(league.teams)) {
+        for (const teamObj of league.teams) {
+          const team = teamObj.team;
+          map.set(normalize(team.displayName), team);
+        }
       }
     }
   }
+
   return map; // key = normalized name, value = { id, displayName, ... }
 }
 
