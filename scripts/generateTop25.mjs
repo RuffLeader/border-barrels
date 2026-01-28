@@ -28,23 +28,25 @@ END:VCALENDAR`;
 
 async function getTop25Teams() {
   console.log("Fetching Top 25 from CollegeBasketballData.com...");
-  const url = "https://api.collegebasketballdata.com/rankings?year=" + new Date().getFullYear() + "&seasonType=regular&week=1";
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch Top 25: ${res.status}`);
-  }
+
+  const res = await fetch(
+    `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.CBBD_API_KEY}`, // <--- Put your API key in GitHub Secrets
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error(`Failed to fetch Top 25: ${res.status}`);
+
   const data = await res.json();
-  const top25 = data
-    .filter(r => r.poll === "AP Top 25")
-    .sort((a, b) => a.rank - b.rank)
-    .slice(0, 25)
-    .map(t => ({
-      rank: t.rank,
-      name: t.team,
-      norm: normalize(t.team)
-    }));
-  top25.forEach(t => console.log(`  #${t.rank} ${t.name}`));
-  return top25;
+  const apTop25 = data.filter(r => r.pollType === "AP Top 25").slice(0, 25);
+
+  return apTop25.map(t => ({
+    rank: t.ranking,
+    name: t.team,
+  }));
 }
 
 /* ---------------- GET TEAM FUTURE GAMES FROM ESPN ---------------- */
