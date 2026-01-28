@@ -17,7 +17,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Generate Top 25 calendar
         run: node scripts/generateTop25.mjs
