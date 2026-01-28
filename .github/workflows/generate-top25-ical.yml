@@ -1,20 +1,18 @@
-name: Generate Top 25 iCal
+name: Generate Top 25 ICS
 
-# Schedule workflow to run every Tuesday 9:00 AM Melbourne time
 on:
   schedule:
-    # Cron is in UTC. Melbourne is UTC+11 in Daylight Time, UTC+10 in Standard Time.
-    # We'll use UTC+11 as approximate; adjust if needed.
-    - cron: '22 22 * * 1'  # Tuesday 9:00 AM AEDT ≈ Monday 10:00 PM UTC
-  workflow_dispatch:  # Allow manual trigger
+    # Every Tuesday at 9:00am Melbourne time (UTC+11)
+    - cron: '0 22 * * 1'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -22,12 +20,20 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install node-fetch@3
+        run: npm install
 
       - name: Generate Top 25 ICS
+        run: node scripts/generateTop25.mjs
         env:
           CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
-        run: node scripts/generateTop25.mjs
+
+      - name: Commit and push ICS
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update Top 25 ICS"
+          commit_user_name: "github-actions"
+          commit_user_email: "github-actions@users.noreply.github.com"
+          file_pattern: "public/top25.ics"
 
       - name: Deploy to Netlify
         env:
