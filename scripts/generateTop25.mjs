@@ -1,6 +1,6 @@
 import fs from "fs";
 import fetch from "node-fetch";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 
 const CBB_API_KEY = process.env.CBB_API_KEY;
 if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
