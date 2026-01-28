@@ -62,7 +62,10 @@ async function getTop25Teams() {
 /* ---------------- SCHEDULE ---------------- */
 
 async function getFutureGames(top25) {
-  const res = await fetch("https://www.espn.com/mens-college-basketball/schedule");
+  const res = await fetch(
+    "https://www.espn.com.au/mens-college-basketball/schedule",
+    { headers: { "User-Agent": "Mozilla/5.0" } }
+  );
   const html = await res.text();
   const $ = cheerio.load(html);
 
