@@ -58,12 +58,12 @@ async function getTop25Teams() {
 async function getTeamGames(team) {
   // Fallback map for tricky ESPN team URLs
   const fallback = {
-    "stjohns": "stjohns",
-    "northcarolina": "unc",
+    "stjohns": "2599",
+    "north carolina": "unc",
     "unc": "unc",
-    "texastech": "texastech",
-    "iowastate": "iowastate",
-    "michiganstate": "michiganstate",
+    "texas tech": "texastech",
+    "iowa state": "iowast",
+    "michigan state": "michiganst",
     "pittsburgh": "pitt",
   };
 
