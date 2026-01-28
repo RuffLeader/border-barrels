@@ -1,16 +1,15 @@
-// scripts/generateTop25.mjs
 import fs from "fs";
 import fetch from "node-fetch";
+import * as cheerio from "cheerio";
 
 const PUBLIC_DIR = "public";
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 
-const API_KEY = process.env.CBB_API_KEY;
-if (!API_KEY) throw new Error("Missing CBB_API_KEY");
+const CBB_API_KEY = process.env.CBB_API_KEY;
+if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
 
-function formatDate(dateStr) {
-  // Convert to ICS UTC format
-  return new Date(dateStr).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+function formatDate(date) {
+  return new Date(date).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
 function buildICS(events) {
@@ -23,49 +22,38 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
-// 1️⃣ Get Top 25 teams from CBB API
+// 1️⃣ Get Top 25 teams from CollegeBasketballData.com
 async function getTop25Teams() {
   const res = await fetch("https://api.collegebasketballdata.com/rankings", {
-    headers: { Authorization: `Bearer ${API_KEY}` },
+    headers: { Authorization: `Bearer ${CBB_API_KEY}` },
   });
   const data = await res.json();
-  const apTop25 = data
-    .filter(r => r.pollType === "AP Top 25")
-    .sort((a, b) => a.ranking - b.ranking)
-    .slice(0, 25);
-  return apTop25.map(t => ({ name: t.team, rank: t.ranking }));
+  const top25 = data.filter(r => r.pollType === "AP Top 25").sort((a,b)=>a.ranking-b.ranking).slice(0,25);
+  return top25.map(t => ({ id: t.teamId, name: t.team, rank: t.ranking }));
 }
 
-// 2️⃣ Fetch future schedule from PlainTextSports
+// 2️⃣ Get future schedule from PlainTextSports
 async function getFutureGames() {
   const res = await fetch("https://plaintextsports.com/ncaa-mb/");
-  const text = await res.text();
-  const lines = text.split("\n");
+  const html = await res.text();
+  const $ = cheerio.load(html);
 
   const today = new Date();
+  const endDate = new Date(today.getFullYear(), 5, 30); // June 30th
+  const games = [];
 
-  const games = lines
-    .map(line => line.trim())
-    .filter(line => line)
-    .map(line => {
-      // Expecting format: MM/DD/YYYY | TeamA vs TeamB | HH:MM AM/PM ET
-      const parts = line.split("|").map(p => p.trim());
-      if (parts.length < 2) return null;
-      const [datePart, matchupPart, timePart] = parts;
-      const date = new Date(datePart + (timePart ? " " + timePart : ""));
-      if (isNaN(date.getTime()) || date < today) return null;
-
-      const vsMatch = matchupPart.match(/(.+)\s+vs\s+(.+)/i);
-      if (!vsMatch) return null;
-
-      return {
-        date,
-        homeName: vsMatch[1].trim(),
-        awayName: vsMatch[2].trim(),
-        uid: `ncaa-${date.getTime()}-${vsMatch[1]}-${vsMatch[2]}@borderbarrels`,
-      };
-    })
-    .filter(Boolean);
+  // PlainTextSports uses a <pre> block
+  $("pre").first().text().split("\n").forEach(line => {
+    // Example line format: "Jan 05  Duke @ Virginia Tech 7:00 PM"
+    const match = line.match(/([A-Za-z]{3} \d{2})\s+(.+?)\s+@\s+(.+?)\s+(\d{1,2}:\d{2} [AP]M)/);
+    if (match) {
+      const [_, dateStr, home, away, timeStr] = match;
+      const year = today.getFullYear();
+      const date = new Date(`${dateStr} ${year} ${timeStr}`);
+      if (date < today || date > endDate) return;
+      games.push({ date, home, away });
+    }
+  });
 
   return games;
 }
@@ -75,8 +63,8 @@ async function getFutureGames() {
   const top25 = await getTop25Teams();
   console.log(`Found ${top25.length} Top 25 teams`);
 
-  const top25Names = new Set(top25.map(t => t.name));
-  const rankMap = new Map(top25.map(t => [t.name, t.rank]));
+  const top25Set = new Set(top25.map(t => t.name.toLowerCase()));
+  const rankMap = new Map(top25.map(t => [t.name.toLowerCase(), t.rank]));
 
   console.log("Fetching future games...");
   const allGames = await getFutureGames();
@@ -86,39 +74,41 @@ async function getFutureGames() {
   const events = [];
 
   for (const g of allGames) {
-    // Only include games with at least one Top 25 team
-    if (!top25Names.has(g.homeName) && !top25Names.has(g.awayName)) continue;
+    const homeId = g.home.toLowerCase();
+    const awayId = g.away.toLowerCase();
+    if (!top25Set.has(homeId) && !top25Set.has(awayId)) continue; // skip non-Top25 games
 
-    if (seen.has(g.uid)) continue;
-    seen.add(g.uid);
+    // deduplicate Top 25 vs Top 25
+    const uid = `ncaa-${[homeId, awayId].sort().join("-")}-${g.date.getTime()}`;
+    if (seen.has(uid)) continue;
+    seen.add(uid);
 
-    const homeRank = rankMap.get(g.homeName);
-    const awayRank = rankMap.get(g.awayName);
+    const homeRank = rankMap.get(homeId);
+    const awayRank = rankMap.get(awayId);
 
     const summary =
-      `${homeRank ? "#" + homeRank + " " : ""}${g.homeName}` +
-      " vs " +
-      `${awayRank ? "#" + awayRank + " " : ""}${g.awayName}`;
+      `${homeRank ? "#" + homeRank + " " : ""}${g.home}` +
+      ` vs ` +
+      `${awayRank ? "#" + awayRank + " " : ""}${g.away}`;
 
     const start = formatDate(g.date);
     const end = formatDate(new Date(g.date.getTime() + 2 * 60 * 60 * 1000));
 
     events.push(`BEGIN:VEVENT
-UID:${g.uid}
+UID:${uid}
 SEQUENCE:0
 STATUS:CONFIRMED
-DTSTAMP:${formatDate(new Date())}
+DTSTAMP:${start}
 DTSTART:${start}
 DTEND:${end}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
 LOCATION:
-END:VEVENT`);
+END:VEVENT
+`);
   }
 
-  events.sort((a, b) =>
-    a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
-  );
+  events.sort((a,b)=>a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1]));
 
   fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events));
   console.log(`Generated ${events.length} events for Top 25 games`);
