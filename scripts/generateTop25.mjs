@@ -94,14 +94,14 @@ async function getTeamGames(team) {
     for (const e of scheduleData.events ?? []) {
       const comp = e.competitions?.[0];
       if (!comp) continue;
-
-      const home = comp.competitors.find(c => c.homeAway === "home")?.team?.displayName;
-      const away = comp.competitors.find(c => c.homeAway === "away")?.team?.displayName;
+    
+      const home = comp.competitors.find(c => c.homeAway === "home")?.team?.shortDisplayName;
+      const away = comp.competitors.find(c => c.homeAway === "away")?.team?.shortDisplayName;
       if (!home || !away) continue;
-
+    
       const gameDate = new Date(e.date);
       if (isNaN(gameDate) || gameDate < now || gameDate > END_DATE) continue;
-
+    
       games.push({
         id: e.id,
         date: gameDate,
