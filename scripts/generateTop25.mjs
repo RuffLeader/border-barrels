@@ -7,14 +7,12 @@ if (!API_KEY) {
   throw new Error("Missing CBB_API_KEY");
 }
 
-// Ensure docs folder exists
+// Ensure public folder exists for Netlify
 if (!fs.existsSync("public")) {
   fs.mkdirSync("public", { recursive: true });
 }
 
-const headers = {
-  Authorization: `Bearer ${API_KEY}`
-};
+const headers = { Authorization: `Bearer ${API_KEY}` };
 
 async function fetchJSON(url) {
   const res = await fetch(url, { headers });
@@ -24,10 +22,9 @@ async function fetchJSON(url) {
   return res.json();
 }
 
-// 1️⃣ Get current AP Top 25
+// 1️⃣ Get current AP Top 25 teams
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE}/rankings`);
-  
   const apTop25 = rankings
     .filter(r => r.pollType === "AP Top 25")
     .sort((a, b) => a.ranking - b.ranking)
@@ -47,7 +44,7 @@ async function getTeamGames(teamId) {
   return games;
 }
 
-// 3️⃣ Build iCal
+// 3️⃣ Build iCal content
 function buildICS(events) {
   const header = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -55,48 +52,49 @@ PRODID:-//Border Barrels//NCAA Top 25//EN
 CALSCALE:GREGORIAN
 REFRESH-INTERVAL;VALUE=DURATION:PT6H
 `;
-
   const footer = `END:VCALENDAR`;
-
   return header + events.join("\n") + footer;
 }
 
+// 4️⃣ Format date for iCal
 function formatDate(dateStr) {
   return dateStr.replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
 (async () => {
   const teams = await getTop25Teams();
-
   const teamMap = new Map();
   teams.forEach(t => teamMap.set(t.teamId, t));
+
+  // Fetch all Top 25 team games in parallel
+  const allGamesArrays = await Promise.all(
+    teams.map(team => getTeamGames(team.teamId))
+  );
+  const allGames = allGamesArrays.flat();
 
   const seenGames = new Set();
   const events = [];
 
-  for (const team of teams) {
-    const games = await getTeamGames(team.teamId);
+  for (const g of allGames) {
+    // Skip incomplete or past games
+    if (!g.startDate || !g.homeTeamId || !g.awayTeamId) continue;
+    if (new Date(g.startDate) < new Date()) continue;
 
-    for (const g of games) {
-      // Skip incomplete or past games
-      if (!g.startDate || !g.homeTeamId || !g.awayTeamId) continue;
-      if (new Date(g.startDate) < new Date()) continue;
+    const uid = `ncaa-${g.id}@borderbarrels`;
+    if (seenGames.has(uid)) continue;
+    seenGames.add(uid);
 
-      const uid = `ncaa-${g.id}@borderbarrels`;
-      if (seenGames.has(uid)) continue;
-      seenGames.add(uid);
+    const homeRank = teamMap.get(g.homeTeamId)?.rank;
+    const awayRank = teamMap.get(g.awayTeamId)?.rank;
 
-      const homeRank = teamMap.get(g.homeTeamId)?.rank;
-      const awayRank = teamMap.get(g.awayTeamId)?.rank;
+    const summary = `${homeRank ? "#" + homeRank + " " : ""}${g.homeTeam} vs ${awayRank ? "#" + awayRank + " " : ""}${g.awayTeam}`;
 
-      const summary = `${homeRank ? "#" + homeRank + " " : ""}${g.homeTeam} vs ${awayRank ? "#" + awayRank + " " : ""}${g.awayTeam}`;
+    const start = formatDate(g.startDate);
+    const end = formatDate(
+      new Date(new Date(g.startDate).getTime() + 2 * 60 * 60 * 1000).toISOString()
+    );
 
-      const start = formatDate(g.startDate);
-      const end = formatDate(
-        new Date(new Date(g.startDate).getTime() + 2 * 60 * 60 * 1000).toISOString()
-      );
-
-      events.push(`
+    events.push(`
 BEGIN:VEVENT
 UID:${uid}
 SEQUENCE:0
@@ -109,7 +107,6 @@ DESCRIPTION:AP Top 25 Game
 LOCATION:${g.venue || ""}
 END:VEVENT
 `);
-    }
   }
 
   // Sort events by start date
