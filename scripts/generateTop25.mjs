@@ -24,7 +24,7 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
-// Fetch Top 25 from ESPN HTML
+// Scrape Top 25 teams from ESPN
 async function getTop25Teams() {
   const res = await fetch(`${ESPN_BASE}/rankings`);
   const html = await res.text();
@@ -32,14 +32,19 @@ async function getTop25Teams() {
 
   const teams = [];
 
-  $("table.rankings-table tbody tr").each((i, row) => {
-    if (i >= 25) return; // only top 25
-    const rank = parseInt($(row).find("td.rank").text());
-    const name = $(row).find("td.team a").text().trim();
-    const teamUrl = $(row).find("td.team a").attr("href"); // /mens-college-basketball/team/_/id/150/duke-blue-devils
+  $("section.rankings__list-item").each((i, el) => {
+    if (i >= 25) return;
+
+    const rankText = $(el).find("span.rank").first().text().trim();
+    const rank = parseInt(rankText);
+    const name = $(el).find("a.AnchorLink").text().trim();
+    const teamUrl = $(el).find("a.AnchorLink").attr("href"); // /mens-college-basketball/team/_/id/150/duke-blue-devils
     const match = teamUrl?.match(/\/id\/(\d+)\//);
     const id = match ? parseInt(match[1]) : null;
-    if (id) teams.push({ id, name, rank });
+
+    if (id && rank && name) {
+      teams.push({ id, name, rank });
+    }
   });
 
   return teams;
