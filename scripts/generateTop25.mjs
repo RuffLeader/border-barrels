@@ -1,12 +1,13 @@
+// scripts/generateTop25.mjs
 import fs from "fs";
 import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 
+const API_KEY = process.env.CBB_API_KEY;
+if (!API_KEY) throw new Error("Missing CBB_API_KEY");
+
 const PUBLIC_DIR = "public";
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-
-const CBB_API_KEY = process.env.CBB_API_KEY;
-if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
 
 function formatDate(date) {
   return new Date(date).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
@@ -22,42 +23,65 @@ ${events.join("\n")}
 END:VCALENDAR`;
 }
 
-// 1️⃣ Get Top 25 teams from CollegeBasketballData.com
+// 1️⃣ Get Top 25 teams from CollegeBasketballData
 async function getTop25Teams() {
-  const res = await fetch("https://api.collegebasketballdata.com/rankings", {
-    headers: { Authorization: `Bearer ${CBB_API_KEY}` },
+  const res = await fetch(`https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular`, {
+    headers: { Authorization: `Bearer ${API_KEY}` }
   });
   const data = await res.json();
-  const top25 = data
-    .filter(r => r.pollType === "AP Top 25")
-    .sort((a, b) => a.ranking - b.ranking)
-    .slice(0, 25);
-  return top25.map(t => ({ id: t.teamId, name: t.team, rank: t.ranking }));
+  const apTop25 = data.filter(r => r.pollType === "AP Top 25").sort((a,b) => a.ranking - b.ranking).slice(0,25);
+  return apTop25.map(t => ({ id: t.teamId, name: t.team, rank: t.ranking }));
 }
 
-// 2️⃣ Get future schedule from PlainTextSports
-async function getFutureGames() {
-  const res = await fetch("https://plaintextsports.com/ncaa-mb/");
-  const html = await res.text();
-  const $ = cheerio.load(html);
+// 2️⃣ Scrape ESPN team schedule
+async function getTeamGames(team) {
+  const url = `https://www.espn.com/mens-college-basketball/team/schedule/_/id/${team.id}`;
+  try {
+    const res = await fetch(url);
+    const html = await res.text();
+    const $ = cheerio.load(html);
 
-  const today = new Date();
-  const endDate = new Date(today.getFullYear(), 5, 30); // June 30
+    const games = [];
 
-  const games = [];
+    $("table.Table tbody tr").each((i, el) => {
+      const tds = $(el).find("td");
+      if (tds.length < 2) return;
 
-  $("pre").first().text().split("\n").forEach(line => {
-    const match = line.match(/([A-Za-z]{3} \d{2})\s+(.+?)\s+@\s+(.+?)\s+(\d{1,2}:\d{2} [AP]M)/);
-    if (match) {
-      const [_, dateStr, home, away, timeStr] = match;
-      const year = today.getFullYear();
-      const date = new Date(`${dateStr} ${year} ${timeStr}`);
-      if (date < today || date > endDate) return;
-      games.push({ date, home, away });
-    }
-  });
+      const dateStr = $(tds[0]).text().trim();
+      const opponentRaw = $(tds[1]).text().trim();
 
-  return games;
+      if (!dateStr || !opponentRaw) return;
+
+      const date = new Date(dateStr);
+      if (date < new Date()) return; // future games only
+
+      // Determine home/away
+      let homeTeam = team.name;
+      let awayTeam = opponentRaw;
+      if (opponentRaw.startsWith("@")) {
+        homeTeam = opponentRaw.replace("@ ", "");
+        awayTeam = team.name;
+      } else {
+        awayTeam = opponentRaw.replace("vs ", "");
+      }
+
+      // Remove ranking symbols if present
+      homeTeam = homeTeam.replace(/#\d+ /, "");
+      awayTeam = awayTeam.replace(/#\d+ /, "");
+
+      games.push({
+        date: date.toISOString(),
+        homeTeam,
+        awayTeam,
+        venue: ""
+      });
+    });
+
+    return games;
+  } catch (err) {
+    console.warn(`Failed to fetch games for ${team.name}: ${err.message}`);
+    return [];
+  }
 }
 
 (async () => {
@@ -65,38 +89,39 @@ async function getFutureGames() {
   const top25 = await getTop25Teams();
   console.log(`Found ${top25.length} Top 25 teams`);
 
-  const top25Set = new Set(top25.map(t => t.name.toLowerCase()));
-  const rankMap = new Map(top25.map(t => [t.name.toLowerCase(), t.rank]));
-
-  console.log("Fetching future games...");
-  const allGames = await getFutureGames();
-  console.log(`Total future games fetched: ${allGames.length}`);
+  const top25Names = new Set(top25.map(t => t.name));
+  const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
   const seen = new Set();
   const events = [];
 
-  for (const g of allGames) {
-    const homeId = g.home.toLowerCase();
-    const awayId = g.away.toLowerCase();
-    if (!top25Set.has(homeId) && !top25Set.has(awayId)) continue; // skip non-Top25 games
+  console.log("Fetching future games...");
+  const teamGamesArrays = await Promise.all(top25.map(t => getTeamGames(t)));
+  const allGames = teamGamesArrays.flat();
 
-    // deduplicate Top 25 vs Top 25
-    const uid = `ncaa-${[homeId, awayId].sort().join("-")}-${g.date.getTime()}`;
+  console.log(`Total future games fetched: ${allGames.length}`);
+
+  for (const g of allGames) {
+    const uid = `ncaa-${g.homeTeam}-${g.awayTeam}-${g.date}`;
     if (seen.has(uid)) continue;
+
+    // Only include if at least one team is Top 25
+    if (!top25Names.has(g.homeTeam) && !top25Names.has(g.awayTeam)) continue;
     seen.add(uid);
 
-    const homeRank = rankMap.get(homeId);
-    const awayRank = rankMap.get(awayId);
+    const homeRank = rankMap.get(g.homeTeam);
+    const awayRank = rankMap.get(g.awayTeam);
 
     const summary =
-      `${homeRank ? "#" + homeRank + " " : ""}${g.home}` +
+      `${homeRank ? "#" + homeRank + " " : ""}${g.homeTeam}` +
       ` vs ` +
-      `${awayRank ? "#" + awayRank + " " : ""}${g.away}`;
+      `${awayRank ? "#" + awayRank + " " : ""}${g.awayTeam}`;
 
     const start = formatDate(g.date);
-    const end = formatDate(new Date(g.date.getTime() + 2 * 60 * 60 * 1000));
+    const end = formatDate(new Date(new Date(g.date).getTime() + 2*60*60*1000));
 
-    events.push(`BEGIN:VEVENT
+    events.push(`
+BEGIN:VEVENT
 UID:${uid}
 SEQUENCE:0
 STATUS:CONFIRMED
@@ -105,12 +130,12 @@ DTSTART:${start}
 DTEND:${end}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
-LOCATION:
+LOCATION:${g.venue}
 END:VEVENT
 `);
   }
 
-  events.sort((a, b) => a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1]));
+  events.sort((a,b)=>a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1]));
 
   fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events));
   console.log(`Generated ${events.length} events for Top 25 games`);
