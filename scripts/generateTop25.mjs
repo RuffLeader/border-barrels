@@ -1,18 +1,17 @@
 import fs from "fs";
+import fetch from "node-fetch";
+import cheerio from "cheerio";
 
 const CBB_API_KEY = process.env.CBB_API_KEY;
-const BAL_API_KEY = process.env.BAL_API_KEY;
-const BASE_CBB = "https://api.collegebasketballdata.com";
-const BASE_BAL = "https://www.balldontlie.io/ncaab/v1";
-
 if (!CBB_API_KEY) throw new Error("Missing CBB_API_KEY");
-if (!BAL_API_KEY) throw new Error("Missing BAL_API_KEY");
 
 // Ensure public folder exists
 if (!fs.existsSync("public")) fs.mkdirSync("public", { recursive: true });
 
+const BASE_CBB = "https://api.collegebasketballdata.com";
+
 // --------------------
-// Helper: fetch JSON with optional headers
+// Helper: fetch JSON
 async function fetchJSON(url, headers = {}) {
   const res = await fetch(url, { headers });
   if (!res.ok) throw new Error(`API error ${res.status} for ${url}`);
@@ -29,51 +28,52 @@ async function getTop25Teams() {
     .slice(0, 25);
 
   return apTop25.map(r => ({
-    cbbName: r.team.toLowerCase(),
-    rank: r.ranking,
-    cbbId: r.teamId
+    name: r.team.toLowerCase(),
+    rank: r.ranking
   }));
 }
 
 // --------------------
-// 2️⃣ Get all NCAAB teams from Balldontlie
-async function getBalTeams() {
-  const data = await fetchJSON(`${BASE_BAL}/teams`, { Authorization: `Bearer ${BAL_API_KEY}` });
-  return data.data.map(t => ({
-    balId: t.id,
-    name: t.full_name.toLowerCase()
-  }));
+// 2️⃣ Fetch all NCAA D-I teams from ESPN
+async function getAllEpsnTeams() {
+  const res = await fetch("https://www.espn.com/mens-college-basketball/teams");
+  const html = await res.text();
+  const $ = cheerio.load(html);
+  const teams = [];
+
+  $("a.AnchorLink").each((i, el) => {
+    const href = $(el).attr("href");
+    const name = $(el).text();
+    const match = href?.match(/team\/_\/id\/(\d+)/);
+    if (match) {
+      const id = Number(match[1]);
+      teams.push({ name: name.toLowerCase(), id });
+    }
+  });
+
+  return teams;
 }
 
 // --------------------
-// 3️⃣ Map CBB Top 25 teams to Balldontlie IDs automatically
-function mapCbbToBal(top25, balTeams) {
+// 3️⃣ Match Top 25 teams to ESPN IDs
+function mapTop25ToESPN(top25, espnTeams) {
   const map = new Map();
-  top25.forEach(team => {
-    const match = balTeams.find(b => b.name.includes(team.cbbName) || team.cbbName.includes(b.name));
-    if (match) map.set(team.cbbId, match.balId);
-    else console.warn("No Balldontlie match for:", team.cbbName);
+  top25.forEach(t => {
+    const match = espnTeams.find(e => e.name.includes(t.name) || t.name.includes(e.name));
+    if (match) map.set(t.name, match.id);
+    else console.warn("No ESPN match for:", t.name);
   });
   return map;
 }
 
 // --------------------
-// 4️⃣ Fetch future games for a Balldontlie team (paginated)
-async function getTeamGamesBal(balId) {
+// 4️⃣ Fetch future games for a team from ESPN
+async function getTeamGamesESPN(teamId) {
   const today = new Date().toISOString().split("T")[0];
-  let allGames = [];
-  let page = 1;
-  let totalPages = 1;
-
-  while (page <= totalPages) {
-    const url = `${BASE_BAL}/games?team_ids[]=${balId}&start_date=${today}&per_page=100&page=${page}`;
-    const data = await fetchJSON(url, { Authorization: `Bearer ${BAL_API_KEY}` });
-    allGames = allGames.concat(data.data);
-    totalPages = data.meta.total_pages;
-    page++;
-  }
-
-  return allGames;
+  const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/teams/${teamId}/schedule`;
+  const data = await fetchJSON(url);
+  if (!data.events) return [];
+  return data.events.filter(e => new Date(e.date) >= new Date());
 }
 
 // --------------------
@@ -83,7 +83,7 @@ function formatDate(dateStr) {
 }
 
 // --------------------
-// 6️⃣ Build iCal file content
+// 6️⃣ Build iCal
 function buildICS(events) {
   return `BEGIN:VCALENDAR
 VERSION:2.0
@@ -95,25 +95,27 @@ END:VCALENDAR`;
 }
 
 // --------------------
-// 7️⃣ Main function
+// 7️⃣ Main
 (async () => {
-  // Fetch Top 25 + Balldontlie teams
   const top25 = await getTop25Teams();
-  const balTeams = await getBalTeams();
-  const cbbToBal = mapCbbToBal(top25, balTeams);
+  console.log("Top 25 teams:", top25.map(t => t.name));
 
-  // Map for rank lookup
+  const espnTeams = await getAllEpsnTeams();
+  console.log("Fetched ESPN teams:", espnTeams.length);
+
+  const espnMap = mapTop25ToESPN(top25, espnTeams);
+
   const rankMap = new Map();
-  top25.forEach(t => rankMap.set(t.cbbId, t.rank));
+  top25.forEach(t => rankMap.set(t.name, t.rank));
 
   // Fetch all games in parallel
   const allGamesArrays = await Promise.all(
-    Array.from(cbbToBal.values()).map(balId => getTeamGamesBal(balId))
+    Array.from(espnMap.values()).map(teamId => getTeamGamesESPN(teamId))
   );
   const allGames = allGamesArrays.flat();
 
   console.log("Total games fetched:", allGames.length);
-  console.log("Sample of first 5 games:", allGames.slice(0, 5));
+  console.log("Sample first 5 games:", allGames.slice(0, 5));
 
   const seenGameIds = new Set();
   const events = [];
@@ -122,22 +124,24 @@ END:VCALENDAR`;
     if (seenGameIds.has(g.id)) continue;
     seenGameIds.add(g.id);
 
-    // Only include games where at least one team is Top 25
-    const homeCbbId = Array.from(cbbToBal.entries()).find(([, val]) => val === g.home_team.id)?.[0];
-    const awayCbbId = Array.from(cbbToBal.entries()).find(([, val]) => val === g.visitor_team.id)?.[0];
-    if (!homeCbbId && !awayCbbId) continue;
+    const homeComp = g.competitions[0].competitors.find(c => c.homeAway === "home");
+    const awayComp = g.competitions[0].competitors.find(c => c.homeAway === "away");
+    const homeName = homeComp.team.displayName.toLowerCase();
+    const awayName = awayComp.team.displayName.toLowerCase();
 
-    const homeRank = rankMap.get(Number(homeCbbId));
-    const awayRank = rankMap.get(Number(awayCbbId));
+    const homeRank = rankMap.get(homeName);
+    const awayRank = rankMap.get(awayName);
 
-    const summary = `${homeRank ? "#" + homeRank + " " : ""}${g.home_team.full_name} vs ${awayRank ? "#" + awayRank + " " : ""}${g.visitor_team.full_name}`;
+    if (!homeRank && !awayRank) continue;
+
+    const summary = `${homeRank ? "#" + homeRank + " " : ""}${homeComp.team.displayName} vs ${awayRank ? "#" + awayRank + " " : ""}${awayComp.team.displayName}`;
     const start = formatDate(g.date);
     const end = formatDate(new Date(new Date(g.date).getTime() + 2 * 60 * 60 * 1000).toISOString());
-    const location = g.home_team_conference || "";
+    const location = g.competitions[0].venue?.fullName || "";
 
     events.push(`
 BEGIN:VEVENT
-UID:bal-${g.id}@borderbarrels
+UID:espn-${g.id}@borderbarrels
 SEQUENCE:0
 STATUS:CONFIRMED
 DTSTAMP:${start}
