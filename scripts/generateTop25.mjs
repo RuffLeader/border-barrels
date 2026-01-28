@@ -12,9 +12,17 @@ const BASE_CBB = "https://api.collegebasketballdata.com";
 
 // --------------------
 // Helper: fetch JSON
-async function fetchJSON(url, headers = {}) {
-  const res = await fetch(url, { headers });
-  if (!res.ok) throw new Error(`API error ${res.status} for ${url}`);
+async function fetchJSON(url, { allow400 = false } = {}) {
+  const res = await fetch(url);
+
+  if (res.status === 400 && allow400) {
+    return null; // ESPN "no schedule" response
+  }
+
+  if (!res.ok) {
+    throw new Error(`API error ${res.status} for ${url}`);
+  }
+
   return res.json();
 }
 
@@ -71,7 +79,7 @@ function mapTop25ToESPN(top25, espnTeams) {
 async function getTeamGamesESPN(teamId) {
   const today = new Date().toISOString().split("T")[0];
   const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/college-men/teams/${teamId}/schedule`;
-  const data = await fetchJSON(url);
+  const data = await fetchJSON(url, { allow400: true });
   if (!data.events) return [];
   return data.events.filter(e => new Date(e.date) >= new Date());
 }
