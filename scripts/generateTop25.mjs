@@ -10,9 +10,9 @@ function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
-// normalize team names for matching / ESPN URLs
+// normalize team names for matching
 function normalize(str) {
-  return str.toLowerCase().replace(/[^a-z0-9]/g, "").trim();
+  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
 
 function buildICS(events) {
@@ -34,7 +34,9 @@ async function getTop25Teams() {
 
   const res = await fetch(
     `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
-    { headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` } }
+    {
+      headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` },
+    }
   );
 
   if (!res.ok) throw new Error(`Failed to fetch Top 25: ${res.status}`);
@@ -52,33 +54,38 @@ async function getTop25Teams() {
   return teams;
 }
 
-/* ---------------- GET TEAM FUTURE GAMES (TEAM-SPECIFIC ESPN API) ---------------- */
+/* ---------------- GET TEAM FUTURE GAMES ---------------- */
 async function getTeamGames(team) {
-  // Fallback map for tricky team names
+  // Fallback map for tricky ESPN team URLs
   const fallback = {
     "stjohns": "stjohns",
     "northcarolina": "unc",
+    "unc": "unc",
     "texastech": "texastech",
-    "pitt": "pittsburgh",
+    "iowastate": "iowastate",
+    "michiganstate": "michiganstate",
+    "pittsburgh": "pitt",
   };
 
   const espnName = fallback[team.norm] || team.norm;
-  const url = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${espnName}`;
-  console.log(`Fetching ESPN data for ${team.name} from ${url}`);
+  const teamUrl = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${espnName}`;
 
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch ESPN team: ${res.status}`);
+    const res = await fetch(teamUrl);
+    if (!res.ok) {
+      if (res.status === 400) {
+        console.log(`400 Error fetching ESPN team for: ${team.name} (${espnName})`);
+      }
+      throw new Error(`Failed to fetch ESPN team: ${res.status}`);
+    }
+
     const data = await res.json();
-    const espnTeam = data.team;
-    if (!espnTeam) throw new Error("No team object in ESPN response");
+    const teamId = data.team?.id;
+    if (!teamId) throw new Error("No team ID found");
 
-    // Get schedule URL
-    const scheduleUrl = espnTeam.links?.find(l => l.rel?.includes("schedule"))?.href;
-    if (!scheduleUrl) throw new Error("No schedule link found");
-
-    console.log(`Fetching schedule for ${team.name} from ${scheduleUrl}`);
+    const scheduleUrl = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/schedule`;
     const scheduleRes = await fetch(scheduleUrl);
+    if (!scheduleRes.ok) throw new Error(`Failed to fetch schedule: ${scheduleRes.status}`);
     const scheduleData = await scheduleRes.json();
 
     const now = new Date();
