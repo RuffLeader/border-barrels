@@ -7,8 +7,9 @@ if (!API_KEY) {
   throw new Error("Missing CBB_API_KEY");
 }
 
+// Ensure docs folder exists
 if (!fs.existsSync("docs")) {
-  fs.mkdirSync("docs");
+  fs.mkdirSync("docs", { recursive: true });
 }
 
 const headers = {
@@ -27,11 +28,10 @@ async function fetchJSON(url) {
 async function getTop25Teams() {
   const rankings = await fetchJSON(`${BASE}/rankings`);
   
-  // Filter only AP Top 25
   const apTop25 = rankings
     .filter(r => r.pollType === "AP Top 25")
-    .sort((a, b) => a.ranking - b.ranking) // ensure correct order
-    .slice(0, 25); // top 25 only, just in case
+    .sort((a, b) => a.ranking - b.ranking)
+    .slice(0, 25);
 
   return apTop25.map(r => ({
     team: r.team,
@@ -43,9 +43,8 @@ async function getTop25Teams() {
 // 2️⃣ Get upcoming games for a team
 async function getTeamGames(teamId) {
   const today = new Date().toISOString().split("T")[0];
-  return fetchJSON(
-    `${BASE}/games?teamId=${teamId}&startDate=${today}`
-  );
+  const games = await fetchJSON(`${BASE}/games?teamId=${teamId}&startDate=${today}`);
+  return games;
 }
 
 // 3️⃣ Build iCal
@@ -79,7 +78,9 @@ function formatDate(dateStr) {
     const games = await getTeamGames(team.teamId);
 
     for (const g of games) {
+      // Skip incomplete or past games
       if (!g.startDate || !g.homeTeamId || !g.awayTeamId) continue;
+      if (new Date(g.startDate) < new Date()) continue;
 
       const uid = `ncaa-${g.id}@borderbarrels`;
       if (seenGames.has(uid)) continue;
@@ -98,6 +99,8 @@ function formatDate(dateStr) {
       events.push(`
 BEGIN:VEVENT
 UID:${uid}
+SEQUENCE:0
+STATUS:CONFIRMED
 DTSTAMP:${start}
 DTSTART:${start}
 DTEND:${end}
@@ -109,6 +112,15 @@ END:VEVENT
     }
   }
 
+  // Sort events by start date
+  events.sort((a, b) => {
+    const aStart = a.match(/DTSTART:(\d+)/)[1];
+    const bStart = b.match(/DTSTART:(\d+)/)[1];
+    return aStart.localeCompare(bStart);
+  });
+
   const ics = buildICS(events);
   fs.writeFileSync("docs/top25.ics", ics);
+
+  console.log(`Generated ${events.length} events for Top 25 games`);
 })();
