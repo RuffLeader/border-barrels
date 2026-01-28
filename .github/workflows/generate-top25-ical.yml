@@ -33,7 +33,7 @@ jobs:
         run: npm run build  # adjust if your build command is different
 
       - name: Deploy to Netlify
-        uses: netlify/actions/cli@v3
+        uses: netlify/actions/cli@v1
         with:
           args: deploy --dir=public --prod
         env:
