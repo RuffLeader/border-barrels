@@ -1,5 +1,30 @@
 import fs from "fs";
 import fetch from "node-fetch";
+import nodemailer from "nodemailer";
+
+async function sendErrorEmail(team, espnName, status) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.warn("EMAIL_USER or EMAIL_PASS not set — cannot send alert email.");
+    return;
+  }
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail", // or another service
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: `"Top 25 Bot" <${process.env.EMAIL_USER}>`,
+    to: "your-email@example.com", // put your email here
+    subject: `400 Error fetching ESPN team: ${team.name}`,
+    text: `Failed to fetch ESPN team for ${team.name} (${espnName}) — status ${status}`,
+  });
+
+  console.log("Alert email sent:", info.messageId);
+}
 
 const PUBLIC_DIR = "public";
 if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
@@ -75,6 +100,7 @@ async function getTeamGames(team) {
     if (!res.ok) {
       if (res.status === 400) {
         console.log(`400 Error fetching ESPN team for: ${team.name} (${espnName})`);
+        await sendErrorEmail(team, espnName, res.status); // <-- add this
       }
       throw new Error(`Failed to fetch ESPN team: ${res.status}`);
     }
