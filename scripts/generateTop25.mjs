@@ -2,6 +2,9 @@ import fs from "fs";
 import fetch from "node-fetch";
 import nodemailer from "nodemailer";
 
+const EMAIL_USER = process.env.EMAIL_USER;
+const EMAIL_PASS = process.env.EMAIL_PASS;
+
 async function sendErrorEmail(team, espnName, status) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.warn("EMAIL_USER or EMAIL_PASS not set — cannot send alert email.");
