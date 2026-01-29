@@ -19,6 +19,8 @@ jobs:
 
       - run: node scripts/generateTop25.mjs
         env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
           CBB_API_KEY: ${{ secrets.CBB_API_KEY }}
 
       - run: |
