@@ -189,7 +189,7 @@ async function getTeamGames(team) {
       const start = g.date;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
       const summary =
-        `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} vs ` +
+        `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} @ ` +
         `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
 
       events.push(`BEGIN:VEVENT
