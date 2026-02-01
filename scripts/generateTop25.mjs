@@ -80,6 +80,13 @@ async function getTop25Teams() {
 
   console.log("Top 25 CBBD teams:", teams.map(t => t.name).join(", "));
   return teams;
+
+  console.log("AP Top 25 grabbed from CBBD:");
+  teams
+    .sort((a, b) => a.rank - b.rank)
+    .forEach(t => {
+      console.log(`#${t.rank} – ${t.name}`);
+    });
 }
 
 /* ---------------- GET TEAM FUTURE GAMES ---------------- */
