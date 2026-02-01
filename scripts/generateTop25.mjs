@@ -60,8 +60,11 @@ async function getTop25Teams() {
     throw new Error("CBB_API_KEY not set in environment");
   }
 
+  const SEASON = 2026;
+  const WEEK = 13;  
+
   const res = await fetch(
-    `https://api.collegebasketballdata.com/rankings?year=${new Date().getFullYear()}&seasonType=regular&week=1`,
+    `https://api.collegebasketballdata.com/rankings?season=${SEASON}&seasonType=regular&week=${WEEK}&pollType=ap`,
     {
       headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` },
     }
