@@ -103,6 +103,8 @@ async function getTeamGames(team) {
     "iowa state": "iowast",
     "michigan state": "michiganst",
     "pittsburgh": "pitt",
+    "miami oh": "193",
+    "saint louis": "139",
   };
 
   const espnName = fallback[team.norm] || team.norm;
