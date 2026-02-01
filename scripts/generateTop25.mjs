@@ -61,10 +61,10 @@ async function getTop25Teams() {
   }
 
   const SEASON = 2026;
-  const WEEK = 13;  
 
+  // 1️⃣ Fetch all AP rankings for the season
   const res = await fetch(
-    `https://api.collegebasketballdata.com/rankings?season=${SEASON}&seasonType=regular&week=${WEEK}&pollType=ap`,
+    `https://api.collegebasketballdata.com/rankings?season=${SEASON}&seasonType=regular&pollType=ap`,
     {
       headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` },
     }
@@ -72,24 +72,28 @@ async function getTop25Teams() {
 
   if (!res.ok) throw new Error(`Failed to fetch Top 25: ${res.status}`);
 
-  const data = await res.json();
-  const apTop25 = data.filter(r => r.pollType === "AP Top 25").slice(0, 25);
+  const allData = await res.json();
 
-  const teams = apTop25.map(t => ({
+  // 2️⃣ Find latest available week
+  const latestWeek = Math.max(...allData.map(r => r.week));
+  console.log(`Latest AP poll week detected: Week ${latestWeek}`);
+
+  // 3️⃣ Filter to latest week only
+  const latestWeekData = allData
+    .filter(r => r.week === latestWeek)
+    .sort((a, b) => a.ranking - b.ranking)
+    .slice(0, 25);
+
+  const teams = latestWeekData.map(t => ({
     rank: t.ranking,
     name: t.team,
     norm: normalize(t.team),
   }));
 
-  console.log("Top 25 CBBD teams:", teams.map(t => t.name).join(", "));
-  return teams;
-
   console.log("AP Top 25 grabbed from CBBD:");
-  teams
-    .sort((a, b) => a.rank - b.rank)
-    .forEach(t => {
-      console.log(`#${t.rank} – ${t.name}`);
-    });
+  teams.forEach(t => console.log(`#${t.rank} – ${t.name}`));
+
+  return teams;
 }
 
 /* ---------------- GET TEAM FUTURE GAMES ---------------- */
