@@ -2,7 +2,7 @@ name: Generate Top 25 ICS
 
 on:
   schedule:
-    - cron: "0 21 * * 2" # Every Tuesday 9:00am Melbourne time (UTC+11)
+    - cron: "0 20 * * 2" # Every Tuesday 9:00am Melbourne time (UTC+11)
   workflow_dispatch:
 
 jobs:
