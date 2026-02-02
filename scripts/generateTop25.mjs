@@ -62,7 +62,6 @@ async function getTop25Teams() {
 
   const SEASON = 2026;
 
-  // 1️⃣ Fetch all AP rankings for the season
   const res = await fetch(
     `https://api.collegebasketballdata.com/rankings?season=${SEASON}&seasonType=regular&pollType=ap`,
     {
@@ -74,14 +73,25 @@ async function getTop25Teams() {
 
   const allData = await res.json();
 
-  // 2️⃣ Find latest available week
-  const latestWeek = Math.max(...allData.map(r => r.week));
+  // 🔹 Find latest week that actually has ranked teams
+  const latestWeek = Math.max(
+    ...allData
+      .filter(r => r.ranking >= 1 && r.ranking <= 25)
+      .map(r => r.week)
+  );
+
   console.log(`Latest AP poll week detected: Week ${latestWeek}`);
 
-  // 3️⃣ Filter to latest week only
+  // 🔹 Only real Top 25 teams (ignore "receiving votes")
   const latestWeekData = allData
-    .filter(r => r.week === latestFullWeek && r.pollType === "AP Top 25" && r.ranking >= 1 && r.ranking <= 25)
-    .sort((a, b) => a.ranking - b.ranking);
+    .filter(
+      r =>
+        r.week === latestWeek &&
+        r.pollType === "AP Top 25" &&
+        r.ranking >= 1 &&
+        r.ranking <= 25
+    )
+    .sort((a, b) => a.ranking - b.ranking)
     .slice(0, 25);
 
   const teams = latestWeekData.map(t => ({
