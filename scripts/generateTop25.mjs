@@ -80,8 +80,8 @@ async function getTop25Teams() {
 
   // 3️⃣ Filter to latest week only
   const latestWeekData = allData
-    .filter(r => r.week === latestWeek)
-    .sort((a, b) => a.ranking - b.ranking)
+    .filter(r => r.week === latestFullWeek && r.pollType === "AP Top 25" && r.ranking >= 1 && r.ranking <= 25)
+    .sort((a, b) => a.ranking - b.ranking);
     .slice(0, 25);
 
   const teams = latestWeekData.map(t => ({
