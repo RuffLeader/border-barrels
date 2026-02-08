@@ -30,7 +30,7 @@ jobs:
 
       # 4. Deploy to Netlify
       - name: Deploy to Netlify
-        run: netlify deploy --dir=. --prod --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+        run: netlify deploy --dir=. --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
