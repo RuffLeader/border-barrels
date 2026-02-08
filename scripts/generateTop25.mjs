@@ -2,38 +2,25 @@ import fs from "fs";
 import fetch from "node-fetch";
 import nodemailer from "nodemailer";
 
+/* ---------------- CONFIG ---------------- */
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
+const PUBLIC_DIR = "public";
+const END_DATE = new Date(new Date().getFullYear(), 2, 16); // March 16
+const GENERATED_AT = new Date(); // single source of truth
+const CAL_VERSION = `v${GENERATED_AT.getFullYear()}${(GENERATED_AT.getMonth() + 1)
+  .toString()
+  .padStart(2, "0")}${GENERATED_AT.getDate().toString().padStart(2, "0")}_${GENERATED_AT
+  .getHours()
+  .toString()
+  .padStart(2, "0")}${GENERATED_AT.getMinutes().toString().padStart(2, "0")}`;
 
-async function sendErrorEmail(team, espnName, status) {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.warn("EMAIL_USER or EMAIL_PASS not set — cannot send alert email.");
-    return;
-  }
-
-  let transporter = nodemailer.createTransport({
-    service: "gmail", // or another service
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  const info = await transporter.sendMail({
-    from: `"Top 25 Bot" <${process.env.EMAIL_USER}>`,
-    to: "your-email@example.com", // put your email here
-    subject: `400 Error fetching ESPN team: ${team.name}`,
-    text: `Failed to fetch ESPN team for ${team.name} (${espnName}) — status ${status}`,
-  });
-
-  console.log("Alert email sent:", info.messageId);
+// Melbourne timezone helper
+function formatMelbourneDate(date) {
+  return date.toLocaleString("en-AU", { timeZone: "Australia/Melbourne" });
 }
 
-const PUBLIC_DIR = "public";
-if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-
-const END_DATE = new Date(new Date().getFullYear(), 2, 16); // March 16
-
+/* ---------------- HELPERS ---------------- */
 function formatICSDate(date) {
   return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
@@ -43,13 +30,44 @@ function normalize(str) {
   return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
 
-function buildICS(events) {
+function buildICS(events, latestWeek) {
   return `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Border Barrels//NCAA Top 25//EN
 CALSCALE:GREGORIAN
+X-WR-CALNAME:NCAA Top 25 Games
+X-WR-CALDESC:Last updated ${formatMelbourneDate(
+    GENERATED_AT
+  )} (Melbourne time) — AP Poll Week ${latestWeek}
+X-BORDERBARRELS-GENERATED:${formatICSDate(GENERATED_AT)}
+X-CALENDAR-VERSION:${CAL_VERSION}
 ${events.join("\n")}
 END:VCALENDAR`;
+}
+
+/* ---------------- EMAIL ALERT ---------------- */
+async function sendErrorEmail(team, espnName, status) {
+  if (!EMAIL_USER || !EMAIL_PASS) {
+    console.warn("EMAIL_USER or EMAIL_PASS not set — cannot send alert email.");
+    return;
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+  });
+
+  const info = await transporter.sendMail({
+    from: `"Top 25 Bot" <${EMAIL_USER}>`,
+    to: "your-email@example.com",
+    subject: `400 Error fetching ESPN team: ${team.name}`,
+    text: `Failed to fetch ESPN team for ${team.name} (${espnName}) — status ${status}`,
+  });
+
+  console.log("Alert email sent:", info.messageId);
 }
 
 /* ---------------- GET TOP 25 TEAMS ---------------- */
@@ -64,16 +82,13 @@ async function getTop25Teams() {
 
   const res = await fetch(
     `https://api.collegebasketballdata.com/rankings?season=${SEASON}&seasonType=regular&pollType=ap`,
-    {
-      headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` },
-    }
+    { headers: { Authorization: `Bearer ${process.env.CBB_API_KEY}` } }
   );
 
   if (!res.ok) throw new Error(`Failed to fetch Top 25: ${res.status}`);
 
   const allData = await res.json();
 
-  // 🔹 Find latest week that actually has ranked teams
   const latestWeek = Math.max(
     ...allData
       .filter(r => r.ranking >= 1 && r.ranking <= 25)
@@ -82,8 +97,7 @@ async function getTop25Teams() {
 
   console.log(`Latest AP poll week detected: Week ${latestWeek}`);
 
-  // 🔹 Only real Top 25 teams (ignore "receiving votes")
-  const latestWeekData = allData
+  const teams = allData
     .filter(
       r =>
         r.week === latestWeek &&
@@ -92,23 +106,19 @@ async function getTop25Teams() {
         r.ranking <= 25
     )
     .sort((a, b) => a.ranking - b.ranking)
-    .slice(0, 25);
+    .slice(0, 25)
+    .map(t => ({
+      rank: t.ranking,
+      name: t.team,
+      norm: normalize(t.team),
+    }));
 
-  const teams = latestWeekData.map(t => ({
-    rank: t.ranking,
-    name: t.team,
-    norm: normalize(t.team),
-  }));
-
-  console.log("AP Top 25 grabbed from CBBD:");
   teams.forEach(t => console.log(`#${t.rank} – ${t.name}`));
-
-  return teams;
+  return { teams, latestWeek };
 }
 
 /* ---------------- GET TEAM FUTURE GAMES ---------------- */
 async function getTeamGames(team) {
-  // Fallback map for tricky ESPN team URLs
   const fallback = {
     "st johns": "2599",
     "north carolina": "unc",
@@ -128,8 +138,7 @@ async function getTeamGames(team) {
     const res = await fetch(teamUrl);
     if (!res.ok) {
       if (res.status === 400) {
-        console.log(`400 Error fetching ESPN team for: ${team.name} (${espnName})`);
-        await sendErrorEmail(team, espnName, res.status); // <-- add this
+        await sendErrorEmail(team, espnName, res.status);
       }
       throw new Error(`Failed to fetch ESPN team: ${res.status}`);
     }
@@ -138,34 +147,29 @@ async function getTeamGames(team) {
     const teamId = data.team?.id;
     if (!teamId) throw new Error("No team ID found");
 
-    const scheduleUrl = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/schedule`;
-    const scheduleRes = await fetch(scheduleUrl);
-    if (!scheduleRes.ok) throw new Error(`Failed to fetch schedule: ${scheduleRes.status}`);
-    const scheduleData = await scheduleRes.json();
+    const scheduleRes = await fetch(
+      `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${teamId}/schedule`
+    );
+    if (!scheduleRes.ok) throw new Error(`Failed to fetch schedule`);
 
+    const scheduleData = await scheduleRes.json();
     const now = new Date();
     const games = [];
 
     for (const e of scheduleData.events ?? []) {
       const comp = e.competitions?.[0];
       if (!comp) continue;
-    
+
       const home = comp.competitors.find(c => c.homeAway === "home")?.team?.shortDisplayName;
       const away = comp.competitors.find(c => c.homeAway === "away")?.team?.shortDisplayName;
       if (!home || !away) continue;
-    
+
       const gameDate = new Date(e.date);
       if (isNaN(gameDate) || gameDate < now || gameDate > END_DATE) continue;
-    
-      games.push({
-        id: e.id,
-        date: gameDate,
-        homeName: home,
-        awayName: away,
-      });
+
+      games.push({ date: gameDate, homeName: home, awayName: away });
     }
 
-    console.log(`  Found ${games.length} future games for ${team.name}`);
     return games;
   } catch (err) {
     console.warn(`Failed to fetch games for ${team.name}: ${err.message}`);
@@ -176,18 +180,14 @@ async function getTeamGames(team) {
 /* ---------------- MAIN ---------------- */
 (async () => {
   try {
-    const top25 = await getTop25Teams();
+    const { teams: top25, latestWeek } = await getTop25Teams();
     const top25Set = new Set(top25.map(t => t.name));
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
-    console.log("Fetching future games for Top 25 teams...");
-    const allGamesArrays = await Promise.all(top25.map(t => getTeamGames(t)));
-    let allGames = allGamesArrays.flat();
+    const allGames = (await Promise.all(top25.map(getTeamGames)))
+      .flat()
+      .filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
 
-    // Only keep games with at least one Top 25 team
-    allGames = allGames.filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
-
-    // Remove duplicates
     const seen = new Set();
     const events = [];
 
@@ -198,13 +198,14 @@ async function getTeamGames(team) {
 
       const start = g.date;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+
       const summary =
         `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} @ ` +
         `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
 
       events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
-DTSTAMP:${formatICSDate(start)}
+DTSTAMP:${formatICSDate(GENERATED_AT)}
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
@@ -216,8 +217,8 @@ END:VEVENT`);
       a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
     );
 
-    fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events));
-    console.log(`Generated ${events.length} Top 25 events`);
+    fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events, latestWeek));
+    console.log(`Generated ${events.length} Top 25 events — AP Week ${latestWeek}`);
   } catch (err) {
     console.error("Error generating Top 25 ICS:", err);
   }
