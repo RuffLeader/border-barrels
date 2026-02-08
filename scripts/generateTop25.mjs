@@ -184,6 +184,9 @@ async function getTeamGames(team) {
     const top25Set = new Set(top25.map(t => t.name));
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
+    console.log("Fetching games for these Top 25 teams:");
+    top25.forEach(t => console.log(`- ${t.name}`));
+
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
       .filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
