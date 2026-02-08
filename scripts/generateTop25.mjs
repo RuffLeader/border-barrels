@@ -182,7 +182,7 @@ async function getTeamGames(team) {
   try {
     const { teams: top25, latestWeek } = await getTop25Teams();
     const top25Set = new Set(top25.map(t => t.name));
-    const rankMap = new Map(top25.map(t => [t.norm, t.rank]));
+    const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
@@ -199,12 +199,9 @@ async function getTeamGames(team) {
       const start = g.date;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-      const awayNorm = normalize(g.awayName);
-      const homeNorm = normalize(g.homeName);
-      
       const summary =
-        `${rankMap.get(g.awayNorm) ? "#" + rankMap.get(g.awayNorm) + " " : ""}${g.awayName} @ ` +
-        `${rankMap.get(g.homeNorm) ? "#" + rankMap.get(g.homeNorm) + " " : ""}${g.homeName}`;
+        `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} @ ` +
+        `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
 
       events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
