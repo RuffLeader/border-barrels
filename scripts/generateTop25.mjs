@@ -7,7 +7,7 @@ const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 const PUBLIC_DIR = "public";
 const END_DATE = new Date(new Date().getFullYear(), 2, 16); // March 16
-const GENERATED_AT = new Date(); // single source of truth
+const GENERATED_AT = new Date();
 const CAL_VERSION = `v${GENERATED_AT.getFullYear()}${(GENERATED_AT.getMonth() + 1)
   .toString()
   .padStart(2, "0")}${GENERATED_AT.getDate().toString().padStart(2, "0")}_${GENERATED_AT
@@ -181,7 +181,14 @@ async function getTeamGames(team) {
 (async () => {
   try {
     const { teams: top25, latestWeek } = await getTop25Teams();
-    const top25Set = new Set(top25.map(t => t.name));
+
+    // Fallback map for tricky names for ICS summary
+    const RANK_FALLBACK = {
+      "st johns": "St. John's",
+      "miami oh": "Miami (OH)",
+      "michigan st": "Michigan State",
+    };
+
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
 
     console.log("Fetching games for these Top 25 teams:");
@@ -189,10 +196,21 @@ async function getTeamGames(team) {
 
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
-      .filter(g => top25Set.has(g.homeName) || top25Set.has(g.awayName));
+      .filter(g => {
+        const homeNorm = normalize(RANK_FALLBACK[normalize(g.homeName)] || g.homeName);
+        const awayNorm = normalize(RANK_FALLBACK[normalize(g.awayName)] || g.awayName);
+        return top25.some(t => normalize(t.name) === homeNorm || normalize(t.name) === awayNorm);
+      });
 
     const seen = new Set();
     const events = [];
+
+    function getRankedName(name) {
+      const norm = normalize(name);
+      const correctName = RANK_FALLBACK[norm] || name;
+      const rank = rankMap.get(correctName);
+      return rank ? `#${rank} ${correctName}` : correctName;
+    }
 
     for (const g of allGames) {
       const uid = `${g.homeName}-${g.awayName}-${g.date.toISOString()}`;
@@ -202,9 +220,7 @@ async function getTeamGames(team) {
       const start = g.date;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-      const summary =
-        `${rankMap.get(g.awayName) ? "#" + rankMap.get(g.awayName) + " " : ""}${g.awayName} @ ` +
-        `${rankMap.get(g.homeName) ? "#" + rankMap.get(g.homeName) + " " : ""}${g.homeName}`;
+      const summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
       events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
