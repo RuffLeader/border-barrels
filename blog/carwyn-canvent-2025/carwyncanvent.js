@@ -574,16 +574,28 @@ const adventBeers = [
       sarah: "*Coughs and keels over* That's horrible, what the fuck is that? *Washes mouth out with water* What is that? The flavour?"
     }
   },
-  
-  {
-    day: 2,
-    image: "/media/advent-bc/day2.jpg",
-    beerName: "Placeholder Beer",
-    brewery: "TBC",
-    style: "TBC",
-    abv: "—",
-    blurb: "Beer not yet reviewed.",
 
-    placeholder: true
+  {
+    day: 25,
+    image: "/media/carwyncanvent/day-25.png",
+    beerName: "Rattenhund Oak Aged Pilsner",
+    brewery: "Hop Nation Brewing Co",
+    style: "Oak Aged Pilsner",
+    abv: "5%",
+    blurb: "What a beer! Sweet bready notes, with a mild woodiness and fresh cut herbs. Light bubblegum notes on the first sip, followed by an assertive bitterness. Slightly creamy but crisp on the palate. The vanillin coming from the oak is prominent, providing an extra layer of flavour. The oak is definitely there but somehow it still retains its brightness. Finishes bitter and lingering, with those oak notes doing their work. A great homage to this Carwyn favourite, taken to a whole new level. Merry Magnum and a Happy Canvent everyone!⁠⁠⁠",
+
+    scores: {
+      advertised: 4.25,
+      canArt: 3.5,
+      blurb: 3.75,
+      value: 2.75,
+      untappd: 4.5,
+      total: 18.75
+    },
+
+    reviews: {
+      hudson: "Crisp pilsner with a fuller body from the oak barrel aging. Fantastic Summer beer.",
+      sarah: "Tastes like a light beer. Are we finished now?"
+    }
   }
 ];
