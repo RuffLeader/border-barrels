@@ -222,9 +222,11 @@ async function getTeamGames(team) {
 
       const summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
-      events.push(`BEGIN:VEVENT
+events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
 DTSTAMP:${formatICSDate(GENERATED_AT)}
+LAST-MODIFIED:${formatICSDate(GENERATED_AT)}
+SEQUENCE:${GENERATED_AT.getTime()}
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
