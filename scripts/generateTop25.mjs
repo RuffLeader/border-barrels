@@ -282,12 +282,9 @@ const html = `
 </html>
 `;
 
-fs.writeFileSync(`${PUBLIC_DIR}/calendar.html`, html);
-console.log(`🌐 HTML page generated at public/calendar.html`);
-
-    const htmlPath = `${PUBLIC_DIR}/calendar.html`;
-fs.writeFileSync(htmlPath, html);
-console.log("HTML exists?", fs.existsSync(htmlPath));
+// write HTML to root
+fs.writeFileSync(`calendar.html`, html);
+console.log("🌐 HTML page generated at calendar.html");
 
   } catch (err) {
     console.error("Error generating Top 25 ICS:", err);
