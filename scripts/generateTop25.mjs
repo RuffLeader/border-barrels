@@ -15,6 +15,13 @@ const CAL_VERSION = `v${GENERATED_AT.getFullYear()}${(GENERATED_AT.getMonth() + 
   .toString()
   .padStart(2, "0")}${GENERATED_AT.getMinutes().toString().padStart(2, "0")}`;
 
+const KAYO_FILE = "kayo.json";
+
+let kayoGames = {};
+if (fs.existsSync(KAYO_FILE)) {
+  kayoGames = JSON.parse(fs.readFileSync(KAYO_FILE, "utf-8"));
+}
+
 // Melbourne timezone helper
 function formatMelbourneDate(date) {
   return date.toLocaleString("en-AU", { timeZone: "Australia/Melbourne" });
@@ -220,7 +227,11 @@ async function getTeamGames(team) {
       const start = g.date;
       const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-      const summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
+      let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
+
+      if (kayoGames[uid]) {
+        summary = `🎥 KAYO - ${summary}`;
+      }
 
 events.push(`BEGIN:VEVENT
 UID:${uid}@borderbarrels
