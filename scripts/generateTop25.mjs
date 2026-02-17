@@ -250,7 +250,41 @@ END:VEVENT`);
     );
 
     fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events, latestWeek));
+
+    // ✅ Cache-busted ICS URL
+    const ICS_URL = `https://www.borderbarrels.com/public/top25.ics?v=${CAL_VERSION}`;
     console.log(`Generated ${events.length} Top 25 events — AP Week ${latestWeek}`);
+    console.log(`📅 Subscribe URL (Google Calendar friendly): ${ICS_URL}`);
+
+    
+// ---------------- GENERATE HTML SUBSCRIPTION PAGE ----------------
+const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Border Barrels Top 25 Calendar</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
+    h1 { color: #002157; }
+    a.subscribe { display: inline-block; padding: 10px 20px; background: #002157; color: #fff; text-decoration: none; border-radius: 6px; margin-top: 20px; }
+    a.subscribe:hover { background: #003377; }
+  </style>
+</head>
+<body>
+  <h1>Border Barrels Top 25 Calendar</h1>
+  <p>Subscribe to the latest NCAA Top 25 calendar. This link always points to the most up-to-date events.</p>
+  <a class="subscribe" href="${ICS_URL}" target="_blank">Subscribe to Top 25 Calendar</a>
+  <p style="margin-top:20px; font-size:0.9em; color:#555;">
+    Last updated: ${formatMelbourneDate(GENERATED_AT)} (Melbourne time) — AP Poll Week ${latestWeek}
+  </p>
+</body>
+</html>
+`;
+
+fs.writeFileSync(`${PUBLIC_DIR}/calendar.html`, html);
+console.log(`🌐 HTML page generated at public/calendar.html`);
+
   } catch (err) {
     console.error("Error generating Top 25 ICS:", err);
   }
