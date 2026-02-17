@@ -34,7 +34,7 @@ function formatICSDate(date) {
 
 // normalize team names for matching
 function normalize(str) {
-  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+  return str.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
 }
 
 function buildICS(events, latestWeek) {
@@ -219,22 +219,24 @@ async function getTeamGames(team) {
       return rank ? `#${rank} ${correctName}` : correctName;
     }
 
-    for (const g of allGames) {
-      const uid = `${g.homeName}-${g.awayName}-${g.date.toISOString()}`;
-      if (seen.has(uid)) continue;
-      seen.add(uid);
+for (const g of allGames) {
+  // Generate Google Calendar–friendly UID
+  const uid = `${normalize(g.homeName)}-${normalize(g.awayName)}-${g.date.getTime()}@borderbarrels`;
 
-      const start = g.date;
-      const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+  if (seen.has(uid)) continue;
+  seen.add(uid);
 
-      let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
+  const start = g.date;
+  const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-      if (kayoGames[uid]) {
-        summary = `🎥 KAYO - ${summary}`;
-      }
+  let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
-events.push(`BEGIN:VEVENT
-UID:${uid}@borderbarrels
+  if (kayoGames[uid]) {
+    summary = `🎥 KAYO - ${summary}`;
+  }
+
+  events.push(`BEGIN:VEVENT
+UID:${uid}
 DTSTAMP:${formatICSDate(GENERATED_AT)}
 LAST-MODIFIED:${formatICSDate(GENERATED_AT)}
 SEQUENCE:${GENERATED_AT.getTime()}
@@ -243,7 +245,7 @@ DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
 END:VEVENT`);
-    }
+}
 
     events.sort((a, b) =>
       a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
