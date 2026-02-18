@@ -5,7 +5,6 @@ import nodemailer from "nodemailer";
 /* ---------------- CONFIG ---------------- */
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
-const PUBLIC_DIR = "public";
 const END_DATE = new Date(new Date().getFullYear(), 2, 16); // March 16
 const GENERATED_AT = new Date();
 const CAL_VERSION = `v${GENERATED_AT.getFullYear()}${(GENERATED_AT.getMonth() + 1)
@@ -259,10 +258,10 @@ END:VEVENT`);
       a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
     );
 
-    fs.writeFileSync(`${PUBLIC_DIR}/top25.ics`, buildICS(events, latestWeek));
+    fs.writeFileSync(`top25.ics`, buildICS(events, latestWeek));
 
     // ✅ Cache-busted ICS URL
-    const ICS_URL = `https://www.borderbarrels.com/public/top25.ics?v=${CAL_VERSION}`;
+    const ICS_URL = `https://www.borderbarrels.com/top25.ics?v=${CAL_VERSION}`;
     console.log(`Generated ${events.length} Top 25 events — AP Week ${latestWeek}`);
     console.log(`📅 Subscribe URL (Google Calendar friendly): ${ICS_URL}`);
 
