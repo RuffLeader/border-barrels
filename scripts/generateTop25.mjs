@@ -169,16 +169,18 @@ async function getTeamGames(team) {
   }
 }
 
-/* ---------------- FETCH KAYO FOR DATES ---------------- */
-/* ---------------- FETCH KAYO FOR DATES ---------------- */
-async function fetchKayoForDates(dates) {
-  const kayoGames = {};
+/* ---------------- FETCH KAYO FIXTURES (NEXT 7 DAYS) ---------------- */
+async function updateKayoGames() {
+  const today = new Date();
+  const kayoDates = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    return d;
+  });
 
-  function normalizeTitle(title) {
-    return title.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
-  }
+  console.log(`Fetching KAYO fixtures for the next 7 days...`);
 
-  for (const date of dates) {
+  const promises = kayoDates.map(async (date) => {
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
@@ -188,20 +190,25 @@ async function fetchKayoForDates(dates) {
       const res = await fetch(url);
       const html = await res.text();
 
+      // Match JSON objects with "type":"event"
       const matches = html.matchAll(/(\{[^}]*"type":"event"[^}]*\})/g);
       let foundAny = false;
 
       for (const m of matches) {
         try {
           const ev = JSON.parse(m[1]);
+          if (!ev.title) continue;
+
           const teams = ev.title.split(" v ");
           if (teams.length === 2) {
-            const uid = `${normalizeTitle(teams[0])}-${normalizeTitle(teams[1])}`;
+            const uid = `${normalizeForUID(teams[0])}-${normalizeForUID(teams[1])}`;
             kayoGames[uid] = true;
             console.log(`✅ KAYO found: ${teams[0]} vs ${teams[1]} on ${yyyy}-${mm}-${dd}`);
             foundAny = true;
           }
-        } catch {}
+        } catch (err) {
+          // ignore individual parse errors
+        }
       }
 
       if (!foundAny) {
@@ -210,35 +217,32 @@ async function fetchKayoForDates(dates) {
     } catch (err) {
       console.warn(`❌ Failed to fetch KAYO for ${yyyy}-${mm}-${dd}: ${err.message}`);
     }
-  }
+  });
 
-    // Final summary
-  const total = Object.keys(kayoGames).length;
-  if (total > 0) {
-    console.log(`🎯 Total KAYO games detected: ${total}`);
-  } else {
-    console.warn("⚠️ No KAYO games detected at all.");
-  }
-
-  return kayoGames;
+  await Promise.all(promises);
+  console.log(`Finished fetching KAYO fixtures.`);
 }
 
 /* ---------------- MAIN ---------------- */
 (async () => {
   try {
+    // 1️⃣ Fetch KAYO fixtures for next 7 days
+    await updateKayoGames();
+
+    // 2️⃣ Fetch Top 25 teams
     const { teams: top25, latestWeek } = await getTop25Teams();
 
-    // Fallback map for tricky names for ICS summary
     const RANK_FALLBACK = {
       "st johns": "St. John's",
       "miami oh": "Miami (OH)",
       "michigan st": "Michigan State",
     };
-
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
+
     console.log("Fetching games for these Top 25 teams:");
     top25.forEach(t => console.log(`- ${t.name}`));
 
+    // 3️⃣ Fetch team schedules
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
       .filter(g => {
@@ -246,13 +250,6 @@ async function fetchKayoForDates(dates) {
         const awayNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.awayName)] || g.awayName);
         return top25.some(t => normalizeForAPI(t.name) === homeNorm || normalizeForAPI(t.name) === awayNorm);
       });
-
-    // Build list of dates to fetch from Kayo
-    const gameDates = [...new Set(allGames.map(g => g.date.toISOString().slice(0, 10).split("-").join("-")))]
-      .map(d => new Date(d));
-
-    console.log("Fetching Kayo fixtures for game dates...");
-    const kayoGames = await fetchKayoForDates(gameDates);
 
     const seen = new Set();
     const events = [];
@@ -277,6 +274,7 @@ async function fetchKayoForDates(dates) {
 
       let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
+      // ✅ Add KAYO prefix if available
       if (kayoGames[`${homeUid}-${awayUid}`]) {
         summary = `🎥 KAYO - ${summary}`;
       }
@@ -298,39 +296,37 @@ END:VEVENT`);
     );
 
     fs.writeFileSync(`top25.ics`, buildICS(events, latestWeek));
-
-    // ✅ Cache-busted ICS URL
     const ICS_URL = `https://www.borderbarrels.com/top25.ics?v=${CAL_VERSION}`;
     console.log(`Generated ${events.length} Top 25 events — AP Week ${latestWeek}`);
-    console.log(`📅 Subscribe URL (Google Calendar friendly): ${ICS_URL}`);
+    console.log(`📅 Subscribe URL: ${ICS_URL}`);
 
-    // ---------------- GENERATE HTML SUBSCRIPTION PAGE ----------------
+    // ---------------- GENERATE HTML ----------------
     const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Border Barrels Top 25 Calendar</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
-    h1 { color: #002157; }
-    a.subscribe { display: inline-block; padding: 10px 20px; background: #002157; color: #fff; text-decoration: none; border-radius: 6px; margin-top: 20px; }
-    a.subscribe:hover { background: #003377; }
-  </style>
+<meta charset="UTF-8">
+<title>Border Barrels Top 25 Calendar</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
+  h1 { color: #002157; }
+  a.subscribe { display: inline-block; padding: 10px 20px; background: #002157; color: #fff; text-decoration: none; border-radius: 6px; margin-top: 20px; }
+  a.subscribe:hover { background: #003377; }
+</style>
 </head>
 <body>
-  <h1>Border Barrels Top 25 Calendar</h1>
-  <p>Subscribe to the latest NCAA Top 25 calendar. This link always points to the most up-to-date events.</p>
-  <a class="subscribe" href="${ICS_URL}" target="_blank">Subscribe to Top 25 Calendar</a>
-  <p style="margin-top:20px; font-size:0.9em; color:#555;">
-    Last updated: ${formatMelbourneDate(GENERATED_AT)} (Melbourne time) — AP Poll Week ${latestWeek}
-  </p>
+<h1>Border Barrels Top 25 Calendar</h1>
+<p>Subscribe to the latest NCAA Top 25 calendar. This link always points to the most up-to-date events.</p>
+<a class="subscribe" href="${ICS_URL}" target="_blank">Subscribe to Top 25 Calendar</a>
+<p style="margin-top:20px; font-size:0.9em; color:#555;">
+Last updated: ${formatMelbourneDate(GENERATED_AT)} (Melbourne time) — AP Poll Week ${latestWeek}
+</p>
 </body>
 </html>
 `;
-
     fs.writeFileSync(`calendar.html`, html);
     console.log("🌐 HTML page generated at calendar.html");
+
   } catch (err) {
     console.error("Error generating Top 25 ICS:", err);
   }
