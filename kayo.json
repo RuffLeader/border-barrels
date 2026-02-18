@@ -1,11 +1,9 @@
 {
-  "NC State-North Carolina-2026-02-18T00:00:00.000Z": true,
-  "SMU-Louisville-2026-02-18T00:00:00.000Z": true,
-  "arizona-st-texas-tech-1771387200000": true,
-  "alabama-arkansas-1771459200000": true,
-  "arizona-byu-1771466400000": true,
-  "san-francisco-gonzaga-1771473600000": true,
-  "syracuse-north-carolina-1771696800000": true,
-  "houston-arizona-1771704000000": true,
-  "duke-michigan-1771716600000": true
+  "arizona-st-texas-tech": true,
+  "alabama-arkansas": true,
+  "arizona-byu": true,
+  "san-francisco-gonzaga": true,
+  "syracuse-north-carolina": true,
+  "houston-arizona": true,
+  "duke-michigan": true
 }
