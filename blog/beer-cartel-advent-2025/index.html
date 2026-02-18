@@ -284,33 +284,81 @@ body {
 }
 
 @media (max-width: 700px) {
+  .flip-card {
+    height: auto;
+    min-height: 520px;
+  }
+
+  .flip-card-inner {
+    height: auto;
+    min-height: 520px;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: relative;
+    height: auto;
+    min-height: 520px;
+  }
+
+  /* On mobile, swap sides without 3D rotation (avoids layout bugs) */
+  .flip-card.flipped .flip-card-front {
+    display: none;
+  }
+
+  .flip-card:not(.flipped) .flip-card-back {
+    display: none;
+  }
+
+  .flip-card.flipped .flip-card-back {
+    transform: none;
+  }
+
+  .card-shell {
+    height: auto;
+    min-height: 520px;
+    padding: 16px 12px 24px;
+  }
+
+  .card-shell img {
+    max-height: 180px;
+    width: auto;
+  }
+
   .beer-info {
     height: auto;
-    padding: 8px 6px;
+    min-height: unset;
+    padding: 10px 8px;
     justify-content: flex-start;
+    margin-top: 8px;
   }
-}
 
-@media (max-width: 700px) {
+  .beer-info h3 {
+    font-size: 1.1rem;
+    white-space: normal;
+    text-overflow: unset;
+    overflow: visible;
+  }
+
   .beer-scores {
-    gap: 2px;
-    margin-top: 4px;
+    gap: 4px;
+    margin-top: 6px;
   }
 
   .beer-scores .line {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     gap: 8px;
   }
 
   .beer-scores .line.total {
-    font-size: 1.1rem;
-    margin-top: 2px;
+    font-size: 1rem;
+    margin-top: 4px;
   }
-}
 
-@media (max-width: 700px) {
-  .card-shell img {
-    max-height: 200px;
+  .flip-card-back {
+    transform: none;
+    padding: 16px 14px;
+    min-height: 520px;
   }
 }
 </style>
