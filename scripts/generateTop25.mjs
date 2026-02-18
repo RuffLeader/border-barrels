@@ -238,8 +238,9 @@ for (const g of allGames) {
 
   let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
-  if (kayoGames[uid]) {
-    summary = `KAYO - ${summary}`;
+  // Lookup KAYO using the same stable UID format
+  if (kayoGames[`${homeUid}-${awayUid}`]) {
+    summary = `🎥 KAYO - ${summary}`;
   }
 
   events.push(`BEGIN:VEVENT
