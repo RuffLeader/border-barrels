@@ -33,7 +33,13 @@ function formatICSDate(date) {
 }
 
 // normalize team names for matching
-function normalize(str) {
+// For ESPN API/fallback matching (keep previous behavior)
+function normalizeForAPI(str) {
+  return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
+}
+
+// For UID generation (Google Calendar safe)
+function normalizeForUID(str) {
   return str.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
 }
 
@@ -138,7 +144,7 @@ async function getTeamGames(team) {
     "saint louis": "139",
   };
 
-  const espnName = fallback[team.norm] || team.norm;
+  const espnName = fallback[normalizeForAPI(team.name)] || normalizeForAPI(team.name);
   const teamUrl = `https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/${espnName}`;
 
   try {
@@ -204,16 +210,16 @@ async function getTeamGames(team) {
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
       .filter(g => {
-        const homeNorm = normalize(RANK_FALLBACK[normalize(g.homeName)] || g.homeName);
-        const awayNorm = normalize(RANK_FALLBACK[normalize(g.awayName)] || g.awayName);
-        return top25.some(t => normalize(t.name) === homeNorm || normalize(t.name) === awayNorm);
+      const homeNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.homeName)] || g.homeName);
+      const awayNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.awayName)] || g.awayName);
+      return top25.some(t => normalizeForAPI(t.name) === homeNorm || normalizeForAPI(t.name) === awayNorm);
       });
 
     const seen = new Set();
     const events = [];
 
     function getRankedName(name) {
-      const norm = normalize(name);
+      const norm = normalizeForAPI(name);
       const correctName = RANK_FALLBACK[norm] || name;
       const rank = rankMap.get(correctName);
       return rank ? `#${rank} ${correctName}` : correctName;
@@ -221,7 +227,7 @@ async function getTeamGames(team) {
 
 for (const g of allGames) {
   // Generate Google Calendar–friendly UID
-  const uid = `${normalize(g.homeName)}-${normalize(g.awayName)}-${g.date.getTime()}@borderbarrels`;
+  const uid = `${normalizeForUID(g.homeName)}-${normalizeForUID(g.awayName)}-${g.date.getTime()}@borderbarrels`;
 
   if (seen.has(uid)) continue;
   seen.add(uid);
