@@ -239,15 +239,17 @@ for (const g of allGames) {
   let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
   // Lookup KAYO using the same stable UID format
+  let sequence = 0; // default
   if (kayoGames[`${homeUid}-${awayUid}`]) {
     summary = `🎥 KAYO - ${summary}`;
+    sequence = 1; // bump sequence so Google Calendar detects change
   }
 
   events.push(`BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${formatICSDate(GENERATED_AT)}
 LAST-MODIFIED:${formatICSDate(GENERATED_AT)}
-SEQUENCE:0
+SEQUENCE:${sequence}
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
