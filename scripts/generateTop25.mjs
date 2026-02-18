@@ -123,7 +123,7 @@ async function getTop25Teams() {
     .map(t => ({
       rank: t.ranking,
       name: t.team,
-      norm: normalize(t.team),
+      norm: normalizeForAPI(t.team),  // use normalizeForAPI here
     }));
 
   teams.forEach(t => console.log(`#${t.rank} – ${t.name}`));
