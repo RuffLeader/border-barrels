@@ -285,52 +285,49 @@ body {
 
 @media (max-width: 700px) {
   .flip-card {
-    height: auto;
-    min-height: 520px;
+    height: 580px;
   }
 
   .flip-card-inner {
-    height: auto;
-    min-height: 520px;
+    height: 100%;
   }
 
-  .flip-card-front,
+  /* Keep absolute positioning but ditch the 3D flip on mobile */
   .flip-card-back {
-    position: relative;
-    height: auto;
-    min-height: 520px;
-  }
-
-  /* On mobile, swap sides without 3D rotation (avoids layout bugs) */
-  .flip-card.flipped .flip-card-front {
-    display: none;
-  }
-
-  .flip-card:not(.flipped) .flip-card-back {
-    display: none;
-  }
-
-  .flip-card.flipped .flip-card-back {
-    transform: none;
+    transform: rotateY(180deg);
+    padding: 16px 14px;
   }
 
   .card-shell {
-    height: auto;
-    min-height: 520px;
+    height: 100%;
     padding: 16px 12px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .day-heading {
+    flex-shrink: 0;
   }
 
   .card-shell img {
-    max-height: 180px;
+    flex: 1;
+    min-height: 0;
+    max-height: none;
     width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 10px 0;
   }
 
   .beer-info {
     height: auto;
     min-height: unset;
+    width: 100%;
     padding: 10px 8px;
-    justify-content: flex-start;
-    margin-top: 8px;
+    margin-top: 0;
+    flex-shrink: 0;
   }
 
   .beer-info h3 {
@@ -338,11 +335,6 @@ body {
     white-space: normal;
     text-overflow: unset;
     overflow: visible;
-  }
-
-  .beer-scores {
-    gap: 4px;
-    margin-top: 6px;
   }
 
   .beer-scores .line {
@@ -353,12 +345,6 @@ body {
   .beer-scores .line.total {
     font-size: 1rem;
     margin-top: 4px;
-  }
-
-  .flip-card-back {
-    transform: none;
-    padding: 16px 14px;
-    min-height: 520px;
   }
 }
 </style>
