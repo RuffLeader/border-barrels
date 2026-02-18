@@ -169,8 +169,8 @@ async function getTeamGames(team) {
   }
 }
 
-/* ---------------- FETCH KAYO FIXTURES (NEXT 7 DAYS) ---------------- */
-async function updateKayoGames() {
+/* ---------------- FETCH KAYO FIXTURES (NEXT 7 DAYS, TOP 25 ONLY) ---------------- */
+async function updateKayoGames(top25) {
   const today = new Date();
   const kayoDates = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(today);
@@ -178,7 +178,10 @@ async function updateKayoGames() {
     return d;
   });
 
-  console.log(`Fetching KAYO fixtures for the next 7 days...`);
+  // Normalize Top 25 team names for string matching
+  const top25Names = top25.map(t => t.name.toLowerCase());
+
+  console.log(`Fetching KAYO fixtures for the next 7 days (Top 25 teams only)...`);
 
   const promises = kayoDates.map(async (date) => {
     const yyyy = date.getFullYear();
@@ -190,11 +193,16 @@ async function updateKayoGames() {
       const res = await fetch(url);
       const html = await res.text();
 
-      // Match JSON objects with "type":"event"
+      // Only match JSON objects that contain "type":"event" AND a Top 25 team
       const matches = html.matchAll(/(\{[^}]*"type":"event"[^}]*\})/g);
       let foundAny = false;
 
       for (const m of matches) {
+        const snippet = m[1].toLowerCase();
+
+        // Skip events that don’t mention a Top 25 team
+        if (!top25Names.some(name => snippet.includes(name))) continue;
+
         try {
           const ev = JSON.parse(m[1]);
           if (!ev.title) continue;
@@ -223,11 +231,12 @@ async function updateKayoGames() {
   console.log(`Finished fetching KAYO fixtures.`);
 }
 
+
 /* ---------------- MAIN ---------------- */
 (async () => {
   try {
     // 1️⃣ Fetch KAYO fixtures for next 7 days
-    await updateKayoGames();
+    await updateKayoGames(top25);
 
     // 2️⃣ Fetch Top 25 teams
     const { teams: top25, latestWeek } = await getTop25Teams();
