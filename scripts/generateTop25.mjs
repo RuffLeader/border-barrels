@@ -14,13 +14,6 @@ const CAL_VERSION = `v${GENERATED_AT.getFullYear()}${(GENERATED_AT.getMonth() + 
   .toString()
   .padStart(2, "0")}${GENERATED_AT.getMinutes().toString().padStart(2, "0")}`;
 
-const KAYO_FILE = "kayo.json";
-
-let kayoGames = {};
-if (fs.existsSync(KAYO_FILE)) {
-  kayoGames = JSON.parse(fs.readFileSync(KAYO_FILE, "utf-8"));
-}
-
 // Melbourne timezone helper
 function formatMelbourneDate(date) {
   return date.toLocaleString("en-AU", { timeZone: "Australia/Melbourne" });
@@ -32,7 +25,6 @@ function formatICSDate(date) {
 }
 
 // normalize team names for matching
-// For ESPN API/fallback matching (keep previous behavior)
 function normalizeForAPI(str) {
   return str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 }
@@ -86,9 +78,7 @@ async function sendErrorEmail(team, espnName, status) {
 async function getTop25Teams() {
   console.log("Fetching Top 25 from CollegeBasketballData.com...");
 
-  if (!process.env.CBB_API_KEY) {
-    throw new Error("CBB_API_KEY not set in environment");
-  }
+  if (!process.env.CBB_API_KEY) throw new Error("CBB_API_KEY not set in environment");
 
   const SEASON = 2026;
 
@@ -102,27 +92,19 @@ async function getTop25Teams() {
   const allData = await res.json();
 
   const latestWeek = Math.max(
-    ...allData
-      .filter(r => r.ranking >= 1 && r.ranking <= 25)
-      .map(r => r.week)
+    ...allData.filter(r => r.ranking >= 1 && r.ranking <= 25).map(r => r.week)
   );
 
   console.log(`Latest AP poll week detected: Week ${latestWeek}`);
 
   const teams = allData
-    .filter(
-      r =>
-        r.week === latestWeek &&
-        r.pollType === "AP Top 25" &&
-        r.ranking >= 1 &&
-        r.ranking <= 25
-    )
+    .filter(r => r.week === latestWeek && r.pollType === "AP Top 25" && r.ranking >= 1 && r.ranking <= 25)
     .sort((a, b) => a.ranking - b.ranking)
     .slice(0, 25)
     .map(t => ({
       rank: t.ranking,
       name: t.team,
-      norm: normalizeForAPI(t.team),  // use normalizeForAPI here
+      norm: normalizeForAPI(t.team),
     }));
 
   teams.forEach(t => console.log(`#${t.rank} – ${t.name}`));
@@ -149,9 +131,7 @@ async function getTeamGames(team) {
   try {
     const res = await fetch(teamUrl);
     if (!res.ok) {
-      if (res.status === 400) {
-        await sendErrorEmail(team, espnName, res.status);
-      }
+      if (res.status === 400) await sendErrorEmail(team, espnName, res.status);
       throw new Error(`Failed to fetch ESPN team: ${res.status}`);
     }
 
@@ -189,6 +169,60 @@ async function getTeamGames(team) {
   }
 }
 
+/* ---------------- FETCH KAYO FOR DATES ---------------- */
+/* ---------------- FETCH KAYO FOR DATES ---------------- */
+async function fetchKayoForDates(dates) {
+  const kayoGames = {};
+
+  function normalizeTitle(title) {
+    return title.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+  }
+
+  for (const date of dates) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const dd = String(date.getDate()).padStart(2, "0");
+    const url = `https://kayosports.com.au/fixtures/day!${yyyy}-${mm}-${dd}`;
+
+    try {
+      const res = await fetch(url);
+      const html = await res.text();
+
+      const matches = html.matchAll(/(\{[^}]*"type":"event"[^}]*\})/g);
+      let foundAny = false;
+
+      for (const m of matches) {
+        try {
+          const ev = JSON.parse(m[1]);
+          const teams = ev.title.split(" v ");
+          if (teams.length === 2) {
+            const uid = `${normalizeTitle(teams[0])}-${normalizeTitle(teams[1])}`;
+            kayoGames[uid] = true;
+            console.log(`✅ KAYO found: ${teams[0]} vs ${teams[1]} on ${yyyy}-${mm}-${dd}`);
+            foundAny = true;
+          }
+        } catch {}
+      }
+
+      if (!foundAny) {
+        console.warn(`⚠️ No KAYO games found for ${yyyy}-${mm}-${dd}`);
+      }
+    } catch (err) {
+      console.warn(`❌ Failed to fetch KAYO for ${yyyy}-${mm}-${dd}: ${err.message}`);
+    }
+  }
+
+    // Final summary
+  const total = Object.keys(kayoGames).length;
+  if (total > 0) {
+    console.log(`🎯 Total KAYO games detected: ${total}`);
+  } else {
+    console.warn("⚠️ No KAYO games detected at all.");
+  }
+
+  return kayoGames;
+}
+
 /* ---------------- MAIN ---------------- */
 (async () => {
   try {
@@ -202,17 +236,23 @@ async function getTeamGames(team) {
     };
 
     const rankMap = new Map(top25.map(t => [t.name, t.rank]));
-
     console.log("Fetching games for these Top 25 teams:");
     top25.forEach(t => console.log(`- ${t.name}`));
 
     const allGames = (await Promise.all(top25.map(getTeamGames)))
       .flat()
       .filter(g => {
-      const homeNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.homeName)] || g.homeName);
-      const awayNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.awayName)] || g.awayName);
-      return top25.some(t => normalizeForAPI(t.name) === homeNorm || normalizeForAPI(t.name) === awayNorm);
+        const homeNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.homeName)] || g.homeName);
+        const awayNorm = normalizeForAPI(RANK_FALLBACK[normalizeForAPI(g.awayName)] || g.awayName);
+        return top25.some(t => normalizeForAPI(t.name) === homeNorm || normalizeForAPI(t.name) === awayNorm);
       });
+
+    // Build list of dates to fetch from Kayo
+    const gameDates = [...new Set(allGames.map(g => g.date.toISOString().slice(0, 10).split("-").join("-")))]
+      .map(d => new Date(d));
+
+    console.log("Fetching Kayo fixtures for game dates...");
+    const kayoGames = await fetchKayoForDates(gameDates);
 
     const seen = new Set();
     const events = [];
@@ -224,38 +264,34 @@ async function getTeamGames(team) {
       return rank ? `#${rank} ${correctName}` : correctName;
     }
 
-for (const g of allGames) {
-  // Generate Google Calendar–friendly UID
-  const homeUid = normalizeForUID(g.homeName);
-  const awayUid = normalizeForUID(g.awayName);
-  const uid = `${homeUid}-${awayUid}@borderbarrels`;
+    for (const g of allGames) {
+      const homeUid = normalizeForUID(g.homeName);
+      const awayUid = normalizeForUID(g.awayName);
+      const uid = `${homeUid}-${awayUid}@borderbarrels`;
 
-  if (seen.has(uid)) continue;
-  seen.add(uid);
+      if (seen.has(uid)) continue;
+      seen.add(uid);
 
-  const start = g.date;
-  const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
+      const start = g.date;
+      const end = new Date(start.getTime() + 2 * 60 * 60 * 1000);
 
-  let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
+      let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
-  // Lookup KAYO using the same stable UID format
-  let sequence = 0; // default
-  if (kayoGames[`${homeUid}-${awayUid}`]) {
-    summary = `🎥 KAYO - ${summary}`;
-    sequence = 1; // bump sequence so Google Calendar detects change
-  }
+      if (kayoGames[`${homeUid}-${awayUid}`]) {
+        summary = `🎥 KAYO - ${summary}`;
+      }
 
-  events.push(`BEGIN:VEVENT
+      events.push(`BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${formatICSDate(GENERATED_AT)}
 LAST-MODIFIED:${formatICSDate(GENERATED_AT)}
-SEQUENCE:${sequence}
+SEQUENCE:0
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
 DESCRIPTION:AP Top 25 Game
 END:VEVENT`);
-}
+    }
 
     events.sort((a, b) =>
       a.match(/DTSTART:(\d+)/)[1].localeCompare(b.match(/DTSTART:(\d+)/)[1])
@@ -268,9 +304,8 @@ END:VEVENT`);
     console.log(`Generated ${events.length} Top 25 events — AP Week ${latestWeek}`);
     console.log(`📅 Subscribe URL (Google Calendar friendly): ${ICS_URL}`);
 
-    
-// ---------------- GENERATE HTML SUBSCRIPTION PAGE ----------------
-const html = `
+    // ---------------- GENERATE HTML SUBSCRIPTION PAGE ----------------
+    const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,10 +329,8 @@ const html = `
 </html>
 `;
 
-// write HTML to root
-fs.writeFileSync(`calendar.html`, html);
-console.log("🌐 HTML page generated at calendar.html");
-
+    fs.writeFileSync(`calendar.html`, html);
+    console.log("🌐 HTML page generated at calendar.html");
   } catch (err) {
     console.error("Error generating Top 25 ICS:", err);
   }
