@@ -227,7 +227,9 @@ async function getTeamGames(team) {
 
 for (const g of allGames) {
   // Generate Google Calendar–friendly UID
-  const uid = `${normalizeForUID(g.homeName)}-${normalizeForUID(g.awayName)}-${g.date.getTime()}@borderbarrels`;
+  const homeUid = normalizeForUID(g.homeName);
+  const awayUid = normalizeForUID(g.awayName);
+  const uid = `${homeUid}-${awayUid}@borderbarrels`;
 
   if (seen.has(uid)) continue;
   seen.add(uid);
@@ -238,14 +240,14 @@ for (const g of allGames) {
   let summary = `${getRankedName(g.awayName)} @ ${getRankedName(g.homeName)}`;
 
   if (kayoGames[uid]) {
-    summary = `🎥 KAYO - ${summary}`;
+    summary = `KAYO - ${summary}`;
   }
 
   events.push(`BEGIN:VEVENT
 UID:${uid}
 DTSTAMP:${formatICSDate(GENERATED_AT)}
 LAST-MODIFIED:${formatICSDate(GENERATED_AT)}
-SEQUENCE:${GENERATED_AT.getTime()}
+SEQUENCE:0
 DTSTART:${formatICSDate(start)}
 DTEND:${formatICSDate(end)}
 SUMMARY:${summary}
