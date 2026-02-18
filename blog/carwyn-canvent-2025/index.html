@@ -284,33 +284,68 @@ body {
 }
 
 @media (max-width: 700px) {
+  .flip-card {
+    height: 580px;
+  }
+
+  .flip-card-inner {
+    height: 100%;
+  }
+
+  /* Keep absolute positioning but ditch the 3D flip on mobile */
+  .flip-card-back {
+    transform: rotateY(180deg);
+    padding: 16px 14px;
+  }
+
+  .card-shell {
+    height: 100%;
+    padding: 16px 12px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .day-heading {
+    flex-shrink: 0;
+  }
+
+  .card-shell img {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 10px 0;
+  }
+
   .beer-info {
     height: auto;
-    padding: 8px 6px;
-    justify-content: flex-start;
+    min-height: unset;
+    width: 100%;
+    padding: 10px 8px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    flex-shrink: 0;
   }
-}
 
-@media (max-width: 700px) {
-  .beer-scores {
-    gap: 2px;
-    margin-top: 4px;
+  .beer-info h3 {
+    font-size: 1.1rem;
+    white-space: normal;
+    text-overflow: unset;
+    overflow: visible;
   }
 
   .beer-scores .line {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     gap: 8px;
   }
 
   .beer-scores .line.total {
-    font-size: 1.1rem;
-    margin-top: 2px;
-  }
-}
-
-@media (max-width: 700px) {
-  .card-shell img {
-    max-height: 200px;
+    font-size: 1rem;
+    margin-top: 4px;
   }
 }
 </style>
