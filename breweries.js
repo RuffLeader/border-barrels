@@ -240,7 +240,7 @@ const breweries = [
     logo: "/media/logos/buckettys-brewing-co.png",
     website: "https://www.buckettys.com.au/",
     instagram: "https://www.instagram.com/Buckettys",
-    description: "Bucketty’s Brewing Co. invites patrons into what they call a “good-times factory” nestled in Brookvale’s brewery district. With a full bar license, late-night hours, and a lively atmosphere built for fun, it’s a place designed for enjoyment and community. Their origin story is one of grit and determination—starting with dreams of off-grid brewing on a farming site in Bucketty, overcoming zoning hurdles, and ultimately rebuilding in Brookvale. The journey features a playful sense of resilience and a community that’s invited along for the ride.",
+    description: "Bucketty’s Brewing Co. invites patrons into what they call a 'good-times factory' nestled in Brookvale’s brewery district. With a full bar license, late-night hours, and a lively atmosphere built for fun, it’s a place designed for enjoyment and community. Their origin story is one of grit and determination—starting with dreams of off-grid brewing on a farming site in Bucketty, overcoming zoning hurdles, and ultimately rebuilding in Brookvale. The journey features a playful sense of resilience and a community that’s invited along for the ride.",
     closed: false,
     independent: true,
     owner: null,
