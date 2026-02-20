@@ -17,7 +17,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/zrAUYUWSnavn29R37",
         photo: "/media/taprooms/aether-taproom.jpg",
         lat: -27.3933689,
-        Lng: 153.0708872
+        lng: 153.0708872
       }
     ]
   },
@@ -52,7 +52,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/3nmaDiRSHPqcn8cR9",
         photo: "/media/taprooms/bacchus-taproom.jpg",
         lat: -27.5313585,
-        Lng: 153.20522
+        lng: 153.20522
       }
     ]
   },
@@ -74,7 +74,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/e26AHzHcgxctqae78",
         photo: "/media/taprooms/balter-taproom.jpg",
         lat: -28.1427231,
-        Lng: 153.4702465
+        lng: 153.4702465
       }
     ]
   },
@@ -96,7 +96,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/3uViHmT2uXWMrTGs8",
         photo: "/media/taprooms/bentspoke-taproom.jpg",
         lat: -35.2719354,
-        Lng: 149.1316807
+        lng: 149.1316807
       }
     ]
   },
@@ -131,7 +131,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/e9jdqitgTKNoYVL28",
         photo: "/media/taprooms/blackmans-torquay.jpeg",
         lat: -38.3375128,
-        Lng: 144.320785
+        lng: 144.320785
       },
       {
         name: "Geelong Beer Bar",
@@ -139,7 +139,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/SDDGWrEkcVq3zPzm8",
         photo: "/media/taprooms/blackmans-geelong.jpg",
         lat: -38.1982684,
-        Lng: 144.3450272
+        lng: 144.3450272
       },
       {
         name: "Ocean Grove Beer & Burger Bar",
@@ -147,7 +147,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/dwHVXrQm1fgvpHje7",
         photo: "/media/taprooms/blackmans-ocean-grove.png",
         lat: -38.2680397,
-        Lng: 144.5244366
+        lng: 144.5244366
       }
     ]
   },
@@ -169,7 +169,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/2moxtzW6RKbr6uMq8",
         photo: "/media/taprooms/bracket-taproom.jpg",
         lat: -33.9014079,
-        Lng: 151.1613362
+        lng: 151.1613362
       }
     ]
   },
@@ -191,7 +191,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/EoHwFX46Xs7gitx47",
         photo: "/media/taprooms/bridge-road-beechworth.jpg",
         lat: -36.360819,
-        Lng: 146.6863689
+        lng: 146.6863689
       },
       {
         name: "Brunswick",
@@ -199,7 +199,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/r5LDdHt8rnLxXFgT6",
         photo: "/media/taprooms/bridge-road-brunswick.jpg",
         lat: -37.7716582,
-        Lng: 144.9792391
+        lng: 144.9792391
       },
       {
         name: "Melbourne Airport",
@@ -207,7 +207,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/fvK4d2jidi9vLsac9",
         photo: "/media/taprooms/bridge-road-airport.jpg",
         lat: -37.6692945,
-        Lng: 144.85159
+        lng: 144.85159
       }
     ]
   },
@@ -229,7 +229,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/akGdpJDCxAhgNxP3A",
         photo: "/media/taprooms/bright-taproom.png",
         lat: -36.7264614,
-        Lng: 146.9617587
+        lng: 146.9617587
       }
     ]
   },
@@ -251,7 +251,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/nmvkK4KbTwEzhZ9y6",
         photo: "/media/taprooms/buckettys-taproom.jpg",
         lat: -33.7655334,
-        Lng: 151.2733452
+        lng: 151.2733452
       }
     ]
   },
@@ -284,7 +284,9 @@ const breweries = [
         name: "Capital Brewing Co",
         address: "Building 3/1 Dairy Rd, Fyshwick ACT 2609",
         map: "https://maps.app.goo.gl/nTQCUP5hD9KHDCTNA",
-        photo: "/media/taprooms/capital-taproom.jpeg"
+        photo: "/media/taprooms/capital-taproom.jpeg",
+        lat: -35.3224148,
+        lng: 149.1643626
       },
       {
         name: "Lager House",
@@ -292,7 +294,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/DTME4f3D2dH5zMzJ9",
         photo: "/media/taprooms/lager-house.jpg",
         lat: -35.2869071,
-        Lng: 149.1370293
+        lng: 149.1370293
       }
     ]
   },
@@ -314,7 +316,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/SjzgsTib5aS7RZd68",
         photo: "/media/taprooms/co-conspirators-taproom.jpg",
         lat: -37.766242,
-        Lng: 144.9567575
+        lng: 144.9567575
       }
     ]
   },
@@ -336,7 +338,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/hjtz3zG9eS2qqHm6A",
         photo: "/media/taprooms/cypher-taproom.jpg",
         lat: -35.1861693,
-        Lng: 149.1376651
+        lng: 149.1376651
       }
     ]
   },
@@ -358,7 +360,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/EJxFLpeWK2K8SUjv7",
         photo: "/media/taprooms/dainton-carrum-downs.jpg",
         lat: -38.1012663,
-        Lng: 145.1702378
+        lng: 145.1702378
       },
       {
         name: "Dainton Taphouse Croydon",
@@ -366,7 +368,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/TmJ4U6P1j5tA3jfK9",
         photo: "/media/taprooms/dainton-croydon.jpg",
         lat: -37.7950704,
-        Lng: 145.2836325
+        lng: 145.2836325
       }
     ]
   },
@@ -414,7 +416,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/FuRqQk12S3MaciDS7",
         photo: "/media/taprooms/future-taproom.jpg",
         lat: -33.9096974,
-        Lng: 151.1779614
+        lng: 151.1779614
       }
     ]
   },
@@ -436,7 +438,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/711CbjUxT6UErNPY9",
         photo: "/media/taprooms/garage-project-aro-cellar.jpg",
         lat: -41.2952459,
-        Lng: 174.7676582
+        lng: 174.7676582
       },
       {
         name: "Garage Project Aro Taproom: 91 Aro",
@@ -444,7 +446,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/L4iS5S5uVhPuVjL29",
         photo: "/media/taprooms/garage-project-aro-taproom.jpg",
         lat: -41.2954292,
-        Lng: 174.7669136
+        lng: 174.7669136
       },
       {
         name: "Garage Project Taproom & Cellar Door Kingsland",
@@ -452,7 +454,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/dUHpfA6tX1tDMGZAA",
         photo: "/media/taprooms/garage-project-kingsland.jpg",
         lat: -36.8692296,
-        Lng: 174.7494608
+        lng: 174.7494608
       },
       {
         name: "Garage Project Wild Workshop Taproom & Cellar Door",
@@ -460,7 +462,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/U1RfEznDXXNtAQ79A",
         photo: "/media/taprooms/garage-project-wild-workshop.jpg",
         lat: -41.294193304502095,
-        Lng: 174.777206109787
+        lng: 174.777206109787
       },
       {
         name: "Garage Project Leeds Street",
@@ -468,7 +470,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/t5xrJ8fdi5VQJfhC6",
         photo: "/media/taprooms/garage-project-leeds.jpg",
         lat: -41.293044,
-        Lng: 174.7767337
+        lng: 174.7767337
       }
     ]
   },
@@ -490,7 +492,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/QaDqxC9JKMNcf9eu9",
         photo: "/media/taprooms/good-land-taproom.jpeg",
         lat: -38.1916971,
-        Lng: 146.5636768
+        lng: 146.5636768
       }
     ]
   },
@@ -512,7 +514,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/46MoFeeM8VrXXKZB9",
         photo: "/media/taprooms/hargreaves-hill-taproom.jpg",
         lat: -37.751284,
-        Lng: 145.346119
+        lng: 145.346119
       }
     ]
   },
@@ -534,7 +536,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/ZSqqic7DErh3GZbC8",
         photo: "/media/taprooms/hawkers-taproom.jpg",
         lat: -37.718069,
-        Lng: 144.984804
+        lng: 144.984804
       }
     ]
   },
@@ -556,7 +558,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Y2ePFzd83Nhi66Zd7",
         photo: "/media/taprooms/hop-nation-taproom.jpg",
         lat: -37.810018,
-        Lng: 144.903901
+        lng: 144.903901
       }
     ]
   },
@@ -578,7 +580,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/MA7Xdb6ypYEa2gmBA",
         photo: "/media/taprooms/jervis-bay-taproom.jpeg",
         lat: -35.029012,
-        Lng: 150.660485
+        lng: 150.660485
       }
     ]
   },
@@ -600,7 +602,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/yVaaEcSFbzM1NQ8r5",
         photo: "/media/taprooms/kaiju-taproom.jpg",
         lat: -37.91097,
-        Lng: 145.107518
+        lng: 145.107518
       }
     ]
   },
@@ -622,7 +624,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/ffidcsjKAmRMoZze7",
         photo: "/media/taprooms/kicks-taproom.jpg",
         lat: -33.903902,
-        Lng: 151.1638425
+        lng: 151.1638425
       }
     ]
   },
@@ -657,7 +659,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/JPpGb5wwcpaWAFb39",
         photo: "/media/taprooms/mountain-culture-katoomba.jpg",
         lat: -33.712214,
-        Lng: 150.310015
+        lng: 150.310015
       },
       {
         name: "Redfern Pub",
@@ -665,7 +667,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/L7AbmDSgoy4ZzY776",
         photo: "/media/taprooms/mountain-culture-redfern.jpg",
         lat: -33.894919,
-        Lng: 151.198912
+        lng: 151.198912
       },
       {
         name: "Melbourne Brewpub",
@@ -673,7 +675,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Nq9FvhrmJpLUMx1cA",
         photo: "/media/taprooms/mountain-culture-melbourne.jpg",
         lat: -37.818464,
-        Lng: 145.010967
+        lng: 145.010967
       },
       {
         name: "Hobart Taproom",
@@ -681,7 +683,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/avkULNboPQN5NjoL6",
         photo: "/media/taprooms/mountain-culture-hobart.jpg",
         lat: -42.881452,
-        Lng: 147.323804
+        lng: 147.323804
       },
       {
         name: "Emu Plains Taproom",
@@ -689,7 +691,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/VavF1J7UwgxE3rDn7",
         photo: "/media/taprooms/mountain-culture-emu-plains.jpg",
         lat: -33.745597,
-        Lng: 150.659813
+        lng: 150.659813
       }
     ]
   },
@@ -711,7 +713,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/UptpNQst7USsMQgj7",
         photo: "/media/taprooms/mountain-monk-taproom.jpg",
         lat: -36.7426682,
-        Lng: 147.1684939
+        lng: 147.1684939
       }
     ]
   },
@@ -733,7 +735,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/7S1SzksysatTCyso7",
         photo: "/media/taprooms/noodledoof-taproom.jpg",
         lat: -38.291711,
-        Lng: 142.3654837
+        lng: 142.3654837
       }
     ]
   },
@@ -755,7 +757,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/QC3hS1qhHqRfDd1w6",
         photo: "/media/taprooms/ocean-reach-taproom.jpg",
         lat: -38.4497403,
-        Lng: 145.2392478
+        lng: 145.2392478
       }
     ]
   },
@@ -777,7 +779,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/ZX9DqsTgdMWwVTfWA",
         photo: "/media/taprooms/one-drop-taproom.jpg",
         lat: -33.9454381,
-        Lng: 151.1930088
+        lng: 151.1930088
       }
     ]
   },
@@ -799,7 +801,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Fgt7d6my6EmqPE6L6",
         photo: "/media/taprooms/pirate-life-headquarters.jpg",
         lat: -34.844974,
-        Lng: 138.510074
+        lng: 138.510074
       },
       {
         name: "Pirate Life South Melbourne",
@@ -807,7 +809,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Qg5osdv3Xk2FY5tVA",
         photo: "/media/taprooms/pirate-life-melbourne.jpg",
         lat: -37.83103,
-        Lng: 144.955369
+        lng: 144.955369
       },
       {
         name: "Pirate Life Microbrewery",
@@ -815,7 +817,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/GJdmMY55tyxhJTia6",
         photo: "/media/taprooms/pirate-life-skycity.jpg",
         lat: -34.9209153,
-        Lng: 138.5972657
+        lng: 138.5972657
       },
       {
         name: "Pirate Life Perth",
@@ -823,7 +825,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/M1ia8Zet1YqD3vy66",
         photo: "/media/taprooms/pirate-life-perth.jpg",
         lat: -31.9505866,
-        Lng: 115.8530307
+        lng: 115.8530307
       }
     ]
   },
@@ -845,7 +847,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/t5iz1rSxJR91fdsy9",
         photo: "/media/taprooms/range-newstead.jpg",
         lat: -27.4481243,
-        Lng: 153.0436473
+        lng: 153.0436473
       },
       {
         name: "Patio by Range Brewing",
@@ -853,7 +855,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/jxak2vRRZS6zsY4G6",
         photo: "/media/taprooms/range-patio.jpg",
         lat: -27.4663971,
-        Lng: 152.9978221
+        lng: 152.9978221
       },
       {
         name: "The Bethnal",
@@ -861,7 +863,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/fd1XzoCRYZcKBSHC6",
         photo: "/media/taprooms/range-bethnal.jpg",
         lat: -27.4479925,
-        Lng: 153.0436231
+        lng: 153.0436231
       },
       {
         name: "Rays by Range Brewing",
@@ -869,7 +871,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/BHwYpMo5UoSygiM78",
         photo: "/media/taprooms/range-rays.jpg",
         lat: -27.4975309,
-        Lng: 153.0682095
+        lng: 153.0682095
       }
     ]
   },
@@ -891,7 +893,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/UWaworiaqKcsekKb6",
         photo: "/media/taprooms/revel-taproom.jpg",
         lat: -27.453121,
-        Lng: 153.0861255
+        lng: 153.0861255
       }
     ]
   },
@@ -913,7 +915,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/gddMX5jHGyWKhT526",
         photo: "/media/taprooms/seeker-taproom.jpg",
         lat: -34.4643085,
-        Lng: 150.8548976
+        lng: 150.8548976
       }
     ]
   },
@@ -935,7 +937,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/cLmyPurGiB5c7wLo6",
         photo: "/media/taprooms/shapeshifter-taproom.jpeg",
         lat: -34.9014463,
-        Lng: 138.5424758
+        lng: 138.5424758
       }
     ]
   },
@@ -957,7 +959,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/2eSdBaDAm2dA2TxD6",
         photo: "/media/taprooms/shout-taproom.jpg",
         lat: -32.9105959,
-        Lng: 151.7417496
+        lng: 151.7417496
       }
     ]
   },
@@ -979,7 +981,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/gti3pPV7Q1okzHGc6",
         photo: "/media/taprooms/sixtwelve-taproom.jpg",
         lat: -34.8295497,
-        Lng: 138.7060135
+        lng: 138.7060135
       }
     ]
   },
@@ -1001,7 +1003,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Z14eUWDVb4uzSMna7",
         photo: "/media/taprooms/small-gods-taproom.jpg",
         lat: -36.8668956,
-        Lng: 174.7612352
+        lng: 174.7612352
       }
     ]
   },
@@ -1023,7 +1025,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/fkVKioEhRnLPnLGbA",
         photo: "/media/taprooms/sunday-road-taproom.jpeg",
         lat: -34.0327075,
-        Lng: 151.075684
+        lng: 151.075684
       }
     ]
   },
@@ -1058,7 +1060,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/cxNqZXAq6dL2JBCc8",
         photo: "/media/taprooms/tar-barrel-taproom.jpg",
         lat: -38.2325205,
-        Lng: 145.0568239
+        lng: 145.0568239
       }
     ]
   },
@@ -1080,7 +1082,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Q6QnWuYGEQPoBkc37",
         photo: "/media/taprooms/working-title-taproom.jpg",
         lat: -27.4516596,
-        Lng: 153.0440548
+        lng: 153.0440548
       }
     ]
   },
@@ -1102,7 +1104,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/uRUkXuzAu11u5K329",
         photo: "/media/taprooms/your-mates-warana.jpg",
         lat: -26.7269282,
-        Lng: 153.1232521
+        lng: 153.1232521
       },
       {
         name: "Crackerjack Cooroy",
@@ -1110,7 +1112,7 @@ const breweries = [
         map: "https://maps.app.goo.gl/Nw7MFpFCHCSXPmWGA",
         photo: "/media/taprooms/your-mates-crackerjack.jpg",
         lat: -26.417629,
-        Lng: 152.9125883
+        lng: 152.9125883
       }
     ]
   }
