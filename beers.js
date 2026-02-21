@@ -195,7 +195,11 @@ const beers = [
   { id: 194, name: "Victoria's High Country Brewery Trail Rule 47 Black Cali Pils", brewery: "Mountain Monk Brewers", abv: 5.8, style: "Pilsner", bbbrsScore: 22.75, untappdScore: 4.5, beerCanUrl: "/media/beers/rule-47-2025.png", epnum: 77 },
   { id: 195, name: "Bavarian Pilsner", brewery: "Mountain Monk Brewers", abv: 5, style: "Pilsner", bbbrsScore: 22.08, untappdScore: 4.25, beerCanUrl: "/media/beers/bavarian-pilsner.png", epnum: 77 },
   { id: 196, name: "Dunkel Weizen", brewery: "Mountain Monk Brewers", abv: 4.8, style: "Wheat Beer", bbbrsScore: 21.25, untappdScore: 4.17, beerCanUrl: "/media/beers/dunkel-weizen.png", epnum: 77 },
-  { id: 197, name: "Holy Lager!", brewery: "Mountain Monk Brewers", abv: 4.8, style: "Lager", bbbrsScore: 21, untappdScore: 4, beerCanUrl: "/media/beers/holy-lager.png", epnum: 77 }
+  { id: 197, name: "Holy Lager!", brewery: "Mountain Monk Brewers", abv: 4.8, style: "Lager", bbbrsScore: 21, untappdScore: 4, beerCanUrl: "/media/beers/holy-lager.png", epnum: 77 },
+  { id: 198, name: "Mango Gose", brewery: "Smart Brothers Brewing", abv: 4.9, style: "Sour", bbbrsScore: 20.25, untappdScore: 4, beerCanUrl: "/media/beers/mango-gose.png", epnum: 78 },
+  { id: 199, name: "Pale Ale", brewery: "Smart Brothers Brewing", abv: 5, style: "Pale Ale", bbbrsScore: 19.25, untappdScore: 3.92, beerCanUrl: "/media/beers/smart-pale-ale.png", epnum: 78 },
+  { id: 200, name: "Coconut IPA", brewery: "Smart Brothers Brewing", abv: 6.1, style: "IPA", bbbrsScore: 20, untappdScore: 4, beerCanUrl: "/media/beers/coconut-ipa.png", epnum: 78 },
+  { id: 198, name: "Pineapple Milkshake IPA", brewery: "Smart Brothers Brewing", abv: 6.5, style: "IPA", bbbrsScore: 22.08, untappdScore: 4.42, beerCanUrl: "/media/beers/pineapple-milkshake-ipa.png", epnum: 77 }
 ];
 
 const brewery = [
@@ -240,6 +244,7 @@ const brewery = [
   { name: "Shout Brewing Co.", bbbrsScoreAvg: 21.18, untappdScoreAvg: 4.03, logoUrl: "/media/logos/shout-brewing-co.png", epnum: [58] },
   { name: "SixTwelve Brewing", bbbrsScoreAvg: 20.8, untappdScoreAvg: 4.08, logoUrl: "/media/logos/sixtwelve-brewing.png", epnum: [55] },
   { name: "Small Gods", bbbrsScoreAvg: 20.55, untappdScoreAvg: 4.27, logoUrl: "/media/logos/small-gods.png", epnum: [67] },
+  { name: "Smart Brothers Brewing", bbbrsScoreAvg: 20.4, untappdScoreAvg: 4.08, logoUrl: "/media/logos/smart-brothers-brewing.png", epnum: [78] },
   { name: "Sunday Road Brewing Co.", bbbrsScoreAvg: 20.67, untappdScoreAvg: 4.28, logoUrl: "/media/logos/sunday-road-brewing-co.png", epnum: [23] },
   { name: "SURE Brewing", bbbrsScoreAvg: 20.2, untappdScoreAvg: 3.93, logoUrl: "/media/logos/sure-brewing.png", epnum: [38] },
   { name: "Tar Barrel Brewery & Distillery", bbbrsScoreAvg: 20.47, untappdScoreAvg: 4.23, logoUrl: "/media/logos/tar-barrel-brewery.png", epnum: [75] },
