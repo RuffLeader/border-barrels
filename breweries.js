@@ -1008,6 +1008,28 @@ const breweries = [
     ]
   },
   {
+    name: "Smart Brothers Brewing",
+    city: "Hastings",
+    state: "Victoria",
+    logo: "/media/logos/smart-brothers-brewing.png",
+    website: "https://www.smartbrothersbrewing.com.au/",
+    instagram: "https://www.instagram.com/smartbrothersbrewing/",
+    description: "Smart Brothers Brewing is a family-run craft brewery located in Hastings on the Mornington Peninsula, Victoria. Founded by brothers Ben and Matt Smart, the business evolved from a long-standing passion for homebrewing into a professional operation known for its 'grain to glass' quality. Since relocating from Somerville to a larger venue in 2024, they offer a diverse range of 14 beers on tap, featuring everything from traditional English Bitters to experimental favorites like their Coconut IPA and Limoncello Sour. The brewery serves as a vibrant community hub, combining a relaxed, family-friendly atmosphere with a menu of wood-fired pizzas and flame-grilled burgers. By pairing technical brewing expertise with a welcoming local vibe, Smart Brothers Brewing has become a standout destination in the Peninsula’s thriving craft beer scene.",
+    closed: false,
+    independent: true,
+    owner: null,
+    taprooms: [
+      {
+        name: "Smart Brothers Brewing",
+        address: "5/1 Bray St, Hastings VIC 3915",
+        map: "https://maps.app.goo.gl/AxDFfHmGtDGZHHqp9",
+        photo: "/media/taprooms/smart-brothers-taproom.jpg",
+        lat: -38.314095,
+        lng: 145.181778
+      }
+    ]
+  },
+  {
     name: "Sunday Road Brewing Co.",
     city: "Kirrawee",
     state: "New South Wales",
