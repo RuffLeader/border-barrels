@@ -199,7 +199,7 @@ const beers = [
   { id: 198, name: "Mango Gose", brewery: "Smart Brothers Brewing", abv: 4.9, style: "Sour", bbbrsScore: 20.25, untappdScore: 4, beerCanUrl: "/media/beers/mango-gose.png", epnum: 78 },
   { id: 199, name: "Pale Ale", brewery: "Smart Brothers Brewing", abv: 5, style: "Pale Ale", bbbrsScore: 19.25, untappdScore: 3.92, beerCanUrl: "/media/beers/smart-pale-ale.png", epnum: 78 },
   { id: 200, name: "Coconut IPA", brewery: "Smart Brothers Brewing", abv: 6.1, style: "IPA", bbbrsScore: 20, untappdScore: 4, beerCanUrl: "/media/beers/coconut-ipa.png", epnum: 78 },
-  { id: 198, name: "Pineapple Milkshake IPA", brewery: "Smart Brothers Brewing", abv: 6.5, style: "IPA", bbbrsScore: 22.08, untappdScore: 4.42, beerCanUrl: "/media/beers/pineapple-milkshake-ipa.png", epnum: 77 }
+  { id: 198, name: "Pineapple Milkshake IPA", brewery: "Smart Brothers Brewing", abv: 6.5, style: "IPA", bbbrsScore: 22.08, untappdScore: 4.42, beerCanUrl: "/media/beers/pineapple-milkshake-ipa.png", epnum: 78 }
 ];
 
 const brewery = [
