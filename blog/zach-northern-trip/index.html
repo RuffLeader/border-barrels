@@ -320,7 +320,20 @@
 
   <p><strong>Cheers to great beers 🍻.</strong></p>
 
-  <p><a href="/blog/">← Back to Blog</a></p>
+    <div id="bb-comments-container"></div>
+    <script>
+      fetch('/comments.html')
+        .then(r => r.text())
+        .then(html => {
+          document.getElementById('bb-comments-container').innerHTML = html;
+          document.getElementById('bb-comments-container').querySelectorAll('script').forEach(oldScript => {
+            const newScript = document.createElement('script');
+            newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+          });
+        });
+    </script>
+    <p><a href="/blog/">← Back to Blog</a></p>
 
 </div>
     <footer>
