@@ -1,0 +1,345 @@
+<!-- ============================================================
+     BORDER BARRELS — COMMENT SECTION
+     Drop this snippet into any blog post, just before </div> of .post-content
+     Each page gets its own thread automatically based on its URL.
+     
+     SETUP: Replace the two YOUR_... placeholders below with your
+     Supabase project URL and anon key (see setup guide).
+     ============================================================ -->
+
+<style>
+  .bb-comments {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 0 1rem 48px;
+    font-family: Georgia, 'Times New Roman', serif;
+    border-top: 2px solid #ede0d4;
+  }
+  .bb-comments h2 {
+    font-size: 1.4rem;
+    color: #1a1008;
+    margin: 28px 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .bb-comments h2 span.bb-count {
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: normal;
+  }
+  .bb-form {
+    background: #faf7f4;
+    border: 1px solid #ede0d4;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+  }
+  .bb-form input,
+  .bb-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 9px 11px;
+    border: 1px solid #d4a882;
+    border-radius: 7px;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    color: #1a1008;
+    background: #fff;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .bb-form input:focus,
+  .bb-form textarea:focus {
+    border-color: #C8522A;
+  }
+  .bb-form textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .bb-btn {
+    background: #C8522A;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 9px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    letter-spacing: 0.4px;
+    transition: background 0.2s;
+  }
+  .bb-btn:hover { background: #a84020; }
+  .bb-btn:disabled { background: #c8a48e; cursor: not-allowed; }
+  .bb-btn-sm {
+    background: none;
+    border: none;
+    color: #C8522A;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    padding: 0;
+    margin-top: 8px;
+  }
+  .bb-btn-sm:hover { text-decoration: underline; }
+
+  /* Comment card */
+  .bb-comment {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .bb-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    flex-shrink: 0;
+    font-family: Georgia, serif;
+    letter-spacing: 1px;
+  }
+  .bb-bubble {
+    flex: 1;
+    background: #faf7f4;
+    border: 1px solid #ede0d4;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .bb-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .bb-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #1a1008;
+  }
+  .bb-time {
+    font-size: 11px;
+    color: #aaa;
+  }
+  .bb-text {
+    font-size: 14px;
+    color: #3a2c1e;
+    line-height: 1.65;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  /* Replies */
+  .bb-replies {
+    margin-left: 50px;
+    border-left: 2px solid #ede0d4;
+    padding-left: 16px;
+    margin-top: 12px;
+  }
+  .bb-replies .bb-comment { margin-bottom: 14px; }
+  .bb-replies .bb-bubble {
+    background: #fff;
+  }
+
+  /* Reply form */
+  .bb-reply-form {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: #fff8f4;
+    border: 1px dashed #d4a882;
+    border-radius: 8px;
+  }
+  .bb-reply-form input,
+  .bb-reply-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 7px 10px;
+    border: 1px solid #d4a882;
+    border-radius: 6px;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    color: #1a1008;
+    background: #fff;
+    box-sizing: border-box;
+    outline: none;
+  }
+  .bb-reply-form textarea { resize: vertical; min-height: 70px; }
+
+  .bb-empty {
+    text-align: center;
+    padding: 36px 0;
+    color: #b8967a;
+    font-size: 14px;
+  }
+  .bb-empty .bb-beer { font-size: 32px; margin-bottom: 8px; }
+  .bb-error { color: #c0392b; font-size: 12px; margin: 6px 0 0; }
+  .bb-loading { text-align: center; color: #999; font-size: 13px; padding: 24px 0; }
+</style>
+
+<section class="bb-comments" id="bb-comments">
+  <h2>💬 Comments <span class="bb-count" id="bb-count"></span></h2>
+
+  <div class="bb-form" id="bb-main-form">
+    <input type="text" id="bb-name" placeholder="Your name *" maxlength="80">
+    <textarea id="bb-text" placeholder="What did you think of the episode? *" maxlength="2000"></textarea>
+    <button class="bb-btn" id="bb-submit" onclick="bbPost()">Post Comment</button>
+    <p class="bb-error" id="bb-error" style="display:none"></p>
+  </div>
+
+  <div id="bb-list">
+    <div class="bb-loading">Loading comments…</div>
+  </div>
+</section>
+
+<script>
+  // ─── CONFIG — replace these two lines with your Supabase values ───
+  const BB_URL  = 'https://omvoddwpcmvfodsmdrkw.supabase.co';   // e.g. https://abcdefgh.supabase.co
+  const BB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tdm9kZHdwY212Zm9kc21kcmt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzAwMjgsImV4cCI6MjA4NzQ0NjAyOH0.A7oAxTlt2ZLZLhW70a-GewmKB4a_UTJeCApcgMlTVV0';       // long string starting with eyJ...
+  // ──────────────────────────────────────────────────────────────────
+
+  const BB_PAGE = window.location.pathname; // unique per post
+  let bbComments = [];
+
+  const avatarColors = ['#C8522A','#2A6E8C','#4A7C59','#7C4A6B','#8C7A2A','#2A4A8C'];
+  function bbAvatar(name) {
+    const initials = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2) || '?';
+    const color = avatarColors[name.charCodeAt(0) % avatarColors.length];
+    return `<div class="bb-avatar" style="background:${color}">${initials}</div>`;
+  }
+
+  function bbTimeAgo(dateStr) {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const m = Math.floor(diff/60000), h = Math.floor(diff/3600000), d = Math.floor(diff/86400000);
+    if (m < 1) return 'just now';
+    if (m < 60) return `${m}m ago`;
+    if (h < 24) return `${h}h ago`;
+    return `${d}d ago`;
+  }
+
+  function bbEscape(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function bbRenderReplyForm(parentId) {
+    return `
+      <div class="bb-reply-form" id="rf-${parentId}">
+        <input type="text" id="rn-${parentId}" placeholder="Your name *" maxlength="80">
+        <textarea id="rt-${parentId}" placeholder="Write a reply…" maxlength="2000"></textarea>
+        <button class="bb-btn" style="font-size:12px;padding:7px 16px" onclick="bbReply('${parentId}')">Post Reply</button>
+        <button class="bb-btn-sm" onclick="bbHideReply('${parentId}')" style="margin-left:10px">Cancel</button>
+        <p class="bb-error" id="re-${parentId}" style="display:none"></p>
+      </div>`;
+  }
+
+  function bbRenderComment(c, isReply = false) {
+    const replies = bbComments.filter(r => r.parent_id === c.id);
+    const repliesHtml = replies.length
+      ? `<div class="bb-replies">${replies.map(r => bbRenderComment(r, true)).join('')}</div>`
+      : '';
+    return `
+      <div class="bb-comment" id="c-${c.id}">
+        ${bbAvatar(c.name)}
+        <div style="flex:1">
+          <div class="bb-bubble">
+            <div class="bb-meta">
+              <span class="bb-name">${bbEscape(c.name)}</span>
+              <span class="bb-time">${bbTimeAgo(c.created_at)}</span>
+            </div>
+            <p class="bb-text">${bbEscape(c.body)}</p>
+            ${!isReply ? `<button class="bb-btn-sm" onclick="bbShowReply('${c.id}')">↩ Reply</button>` : ''}
+          </div>
+          ${!isReply ? `<div id="rfw-${c.id}"></div>` : ''}
+          ${repliesHtml}
+        </div>
+      </div>`;
+  }
+
+  function bbRender() {
+    const list = document.getElementById('bb-list');
+    const top = bbComments.filter(c => !c.parent_id);
+    const count = bbComments.length;
+    document.getElementById('bb-count').textContent = count ? `· ${count} comment${count!==1?'s':''}` : '';
+    if (top.length === 0) {
+      list.innerHTML = `<div class="bb-empty"><div class="bb-beer">🍺</div>No comments yet — crack one open and be first!</div>`;
+    } else {
+      list.innerHTML = top.map(c => bbRenderComment(c)).join('');
+    }
+  }
+
+  async function bbLoad() {
+    const res = await fetch(`${BB_URL}/rest/v1/comments?page=eq.${encodeURIComponent(BB_PAGE)}&order=created_at.asc&select=*`, {
+      headers: { 'apikey': BB_KEY, 'Authorization': `Bearer ${BB_KEY}` }
+    });
+    if (res.ok) {
+      bbComments = await res.json();
+    } else {
+      bbComments = [];
+    }
+    bbRender();
+  }
+
+  async function bbPost() {
+    const name = document.getElementById('bb-name').value.trim();
+    const body = document.getElementById('bb-text').value.trim();
+    const err  = document.getElementById('bb-error');
+    const btn  = document.getElementById('bb-submit');
+    if (!name || !body) { err.textContent='Please fill in your name and comment.'; err.style.display='block'; return; }
+    err.style.display='none';
+    btn.disabled = true; btn.textContent = 'Posting…';
+    const res = await fetch(`${BB_URL}/rest/v1/comments`, {
+      method: 'POST',
+      headers: { 'apikey': BB_KEY, 'Authorization': `Bearer ${BB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+      body: JSON.stringify({ page: BB_PAGE, name, body, parent_id: null })
+    });
+    btn.disabled = false; btn.textContent = 'Post Comment';
+    if (res.ok) {
+      const [row] = await res.json();
+      bbComments.push(row);
+      document.getElementById('bb-name').value = '';
+      document.getElementById('bb-text').value = '';
+      bbRender();
+    } else {
+      err.textContent = 'Something went wrong. Please try again.'; err.style.display='block';
+    }
+  }
+
+  async function bbReply(parentId) {
+    const name = document.getElementById(`rn-${parentId}`).value.trim();
+    const body = document.getElementById(`rt-${parentId}`).value.trim();
+    const err  = document.getElementById(`re-${parentId}`);
+    if (!name || !body) { err.textContent='Please fill in your name and reply.'; err.style.display='block'; return; }
+    err.style.display='none';
+    const res = await fetch(`${BB_URL}/rest/v1/comments`, {
+      method: 'POST',
+      headers: { 'apikey': BB_KEY, 'Authorization': `Bearer ${BB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+      body: JSON.stringify({ page: BB_PAGE, name, body, parent_id: parentId })
+    });
+    if (res.ok) {
+      const [row] = await res.json();
+      bbComments.push(row);
+      bbRender();
+    } else {
+      err.textContent = 'Something went wrong. Please try again.'; err.style.display='block';
+    }
+  }
+
+  function bbShowReply(id) {
+    const wrap = document.getElementById(`rfw-${id}`);
+    if (wrap) { wrap.innerHTML = bbRenderReplyForm(id); wrap.querySelector('input')?.focus(); }
+  }
+  function bbHideReply(id) {
+    const wrap = document.getElementById(`rfw-${id}`);
+    if (wrap) wrap.innerHTML = '';
+  }
+
+  bbLoad();
+</script>
