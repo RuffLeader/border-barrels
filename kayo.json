@@ -1,11 +1,13 @@
 {
-  "arizona-st-texas-tech": true,
-  "alabama-arkansas": true,
-  "arizona-byu": true,
-  "san-francisco-gonzaga": true,
-  "syracuse-north-carolina": true,
-  "houston-arizona": true,
-  "duke-michigan": true,
   "north-carolina-louisville": true,
-  "kansas-houston": true
+  "kansas-houston": true,
+  "notre-dame-duke": true,
+  "baylor-arizona": true,
+  "byu-ucf": true,
+  "duke-virginia": true,
+  "kentucky-vanderbilt": true,
+  "arizona-kansas": true,
+  "tennessee-alabama": true,
+  "florida-arkansas": true,
+  "saint-mary-s-gonzaga": true
 }
