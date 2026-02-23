@@ -12,28 +12,32 @@
     max-width: 720px;
     margin: 48px auto 0;
     padding: 0 1rem 48px;
-    font-family: Georgia, 'Times New Roman', serif;
-    border-top: 2px solid #ede0d4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 2px solid #002157;
   }
   .bb-comments h2 {
-    font-size: 1.4rem;
-    color: #1a1008;
+    font-size: 1.6rem;
+    color: #002157;
     margin: 28px 0 20px;
     display: flex;
     align-items: center;
     gap: 10px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-shadow: none;
   }
   .bb-comments h2 span.bb-count {
     font-size: 0.85rem;
-    color: #999;
+    color: #002157;
     font-weight: normal;
   }
   .bb-form {
-    background: #faf7f4;
-    border: 1px solid #ede0d4;
-    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #002157;
+    border-radius: 15px;
     padding: 20px;
     margin-bottom: 32px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
   }
   .bb-form input,
   .bb-form textarea {
@@ -41,51 +45,56 @@
     width: 100%;
     margin-bottom: 10px;
     padding: 9px 11px;
-    border: 1px solid #d4a882;
+    border: 1px solid #002157;
     border-radius: 7px;
-    font-family: Georgia, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
-    color: #1a1008;
+    color: #002157;
     background: #fff;
     box-sizing: border-box;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background 0.2s;
   }
+  .bb-form input::placeholder,
+  .bb-form textarea::placeholder { color: #888; opacity: 1; }
   .bb-form input:focus,
   .bb-form textarea:focus {
-    border-color: #C8522A;
+    border-color: #002157;
+    background: #fff;
   }
   .bb-form textarea {
     resize: vertical;
     min-height: 90px;
   }
   .bb-btn {
-    background: #C8522A;
-    color: #fff;
+    background: #f0a830;
+    color: #002157;
     border: none;
     border-radius: 7px;
     padding: 9px 22px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    font-family: Georgia, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     letter-spacing: 0.4px;
-    transition: background 0.2s;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   }
-  .bb-btn:hover { background: #a84020; }
-  .bb-btn:disabled { background: #c8a48e; cursor: not-allowed; }
+  .bb-btn:hover { background: #ffc040; box-shadow: 0 6px 14px rgba(240,168,48,0.5); }
+  .bb-btn:disabled { background: #7a6020; color: #aaa; cursor: not-allowed; box-shadow: none; }
   .bb-btn-sm {
     background: none;
     border: none;
-    color: #C8522A;
+    color: #002157;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
-    font-family: Georgia, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 0;
     margin-top: 8px;
+    transition: color 0.2s;
   }
-  .bb-btn-sm:hover { text-decoration: underline; }
+  .bb-btn-sm:hover { color: #ffc040; text-decoration: underline; }
 
   /* Comment card */
   .bb-comment {
@@ -104,15 +113,20 @@
     font-size: 13px;
     color: #fff;
     flex-shrink: 0;
-    font-family: Georgia, serif;
     letter-spacing: 1px;
+    box-shadow: none;
   }
   .bb-bubble {
     flex: 1;
-    background: #faf7f4;
-    border: 1px solid #ede0d4;
-    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #002157;
+    border-radius: 12px;
     padding: 12px 14px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .bb-bubble:hover {
+    background: rgba(0,33,87,0.04);
+    box-shadow: 0 4px 12px rgba(0,33,87,0.15);
   }
   .bb-meta {
     display: flex;
@@ -123,15 +137,17 @@
   .bb-name {
     font-weight: 700;
     font-size: 14px;
-    color: #1a1008;
+    color: #002157;
+    text-shadow: none;
   }
   .bb-time {
     font-size: 11px;
-    color: #aaa;
+    color: #002157;
+    opacity: 0.7;
   }
   .bb-text {
     font-size: 14px;
-    color: #3a2c1e;
+    color: #002157;
     line-height: 1.65;
     margin: 0;
     white-space: pre-wrap;
@@ -140,22 +156,22 @@
   /* Replies */
   .bb-replies {
     margin-left: 50px;
-    border-left: 2px solid #ede0d4;
+    border-left: 2px solid #002157;
     padding-left: 16px;
     margin-top: 12px;
   }
   .bb-replies .bb-comment { margin-bottom: 14px; }
   .bb-replies .bb-bubble {
-    background: #fff;
+    background: #f9f9f9;
   }
 
   /* Reply form */
   .bb-reply-form {
     margin-top: 10px;
     padding: 12px 14px;
-    background: #fff8f4;
-    border: 1px dashed #d4a882;
-    border-radius: 8px;
+    background: #fff;
+    border: 1px dashed #002157;
+    border-radius: 10px;
   }
   .bb-reply-form input,
   .bb-reply-form textarea {
@@ -163,26 +179,31 @@
     width: 100%;
     margin-bottom: 8px;
     padding: 7px 10px;
-    border: 1px solid #d4a882;
+    border: 1px solid #002157;
     border-radius: 6px;
-    font-family: Georgia, serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 13px;
-    color: #1a1008;
+    color: #002157;
     background: #fff;
     box-sizing: border-box;
     outline: none;
+    transition: border-color 0.2s;
   }
+  .bb-reply-form input::placeholder,
+  .bb-reply-form textarea::placeholder { color: #888; opacity: 1; }
+  .bb-reply-form input:focus,
+  .bb-reply-form textarea:focus { border-color: #002157; }
   .bb-reply-form textarea { resize: vertical; min-height: 70px; }
 
   .bb-empty {
     text-align: center;
     padding: 36px 0;
-    color: #b8967a;
+    color: #002157;
     font-size: 14px;
   }
   .bb-empty .bb-beer { font-size: 32px; margin-bottom: 8px; }
-  .bb-error { color: #c0392b; font-size: 12px; margin: 6px 0 0; }
-  .bb-loading { text-align: center; color: #999; font-size: 13px; padding: 24px 0; }
+  .bb-error { color: #ff6b6b; font-size: 12px; margin: 6px 0 0; }
+  .bb-loading { text-align: center; color: #002157; font-size: 13px; padding: 24px 0; }
 </style>
 
 <section class="bb-comments" id="bb-comments">
@@ -209,7 +230,7 @@
   const BB_PAGE = window.location.pathname; // unique per post
   let bbComments = [];
 
-  const avatarColors = ['#C8522A','#2A6E8C','#4A7C59','#7C4A6B','#8C7A2A','#2A4A8C'];
+  const avatarColors = ['#f0a830','#1a4a8c','#2A6E8C','#c8860a','#003580','#7a6a20'];
   function bbAvatar(name) {
     const initials = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2) || '?';
     const color = avatarColors[name.charCodeAt(0) % avatarColors.length];
