@@ -172,7 +172,6 @@
         .then(r => r.text())
         .then(html => {
           document.getElementById('bb-comments-container').innerHTML = html;
-          // Re-run any scripts inside the loaded HTML
           document.getElementById('bb-comments-container').querySelectorAll('script').forEach(oldScript => {
             const newScript = document.createElement('script');
             newScript.textContent = oldScript.textContent;
