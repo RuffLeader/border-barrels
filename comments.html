@@ -202,7 +202,7 @@
 
   <div class="bb-form" id="bb-main-form">
     <input type="text" id="bb-name" placeholder="Your name *" maxlength="80">
-    <textarea id="bb-text" placeholder="Let us know your thoughts on this post, the podcast as a whole, or what you think about Nazgul the wolfdog finishing 21st in the Winter Olympics Cross Country Skiing Team Sprint *" maxlength="2000"></textarea>
+    <textarea id="bb-text" placeholder="What did you think of the episode? *" maxlength="2000"></textarea>
     <button class="bb-btn" id="bb-submit" onclick="bbPost()">Post Comment</button>
     <p class="bb-error" id="bb-error" style="display:none"></p>
   </div>
@@ -299,6 +299,19 @@
     bbRender();
   }
 
+
+  async function bbNotify(type, name, body, page) {
+    const title = type === 'reply' ? '↩ New reply on Border Barrels' : '💬 New comment on Border Barrels';
+    const msg = `${name}: ${body}\n\nOn: ${page}`;
+    try {
+      await fetch('https://ntfy.sh/borderbarrels-comments-x7k2', {
+        method: 'POST',
+        headers: { 'Title': title, 'Priority': 'default' },
+        body: msg
+      });
+    } catch(e) { /* silent fail — comment still posts fine */ }
+  }
+
   async function bbPost() {
     const name = document.getElementById('bb-name').value.trim();
     const body = document.getElementById('bb-text').value.trim();
@@ -319,6 +332,7 @@
       document.getElementById('bb-name').value = '';
       document.getElementById('bb-text').value = '';
       bbRender();
+      bbNotify('comment', name, body, BB_PAGE);
     } else {
       err.textContent = 'Something went wrong. Please try again.'; err.style.display='block';
     }
@@ -339,6 +353,7 @@
       const [row] = await res.json();
       bbComments.push(row);
       bbRender();
+      bbNotify('reply', name, body, BB_PAGE);
     } else {
       err.textContent = 'Something went wrong. Please try again.'; err.style.display='block';
     }
