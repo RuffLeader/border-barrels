@@ -141,6 +141,8 @@ async function getTeamGames(team) {
     "pittsburgh": "pitt",
     "miami oh": "193",
     "saint louis": "139",
+    "saint marys": "2608",
+    "miami": "2390",
   };
 
   const espnName = fallback[normalizeForAPI(team.name)] || normalizeForAPI(team.name);
