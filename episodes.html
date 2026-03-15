@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Episodes</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="/nav.js" defer></script>
   <style>
 /* === Base Styles === */
 body {
@@ -13,10 +14,6 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
-}
-
-footer {
-  text-align: center;
 }
 
 .container {
@@ -28,49 +25,6 @@ footer {
 
 main {
   padding: 2rem;
-}
-
-/* Nav styles */
-#nav-menu {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  list-style: none;
-}
-
-#nav-menu a {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-
-#nav-menu a:hover {
-  color: #ffb400;
-}
-
-/* Burger menu button */
-#nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100;
-}
-
-#nav-toggle:focus {
-  outline: 2px solid #ffb400;
-  outline-offset: 2px;
-}
-
-.burger {
-  width: 25px;
-  height: 3px;
-  background: white;
-  border-radius: 2px;
 }
 
 /* === Controls (Search + Sort) === */
@@ -278,31 +232,6 @@ main {
   opacity: 0.7;
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
-  #nav-toggle {
-    display: flex;
-  }
-  #nav-menu {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #002157;
-    padding: 10px 0;
-    border-bottom: 2px solid #e0e0e0;
-  }
-  #nav-menu.show {
-    display: flex;
-  }
-  #nav-menu a {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-  }
-}
-
 /* Smaller cards on mobile */
 @media (max-width: 600px) {
   #episode-grid {
@@ -355,7 +284,7 @@ main {
   </style>
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1>Episodes</h1>
       <button id="nav-toggle" aria-label="Toggle navigation">
@@ -364,11 +293,11 @@ main {
         <span class="burger"></span>
       </button>
       <nav id="nav-menu">
-        <a href="index.html">Home</a>
+        <a href="/index.html">Home</a>
         <a href="/beerandbrew.html">Beers & Breweries</a>
-        <a href="episodes.html">Episodes</a>
+        <a href="/episodes.html">Episodes</a>
         <a href="/blog/index.html">Blog</a>
-        <a href="about.html">About Us</a>
+        <a href="/about.html">About Us</a>
       </nav>
     </div>
   </header>
@@ -381,7 +310,7 @@ main {
 <div id="episode-grid"></div>
 <div id="pagination"></div>
 
-  <footer>
+  <footer class="site-footer">
     <p>© 2025 Border Barrels</p>
   </footer>
 
@@ -594,21 +523,6 @@ async function init() {
 }
 
 init();
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const navToggle = document.getElementById("nav-toggle");
-    const navMenu = document.getElementById("nav-menu");
-
-    if (navToggle && navMenu) {
-      navToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("show");
-
-        // Update aria-expanded for accessibility
-        const expanded = navToggle.getAttribute("aria-expanded") === "true";
-        navToggle.setAttribute("aria-expanded", !expanded);
-      });
-    }
-  });
 </script>
 </body>
 </html>

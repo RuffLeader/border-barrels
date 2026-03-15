@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 .container {
@@ -25,7 +26,7 @@ h1, h2, h3 {
 }
 
 /* === Header/Nav styles === */
-header {
+header.site-header {
   background-color: #002157;
   color: #ffffff;
   padding: 1rem 0;
@@ -33,22 +34,29 @@ header {
   z-index: 1000;
 }
 
-/* Page title inside header */
-header h1.page-title {
+header.site-header .container {
+  max-width: 1100px;
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header.site-header h1 {
   font-size: 2.5rem;
   margin: 1rem 0 0.5rem 0;
   letter-spacing: 1px;
   font-weight: bold;
 }
 
-/* Nav styles */
-nav {
+header.site-header nav#nav-menu {
   display: flex;
   gap: 1rem;
   justify-content: center;
 }
 
-nav a {
+header.site-header nav#nav-menu a {
   margin: 0 1rem;
   font-size: 1rem;
   color: #ffffff;
@@ -57,17 +65,78 @@ nav a {
   transition: color 0.3s ease;
 }
 
-nav a:hover {
+header.site-header nav#nav-menu a:hover {
   color: #ffb400;
 }
 
-/* Footer (exclude Beers page) */
-footer {
+/* === Burger menu button - hidden on desktop === */
+#nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1100; /* above nav */
+}
+
+#nav-toggle:focus {
+  outline: 2px solid #f0a830;
+  outline-offset: 2px;
+}
+
+#nav-toggle .burger {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* === Footer === */
+footer.site-footer {
   background-color: #002157;
   color: #ffffff;
-  padding: 2rem 0;
-  border-top: 2px solid #e0e0e0;
+  padding: 1.5rem 0;
+  margin: 0;
   font-size: 0.9rem;
+  text-align: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* === Mobile Nav === */
+@media (max-width: 768px) {
+  header.site-header h1 {
+    font-size: 1.5rem;
+  }
+
+  #nav-toggle {
+    display: flex;
+  }
+
+  header.site-header nav#nav-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #002157;
+    padding: 10px 0;
+    border-bottom: 2px solid #e0e0e0;
+    text-align: center;
+  }
+
+  header.site-header nav#nav-menu.show {
+    display: flex;
+  }
+
+  header.site-header nav#nav-menu a {
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+    display: block;
+    width: 100%;
+  }
 }
 
 /* Main Content */
@@ -215,77 +284,7 @@ section {
   font: bold;
 }
 
-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-/* === Burger menu button - hidden on desktop === */
-#nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100; /* above nav */
-}
-
-#nav-toggle:focus {
-  outline: 2px solid #ffb400;
-  outline-offset: 2px;
-}
-
-/* Burger lines */
-.burger {
-  width: 25px;
-  height: 3px;
-  background: white;
-  border-radius: 2px;
-}
-
-/* === Mobile styles === */
-@media (max-width: 768px) {
-  /* Show burger */
-  #nav-toggle {
-    display: flex;
-  }
-
-  /* Hide nav by default */
-  #nav-menu {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #002157;
-    padding: 10px 0;
-    border-bottom: 2px solid #e0e0e0;
-  }
-
-  /* Show nav when toggled */
-  #nav-menu.show {
-    display: flex;
-  }
-
-  nav a {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-  }
-
-  header .container {
-    align-items: center;
-  }
-}
-
-/* === Desktop nav always visible === */
-@media (min-width: 769px) {
-  nav {
-    display: flex !important;
-  }
-}
 
 .leaderboard-btn {
   display: block;

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Blog</title>
   <link rel="stylesheet" href="/style.css"/>
+  <script src="/nav.js" defer></script>
   <style>
     .blog-list {
       display: flex;
@@ -88,21 +89,21 @@
   </style>
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="container">
-      <h1 class="page-title">BB Blog</h1>
-      <nav id="nav-menu" class="nav-links">
+      <h1>BB Blog</h1>
+      <button id="nav-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
+      <nav id="nav-menu">
         <a href="/index.html">Home</a>
         <a href="/beerandbrew.html">Beers & Breweries</a>
         <a href="/episodes.html">Episodes</a>
         <a href="/blog/index.html">Blog</a>
         <a href="/about.html">About Us</a>
       </nav>
-      <button id="nav-toggle" aria-label="Toggle navigation">
-        <span class="burger"></span>
-        <span class="burger"></span>
-        <span class="burger"></span>
-      </button>
     </div>
   </header>
 
@@ -110,7 +111,7 @@
     <div id="blog-grid" class="blog-grid"></div>
   </main>
 
-  <footer>
+  <footer class="site-footer">
     <div class="container">
       <p>© 2025 Border Barrels</p>
     </div>
@@ -144,12 +145,6 @@
     }
 
     loadPosts();
-    const navToggle = document.getElementById("nav-toggle");
-const navMenu = document.getElementById("nav-menu");
-
-navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("show");
-});
   </script>
 </body>
 </html>

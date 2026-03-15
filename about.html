@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/nav.js" defer></script>
   <style>
 /* === Base Styles === */
 body {
@@ -19,57 +21,6 @@ body {
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
-}
-
-/* Base styles */
-header {
-  background-color: #002157;
-  color: white;
-  padding: 1rem 0;
-  position: relative;
-  z-index: 1000;
-}
-
-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-.page-title {
-  margin: 0;
-}
-
-footer {
-  background-color: #002157;
-  color: #ffffff;
-  padding: 2rem 0;
-  border-top: 2px solid #e0e0e0;
-  font-size: 0.9rem;
-  text-align: center;
-}
-
-h1 {
-  font-family: 'Segoe UI', sans-serif;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 1rem 0;
-  letter-spacing: 1px;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-nav a {
-  margin: 0 1rem;
-  font-size: 1rem;
-  color: #ffffff;
-  text-decoration: none;
-  padding: 0.5rem;
-}
-
-nav a:hover {
-  color: #ffb400;
 }
 
 main {
@@ -210,98 +161,10 @@ main {
   background-color: #CD7F32; /* bronze */
   color: #fff;
 }
-
-/* Hide nav links on mobile by default */
-#nav-menu {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-/* Burger button hidden on desktop */
-#nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1100; /* above nav */
-}
-    
-#nav-toggle:focus {
-  outline: 2px solid #ffb400;
-  outline-offset: 2px;
-}
-
-/* Burger lines */
-.burger {
-  width: 25px;
-  height: 3px;
-  background: white;
-}
-
-/* Desktop nav */
-.nav-links a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 1rem;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-/* Desktop: show nav as flex */
-@media (min-width: 769px) {
-  #nav-menu {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    z-index: 1000;
-  }
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  #nav-toggle {
-    display: flex;
-  }
-
-  #nav-menu {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #002157;
-    padding: 10px 0;
-  }
-
-  #nav-menu.show {
-    display: flex; /* shown when toggled */
-  }
-
-  #nav-menu a {
-    padding: 0.75rem 1rem;
-  }
-}
-
-#nav-menu a {
-  text-decoration: none;
-  color: white;
-  transition: color 0.2s ease;
-}
-
-#nav-menu a:hover {
-  color: #ffb400;
-}
-
   </style>
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="container">
       <h1>About Us</h1>
       <button id="nav-toggle" aria-label="Toggle navigation">
@@ -310,11 +173,11 @@ main {
         <span class="burger"></span>
       </button>
       <nav id="nav-menu">
-        <a href="index.html">Home</a>
-        <a href="beerandbrew.html">Beers & Breweries</a>
-        <a href="episodes.html">Episodes</a>
+        <a href="/index.html">Home</a>
+        <a href="/beerandbrew.html">Beers & Breweries</a>
+        <a href="/episodes.html">Episodes</a>
         <a href="/blog/index.html">Blog</a>
-        <a href="about.html">About Us</a>
+        <a href="/about.html">About Us</a>
       </nav>
     </div>
   </header>
@@ -407,16 +270,8 @@ main {
     </article>
   </section>
 
-  <footer>
+  <footer class="site-footer">
     <p>© 2025 Border Barrels</p>
   </footer>
-<script>
-const navToggle = document.getElementById("nav-toggle");
-const navMenu = document.getElementById("nav-menu");
-
-navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("show");
-});
-</script>
 </body>
 </html>

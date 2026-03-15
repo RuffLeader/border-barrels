@@ -9,51 +9,48 @@
   // --- Fit text to max 2 lines by shrinking font ---
   function fitTextToTwoLines(el) {
     const style = getComputedStyle(el);
-    const lineHeight = parseFloat(style.lineHeight);
+    const lineHeight = parseFloat(style.lineHeight) || (parseFloat(style.fontSize) * 1.2);
     const maxHeight = lineHeight * 2;
     let fontSize = parseFloat(style.fontSize);
-    while (el.scrollHeight > maxHeight && fontSize > 10) {
+    
+    // Check if scrollHeight is strictly greater than 2 visual lines (plus a tiny sub-pixel render buffer)
+    while (el.scrollHeight > (maxHeight + 2) && fontSize > 10) {
       fontSize -= 0.5;
       el.style.fontSize = fontSize + 'px';
     }
   }
 
-  function equalizeCardHeights(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    const cards = Array.from(container.querySelectorAll('.beer-card'));
-    if (!cards.length) return;
-    cards.forEach(c => (c.style.height = 'auto'));
-    let maxHeight = 0;
-    cards.forEach(c => {
-      if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
-    });
-    cards.forEach(c => (c.style.height = maxHeight + 'px'));
-  }
-
-  // --- NEW: Equalize across multiple leaderboards ---
-  function equalizeAllLeaderboards(groupSelector) {
-    const containers = document.querySelectorAll(groupSelector);
-    if (!containers.length) return;
-
-    // reset heights
-    containers.forEach(container => {
-      container.querySelectorAll('.beer-card').forEach(c => (c.style.height = 'auto'));
+  window.equalizeAllCards = function() {
+    // Select the parent wrappers that group side-by-side lists
+    const containers = document.querySelectorAll('.leaderboards-wrapper, .cards-wrapper');
+    
+    // Reset all heights first so we can recalculate natural height accurately
+    document.querySelectorAll('.beer-card, .brewery-card').forEach(c => {
+      c.style.height = 'auto';
     });
 
-    // find tallest
-    let maxHeight = 0;
+    // Only apply fixed equal heights on desktop
+    if (window.innerWidth <= 768) return;
+
     containers.forEach(container => {
-      container.querySelectorAll('.beer-card').forEach(c => {
+      if (container.offsetParent === null) return; // Skip if hidden
+      const cards = container.querySelectorAll('.beer-card, .brewery-card');
+      if (!cards.length) return;
+      
+      let maxHeight = 0;
+      cards.forEach(c => {
         if (c.offsetHeight > maxHeight) maxHeight = c.offsetHeight;
       });
+      if (maxHeight > 0) {
+        cards.forEach(c => (c.style.height = maxHeight + 'px'));
+      }
     });
+  };
 
-    // apply tallest
-    containers.forEach(container => {
-      container.querySelectorAll('.beer-card').forEach(c => (c.style.height = maxHeight + 'px'));
-    });
-  }
+  // Re-equalize when window resizes
+  window.addEventListener('resize', () => {
+    setTimeout(window.equalizeAllCards, 100);
+  });
 
   // --- Beer leaderboards ---
   function topBeersByScore(scoreKey) {
@@ -113,7 +110,7 @@
     top10.forEach((beer, idx) => {
       renderListBeer(beer, idx + 1, listContainer, scoreKey, idx * 100);
     });
-    setTimeout(() => equalizeCardHeights(listId), 50);
+    setTimeout(window.equalizeAllCards, 50);
   }
 
   // --- Brewery leaderboards ---
@@ -186,7 +183,7 @@
     top10.forEach((brew, idx) => {
       renderListBrewery(brew, idx + 1, listContainer, scoreKey, idx * 100);
     });
-    setTimeout(() => equalizeCardHeights(listId), 50);
+    setTimeout(window.equalizeAllCards, 50);
   }
 
   // --- Style leaderboards ---
@@ -318,7 +315,7 @@
     top10.forEach((style, idx) => {
       renderListStyle(style, idx + 1, listContainer, scoreKey, idx * 100);
     });
-    setTimeout(() => equalizeCardHeights(listId), 50);
+    setTimeout(window.equalizeAllCards, 50);
   }
 
   // --- Init ---
@@ -333,10 +330,7 @@
     renderStyleLeaderboard('bbbrsScore', 'style-leaderboard-bbbrs');
 
     // 🔥 Equalize across groups
-    setTimeout(() => {
-      equalizeAllLeaderboards('#beer-leaderboard-untappd, #brewery-leaderboard-untappd, #style-leaderboard-untappd');
-      equalizeAllLeaderboards('#beer-leaderboard-bbbrs, #brewery-leaderboard-bbbrs, #style-leaderboard-bbbrs');
-    }, 150);
+    setTimeout(window.equalizeAllCards, 150);
 
     document.querySelectorAll('.leaderboard-toggle').forEach(btn => {
       btn.addEventListener('click', () => {
