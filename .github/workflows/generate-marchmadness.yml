@@ -25,7 +25,7 @@ jobs:
         run: npm install node-fetch nodemailer
 
       - name: Run generator
-        run: node generate-marchmadness.mjs
+        run: node scripts/generate-marchmadness.mjs
 
       - name: Commit updated files
         run: |
