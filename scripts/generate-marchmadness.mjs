@@ -48,8 +48,11 @@ function buildICS(events) {
 VERSION:2.0
 PRODID:-//Border Barrels//March Madness 2026//EN
 CALSCALE:GREGORIAN
+METHOD:PUBLISH
 X-WR-CALNAME:March Madness 2026
 X-WR-CALDESC:Last updated ${formatMelbourneDate(GENERATED_AT)} (Melbourne time) — March Madness 2026
+X-WR-TIMEZONE:UTC
+X-PUBLISHED-TTL:PT1H
 X-BORDERBARRELS-GENERATED:${formatICSDate(GENERATED_AT)}
 X-CALENDAR-VERSION:${CAL_VERSION}
 ${events.join("\n")}
@@ -225,7 +228,8 @@ async function getTeamGames(team) {
       const homeUid = normalizeForUID(g.homeName ?? "home");
       const awayUid = normalizeForUID(g.awayName ?? "away");
       const dateStr = formatICSDate(g.date).slice(0, 8);
-      const uid = `marchmadness-${dateStr}-${awayUid}-vs-${homeUid}@borderbarrels`;
+      const todaySlug = formatICSDate(GENERATED_AT).slice(0, 8);
+      const uid = `marchmadness-${dateStr}-${awayUid}-vs-${homeUid}-gen${todaySlug}@borderbarrels`;
 
       if (seen.has(uid)) continue;
       seen.add(uid);
