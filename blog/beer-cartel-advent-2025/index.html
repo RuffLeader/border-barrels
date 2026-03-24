@@ -511,7 +511,22 @@ function renderPlaceholder(day) {
   </div>`;
 }
 
+function fitBeerNames() {
+  const titles = document.querySelectorAll('.beer-info h3');
+  titles.forEach(title => {
+    const maxFont = 1.3;
+    const minFont = 0.95;
+    const step = 0.05;
+    let fontSize = maxFont;
+    title.style.fontSize = fontSize + 'rem';
+    while (title.scrollWidth > title.clientWidth && fontSize > minFont) {
+      fontSize -= step;
+      title.style.fontSize = fontSize + 'rem';
+    }
+  });
 }
+
+fitBeerNames();
 
   const titles = document.querySelectorAll('.beer-info h3');
 
@@ -531,8 +546,6 @@ function renderPlaceholder(day) {
   });
 }
 
-// Run after render
-fitBeerNames();
 </script>
 
 </body>
