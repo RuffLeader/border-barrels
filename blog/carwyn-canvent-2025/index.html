@@ -347,6 +347,22 @@ body {
     font-size: 1rem;
     margin-top: 4px;
   }
+
+  .back-link {
+    display: inline-block;
+    margin: 1.5rem auto;
+    text-align: center;
+    width: 100%;
+    color: #002157;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid #00215733;
+    transition: all 0.2s ease;
+  }
+  .back-link:hover {
+    color: #001540;
+    border-bottom-color: #001540;
+  }
 }
 </style>
 </head>
@@ -395,7 +411,7 @@ body {
           });
         });
     </script>
-    <p><a href="/blog/">← Back to Blog</a></p>
+    <p style="text-align:center"><a class="back-link" href="/blog/">← Back to Blog</a></p>
 
 <footer class="site-footer">
   <div class="container">
