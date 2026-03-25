@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Show Rating Calculator | Border Barrels</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/nav.js" defer></script>
+  <style>
+    /* === Using your existing site styles === */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #002157;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    main {
+      padding: 3rem 1rem 2rem;
+      max-width: 600px; /* Slimmer for the calculator */
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    /* === Calculator Specific Styles === */
+    .calc-card {
+      background: #f9f9f9;
+      border: 2px solid #002157;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .calc-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: #002157;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .calc-btn:hover {
+      background-color: #ffb400;
+      color: #002157;
+    }
+
+    #result-container {
+      margin-top: 2rem;
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid #ddd;
+    }
+
+    .result-label {
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-value {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #002157;
+    }
+
+    .weight-note {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 1rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Rating Calculator</h1>
+      <button id="nav-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+      </button>
+      <nav id="nav-menu">
+        <a href="/index.html">Home</a>
+        <a href="/beerandbrew.html">Beers & Breweries</a>
+        <a href="/episodes.html">Episodes</a>
+        <a href="/blog/index.html">Blog</a>
+        <a href="/about.html">About Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="calc-card">
+      <p style="text-align:center; font-weight:bold; margin-bottom: 2rem;">METICULOUSLY CRAFTED SCORE SYSTEM</p>
+      
+      <div class="input-group">
+        <label>IMDb Score (e.g. 8.2)</label>
+        <input type="number" id="imdb" step="0.1" placeholder="0.0">
+      </div>
+
+      <div class="input-group">
+        <label>RT Critic Score % (e.g. 90)</label>
+        <input type="number" id="rt_critic" placeholder="0">
+      </div>
+
+      <div class="input-group">
+        <label>RT Audience Score % (e.g. 85)</label>
+        <input type="number" id="rt_audience" placeholder="0">
+      </div>
+
+      <div class="input-group">
+        <label>TMDB Score (e.g. 7.5)</label>
+        <input type="number" id="tmdb" step="0.1" placeholder="0.0">
+      </div>
+
+      <button class="calc-btn" onclick="calculateScore()">Calculate Final Score</button>
+
+      <div id="result-container">
+        <span class="result-label">The Border Barrels Score:</span>
+        <div id="result" class="result-value">--</div>
+        <p class="weight-note">Weighted: 30% IMDb | 50% Rotten Tomatoes | 20% TMDB</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" style="text-align: center; padding: 2rem 0;">
+    <p>© 2025 Border Barrels</p>
+  </footer>
+
+  <script>
+    function calculateScore() {
+      // Pull values, default to 0 if empty
+      const imdb = parseFloat(document.getElementById('imdb').value) || 0;
+      const rtc = parseFloat(document.getElementById('rt_critic').value) || 0;
+      const rta = parseFloat(document.getElementById('rt_audience').value) || 0;
+      const tmdb = parseFloat(document.getElementById('tmdb').value) || 0;
+
+      // Logic: Normalize 10-point scales to 100, then apply weights
+      // (IMDb * 10 * 0.30) + (RTC * 0.25) + (RTA * 0.25) + (TMDB * 10 * 0.20)
+      const score = (imdb * 3) + (rtc * 0.25) + (rta * 0.25) + (tmdb * 2);
+
+      // Display result
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerText = score.toFixed(1);
+      
+      // Bonus: Change color to gold if it's an absolute banger
+      if(score >= 85) {
+        resultDiv.style.color = "#ffb400";
+      } else {
+        resultDiv.style.color = "#002157";
+      }
+    }
+  </script>
+</body>
+</html>
