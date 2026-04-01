@@ -473,7 +473,7 @@
     <input type="text" id="search" placeholder="Search beers or breweries…" autocomplete="off" />
     <button class="btn-attached" onclick="clearSearch()">Clear</button>
   </div>
-  <a href="/beers.html" class="btn-table">View Full Table</a>
+  <a href="/beers/table" class="btn-table">View Full Table</a>
 </div>
 
 <!-- Style Filters -->
@@ -529,6 +529,28 @@
 
 <script>
   let activeStyle = 'All';
+
+  // Calculate tie-aware ranks — same logic as brewery page
+  function calculateRanks(beersArray, scoreKey, rankKey) {
+    const sorted = beersArray.slice().sort((a, b) => b[scoreKey] - a[scoreKey]);
+    let currentRank = 1;
+    let prevScore = null;
+    let skip = 0;
+    sorted.forEach((be, index) => {
+      if (be[scoreKey] === prevScore) {
+        be[rankKey] = currentRank;
+        skip++;
+      } else {
+        currentRank += skip;
+        be[rankKey] = currentRank;
+        skip = 1;
+        prevScore = be[scoreKey];
+      }
+    });
+  }
+
+  calculateRanks(beers, 'bbbrsScore', 'bbbrsRank');
+  calculateRanks(beers, 'untappdScore', 'untappdRank');
 
   // Build style chips
   const allStyles = ['All', ...new Set(beers.map(b => b.style).sort())];
@@ -597,8 +619,8 @@
           <h3>${beer.name}</h3>
           <p><strong>Style:</strong> ${beer.style}</p>
           <p><strong>ABV:</strong> ${beer.abv}%</p>
-          <p><strong>BBBRS:</strong> ${beer.bbbrsScore}</p>
-          <p><strong>Untappd:</strong> ${beer.untappdScore}</p>
+          <p><strong>BBBRs:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</p>
+          <p><strong>Untappd:</strong> ${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</p>
         </div>
       </div>
     `).join('');
@@ -633,8 +655,8 @@
     document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
     document.getElementById('modal-stats').innerHTML = `
-      <div class="modal-stat"><span class="key">BBBRs Score</span><span class="val">${beer.bbbrsScore}</span></div>
-      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore}</span></div>
+      <div class="modal-stat"><span class="key">BBBRs Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
       <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
     `;
