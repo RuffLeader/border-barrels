@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Beers – Border Barrels</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/nav.js" defer></script>
+  <style>
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #002157;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background: #fff;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    /* === Controls === */
+    .commands-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      width: 100%;
+      margin: 2rem 0 1.5rem;
+    }
+
+    #commands {
+      display: flex;
+      align-items: center;
+    }
+
+    #commands input#search {
+      width: 300px;
+      padding: 0.6em 0.8em;
+      font-size: 1rem;
+      border: 1px solid #002157;
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      box-sizing: border-box;
+      color: #002157;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #commands input#search::placeholder { color: #7a8fa6; }
+
+    #commands input#search:focus {
+      border-color: #DAA520;
+      box-shadow: 0 0 0 2px rgba(218,165,32,0.2);
+    }
+
+    .btn-attached {
+      background-color: #002157;
+      color: white;
+      border: 1px solid #002157;
+      padding: 0.6em 1em;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0 4px 4px 0;
+      font-family: 'Segoe UI', sans-serif;
+      transition: background-color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-attached:hover { background-color: #004080; border-color: #004080; }
+    .btn-attached:active { background-color: #001a40; }
+
+    .btn-table {
+      background-color: #002157;
+      color: white;
+      border: 1px solid #002157;
+      padding: 0.6em 1.2em;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      font-family: 'Segoe UI', sans-serif;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-table:hover { background-color: #004080; border-color: #004080; color: white; }
+
+    /* === Style Filter Chips === */
+    .filter-section {
+      max-width: 1100px;
+      margin: 0 auto 0.75rem;
+      padding: 0 1rem;
+      text-align: center;
+    }
+
+    .filter-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #004080;
+      margin-bottom: 0.5rem;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      padding: 0.3em 0.85em;
+      border: 1px solid #002157;
+      border-radius: 4px;
+      background: #fff;
+      color: #002157;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .chip:hover { background: #e8f0fb; }
+
+    .chip.active {
+      background: #ffb400;
+      border-color: #ffb400;
+      color: #002157;
+      font-weight: 700;
+    }
+
+    /* === Results Bar === */
+    .results-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      max-width: 1100px;
+      margin: 0.75rem auto 0.5rem;
+      padding: 0 1rem;
+    }
+
+    .results-count {
+      font-size: 0.88rem;
+      color: #004080;
+    }
+
+    .results-count strong { color: #DAA520; font-weight: 700; }
+
+    .sort-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sort-wrap label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #004080;
+    }
+
+    #sort {
+      border: 1px solid #002157;
+      border-radius: 4px;
+      color: #002157;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.3em 0.6em;
+      outline: none;
+      cursor: pointer;
+    }
+
+    #sort:focus { border-color: #DAA520; }
+
+    /* === Beer Grid === */
+    #beer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      justify-content: center;
+      gap: 18px;
+      max-width: 1100px;
+      margin: 1rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    /* === Beer Card — matches brewery page exactly === */
+    .beer-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      background: linear-gradient(160deg, #001537, #002157);
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      padding: 20px 16px;
+      text-align: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      height: 380px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .beer-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+    }
+
+    .beer-card img {
+      max-width: 100%;
+      max-height: 150px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
+      transition: transform 0.25s ease;
+    }
+
+    .beer-card:hover img { transform: scale(1.05); }
+
+    .beer-card .beer-info {
+      margin-top: auto;
+      width: 100%;
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(6px);
+      padding: 10px 12px;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    .beer-card .beer-info h3 {
+      margin: 4px 0 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      line-height: 1.3em;
+      min-height: 2.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .beer-card .beer-info p {
+      margin: 3px 0;
+      font-size: 0.85rem;
+      color: #f0f0f0;
+    }
+
+    .beer-card .beer-info p strong { color: #ffb400; }
+
+    .beer-card .beer-info p + p {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 4px;
+      margin-top: 4px;
+    }
+
+    /* === Modal === */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: linear-gradient(160deg, #001537, #002157);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      color: #fff;
+      transform: translateY(16px);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.4);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.15s;
+    }
+
+    .modal-close:hover { background: rgba(0,0,0,0.7); }
+
+    .modal-body {
+      padding: 2rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .modal-body img {
+      max-height: 180px;
+      max-width: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(255,255,255,0.9));
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-style-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffb400;
+    }
+
+    .modal-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      line-height: 1.2;
+      margin: 0.2rem 0;
+    }
+
+    .modal-brewery {
+      font-size: 0.9rem;
+      color: #f0f0f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-brewery strong { color: #ffb400; }
+
+    .modal-stats {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .modal-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .modal-stat:last-child { border-bottom: none; }
+    .modal-stat .key { color: #ffb400; font-weight: 600; }
+    .modal-stat .val { color: #f0f0f0; }
+
+    .modal-ep-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6em 1.4em;
+      background: #ffb400;
+      color: #002157;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .modal-ep-btn:hover { background: #e6a200; color: #002157; }
+    .modal-ep-btn.disabled { background: rgba(255,255,255,0.1); color: #999; cursor: default; pointer-events: none; }
+
+    /* === Empty state === */
+    #empty {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #7a8fa6;
+      font-size: 1rem;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 600px) {
+      #beer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 0.75rem;
+      }
+
+      .beer-card { height: 320px; padding: 14px 10px; }
+      .beer-card img { max-height: 120px; }
+      .beer-card .beer-info h3 { font-size: 0.85rem; min-height: 2.4em; }
+      .beer-card .beer-info p { font-size: 0.75rem; }
+
+      #commands { flex-direction: column; gap: 0.5rem; width: 100%; }
+
+      #commands input#search {
+        width: 100%;
+        border-right: 1px solid #002157;
+        border-radius: 4px;
+      }
+
+      .btn-attached { width: 100%; border-radius: 4px; text-align: center; }
+      .results-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1>Beers</h1>
+    <button id="nav-toggle" aria-label="Toggle navigation">
+      <span class="burger"></span>
+      <span class="burger"></span>
+      <span class="burger"></span>
+    </button>
+    <nav id="nav-menu">
+      <a href="/index.html">Home</a>
+      <a href="/beerandbrew.html">Beers &amp; Breweries</a>
+      <a href="/episodes.html">Episodes</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about.html">About Us</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Controls -->
+<div class="commands-wrapper">
+  <div id="commands">
+    <input type="text" id="search" placeholder="Search beers or breweries…" autocomplete="off" />
+    <button class="btn-attached" onclick="clearSearch()">Clear</button>
+  </div>
+  <a href="/beers/table" class="btn-table">View Full Table</a>
+</div>
+
+<!-- Style Filters -->
+<div class="filter-section">
+  <span class="filter-label">Filter by Style</span>
+  <div class="chips" id="style-chips"></div>
+</div>
+
+<!-- Results Bar -->
+<div class="results-bar">
+  <div class="results-count" id="results-count"></div>
+  <div class="sort-wrap">
+    <label for="sort">Sort by</label>
+    <select id="sort">
+      <option value="name">Name A–Z</option>
+      <option value="brewery">Brewery A–Z</option>
+      <option value="bbbrs-desc">BBBRs Score ↓</option>
+      <option value="bbbrs-asc">BBBRs Score ↑</option>
+      <option value="untappd-desc">Untappd ↓</option>
+      <option value="abv-desc">ABV ↓</option>
+      <option value="ep-desc">Episode ↓</option>
+    </select>
+  </div>
+</div>
+
+<!-- Grid -->
+<div id="beer-grid"></div>
+<div id="empty"><p>No beers found. Try adjusting your search or filters.</p></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="modal-body">
+      <div id="modal-img"></div>
+      <div class="modal-style-tag" id="modal-style"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-brewery" id="modal-brewery"></div>
+      <div class="modal-stats" id="modal-stats"></div>
+      <a class="modal-ep-btn" id="modal-ep-btn" href="#">🎧 Listen to Episode</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© 2025 Border Barrels</p>
+  </div>
+</footer>
+
+<!-- Swap this for your real data file on the live site -->
+<script src="/beers.js"></script>
+
+<script>
+  let activeStyle = 'All';
+
+  // Build style chips
+  const allStyles = ['All', ...new Set(beers.map(b => b.style).sort())];
+  const chipsEl = document.getElementById('style-chips');
+
+  allStyles.forEach(s => {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (s === 'All' ? ' active' : '');
+    chip.textContent = s;
+    chip.addEventListener('click', () => {
+      activeStyle = s;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      render();
+    });
+    chipsEl.appendChild(chip);
+  });
+
+  function getFiltered() {
+    const q = document.getElementById('search').value.toLowerCase().trim();
+    const sort = document.getElementById('sort').value;
+
+    let list = beers.filter(b => {
+      const matchStyle = activeStyle === 'All' || b.style === activeStyle;
+      const matchQ = !q || b.name.toLowerCase().includes(q) || b.brewery.toLowerCase().includes(q);
+      return matchStyle && matchQ;
+    });
+
+    list.sort((a, b) => {
+      if (sort === 'name')         return a.name.localeCompare(b.name);
+      if (sort === 'brewery')      return a.brewery.localeCompare(b.brewery);
+      if (sort === 'bbbrs-desc')   return b.bbbrsScore - a.bbbrsScore;
+      if (sort === 'bbbrs-asc')    return a.bbbrsScore - b.bbbrsScore;
+      if (sort === 'untappd-desc') return b.untappdScore - a.untappdScore;
+      if (sort === 'abv-desc')     return b.abv - a.abv;
+      if (sort === 'ep-desc')      return (b.epnum || 0) - (a.epnum || 0);
+      return 0;
+    });
+
+    return list;
+  }
+
+  function render() {
+    const list = getFiltered();
+    const grid = document.getElementById('beer-grid');
+    const empty = document.getElementById('empty');
+
+    document.getElementById('results-count').innerHTML =
+      `Showing <strong>${list.length}</strong> of ${beers.length} beers`;
+
+    if (list.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    grid.innerHTML = list.map(beer => `
+      <div class="beer-card" data-id="${beer.id}" tabindex="0">
+        ${beer.beerCanUrl
+          ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" loading="lazy" />`
+          : ''}
+        <div class="beer-info">
+          <h3>${beer.name}</h3>
+          <p><strong>Style:</strong> ${beer.style}</p>
+          <p><strong>ABV:</strong> ${beer.abv}%</p>
+          <p><strong>BBBRs:</strong> ${beer.bbbrsScore} &nbsp;•&nbsp; <strong>Untappd:</strong> ${beer.untappdScore}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Shrink long beer names — same logic as brewery page
+    grid.querySelectorAll('.beer-info h3').forEach(el => {
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
+      const maxHeight = lineHeight * 2;
+      let fontSize = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollHeight > maxHeight && fontSize > 10) {
+        fontSize -= 1;
+        el.style.fontSize = fontSize + 'px';
+      }
+    });
+
+    grid.querySelectorAll('.beer-card').forEach(card => {
+      card.addEventListener('click', () => openModal(parseInt(card.dataset.id)));
+      card.addEventListener('keydown', e => { if (e.key === 'Enter') openModal(parseInt(card.dataset.id)); });
+    });
+  }
+
+  function openModal(id) {
+    const beer = beers.find(b => b.id === id);
+    if (!beer) return;
+
+    document.getElementById('modal-img').innerHTML = beer.beerCanUrl
+      ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />`
+      : '';
+
+    document.getElementById('modal-style').textContent = beer.style;
+    document.getElementById('modal-name').textContent = beer.name;
+    document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
+
+    document.getElementById('modal-stats').innerHTML = `
+      <div class="modal-stat"><span class="key">BBBRs Score</span><span class="val">${beer.bbbrsScore}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore}</span></div>
+      <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
+      <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
+    `;
+
+    const epBtn = document.getElementById('modal-ep-btn');
+    if (beer.epnum) {
+      epBtn.href = `/episodes/ep${beer.epnum}`;
+      epBtn.textContent = `🎧 Listen to Episode ${beer.epnum}`;
+      epBtn.classList.remove('disabled');
+    } else {
+      epBtn.href = '#';
+      epBtn.textContent = 'No episode linked yet';
+      epBtn.classList.add('disabled');
+    }
+
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function clearSearch() {
+    document.getElementById('search').value = '';
+    render();
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('search').addEventListener('input', render);
+  document.getElementById('sort').addEventListener('change', render);
+
+  render();
+</script>
+
+</body>
+</html>
