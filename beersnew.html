@@ -490,8 +490,8 @@
     <select id="sort">
       <option value="name">Name A–Z</option>
       <option value="brewery">Brewery A–Z</option>
-      <option value="bbbrs-desc">BBBRs Score ↓</option>
-      <option value="bbbrs-asc">BBBRs Score ↑</option>
+      <option value="bbbrs-desc">BBBRS Score ↓</option>
+      <option value="bbbrs-asc">BBBRS Score ↑</option>
       <option value="untappd-desc">Untappd ↓</option>
       <option value="abv-desc">ABV ↓</option>
       <option value="ep-desc">Episode ↓</option>
@@ -619,7 +619,7 @@
           <h3>${beer.name}</h3>
           <p><strong>Style:</strong> ${beer.style}</p>
           <p><strong>ABV:</strong> ${beer.abv}%</p>
-          <p><strong>BBBRs:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</p>
+          <p><strong>BBBRS:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</p>
           <p><strong>Untappd:</strong> ${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</p>
         </div>
       </div>
@@ -655,7 +655,7 @@
     document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
     document.getElementById('modal-stats').innerHTML = `
-      <div class="modal-stat"><span class="key">BBBRs Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
       <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
       <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
