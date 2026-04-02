@@ -199,7 +199,12 @@ const beers = [
   { id: 198, name: "Mango Gose", brewery: "Smart Brothers Brewing", abv: 4.9, style: "Sour", bbbrsScore: 20.25, untappdScore: 4, beerCanUrl: "/media/beers/mango-gose.png", epnum: 78 },
   { id: 199, name: "Pale Ale", brewery: "Smart Brothers Brewing", abv: 5, style: "Pale Ale", bbbrsScore: 19.25, untappdScore: 3.92, beerCanUrl: "/media/beers/smart-pale-ale.png", epnum: 78 },
   { id: 200, name: "Coconut IPA", brewery: "Smart Brothers Brewing", abv: 6.1, style: "IPA", bbbrsScore: 20, untappdScore: 4, beerCanUrl: "/media/beers/coconut-ipa.png", epnum: 78 },
-  { id: 198, name: "Pineapple Milkshake IPA", brewery: "Smart Brothers Brewing", abv: 6.5, style: "IPA", bbbrsScore: 22.08, untappdScore: 4.42, beerCanUrl: "/media/beers/pineapple-milkshake-ipa.png", epnum: 78 }
+  { id: 201, name: "Pineapple Milkshake IPA", brewery: "Smart Brothers Brewing", abv: 6.5, style: "IPA", bbbrsScore: 22.08, untappdScore: 4.42, beerCanUrl: "/media/beers/pineapple-milkshake-ipa.png", epnum: 78 },
+  { id: 202, name: "Disco Hazy IPA", brewery: "Jervis Bay Brewing Co", abv: 7, style: "IPA", bbbrsScore: 22.33, untappdScore: 4.25, beerCanUrl: "/media/beers/disco-hazy-ipa.png", epnum: 79 },
+  { id: 203, name: "Blood Orange IPA", brewery: "Jervis Bay Brewing Co", abv: 7, style: "IPA", bbbrsScore: 21.92, untappdScore: 3.92, beerCanUrl: "/media/beers/blood-orange-ipa.png", epnum: 79 },
+  { id: 204, name: "Across the Ditch NZ IPA", brewery: "Jervis Bay Brewing Co", abv: 6.5, style: "IPA", bbbrsScore: 22.25, untappdScore: 4.33, beerCanUrl: "/media/beers/across-the-ditch.png", epnum: 79 },
+  { id: 205, name: "Labyrinth West Coast IPA", brewery: "Jervis Bay Brewing Co", abv: 6.7, style: "IPA", bbbrsScore: 21.75, untappdScore: 4.08, beerCanUrl: "/media/beers/labyrinth.png", epnum: 79 },
+  { id: 206, name: "Twisted Hazy IPA", brewery: "Jervis Bay Brewing Co", abv: 6.8, style: "IPA", bbbrsScore: 22.42, untappdScore: 4.25, beerCanUrl: "/media/beers/twisted-hazy-ipa.png", epnum: 79 }
 ];
 
 const brewery = [
@@ -227,7 +232,7 @@ const brewery = [
   { name: "Hargreaves Hill Brewing Co.", bbbrsScoreAvg: 20.97, untappdScoreAvg: 4.33, logoUrl: "/media/logos/hargreaves-hill-brewing-co.png", epnum: [32, 37, 66] },
   { name: "Hawkers Beer", bbbrsScoreAvg: 22.11, untappdScoreAvg: 4.5, logoUrl: "/media/logos/hawkers-beer.png", epnum: [51] },
   { name: "Hop Nation Brewing Co", bbbrsScoreAvg: 21.86, untappdScoreAvg: 4.59, logoUrl: "/media/logos/hop-nation-brewing-co.png", epnum: [31, 63] },
-  { name: "Jervis Bay Brewing Co", bbbrsScoreAvg: 19.5, untappdScoreAvg: 3.83, logoUrl: "/media/logos/jervis-bay-brewing-co.png", epnum: [31] },
+  { name: "Jervis Bay Brewing Co", bbbrsScoreAvg: 21.69, untappdScoreAvg: 4.11, logoUrl: "/media/logos/jervis-bay-brewing-co.png", epnum: [31, 79] },
   { name: "KAIJU! Beer", bbbrsScoreAvg: 21.53, untappdScoreAvg: 4.17, logoUrl: "/media/logos/kaiju-beer.png", epnum: [24] },
   { name: "Kicks Brewing", bbbrsScoreAvg: 20.25, untappdScoreAvg: 4, logoUrl: "/media/logos/kicks-brewing.png", epnum: [49] },
   { name: "Lost Palms Brewing Co", bbbrsScoreAvg: 17.28, untappdScoreAvg: 3.98, logoUrl: "/media/logos/lost-palms-brewing-co.png", epnum: [30] },
