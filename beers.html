@@ -198,7 +198,7 @@
       padding: 0 1rem;
     }
 
-    /* === Beer Card — matches brewery page exactly === */
+    /* === Beer Card === */
     .beer-card {
       display: flex;
       flex-direction: column;
@@ -244,7 +244,7 @@
     }
 
     .beer-card .beer-info h3 {
-      margin: 4px 0 6px;
+      margin: 4px 0 4px;
       font-size: 1rem;
       font-weight: bold;
       color: #fff;
@@ -254,6 +254,18 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+    }
+
+    /* Brewery name on card */
+    .beer-card .beer-info .card-brewery {
+      font-size: 0.72rem;
+      color: #ffb400;
+      font-weight: 600;
+      margin: 0 0 5px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .beer-card .beer-info p {
@@ -294,7 +306,7 @@
       background: linear-gradient(160deg, #001537, #002157);
       border-radius: 16px;
       box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-      max-width: 500px;
+      max-width: 520px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -363,11 +375,24 @@
     .modal-brewery {
       font-size: 0.9rem;
       color: #f0f0f0;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
 
     .modal-brewery strong { color: #ffb400; }
 
+    /* Description */
+    .modal-description {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #d0dce8;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    /* Stats block */
     .modal-stats {
       width: 100%;
       background: rgba(255,255,255,0.08);
@@ -390,27 +415,114 @@
     .modal-stat .key { color: #ffb400; font-weight: 600; }
     .modal-stat .val { color: #f0f0f0; }
 
+    /* Score breakdown table */
+    .modal-score-breakdown {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+    }
+
+    .modal-score-breakdown h4 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #ffb400;
+      margin: 0 0 0.5rem;
+      text-align: left;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    .score-table th {
+      color: rgba(255,255,255,0.5);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.2rem 0.3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
+    .score-table th:first-child { text-align: left; }
+
+    .score-table td {
+      text-align: center;
+      padding: 0.25rem 0.3rem;
+      color: #e8eef5;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .score-table td:first-child {
+      text-align: left;
+      color: #c8d4e0;
+      font-weight: 500;
+    }
+
+    .score-table tr:last-child td { border-bottom: none; }
+
+    .score-table tr.total-row td {
+      color: #ffb400;
+      font-weight: 700;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: none;
+      padding-top: 0.35rem;
+    }
+
+    /* Button row */
+    .modal-btn-row {
+      display: flex;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
     .modal-ep-btn {
       display: inline-block;
-      margin-top: 1rem;
-      padding: 0.6em 1.4em;
+      padding: 0.6em 1.2em;
       background: #ffb400;
       color: #002157;
       font-family: 'Segoe UI', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
       border-radius: 6px;
       text-decoration: none;
       border: none;
       cursor: pointer;
       transition: background 0.15s;
-      width: 100%;
+      flex: 1;
       box-sizing: border-box;
       text-align: center;
     }
 
     .modal-ep-btn:hover { background: #e6a200; color: #002157; }
     .modal-ep-btn.disabled { background: rgba(255,255,255,0.1); color: #999; cursor: default; pointer-events: none; }
+
+    .modal-untappd-btn {
+      display: inline-block;
+      padding: 0.6em 1.2em;
+      background: transparent;
+      color: #ffb400;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1.5px solid #ffb400;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      flex: 1;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .modal-untappd-btn:hover { background: #ffb400; color: #002157; }
+    .modal-untappd-btn.disabled { border-color: rgba(255,255,255,0.15); color: #666; cursor: default; pointer-events: none; }
 
     /* === Empty state === */
     #empty {
@@ -433,6 +545,7 @@
       .beer-card img { max-height: 120px; }
       .beer-card .beer-info h3 { font-size: 0.85rem; min-height: 2.4em; }
       .beer-card .beer-info p { font-size: 0.75rem; }
+      .beer-card .beer-info .card-brewery { font-size: 0.65rem; }
 
       #commands { flex-direction: column; gap: 0.5rem; width: 100%; }
 
@@ -444,6 +557,8 @@
 
       .btn-attached { width: 100%; border-radius: 4px; text-align: center; }
       .results-bar { flex-direction: column; align-items: flex-start; }
+
+      .modal-btn-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -516,7 +631,12 @@
       <div class="modal-name" id="modal-name"></div>
       <div class="modal-brewery" id="modal-brewery"></div>
       <div class="modal-stats" id="modal-stats"></div>
-      <a class="modal-ep-btn" id="modal-ep-btn" href="#">🎧 Listen to Episode</a>
+      <div class="modal-score-breakdown" id="modal-score-breakdown"></div>
+      <div class="modal-description" id="modal-description"></div>
+      <div class="modal-btn-row">
+        <a class="modal-ep-btn" id="modal-ep-btn" href="#">🎧 Listen to Episode</a>
+        <a class="modal-untappd-btn" id="modal-untappd-btn" href="#" target="_blank" rel="noopener noreferrer">🍺 Untappd</a>
+      </div>
     </div>
   </div>
 </div>
@@ -527,13 +647,11 @@
   </div>
 </footer>
 
-<!-- Swap this for your real data file on the live site -->
 <script src="/beers.js"></script>
 
 <script>
   let activeStyle = 'All';
 
-  // Calculate tie-aware ranks — same logic as brewery page
   function calculateRanks(beersArray, scoreKey, rankKey) {
     const sorted = beersArray.slice().sort((a, b) => b[scoreKey] - a[scoreKey]);
     let currentRank = 1;
@@ -588,8 +706,11 @@
       if (sort === 'bbbrs-desc')   return b.bbbrsScore - a.bbbrsScore;
       if (sort === 'bbbrs-asc')    return a.bbbrsScore - b.bbbrsScore;
       if (sort === 'untappd-desc') return b.untappdScore - a.untappdScore;
+      if (sort === 'untappd-asc')  return a.untappdScore - b.untappdScore;
       if (sort === 'abv-desc')     return b.abv - a.abv;
+      if (sort === 'abv-asc')      return a.abv - b.abv;
       if (sort === 'ep-desc')      return (b.epnum || 0) - (a.epnum || 0);
+      if (sort === 'ep-asc')       return (a.epnum || 0) - (b.epnum || 0);
       return 0;
     });
 
@@ -619,6 +740,7 @@
           ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" loading="lazy" />`
           : ''}
         <div class="beer-info">
+          <p class="card-brewery">${beer.brewery}</p>
           <h3>${beer.name}</h3>
           <p><strong>Style:</strong> ${beer.style}</p>
           <p><strong>ABV:</strong> ${beer.abv}%</p>
@@ -628,7 +750,7 @@
       </div>
     `).join('');
 
-    // Shrink long beer names — same logic as brewery page
+    // Shrink long beer names
     grid.querySelectorAll('.beer-info h3').forEach(el => {
       const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
       const maxHeight = lineHeight * 2;
@@ -657,6 +779,7 @@
     document.getElementById('modal-name').textContent = beer.name;
     document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
+    // Core stats
     document.getElementById('modal-stats').innerHTML = `
       <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
       <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
@@ -664,15 +787,76 @@
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
     `;
 
+    // Score breakdown table
+    const categories = [
+      { label: 'As Advertised', simon: beer.simonAsAdvertised, zach: beer.zachAsAdvertised, hudson: beer.hudsonAsAdvertised },
+      { label: 'Can Art',       simon: beer.simonCanArt,       zach: beer.zachCanArt,       hudson: beer.hudsonCanArt },
+      { label: 'Blurb',         simon: beer.simonBlurb,        zach: beer.zachBlurb,        hudson: beer.hudsonBlurb },
+      { label: 'Value',         simon: beer.simonValue,        zach: beer.zachValue,        hudson: beer.hudsonValue },
+      { label: 'Untappd',       simon: beer.simonUntappd,      zach: beer.zachUntappd,      hudson: beer.hudsonUntappd },
+    ];
+
+    const rows = categories.map(c => `
+      <tr>
+        <td>${c.label}</td>
+        <td>${c.simon != null ? c.simon : '—'}</td>
+        <td>${c.zach  != null ? c.zach  : '—'}</td>
+        <td>${c.hudson != null ? c.hudson : '—'}</td>
+      </tr>
+    `).join('');
+
+    document.getElementById('modal-score-breakdown').innerHTML = `
+      <h4>Score Breakdown</h4>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Simon</th>
+            <th>Zach</th>
+            <th>Hudson</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="total-row">
+            <td>Total</td>
+            <td>${beer.simonBBBRS != null ? beer.simonBBBRS : '—'}</td>
+            <td>${beer.zachBBBRS  != null ? beer.zachBBBRS  : '—'}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    // Description
+    const descEl = document.getElementById('modal-description');
+    if (beer.description && beer.description.trim()) {
+      descEl.textContent = beer.description;
+      descEl.style.display = 'block';
+    } else {
+      descEl.style.display = 'none';
+    }
+
+    // Episode button
     const epBtn = document.getElementById('modal-ep-btn');
     if (beer.epnum) {
       epBtn.href = `/episodes/ep${beer.epnum}`;
-      epBtn.textContent = `🎧 Listen to Episode ${beer.epnum}`;
+      epBtn.textContent = `🎧 Episode ${beer.epnum}`;
       epBtn.classList.remove('disabled');
     } else {
       epBtn.href = '#';
-      epBtn.textContent = 'No episode linked yet';
+      epBtn.textContent = 'No episode yet';
       epBtn.classList.add('disabled');
+    }
+
+    // Untappd button
+    const utBtn = document.getElementById('modal-untappd-btn');
+    if (beer.untappdlink) {
+      utBtn.href = beer.untappdlink;
+      utBtn.classList.remove('disabled');
+    } else {
+      utBtn.href = '#';
+      utBtn.classList.add('disabled');
     }
 
     document.getElementById('modal-overlay').classList.add('open');
