@@ -256,7 +256,6 @@
       text-align: center;
     }
 
-    /* Brewery name on card */
     .beer-card .beer-info .card-brewery {
       font-size: 0.72rem;
       color: #ffb400;
@@ -380,7 +379,6 @@
 
     .modal-brewery strong { color: #ffb400; }
 
-    /* Description */
     .modal-description {
       width: 100%;
       background: rgba(255,255,255,0.05);
@@ -392,7 +390,6 @@
       text-align: left;
     }
 
-    /* Stats block */
     .modal-stats {
       width: 100%;
       background: rgba(255,255,255,0.08);
@@ -415,7 +412,6 @@
     .modal-stat .key { color: #ffb400; font-weight: 600; }
     .modal-stat .val { color: #f0f0f0; }
 
-    /* Score breakdown table */
     .modal-score-breakdown {
       width: 100%;
       background: rgba(255,255,255,0.05);
@@ -474,7 +470,6 @@
       padding-top: 0.35rem;
     }
 
-    /* Button row */
     .modal-btn-row {
       display: flex;
       gap: 0.6rem;
@@ -524,7 +519,6 @@
     .modal-untappd-btn:hover { background: #ffb400; color: #002157; }
     .modal-untappd-btn.disabled { border-color: rgba(255,255,255,0.15); color: #666; cursor: default; pointer-events: none; }
 
-    /* === Empty state === */
     #empty {
       display: none;
       text-align: center;
@@ -533,7 +527,6 @@
       font-size: 1rem;
     }
 
-    /* === Responsive === */
     @media (max-width: 600px) {
       #beer-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -557,7 +550,6 @@
 
       .btn-attached { width: 100%; border-radius: 4px; text-align: center; }
       .results-bar { flex-direction: column; align-items: flex-start; }
-
       .modal-btn-row { flex-direction: column; }
     }
   </style>
@@ -582,7 +574,6 @@
   </div>
 </header>
 
-<!-- Controls -->
 <div class="commands-wrapper">
   <div id="commands">
     <input type="text" id="search" placeholder="Search beers or breweries…" autocomplete="off" />
@@ -591,13 +582,11 @@
   <a href="beerstable.html" class="btn-table">View Full Table</a>
 </div>
 
-<!-- Style Filters -->
 <div class="filter-section">
   <span class="filter-label">Filter by Style</span>
   <div class="chips" id="style-chips"></div>
 </div>
 
-<!-- Results Bar -->
 <div class="results-bar">
   <div class="results-count" id="results-count"></div>
   <div class="sort-wrap">
@@ -617,11 +606,9 @@
   </div>
 </div>
 
-<!-- Grid -->
 <div id="beer-grid"></div>
 <div id="empty"><p>No beers found. Try adjusting your search or filters.</p></div>
 
-<!-- Modal -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <button class="modal-close" id="modal-close">✕</button>
@@ -673,7 +660,6 @@
   calculateRanks(beers, 'bbbrsScore', 'bbbrsRank');
   calculateRanks(beers, 'untappdScore', 'untappdRank');
 
-  // Build style chips
   const allStyles = ['All', ...new Set(beers.map(b => b.style).sort())];
   const chipsEl = document.getElementById('style-chips');
 
@@ -750,7 +736,6 @@
       </div>
     `).join('');
 
-    // Shrink long beer names
     grid.querySelectorAll('.beer-info h3').forEach(el => {
       const lineHeight = parseFloat(getComputedStyle(el).lineHeight);
       const maxHeight = lineHeight * 2;
@@ -779,7 +764,6 @@
     document.getElementById('modal-name').textContent = beer.name;
     document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
-    // Core stats
     document.getElementById('modal-stats').innerHTML = `
       <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
       <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
@@ -787,7 +771,6 @@
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
     `;
 
-    // Score breakdown table
     const categories = [
       { label: 'As Advertised', simon: beer.simonAsAdvertised, zach: beer.zachAsAdvertised, hudson: beer.hudsonAsAdvertised },
       { label: 'Can Art',       simon: beer.simonCanArt,       zach: beer.zachCanArt,       hudson: beer.hudsonCanArt },
@@ -799,8 +782,8 @@
     const rows = categories.map(c => `
       <tr>
         <td>${c.label}</td>
-        <td>${c.simon != null ? c.simon : '—'}</td>
-        <td>${c.zach  != null ? c.zach  : '—'}</td>
+        <td>${c.simon  != null ? c.simon  : '—'}</td>
+        <td>${c.zach   != null ? c.zach   : '—'}</td>
         <td>${c.hudson != null ? c.hudson : '—'}</td>
       </tr>
     `).join('');
@@ -820,15 +803,14 @@
           ${rows}
           <tr class="total-row">
             <td>Total</td>
-            <td>${beer.simonBBBRS != null ? beer.simonBBBRS : '—'}</td>
-            <td>${beer.zachBBBRS  != null ? beer.zachBBBRS  : '—'}</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : '—'}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : '—'}</td>
             <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
           </tr>
         </tbody>
       </table>
     `;
 
-    // Description
     const descEl = document.getElementById('modal-description');
     if (beer.description && beer.description.trim()) {
       descEl.textContent = beer.description;
@@ -837,10 +819,10 @@
       descEl.style.display = 'none';
     }
 
-    // Episode button
+    // Episode button — navigates to episodes.html and highlights the right episode
     const epBtn = document.getElementById('modal-ep-btn');
     if (beer.epnum) {
-      epBtn.href = `/episodes/ep${beer.epnum}`;
+      epBtn.href = `/episodes.html?ep=${beer.epnum}`;
       epBtn.textContent = `🎧 Episode ${beer.epnum}`;
       epBtn.classList.remove('disabled');
     } else {
