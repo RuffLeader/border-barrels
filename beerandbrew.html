@@ -249,9 +249,17 @@
     font-weight: bold;
     color: white;
   }
+  #featured-beer-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
   @media (max-width: 1100px) {
     .featured-beer-card {
       width: 100%;
+      max-width: 500px; /* matches hub-card upper limit on mobile */
+      margin: 0 auto;
       flex-direction: column; /* stack image above info */
       height: auto;
       padding-left: 0;
