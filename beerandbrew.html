@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/nav.js" defer></script>
 <title>Border Barrels Hub</title>
 <link rel="stylesheet" href="/style.css">
@@ -253,16 +254,23 @@
       width: 100%;
       flex-direction: column; /* stack image above info */
       height: auto;
+      padding-left: 0;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
     }
   
     .featured-beer-card img {
-      max-width: 100%;
+      max-width: 80%;
+      max-height: 250px;
       border-right: none;
       border-bottom: 2px solid rgba(218,165,32,0.3);
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
     }
   
     .featured-beer-info {
       text-align: center;
+      padding: 0 1rem;
     }
   }
 </style>
