@@ -257,6 +257,7 @@
       padding-left: 0;
       padding-top: 1rem;
       padding-bottom: 1rem;
+      box-sizing: border-box;
     }
   
     .featured-beer-card img {
@@ -271,6 +272,15 @@
     .featured-beer-info {
       text-align: center;
       padding: 0 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .featured-beer-info h3,
+    .featured-beer-info h2 {
+      white-space: normal !important;
+      font-size: 1.5rem !important;
+      word-wrap: break-word;
     }
   }
 </style>
@@ -321,12 +331,9 @@
   }
 
 function fitTextToOneLine(element, minFontSize = 12) {
-  const availableWidth = 750; // fixed width target
-  let fontSize = parseInt(window.getComputedStyle(element).fontSize);
-
-  console.log("Checking:", element.textContent,
-              "scrollWidth:", element.scrollWidth,
-              "availableWidth:", availableWidth);
+  let availableWidth = element.parentElement.clientWidth - 20; 
+  if (availableWidth < 100) availableWidth = 750; // fallback just in case
+  let fontSize = parseInt(window.getComputedStyle(element).fontSize) || 32;
 
   while (element.scrollWidth > availableWidth && fontSize > minFontSize) {
     fontSize--;
