@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="/nav.js" defer></script>
 <title>Border Barrels Hub</title>
 <link rel="stylesheet" href="/style.css">
@@ -248,24 +249,58 @@
     font-weight: bold;
     color: white;
   }
+  #featured-beer-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
   @media (max-width: 1100px) {
     .featured-beer-card {
       width: 100%;
+      max-width: 500px; /* matches hub-card upper limit on mobile */
+      margin: 0 auto;
       flex-direction: column; /* stack image above info */
       height: auto;
+      padding-left: 0;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      box-sizing: border-box;
     }
   
     .featured-beer-card img {
-      max-width: 100%;
+      max-width: 80%;
+      max-height: 250px;
       border-right: none;
       border-bottom: 2px solid rgba(218,165,32,0.3);
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
     }
   
     .featured-beer-info {
       text-align: center;
+      padding: 0 1rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .featured-beer-info h3,
+    .featured-beer-info h2 {
+      white-space: normal !important;
+      font-size: 1.5rem !important;
+      word-wrap: break-word;
     }
   }
 </style>
+
+  <meta name="description" content="Three mates from The Border review craft beers from every independent brewery in Australia using the meticulously crafted Border Barrels Beer Review System.">
+  <meta name="keywords" content="Australian craft beer reviews, beer podcast, independent breweries Australia, craft beer ratings, Border Barrels, BBBRS, brewery directory">
+  <meta property="og:title" content="Border Barrels Hub">
+  <meta property="og:description" content="Three mates from &quot;The Border&quot; have made it their mission to sample beers from every independent brewery in Australia. The approach is a relatively simple one: Provide a history of the showcase brewery in question, bring along a minimum of three beers to sample from that same brewery, and then score them using the unique, meticulously crafted Border Barrels Beer Review System.">
+  <meta property="og:image" content="https://borderbarrels.com/logo.png">
+  <meta property="og:url" content="https://borderbarrels.com/">
+  <meta name="twitter:card" content="summary_large_image">
+
 </head>
 <body>
   <header class="site-header">
@@ -313,12 +348,9 @@
   }
 
 function fitTextToOneLine(element, minFontSize = 12) {
-  const availableWidth = 750; // fixed width target
-  let fontSize = parseInt(window.getComputedStyle(element).fontSize);
-
-  console.log("Checking:", element.textContent,
-              "scrollWidth:", element.scrollWidth,
-              "availableWidth:", availableWidth);
+  let availableWidth = element.parentElement.clientWidth - 20; 
+  if (availableWidth < 100) availableWidth = 750; // fallback just in case
+  let fontSize = parseInt(window.getComputedStyle(element).fontSize) || 32;
 
   while (element.scrollWidth > availableWidth && fontSize > minFontSize) {
     fontSize--;
