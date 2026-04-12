@@ -87,13 +87,11 @@ main {
   box-sizing: border-box;
 }
 
-/* Grid layout when filtered */
 #episode-grid.filtered {
   grid-template-columns: repeat(auto-fit, 300px);
   justify-content: center;
 }
 
-/* Center single card */
 #episode-grid.filtered.single {
   grid-template-columns: 1fr;
   justify-content: center;
@@ -110,20 +108,26 @@ main {
   color: #002157;
   box-sizing: border-box;
   align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* Thumbnail */
+/* Highlighted card when linked from beer modal */
+.video-card.highlighted {
+  box-shadow: 0 0 0 3px #ffb400, 0 8px 24px rgba(0,0,0,0.18);
+  transform: translateY(-4px);
+  border-radius: 10px;
+}
+
 .video-card img {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9; /* or whatever ratio matches your thumbnails */
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.5rem;
-  display: block; /* ADD THIS */
+  display: block;
 }
 
-/* Links section */
 .links {
   margin-bottom: 0.8rem;
   display: flex;
@@ -240,7 +244,7 @@ main {
   }
 
   .video-card {
-    max-width: 100%; /* let grid control the width */
+    max-width: 100%;
     padding: 0.6rem;
   }
 
@@ -256,7 +260,6 @@ main {
     font-size: 0.8rem;
   }
 
-  /* Make search and toggle button match height */
   #commands {
     flex-direction: column;
     gap: 0.5rem;
@@ -268,7 +271,7 @@ main {
     box-sizing: border-box;
     font-size: 1rem;
     padding: 0.6em;
-    height: auto; /* let padding control height */
+    height: auto;
   }
 
   #pagination {
@@ -280,7 +283,6 @@ main {
     padding: 0.4em 0.6em;
   }
 }
-
   </style>
 
   <meta name="description" content="Three mates from The Border review craft beers from every independent brewery in Australia using the meticulously crafted Border Barrels Beer Review System.">
@@ -329,15 +331,18 @@ const searchInput = document.getElementById("search");
 const toggleButton = document.getElementById("toggleOrder");
 const pagination = document.getElementById("pagination");
 
-let episodeData = [];  // will hold data fetched from episodes.json
+let episodeData = [];
 let filteredData = [];
 let currentPage = 1;
 let newestFirst = true;
 let itemsPerPage = calculateEpisodesPerPage();
 
+// Read ?ep= query param if present
+const urlParams = new URLSearchParams(window.location.search);
+const targetEpNum = urlParams.get('ep') ? parseInt(urlParams.get('ep')) : null;
+
 function updateGridClasses(filteredItemsCount) {
   container.classList.remove("no-filter", "filtered", "single");
-
   if (filteredItemsCount === episodeData.length) {
     container.classList.add("no-filter");
   } else {
@@ -351,17 +356,13 @@ function updateGridClasses(filteredItemsCount) {
 function calculateEpisodesPerPage() {
   let cardWidth = 300;
   let desiredRows = 3;
-
   if (window.innerWidth <= 600) {
-    cardWidth = 180;    // smaller card width for mobile
-    desiredRows = 4;    // show more rows on mobile
+    cardWidth = 180;
+    desiredRows = 4;
   }
-
   const cardsPerRow = Math.floor(window.innerWidth / cardWidth);
   return cardsPerRow * desiredRows;
 }
-
-// Your existing renderEpisodes, renderPagination, applySorting, etc. functions here unchanged...
 
 function renderEpisodes(data) {
   container.innerHTML = "";
@@ -372,6 +373,7 @@ function renderEpisodes(data) {
   pageData.forEach(ep => {
     const card = document.createElement("div");
     card.className = "video-card";
+    card.dataset.epnum = ep.number;
 
     let linksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>`;
     if (ep.spotifyUrl) {
@@ -422,13 +424,25 @@ function renderEpisodes(data) {
       button.textContent = expanded ? 'Read more' : 'Read less';
     });
   });
+
+  // If we have a target episode, highlight it and scroll to it
+  if (targetEpNum) {
+    const targetCard = container.querySelector(`.video-card[data-epnum="${targetEpNum}"]`);
+    if (targetCard) {
+      targetCard.classList.add('highlighted');
+      // Small delay so the page has painted before scrolling
+      setTimeout(() => {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 150);
+    }
+  }
 }
 
 function renderPagination(dataLength) {
   pagination.innerHTML = "";
   const pageCount = Math.ceil(dataLength / itemsPerPage);
 
-  if (pageCount <= 1) return; // No pagination needed
+  if (pageCount <= 1) return;
 
   const addButton = (page) => {
     const btn = document.createElement("button");
@@ -454,32 +468,19 @@ function renderPagination(dataLength) {
   };
 
   const pagesToShow = [];
-
-  // Always include first page
   pagesToShow.push(1);
-
-  // Two before current
   for (let i = currentPage - 2; i <= currentPage - 1; i++) {
     if (i > 1 && i < pageCount) pagesToShow.push(i);
   }
-
-  // Current
   if (currentPage > 1 && currentPage < pageCount) pagesToShow.push(currentPage);
-
-  // Two after current
   for (let i = currentPage + 1; i <= currentPage + 2; i++) {
     if (i > 1 && i < pageCount) pagesToShow.push(i);
   }
-
-  // Always include last page
   if (pageCount > 1) pagesToShow.push(pageCount);
 
-  // Build pagination with ellipses
   let prevPage = null;
   pagesToShow.forEach((p) => {
-    if (prevPage && p - prevPage > 1) {
-      addEllipsis();
-    }
+    if (prevPage && p - prevPage > 1) addEllipsis();
     addButton(p);
     prevPage = p;
   });
@@ -490,6 +491,14 @@ function applySorting() {
   filteredData = sorted;
   renderEpisodes(filteredData);
   renderPagination(filteredData.length);
+}
+
+// When a target episode is set, find what page it lands on and jump there
+function jumpToTargetPage(data) {
+  if (!targetEpNum) return;
+  const idx = data.findIndex(ep => ep.number === targetEpNum);
+  if (idx === -1) return;
+  currentPage = Math.ceil((idx + 1) / itemsPerPage);
 }
 
 searchInput.addEventListener("input", () => {
@@ -515,23 +524,32 @@ window.addEventListener('resize', () => {
   renderPagination(filteredData.length);
 });
 
-// NEW: Fetch episodes.json and initialize
 async function init() {
   try {
-    const res = await fetch('episodes.json');  // Adjust path if needed
+    const res = await fetch('episodes.json');
     if (!res.ok) throw new Error('Could not load episodes.json');
     episodeData = await res.json();
     filteredData = [...episodeData];
     currentPage = 1;
     newestFirst = true;
     toggleButton.textContent = "Show Oldest First";
-    applySorting();
+
+    // Sort first (newest first by default)
+    filteredData.sort((a, b) => b.number - a.number);
+
+    // If linking to a specific episode, jump to the right page
+    if (targetEpNum) {
+      jumpToTargetPage(filteredData);
+    }
+
+    renderEpisodes(filteredData);
+    renderPagination(filteredData.length);
   } catch (error) {
     container.innerHTML = `<p style="color:red;">Error loading episodes: ${error.message}</p>`;
   }
 }
 
 init();
-</script>
+  </script>
 </body>
 </html>
