@@ -286,11 +286,12 @@
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.6);
-      z-index: 200;
+      z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1rem;
+      padding-top: calc(var(--header-height, 70px) + 0.5rem);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s;
