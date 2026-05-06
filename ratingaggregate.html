@@ -25,43 +25,62 @@
 
     main {
       padding: 3rem 1rem 2rem;
-      max-width: 600px; /* Slimmer for the calculator */
+      max-width: 600px;
       margin: 0 auto;
       text-align: left;
     }
 
-    /* === Calculator Specific Styles === */
+    /* === Calculator Shared Styles === */
     .calc-card {
       background: #f9f9f9;
       border: 2px solid #002157;
       border-radius: 10px;
       padding: 2rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .calc-card h2 {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
     }
 
     .input-group {
-      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
     }
 
     .input-group label {
-      display: block;
+      flex: 0 0 220px;
       font-weight: bold;
-      margin-bottom: 0.5rem;
       text-transform: uppercase;
       font-size: 0.9rem;
+      margin: 0;
     }
 
     .input-group input {
-      width: 100%;
-      padding: 12px;
+      flex: 1;
+      padding: 10px 12px;
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
       box-sizing: border-box;
     }
 
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+
     .calc-btn {
-      width: 100%;
+      flex: 1;
       padding: 15px;
       background-color: #002157;
       color: white;
@@ -79,7 +98,25 @@
       color: #002157;
     }
 
-    #result-container {
+    .clear-btn {
+      flex: 0 0 auto;
+      padding: 15px 20px;
+      background-color: #e0e0e0;
+      color: #002157;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .clear-btn:hover {
+      background-color: #c0c0c0;
+    }
+
+    .result-container {
       margin-top: 2rem;
       text-align: center;
       padding-top: 1.5rem;
@@ -135,9 +172,11 @@
   </header>
 
   <main class="container">
+
+    <!-- === SHOW RATING CALCULATOR === -->
     <div class="calc-card">
-      <p style="text-align:center; font-weight:bold; margin-bottom: 2rem;">METICULOUSLY CRAFTED SCORE SYSTEM</p>
-      
+      <h2>Meticulously Crafted Score System</h2>
+
       <div class="input-group">
         <label>IMDb Score (e.g. 8.2)</label>
         <input type="number" id="imdb" step="0.1" placeholder="0.0">
@@ -158,14 +197,49 @@
         <input type="number" id="tmdb" step="0.1" placeholder="0.0">
       </div>
 
-      <button class="calc-btn" onclick="calculateScore()">Calculate Final Score</button>
+      <div class="btn-row">
+        <button class="calc-btn" onclick="calculateScore()">Calculate Final Score</button>
+        <button class="clear-btn" onclick="clearRating()">Clear</button>
+      </div>
 
-      <div id="result-container">
+      <div class="result-container">
         <span class="result-label">The Border Barrels Score:</span>
         <div id="result" class="result-value">--</div>
         <p class="weight-note">Weighted: 30% IMDb | 50% Rotten Tomatoes | 20% TMDB</p>
       </div>
     </div>
+
+    <!-- === VALUE SCORE CALCULATOR === -->
+    <div class="calc-card">
+      <h2>Beer Value Score</h2>
+
+      <div class="input-group">
+        <label>ABV % (e.g. 5.0)</label>
+        <input type="number" id="abv" step="0.1" min="0" placeholder="0.0">
+      </div>
+
+      <div class="input-group">
+        <label>Size (mL) (e.g. 375)</label>
+        <input type="number" id="size_ml" step="1" min="0" placeholder="0">
+      </div>
+
+      <div class="input-group">
+        <label>Cost ($) (e.g. 6.50)</label>
+        <input type="number" id="cost" step="0.01" min="0" placeholder="0.00">
+      </div>
+
+      <div class="btn-row">
+        <button class="calc-btn" onclick="calculateValue()">Calculate Value Score</button>
+        <button class="clear-btn" onclick="clearValue()">Clear</button>
+      </div>
+
+      <div class="result-container">
+        <span class="result-label">Value Score (out of 5):</span>
+        <div id="value-result" class="result-value">--</div>
+        <p class="weight-note">Score = MIN(5, MAX(2.5, ROUND((ABV × mL ÷ Cost) × 0.0135, 0.25)))</p>
+      </div>
+    </div>
+
   </main>
 
   <footer class="site-footer" style="text-align: center; padding: 2rem 0;">
@@ -173,27 +247,61 @@
   </footer>
 
   <script>
+    /* === Show Rating Calculator === */
     function calculateScore() {
-      // Pull values, default to 0 if empty
       const imdb = parseFloat(document.getElementById('imdb').value) || 0;
-      const rtc = parseFloat(document.getElementById('rt_critic').value) || 0;
-      const rta = parseFloat(document.getElementById('rt_audience').value) || 0;
+      const rtc  = parseFloat(document.getElementById('rt_critic').value) || 0;
+      const rta  = parseFloat(document.getElementById('rt_audience').value) || 0;
       const tmdb = parseFloat(document.getElementById('tmdb').value) || 0;
 
-      // Logic: Normalize 10-point scales to 100, then apply weights
-      // (IMDb * 10 * 0.30) + (RTC * 0.25) + (RTA * 0.25) + (TMDB * 10 * 0.20)
       const score = (imdb * 3) + (rtc * 0.25) + (rta * 0.25) + (tmdb * 2);
 
-      // Display result
       const resultDiv = document.getElementById('result');
       resultDiv.innerText = score.toFixed(1);
-      
-      // Bonus: Change color to gold if it's an absolute banger
-      if(score >= 85) {
-        resultDiv.style.color = "#ffb400";
-      } else {
-        resultDiv.style.color = "#002157";
+      resultDiv.style.color = score >= 85 ? "#ffb400" : "#002157";
+    }
+
+    function clearRating() {
+      ['imdb', 'rt_critic', 'rt_audience', 'tmdb'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerText = '--';
+      resultDiv.style.color = '#002157';
+    }
+
+    /* === Value Score Calculator === */
+    function mround(value, multiple) {
+      return Math.round(value / multiple) * multiple;
+    }
+
+    function calculateValue() {
+      const abv  = parseFloat(document.getElementById('abv').value) || 0;
+      const size = parseFloat(document.getElementById('size_ml').value) || 0;
+      const cost = parseFloat(document.getElementById('cost').value) || 0;
+
+      if (cost === 0) {
+        document.getElementById('value-result').innerText = 'N/A';
+        document.getElementById('value-result').style.color = '#002157';
+        return;
       }
+
+      const raw    = (abv * size / cost) * 0.0135;
+      const rounded = mround(raw, 0.25);
+      const score  = Math.min(5, Math.max(2.5, rounded));
+
+      const resultDiv = document.getElementById('value-result');
+      resultDiv.innerText = score.toFixed(2);
+      resultDiv.style.color = score >= 4.5 ? "#ffb400" : "#002157";
+    }
+
+    function clearValue() {
+      ['abv', 'size_ml', 'cost'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      const resultDiv = document.getElementById('value-result');
+      resultDiv.innerText = '--';
+      resultDiv.style.color = '#002157';
     }
   </script>
 </body>
