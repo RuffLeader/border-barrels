@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Episodes</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="/beers.js"></script>
+  <script src="/breweries.js"></script>
   <script src="/nav.js" defer></script>
   <style>
 /* === Base Styles === */
@@ -109,6 +111,15 @@ main {
   box-sizing: border-box;
   align-items: center;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid rgba(0,33,87,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.video-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 /* Highlighted card when linked from beer modal */
@@ -181,6 +192,8 @@ main {
 
 .description.truncated {
   -webkit-line-clamp: 4;
+  line-clamp: 4; /* standard property */
+  max-height: calc(1.2em * 4); /* fallback for browsers without line-clamp */
 }
 
 .read-more-btn {
@@ -283,6 +296,298 @@ main {
     padding: 0.4em 0.6em;
   }
 }
+
+/* === Modal Styles === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: calc(70px + 0.5rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: linear-gradient(160deg, #001537, #002157);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  max-width: 580px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  color: #fff;
+  transform: translateY(16px);
+  transition: transform 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-overlay.open .modal {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background 0.15s;
+}
+
+.modal-close:hover {
+  background: rgba(0,0,0,0.7);
+}
+
+.modal-body {
+  padding: 2.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.2rem;
+  box-sizing: border-box;
+}
+
+.modal-ep-num {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffb400;
+  margin-bottom: -0.5rem;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.modal-description {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.88rem;
+  color: #d0dce8;
+  line-height: 1.6;
+  text-align: left;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.modal-tabs {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: -0.5rem;
+}
+
+.modal-tab-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.modal-tab-btn.active {
+  background: #ffb400;
+  color: #002157;
+  border-color: #ffb400;
+  font-weight: 700;
+}
+
+.player-container {
+  width: 100%;
+  min-height: 152px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.player-container iframe {
+  border: 0;
+  display: block;
+}
+
+.modal-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffb400;
+  align-self: flex-start;
+  margin: 0.5rem 0 0;
+}
+
+.modal-beers-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.modal-beer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.modal-beer-item:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+  border-color: #ffb400;
+  box-shadow: 0 4px 12px rgba(255, 180, 0, 0.15);
+}
+
+.modal-beer-img {
+  width: 32px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.8));
+  flex-shrink: 0;
+}
+
+.modal-beer-details {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modal-beer-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.modal-beer-meta {
+  font-size: 0.75rem;
+  color: #a2b7d4;
+}
+
+.modal-beer-meta strong {
+  color: #ffb400;
+}
+
+.modal-breweries-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+
+.modal-brewery-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: transparent;
+  color: #ffb400;
+  border: 1.5px solid #ffb400;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+
+.modal-brewery-link:hover {
+  background: #ffb400;
+  color: #002157;
+  box-shadow: 0 4px 12px rgba(255, 180, 0, 0.2);
+}
+
+.modal-footer-links {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+}
+
+.modal-footer-links a {
+  color: #a2b7d4;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.modal-footer-links a:hover {
+  color: #ffb400;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .modal {
+    max-height: 90vh;
+  }
+  .modal-body {
+    padding: 2rem 1.1rem 1.1rem;
+    gap: 1.1rem;
+  }
+  .modal-title {
+    font-size: 1.2rem;
+  }
+  .modal-beer-name {
+    font-size: 0.85rem;
+  }
+  .modal-beer-meta {
+    font-size: 0.7rem;
+  }
+}
   </style>
 
   <meta name="description" content="Three mates from The Border review craft beers from every independent brewery in Australia using the meticulously crafted Border Barrels Beer Review System.">
@@ -320,6 +625,39 @@ main {
 </div>
 <div id="episode-grid"></div>
 <div id="pagination"></div>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="episode-modal">
+    <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+    <div class="modal-body">
+      <div class="modal-ep-num" id="modal-ep-num"></div>
+      <h3 class="modal-title" id="modal-title"></h3>
+      
+      <!-- Player Tabs -->
+      <div class="modal-tabs" id="modal-tabs">
+        <button class="modal-tab-btn active" id="tab-video">📺 Watch Video</button>
+        <button class="modal-tab-btn" id="tab-audio">🎵 Listen to Audio</button>
+      </div>
+      
+      <!-- Embed Player -->
+      <div class="player-container" id="player-container"></div>
+      
+      <p class="modal-description" id="modal-description"></p>
+      
+      <!-- Beers Section -->
+      <div class="modal-section-title" id="beers-section-title">Beers Featured</div>
+      <div class="modal-beers-list" id="modal-beers-list"></div>
+      
+      <!-- Brewery Section -->
+      <div class="modal-section-title" id="breweries-section-title">Breweries Involved</div>
+      <div class="modal-breweries-list" id="modal-breweries-list"></div>
+      
+      <!-- External Links -->
+      <div class="modal-footer-links" id="modal-footer-links"></div>
+    </div>
+  </div>
+</div>
 
   <footer class="site-footer">
     <p>© 2025 Border Barrels</p>
@@ -374,6 +712,7 @@ function renderEpisodes(data) {
     const card = document.createElement("div");
     card.className = "video-card";
     card.dataset.epnum = ep.number;
+    card.setAttribute('tabindex', '0');
 
     let linksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube</a>`;
     if (ep.spotifyUrl) {
@@ -395,6 +734,23 @@ function renderEpisodes(data) {
         <button class="read-more-btn">Read more</button>
       </div>
     `;
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a') || e.target.closest('.read-more-btn')) {
+        return;
+      }
+      openEpisodeModal(ep);
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('a') || e.target.closest('.read-more-btn')) {
+          return;
+        }
+        e.preventDefault();
+        openEpisodeModal(ep);
+      }
+    });
 
     container.appendChild(card);
   });
@@ -524,6 +880,200 @@ window.addEventListener('resize', () => {
   renderPagination(filteredData.length);
 });
 
+let currentEp = null;
+
+// Modal Close logic
+function closeEpisodeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('player-container').innerHTML = ''; // Stop video/audio
+  document.body.style.overflow = '';
+  currentEp = null;
+  
+  // Remove ep query parameter from URL without page reload
+  const url = new URL(window.location);
+  if (url.searchParams.has('ep')) {
+    url.searchParams.delete('ep');
+    window.history.replaceState({}, '', url.pathname + url.search);
+  }
+}
+
+// Extract Spotify Episode ID
+function extractSpotifyId(url) {
+  if (!url) return null;
+  const match = url.match(/\/episode\/([a-zA-Z0-9]+)/);
+  return match ? match[1] : null;
+}
+
+// Render Player
+function renderPlayer(ep, type) {
+  const container = document.getElementById('player-container');
+  if (!ep) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  if (type === 'video' && ep.youtubeId) {
+    container.innerHTML = `
+      <iframe width="100%" height="315" 
+        src="https://www.youtube.com/embed/${ep.youtubeId}" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+      </iframe>`;
+  } else if (type === 'audio' && ep.spotifyUrl) {
+    const spotifyId = extractSpotifyId(ep.spotifyUrl);
+    if (spotifyId) {
+      container.innerHTML = `
+        <iframe src="https://open.spotify.com/embed/episode/${spotifyId}?utm_source=generator" 
+          width="100%" height="152" 
+          frameborder="0" 
+          allowfullscreen="" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
+        </iframe>`;
+    } else {
+      container.innerHTML = `<p style="padding: 1rem; color: #a2b7d4;">Could not load Audio player.</p>`;
+    }
+  } else {
+    container.innerHTML = '';
+  }
+}
+
+// Modal Open logic
+function openEpisodeModal(ep) {
+  currentEp = ep;
+  
+  document.getElementById('modal-ep-num').textContent = `Episode ${ep.number}`;
+  document.getElementById('modal-title').textContent = ep.title;
+  document.getElementById('modal-description').textContent = ep.description;
+  
+  // Tabs Setup
+  const tabVideo = document.getElementById('tab-video');
+  const tabAudio = document.getElementById('tab-audio');
+  const tabsContainer = document.getElementById('modal-tabs');
+  
+  tabVideo.classList.remove('active');
+  tabAudio.classList.remove('active');
+  
+  const hasYoutube = !!ep.youtubeId;
+  const hasSpotify = !!ep.spotifyUrl;
+  
+  if (hasYoutube && hasSpotify) {
+    tabsContainer.style.display = 'flex';
+    tabVideo.style.display = 'inline-block';
+    tabAudio.style.display = 'inline-block';
+    tabVideo.classList.add('active');
+    renderPlayer(ep, 'video');
+  } else if (hasYoutube) {
+    tabsContainer.style.display = 'none';
+    renderPlayer(ep, 'video');
+  } else if (hasSpotify) {
+    tabsContainer.style.display = 'none';
+    renderPlayer(ep, 'audio');
+  } else {
+    tabsContainer.style.display = 'none';
+    renderPlayer(ep, null);
+  }
+  
+  // Beers list
+  const episodeBeers = (typeof beers !== 'undefined') ? beers.filter(b => b.epnum === ep.number) : [];
+  const beersSectionTitle = document.getElementById('beers-section-title');
+  const modalBeersList = document.getElementById('modal-beers-list');
+  
+  if (episodeBeers.length > 0) {
+    beersSectionTitle.style.display = 'block';
+    modalBeersList.style.display = 'flex';
+    modalBeersList.innerHTML = episodeBeers.map(beer => `
+      <a href="/beers.html?beer=${beer.id}" class="modal-beer-item">
+        <img src="${beer.beerCanUrl || '/media/beers/default.png'}" class="modal-beer-img" alt="${beer.name}" onerror="this.style.display='none'">
+        <div class="modal-beer-details">
+          <div class="modal-beer-name">${beer.name}</div>
+          <div class="modal-beer-meta">
+            <strong>Brewery:</strong> ${beer.brewery} | <strong>Style:</strong> ${beer.style} | <strong>ABV:</strong> ${beer.abv}% | <strong>BBBRS:</strong> ${beer.bbbrsScore}
+          </div>
+        </div>
+      </a>
+    `).join('');
+  } else {
+    beersSectionTitle.style.display = 'none';
+    modalBeersList.style.display = 'none';
+    modalBeersList.innerHTML = '';
+  }
+  
+  // Breweries list
+  let episodeBreweries = [];
+  if (typeof breweries !== 'undefined') {
+    if (episodeBeers.length > 0) {
+      const breweryNames = [...new Set(episodeBeers.map(b => b.brewery))];
+      episodeBreweries = breweries.filter(br => breweryNames.includes(br.name));
+    } else {
+      // Scan description & title for brewery names
+      const titleDesc = `${ep.title} ${ep.description}`.toLowerCase();
+      episodeBreweries = breweries.filter(br => {
+        return titleDesc.includes(br.name.toLowerCase());
+      });
+    }
+  }
+  
+  const breweriesSectionTitle = document.getElementById('breweries-section-title');
+  const modalBreweriesList = document.getElementById('modal-breweries-list');
+  
+  if (episodeBreweries.length > 0) {
+    breweriesSectionTitle.style.display = 'block';
+    modalBreweriesList.style.display = 'flex';
+    modalBreweriesList.innerHTML = episodeBreweries.map(br => `
+      <a href="/breweries/brewery.html?name=${encodeURIComponent(br.name)}" class="modal-brewery-link">
+        ${br.name}
+      </a>
+    `).join('');
+  } else {
+    breweriesSectionTitle.style.display = 'none';
+    modalBreweriesList.style.display = 'none';
+    modalBreweriesList.innerHTML = '';
+  }
+  
+  // External footer links
+  const modalFooterLinks = document.getElementById('modal-footer-links');
+  let footerLinksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube ↗</a>`;
+  if (ep.spotifyUrl) {
+    footerLinksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify ↗</a>`;
+  }
+  if (ep.appleUrl) {
+    footerLinksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple Podcasts ↗</a>`;
+  }
+  modalFooterLinks.innerHTML = footerLinksHTML;
+  
+  // Open the overlay
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// Add static event listeners once
+document.getElementById('tab-video').addEventListener('click', () => {
+  document.getElementById('tab-video').classList.add('active');
+  document.getElementById('tab-audio').classList.remove('active');
+  renderPlayer(currentEp, 'video');
+});
+
+document.getElementById('tab-audio').addEventListener('click', () => {
+  document.getElementById('tab-audio').classList.add('active');
+  document.getElementById('tab-video').classList.remove('active');
+  renderPlayer(currentEp, 'audio');
+});
+
+document.getElementById('modal-close').addEventListener('click', closeEpisodeModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) {
+    closeEpisodeModal();
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeEpisodeModal();
+  }
+});
+
 async function init() {
   try {
     const res = await fetch('episodes.json');
@@ -544,6 +1094,16 @@ async function init() {
 
     renderEpisodes(filteredData);
     renderPagination(filteredData.length);
+
+    // Open target episode modal if provided in URL parameter
+    if (targetEpNum) {
+      const targetEp = episodeData.find(ep => ep.number === targetEpNum);
+      if (targetEp) {
+        setTimeout(() => {
+          openEpisodeModal(targetEp);
+        }, 200);
+      }
+    }
   } catch (error) {
     container.innerHTML = `<p style="color:red;">Error loading episodes: ${error.message}</p>`;
   }
