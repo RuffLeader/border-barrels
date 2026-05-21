@@ -874,6 +874,18 @@
   document.getElementById('sort').addEventListener('change', render);
 
   render();
+
+  // Open modal if ?beer=id query parameter is present on load
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetBeerId = urlParams.get('beer') ? parseInt(urlParams.get('beer')) : null;
+  if (targetBeerId) {
+    const targetBeer = beers.find(b => b.id === targetBeerId);
+    if (targetBeer) {
+      setTimeout(() => {
+        openModal(targetBeerId);
+      }, 100);
+    }
+  }
 </script>
 
 </body>
