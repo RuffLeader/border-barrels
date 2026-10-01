@@ -638,5 +638,21 @@
     "spotifyUrl": "https://open.spotify.com/episode/0sVj0W5Q30cOrPB5queyO2",
     "appleUrl": "https://podcasts.apple.com/cm/podcast/beercast-80-hargreaves-hill-brewing-co-part-4/id1559619911?i=1000766242163&l",
     "description": "Once again we've been absolutely spoilt by our friends at Hargreaves Hill. A special care package arrived unexpectedly, full of big IPA goodness."
+  },
+    {
+    "number": 81,
+    "title": "Rocky Ridge Brewing Co. Showcase",
+    "youtubeId": "-4fYvKYBXwo",
+    "spotifyUrl": "https://open.spotify.com/episode/0l258FkpyEtkzMvEx1dheU",
+    "appleUrl": "https://podcasts.apple.com/us/podcast/beercast-81-rocky-ridge-brewing-co/id1559619911?i=1000775150961",
+    "description": "It's Simmo's turn to supply the goods on this weeks episode. Although he may not rate his reciting skills, we certainly rate his beer selection skills."
+  },
+    {
+    "number": 82,
+    "title": "Last St Brewery Showcase",
+    "youtubeId": "NGTegIf7HBI",
+    "spotifyUrl": "https://open.spotify.com/episode/5HSo7xWvRM1tk4BN3FfrfX",
+    "appleUrl": "https://podcasts.apple.com/us/podcast/beercast-82-last-st-brewery/id1559619911?i=1000785844436",
+    "description": "It's fitting that our LAST podcast from the Not So Good Shed is a six beer showcase of Beechworth champs Last St Brewery."
   }
 ]
