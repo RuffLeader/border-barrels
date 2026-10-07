@@ -629,6 +629,36 @@ const breweries = [
     ]
   },
   {
+    name: "Last St Brewery",
+    city: "Beechworth",
+    state: "Victoria",
+    logo: "/media/logos/last-st.png",
+    website: "https://lastst.com.au/",
+    instagram: "https://www.instagram.com/laststbrewery",
+    description: "Last St Brewery is a historic, family-friendly beverage producer situated in the heart of Beechworth in Victoria's High Country. Originally established in 1865 (and historically known as Billson's), it stands as one of Australia’s oldest continuously operating production sites. Their philosophy centers around honoring time-tested craft techniques, using pure local spring water to handcraft an extensive lineup that spans classic brewed beers, small-batch spirits, and their iconic, traditional fruit cordials and sodas. They offer a diverse, crowd-pleasing range designed so every visitor finds something to enjoy—from traditional ales and craft spirits to dozens of nostalgic cordial flavors. Their lovingly restored 1920s-era facility operates as a vibrant tourist destination featuring a main tasting bar for complimentary samples, an on-site restaurant and beer garden, a speakeasy cocktail bar, and guided historical venue tours.",
+    closed: false,
+    independent: true,
+    owner: null,
+    taprooms: [
+      {
+        name: "Last St Brewery",
+        address: "29 Last Street, Beechworth VIC 3747",
+        map: "https://maps.app.goo.gl/qNXPZZPM1ii9QC5V8",
+        photo: "/media/taprooms/last-st-brewery.jfif",
+        lat: -36.35474,
+        lng: 146.686322
+      },
+      {
+        name: "The Last Supper Club",
+        address: "37 Camp Street, Beechworth VIC 3747",
+        map: "https://maps.app.goo.gl/s6SzvyVhQxqMfV7x7",
+        photo: "/media/taprooms/last-supper-club.jfif",
+        lat: -36.359046,
+        lng: 146.686206
+      }
+    ]
+  },
+  {
     name: "Lost Palms Brewing Co",
     city: "Miami",
     state: "Queensland",
@@ -894,6 +924,52 @@ const breweries = [
         photo: "/media/taprooms/revel-taproom.jpg",
         lat: -27.453121,
         lng: 153.0861255
+      }
+    ]
+  },
+  {
+    name: "Rocky Ridge Brewing Co.",
+    city: "Jindong",
+    state: "Western Australia",
+    logo: "/media/logos/rocky-ridge.png",
+    website: "https://www.rockyridgebrewing.com.au/",
+    instagram: "https://www.instagram.com/rockyridgebrewing/",
+    description: "An independent, family-run brewery based on a 100-year-old family farm in Jindong, Western Australia. Their philosophy centers around producing world-class craft beer with a wholehearted commitment to heavy environmental responsibility, aiming for net zero while continuously improving their energy and water efficiency. Rocky Ridge offers a core range of beers—such as their Jindong Juicy Pale Ale and Ace IPA—alongside experimental limited releases, aiming to push the boundaries of craft beer while keeping impact low. They also operate a venue in a restored 1920s cottage in Busselton, providing a relaxed space for visitors to enjoy their fresh beers on tap.",
+    closed: false,
+    independent: true,
+    owner: null,
+    taprooms: [
+      {
+        name: "Burswood Beerhall",
+        address: "84/88 Goodwood Parade, Burswood WA 6100",
+        map: "https://maps.app.goo.gl/AbHLuvZYZa7SZqMa6",
+        photo: "/media/taprooms/rocky-ridge-burswood.jpg",
+        lat: -31.958895,
+        lng: 115.900465
+      },
+      {
+        name: "Brunswick Brewhouse",
+        address: "130 Barkly Street, Brunswick East VIC 3057",
+        map: "https://maps.app.goo.gl/4qST78pJX7a1vpYP7",
+        photo: "/media/taprooms/rocky-ridge-brunswick.jpg",
+        lat: -37.777245,
+        lng: 144.971054
+      },
+      {
+        name: "Busselton Taphouse",
+        address: "10 Marine Terrace, Busselton WA 6280",
+        map: "https://maps.app.goo.gl/t2456nkK8syH4tQz5",
+        photo: "/media/taprooms/rocky-ridge-busselton.jpg",
+        lat: -33.638532,
+        lng: 115.373241
+      },
+      {
+        name: "Duncraig Taphouse",
+        address: "Shop 14/50 Marri Road, Duncraig WA 6023",
+        map: "https://maps.app.goo.gl/bAVrzQtJCDTcFoXq8",
+        photo: "/media/taprooms/rocky-ridge-duncraig.jpg",
+        lat: -31.830914,
+        lng: 115.769254
       }
     ]
   },
