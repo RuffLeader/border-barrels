@@ -1,8 +1,8 @@
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//ical.marudot.com//iCal Event Maker
-X-WR-CALNAME:NFL
-NAME:NFL
+X-WR-CALNAME:NFL_Schedule
+NAME:NFL_Schedule
 CALSCALE:GREGORIAN
 BEGIN:VTIMEZONE
 TZID:Australia/Sydney
@@ -25,7 +25,7 @@ RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=1SU
 END:DAYLIGHT
 END:VTIMEZONE
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826364650-94230@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260910T102000
 DTEND;TZID=Australia/Sydney:20260910T142000
@@ -35,7 +35,7 @@ DESCRIPTION:Week 1
 LOCATION:Lumen Field\, Seattle\, Washington
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826413303-97594@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260911T103500
 DTEND;TZID=Australia/Sydney:20260911T143500
@@ -45,7 +45,7 @@ DESCRIPTION:Week 1
 LOCATION:MCG\, Melbourne\, Australia
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826675695-16935@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260914T030000
 DTEND;TZID=Australia/Sydney:20260914T100000
@@ -53,7 +53,7 @@ SUMMARY:NFL RedZone
 DESCRIPTION:Week 1\n3:00am Window\nChicago Bears @ Carolina Panthers\, Tampa Bay Buccaneers @ Cincinnati Bengals\, New Orleans Saints @ Detroit Lions\, Buffalo Bills @ Houston Texans\, Baltimore Ravens @ Indianapolis Colts\, Cleveland Browns @ Jacksonville Jaguars\, Atlanta Falcons @ Pittsburgh Steelers\, New York Jets @ Tennessee Titans\n6:25am Window\nArizona Cardinals @ Los Angeles Chargers\, Miami Dolphins @ Las Vegas Raiders\, Green Bay Packers @ Minnesota Vikings\, Washington Commanders @ Philadelphia Eagles
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826719293-27305@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260914T102000
 DTEND;TZID=Australia/Sydney:20260914T142000
@@ -63,7 +63,7 @@ DESCRIPTION:Week 1
 LOCATION:MetLife Stadium\, East Rutherford\, New Jersey
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826764983-51746@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260915T101500
 DTEND;TZID=Australia/Sydney:20260915T141500
@@ -73,7 +73,7 @@ DESCRIPTION:Week 1
 LOCATION:Arrowhead Stadium\, Kansas City\, Missouri
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826933557-91763@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260918T101500
 DTEND;TZID=Australia/Sydney:20260918T141500
@@ -83,7 +83,7 @@ DESCRIPTION:Week 2
 LOCATION:Highmark Stadium\, Orchard Park\, New York
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788826942555-91913@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260921T030000
 DTEND;TZID=Australia/Sydney:20260921T100000
@@ -91,7 +91,7 @@ SUMMARY:NFL RedZone
 DESCRIPTION:Week 2\n3:00am Window\nCarolina Panthers @ Atlanta Falcons\, New Orleans Saints @ Baltimore Ravens\, Minnesota Vikings @ Chicago Bears\, Cincinnati Bengals @ Houston Texans\, Pittsburgh Steelers @ New England Patriots\, Green Bay Packers @ New York Jets\, Cleveland Browns @ Tampa Bay Buccaneers\, Philadelphia Eagles @ Tennessee Titans\n6:05am Window\nJacksonville Jaguars @ Denver Broncos\, Las Vegas Raiders @ Los Angeles Chargers\n6:25am Window\nSeattle Seahawks @ Arizona Cardinals\, Washington Commanders @ Dallas Cowboys\, Miami Dolphins @ San Francisco 49ers
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827335822-56095@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260921T102000
 DTEND;TZID=Australia/Sydney:20260921T142000
@@ -101,7 +101,7 @@ DESCRIPTION:Week 2
 LOCATION:Arrowhead Stadium\, Kansas City\, Missouri
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827391987-33138@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260922T101500
 DTEND;TZID=Australia/Sydney:20260922T141500
@@ -111,7 +111,7 @@ DESCRIPTION:Week 2
 LOCATION:SoFi Stadium\, Inglewood\, California
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827435867-22468@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260925T101500
 DTEND;TZID=Australia/Sydney:20260925T141500
@@ -121,7 +121,7 @@ DESCRIPTION:Week 3
 LOCATION:Lambeau Field\, Green Bay\, Wisconsin
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827663816-71510@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260928T030000
 DTEND;TZID=Australia/Sydney:20260928T100000
@@ -129,7 +129,7 @@ SUMMARY:NFL RedZone
 DESCRIPTION:Week 3\n3:00am Window\nLos Angeles Chargers @ Buffalo Bills\, Carolina Panthers @ Cleveland Browns\, New York Jets @ Detroit Lions\, Houston Texans @ Indianapolis Colts\, New England Patriots @ Jacksonville Jaguars\, Kansas City Chiefs @ Miami Dolphins\, Tennessee Titans @ New York Giants\, Cincinnati Bengals @ Pittsburgh Steelers\, Seattle Seahawks @ Washington Commanders\n6:05am Window\nArizona Cardinals @ San Francisco 49ers\, Minnesota Vikings @ Tampa Bay Buccaneers\n6:25am Window\nLas Vegas Raiders @ New Orleans Saints
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827479618-44224@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260928T062500
 DTEND;TZID=Australia/Sydney:20260928T102500
@@ -139,7 +139,7 @@ DESCRIPTION:Week 3
 LOCATION:Maracana Stadium\, Rio De Janeiro\, Brazil
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827556711-74289@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260928T102000
 DTEND;TZID=Australia/Sydney:20260928T142000
@@ -149,7 +149,7 @@ DESCRIPTION:Week 3
 LOCATION:Empower Field at Mile High\, Denver\, Colorado
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827609896-69228@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20260929T101500
 DTEND;TZID=Australia/Sydney:20260929T141500
@@ -159,7 +159,7 @@ DESCRIPTION:Week 3
 LOCATION:Soldier Field\, Chicago\, Illinois
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827814496-78325@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261002T101500
 DTEND;TZID=Australia/Sydney:20261002T141500
@@ -169,7 +169,7 @@ DESCRIPTION:Week 4
 LOCATION:Huntington Bank Field\, Cleveland\, Ohio
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827859543-28831@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261005T003000
 DTEND;TZID=Australia/Sydney:20261005T043000
@@ -179,7 +179,7 @@ DESCRIPTION:Week 4
 LOCATION:Tottenham Hotspur Stadium\, London\, United Kingdom
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788828054022-97404@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261005T040000
 DTEND;TZID=Australia/Sydney:20261005T110000
@@ -187,7 +187,7 @@ SUMMARY:NFL RedZone
 DESCRIPTION:Week 4\n4:00am Window\nTennessee Titans @ Baltimore Ravens\, New England Patriots @ Buffalo Bills\, New York Jets @ Chicago Bears\, Jacksonville Jaguars @ Cincinnati Bengals\, Dallas Cowboys @ Houston Texans\, Arizona Cardinals @ New York Giants\, Los Angeles Rams @ Philadelphia Eagles\, Green Bay Packers @ Tampa Bay Buccaneers\n7:05am Window\nMiami Dolphins @ Minnesota Vikings\n7:25am Window\nKansas City Chiefs @ Las Vegas Raiders\, Los Angeles Chargers @ Seattle Seahawks\, Denver Broncos @ San Francisco 49ers
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827909071-77581@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261005T112000
 DTEND;TZID=Australia/Sydney:20261005T152000
@@ -197,7 +197,7 @@ DESCRIPTION:Week 4
 LOCATION:Bank of America Stadium\, Charlotte\, North Carolina
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1788827964318-82740@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261006T111500
 DTEND;TZID=Australia/Sydney:20261006T151500
@@ -207,7 +207,7 @@ DESCRIPTION:Week 4
 LOCATION:Caesars Superdome\, New Orleans\, Louisiana
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1791164112283-23622@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261009T111500
 DTEND;TZID=Australia/Sydney:20261009T151500
@@ -217,7 +217,7 @@ DESCRIPTION:Week 5
 LOCATION:AT&T Stadium\, Arlington\, Texas
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1791164164265-16491@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261012T003000
 DTEND;TZID=Australia/Sydney:20261012T043000
@@ -227,7 +227,7 @@ DESCRIPTION:Week 5
 LOCATION:Tottenham Hotspur Stadium\, London\, United Kingdom
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1791164326386-27874@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261012T040000
 DTEND;TZID=Australia/Sydney:20261012T110000
@@ -235,7 +235,7 @@ SUMMARY:NFL RedZone
 DESCRIPTION:Week 5\n4:00am Window\nCincinnati Bengals @ Miami Dolphins\, Las Vegas Raiders @ New England Patriots\, Minnesota Vikings @ New Orleans Saints\, Cleveland Browns @ New York Jets\, Indianapolis Colts @ Pittsburgh Steelers\, Houston Texans @ Tennessee Titans\, New York Giants @ Washington Commanders\, Chicago Bears @ Green Bay Packers\n7:05am Window\nDenver Broncos @ Los Angeles Chargers\n7:25am Window\nDetroit Lions @ Arizona Cardinals\, San Francisco 49ers @ Seattle Seahawks
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1791164511954-44138@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261012T112000
 DTEND;TZID=Australia/Sydney:20261012T152000
@@ -245,7 +245,7 @@ DESCRIPTION:Week 5
 LOCATION:Mercedes-Benz Stadium\, Atlanta\, Georgia
 END:VEVENT
 BEGIN:VEVENT
-DTSTAMP:20261005T014654Z
+DTSTAMP:20261014T023057Z
 UID:1791164577683-47793@ical.marudot.com
 DTSTART;TZID=Australia/Sydney:20261013T111500
 DTEND;TZID=Australia/Sydney:20261013T151500
@@ -253,5 +253,485 @@ SUMMARY:Buffalo Bills @ Los Angeles Rams
 URL:https://www.nfl.com/games/bills-at-rams-2026-reg-5
 DESCRIPTION:Week 5
 LOCATION:SoFi Stadium\, Inglewood\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941277842-77677@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261016T111500
+DTEND;TZID=Australia/Sydney:20261016T151500
+SUMMARY:Seattle Seahawks @ Denver Broncos
+URL:https://www.nfl.com/games/seahawks-at-broncos-2026-reg-6
+DESCRIPTION:Week 6
+LOCATION:Empower Field at Mile High\, Denver\, Colorado
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941374939-44735@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261019T003000
+DTEND;TZID=Australia/Sydney:20261019T043000
+SUMMARY:Houston Texans @ Jacksonville Jaguars (London Game)
+URL:https://www.nfl.com/games/texans-at-jaguars-2026-reg-6
+DESCRIPTION:Week 6
+LOCATION:Wembley Stadium\, London\, United Kingdom
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941432698-83338@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261019T040000
+DTEND;TZID=Australia/Sydney:20261019T110000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 6\n4:00am Window\nChicago Bears @ Atlanta Falcons\, Baltimore Ravens @ Cleveland Browns\, Tennessee Titans @ Indianapolis Colts\, New York Jets @ New England Patriots\, New Orleans Saints @ New York Giants\, Carolina Panthers @ Philadelphia Eagles\, Pittsburgh Steelers @ Tampa Bay Buccaneers\n7:05am Window\nArizona Cardinals @ Los Angeles Rams\n7:25am Window\nLos Angeles Chargers @ Kansas City Chiefs\, Buffalo Bills @ Las Vegas Raiders
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941585059-31969@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261019T112000
+DTEND;TZID=Australia/Sydney:20261019T152000
+SUMMARY:Dallas Cowboys @ Green Bay Packers
+URL:https://www.nfl.com/games/cowboys-at-packers-2026-reg-6
+DESCRIPTION:Week 6
+LOCATION:Lambeau Field\, Green Bay\, Wisconsin
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941631193-18157@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261020T111500
+DTEND;TZID=Australia/Sydney:20261020T151500
+SUMMARY:Washington Commanders @ San Francisco 49ers
+URL:https://www.nfl.com/games/commanders-at-49ers-2026-reg-6
+DESCRIPTION:Week 6
+LOCATION:Levi's Stadium\, Santa Clara\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941693305-14051@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261023T111500
+DTEND;TZID=Australia/Sydney:20261023T151500
+SUMMARY:New England Patriots @ Chicago Bears
+URL:https://www.nfl.com/games/patriots-at-bears-2026-reg-7
+DESCRIPTION:Week 7
+LOCATION:Soldier Field\, Chicago\, Illinois
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941754688-53593@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261026T003000
+DTEND;TZID=Australia/Sydney:20261026T043000
+SUMMARY:Pittsburgh Steelers @ New Orleans Saints (Paris Game)
+URL:https://www.nfl.com/games/steelers-at-saints-2026-reg-7
+DESCRIPTION:Week 7
+LOCATION:Stade De France\, Saint-Denis\, France
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941805888-94105@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261026T040000
+DTEND;TZID=Australia/Sydney:20261026T110000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 7\n4:00am Window\nSan Francisco 49ers @ New Orleans Saints\, Cincinnati Bengals @ Baltimore Ravens\, Tampa Bay Buccaneers @ Carolina Panthers\, New York Giants @ Houston Texans\, Indianapolis Colts @ Minnesota Vikings\, Miami Dolphins @ New York Jets\, Cleveland Browns @ Tennessee Titans\n7:05am Window\nDenver Broncos @ Arizona Cardinals\n7:25am Window\nGreen Bay Packers @ Detroit Lions\, Los Angeles Rams @ Las Vegas Raiders
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941920235-87418@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261026T112000
+DTEND;TZID=Australia/Sydney:20261026T152000
+SUMMARY:Kansas City Chiefs @ Seattle Seahawks
+URL:https://www.nfl.com/games/chiefs-at-seahawks-2026-reg-7
+DESCRIPTION:Week 7
+LOCATION:Lumen Field\, Seattle\, Washington
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791941957672-72371@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261027T111500
+DTEND;TZID=Australia/Sydney:20261027T151500
+SUMMARY:Dallas Cowboys @ Philadelphia Eagles
+URL:https://www.nfl.com/games/cowboys-at-eagles-2026-reg-7
+DESCRIPTION:Week 7
+LOCATION:Lincoln Financial Field\, Philadelphia\, Pennsylvania
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942028423-80554@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261030T111500
+DTEND;TZID=Australia/Sydney:20261030T151500
+SUMMARY:Carolina Panthers @ Green Bay Packers
+URL:https://www.nfl.com/games/panthers-at-packers-2026-reg-8
+DESCRIPTION:Week 8
+LOCATION:Lambeau Field\, Green Bay\, Wisconsin
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942095575-42687@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261102T050000
+DTEND;TZID=Australia/Sydney:20261102T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 8\n5:00am Window\nBaltimore Ravens @ Buffalo Bills\, Tennessee Titans @ Cincinnati Bengals\, Arizona Cardinals @ Dallas Cowboys\, Minnesota Vikings @ Detroit Lions\, Indianapolis Colts @ Jacksonville Jaguars\, Las Vegas Raiders @ New York Jets\, Cleveland Browns @ Pittsburgh Steelers\, Atlanta Falcons @ Tampa Bay Buccaneers\n8:05am Window\nLos Angeles Chargers @ Los Angeles Rams\n8:25am Window\nKansas City Chiefs @ Denver Broncos\, New England Patriots @ Miami Dolphins
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942388520-25973@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261102T122000
+DTEND;TZID=Australia/Sydney:20261102T162000
+SUMMARY:Philadelphia Eagles @ Washington Commanders
+URL:https://www.nfl.com/games/eagles-at-commanders-2026-reg-8
+DESCRIPTION:Week 8
+LOCATION:Northwest Stadium\, Landover\, Maryland
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942430406-91100@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261103T121500
+DTEND;TZID=Australia/Sydney:20261103T161500
+SUMMARY:Chicago Bears @ Seattle Seahawks
+URL:https://www.nfl.com/games/bears-at-seahawks-2026-reg-8
+DESCRIPTION:Week 8
+LOCATION:Lumen Field\, Seattle\, Washington
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942516452-60900@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261106T121500
+DTEND;TZID=Australia/Sydney:20261106T161500
+SUMMARY:Jacksonville Jaguars @ Baltimore Ravens
+URL:https://www.nfl.com/games/jaguars-at-ravens-2026-reg-9
+DESCRIPTION:Week 9
+LOCATION:M&T Bank Stadium\, Baltimore\, Maryland
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942564973-58188@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261109T013000
+DTEND;TZID=Australia/Sydney:20261109T053000
+SUMMARY:Cincinnati Bengals @ Atlanta Falcons (Madrid Game)
+URL:https://www.nfl.com/games/bengals-at-falcons-2026-reg-9
+DESCRIPTION:Week 9
+LOCATION:Santiago Bernabeu\, Madrid\, Spain
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942618308-75170@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261109T050000
+DTEND;TZID=Australia/Sydney:20261109T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 9\n5:00am Window\nDenver Broncos @ Carolina Panthers\, Dallas Cowboys @ Indianapolis Colts\, New York Jets @ Kansas City Chiefs\, Detroit Lions @ Miami Dolphins\, Cleveland Browns @ New Orleans Saints\, New York Giants @ Philadelphia Eagles\, Los Angeles Rams @ Washington Commanders\n8:05am Window\nHouston Texans @ Los Angeles Chargers\, Las Vegas Raiders @ San Francisco 49ers\n8:25am Window\nGreen Bay Packers @ New England Patriots\, Arizona Cardinals @ Seattle Seahawks
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942769156-82076@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261109T122000
+DTEND;TZID=Australia/Sydney:20261109T162000
+SUMMARY:Tampa Bay Buccaneers @ Chicago Bears
+URL:https://www.nfl.com/games/buccaneers-at-bears-2026-reg-9
+DESCRIPTION:Week 9
+LOCATION:Soldier Field\, Chicago\, Illinois
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942823092-74963@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261110T121500
+DTEND;TZID=Australia/Sydney:20261110T161500
+SUMMARY:Buffalo Bills @ Minnesota Vikings
+URL:https://www.nfl.com/games/bills-at-vikings-2026-reg-9
+DESCRIPTION:Week 9
+LOCATION:U.S. Bank Stadium\, Minneapolis\, Minnesota
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942908828-70571@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261113T121500
+DTEND;TZID=Australia/Sydney:20261113T161500
+SUMMARY:Washington Commanders @ New York Giants
+URL:https://www.nfl.com/games/commanders-at-giants-2026-reg-10
+DESCRIPTION:Week 10
+LOCATION:Metlife Stadium\, East Rutherford\, New Jersey
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791942966533-78755@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261116T013000
+DTEND;TZID=Australia/Sydney:20261116T053000
+SUMMARY:New England Patriots @ Detroit Lions (Munich Game)
+URL:https://www.nfl.com/games/patriots-at-lions-2026-reg-10
+DESCRIPTION:Week 10
+LOCATION:FC Bayern Munich Stadium\, Munich\, Germany
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943010227-56250@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261116T050000
+DTEND;TZID=Australia/Sydney:20261116T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 10\n5:00am Window\nKansas City Chiefs @ Atlanta Falcons\, Houston Texans @ Cleveland Browns\, Minnesota Vikings @ Green Bay Packers\, Miami Dolphins @ Indianapolis Colts\, Carolina Panthers @ New Orleans Saints\, Buffalo Bills @ New York Jets\, Jacksonville Jaguars @ Tennessee Titans\n8:05am Window\nLos Angeles Rams @ Arizona Cardinals\, Seattle Seahawks @ Las Vegas Raiders\n8:25am Window\nSan Francisco 49ers @ Dallas Cowboys
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943132516-45809@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261116T122000
+DTEND;TZID=Australia/Sydney:20261116T162000
+SUMMARY:Pittsburgh Steelers @ Cincinnati Bengals
+URL:https://www.nfl.com/games/steelers-at-bengals-2026-reg-10
+DESCRIPTION:Week 10
+LOCATION:Paycor Stadium\, Cincinnati\, Ohio
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943168538-33763@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261117T121500
+DTEND;TZID=Australia/Sydney:20261117T161500
+SUMMARY:Los Angeles Chargers @ Baltimore Ravens
+URL:https://www.nfl.com/games/chargers-at-ravens-2026-reg-10
+DESCRIPTION:Week 10
+LOCATION:M&T Bank Stadium\, Baltimore\, Maryland
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943228394-13969@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261120T121500
+DTEND;TZID=Australia/Sydney:20261120T161500
+SUMMARY:Indianapolis Colts @ Houston Texans
+URL:https://www.nfl.com/games/colts-at-texans-2026-reg-11
+DESCRIPTION:Week 11
+LOCATION:Reliant Stadium\, Houston\, Texas
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943285490-22330@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261123T050000
+DTEND;TZID=Australia/Sydney:20261123T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 11\n5:00am Window\nMiami Dolphins @ Buffalo Bills\, Baltimore Ravens @ Carolina Panthers\, New Orleans Saints @ Chicago Bears\, Tennessee Titans @ Dallas Cowboys\, Tampa Bay Buccaneers @ Detroit Lions\, Arizona Cardinals @ Kansas City Chiefs\, Jacksonville Jaguars @ New York Giants\n8:05am Window\nNew York Jets @ Los Angeles Chargers\n8:25am Window\nLas Vegas Raiders @ Denver Broncos\, Pittsburgh Steelers @ Philadelphia Eagles
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943398732-45012@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261123T122000
+DTEND;TZID=Australia/Sydney:20261123T162000
+SUMMARY:Minnesota Vikings @ San Francisco 49ers (Mexico City Game)
+URL:https://www.nfl.com/games/vikings-at-49ers-2026-reg-11
+DESCRIPTION:Week 11
+LOCATION:Estadio Banorte\, Mexico City\, Mexico
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943452769-58441@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261124T121500
+DTEND;TZID=Australia/Sydney:20261124T161500
+SUMMARY:Cincinnati Bengals @ Washington Commanders
+URL:https://www.nfl.com/games/bengals-at-commanders-2026-reg-11
+DESCRIPTION:Week 11
+LOCATION:Northwest Stadium\, Landover\, Maryland
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943507182-34093@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261126T120000
+DTEND;TZID=Australia/Sydney:20261126T160000
+SUMMARY:Green Bay Packers @ Los Angeles Rams (Thanksgiving Eve Game)
+URL:https://www.nfl.com/games/packers-at-rams-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:SoFi Stadium\, Inglewood\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943615488-52503@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261127T050000
+DTEND;TZID=Australia/Sydney:20261127T090000
+SUMMARY:Chicago Bears @ Detroit Lions (Thanksgiving Day Game)
+URL:https://www.nfl.com/games/bears-at-lions-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:Ford Field\, Detroit\, Michigan
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943665817-59047@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261127T083000
+DTEND;TZID=Australia/Sydney:20261127T123000
+SUMMARY:Philadelphia Eagles @ Dallas Cowboys (Thanksgiving Day Game)
+URL:https://www.nfl.com/games/eagles-at-cowboys-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:AT&T Stadium\, Arlington\, Texas
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943706472-58995@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261127T122000
+DTEND;TZID=Australia/Sydney:20261127T162000
+SUMMARY:Kansas City Chiefs @ Buffalo Bills (Thanksgiving Day Game)
+URL:https://www.nfl.com/games/chiefs-at-bills-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:Highmark Stadium\, Orchard Park\, New York
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943766793-33636@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261128T070000
+DTEND;TZID=Australia/Sydney:20261128T110000
+SUMMARY:Denver Broncos @ Pittsburgh Steelers (Black Friday Game)
+URL:https://www.nfl.com/games/broncos-at-steelers-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:Acrisure Stadium\, Pittsburgh\, Pennsylvania
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943820992-35044@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261130T050000
+DTEND;TZID=Australia/Sydney:20261130T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 12\n5:00am Window\nNew Orleans Saints @ Cincinnati Bengals\, Las Vegas Raiders @ Cleveland Browns\, Baltimore Ravens @ Houston Texans\, New York Giants @ Indianapolis Colts\, New York Jets @ Miami Dolphins\, Atlanta Falcons @ Minnesota Vikings\n8:05am Window\nTennessee Titans @ Jacksonville Jaguars\n8:25am Window\nWashington Commanders @ Arizona Cardinals\, Seattle Seahawks @ San Francisco 49ers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943950087-74905@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261130T122000
+DTEND;TZID=Australia/Sydney:20261130T162000
+SUMMARY:New England Patriots @ Los Angeles Chargers
+URL:https://www.nfl.com/games/patriots-at-chargers-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:SoFi Stadium\, Inglewood\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791943994999-30692@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261201T121500
+DTEND;TZID=Australia/Sydney:20261201T161500
+SUMMARY:Carolina Panthers @ Tampa Bay Buccaneers
+URL:https://www.nfl.com/games/panthers-at-buccaneers-2026-reg-12
+DESCRIPTION:Week 12
+LOCATION:Raymond James Stadium\, Tampa\, Florida
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944062150-26363@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261204T121500
+DTEND;TZID=Australia/Sydney:20261204T161500
+SUMMARY:Kansas City Chiefs @ Los Angeles Rams
+URL:https://www.nfl.com/games/chiefs-at-rams-2026-reg-13
+DESCRIPTION:Week 13
+LOCATION:SoFi Stadium\, Inglewood\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944101718-87941@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261207T050000
+DTEND;TZID=Australia/Sydney:20261207T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 13\n5:00am Window\nDetroit Lions @ Atlanta Falcons\, Jacksonville Jaguars @ Chicago Bears\, Cincinnati Bengals @ Cleveland Browns\, Green Bay Packers @ New Orleans Saints\, San Francisco 49ers @ New York Giants\, Los Angeles Chargers @ Tampa Bay Buccaneers\, Washington Commanders @ Tennessee Titans\n8:05am Window\nPhiladelphia Eagles @ Arizona Cardinals\, Miami Dolphins @ Denver Broncos\n8:25am Window\nCarolina Panthers @ Minnesota Vikings\, Buffalo Bills @ New England Patriots
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944232817-78664@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261207T122000
+DTEND;TZID=Australia/Sydney:20261207T162000
+SUMMARY:Houston Texans @ Pittsburgh Steelers
+URL:https://www.nfl.com/games/texans-at-steelers-2026-reg-13
+DESCRIPTION:Week 13
+LOCATION:Acrisure Stadium\, Pittsburgh\, Pennsylvania
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944273454-71921@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261208T121500
+DTEND;TZID=Australia/Sydney:20261208T161500
+SUMMARY:Dallas Cowboys @ Seattle Seahawks
+URL:https://www.nfl.com/games/cowboys-at-seahawks-2026-reg-13
+DESCRIPTION:Week 13
+LOCATION:Lumen Field\, Seattle\, Washington
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944327479-98044@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261211T121500
+DTEND;TZID=Australia/Sydney:20261211T161500
+SUMMARY:Minnesota Vikings @ New England Patriots
+URL:https://www.nfl.com/games/vikings-at-patriots-2026-reg-14
+DESCRIPTION:Week 14
+LOCATION:Gillette Stadium\, Foxborough\, Massachusetts
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944402495-43707@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261214T050000
+DTEND;TZID=Australia/Sydney:20261214T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 14\n5:00am Window\nTampa Bay Buccaneers @ Baltimore Ravens\, New Orleans Saints @ Carolina Panthers\, Atlanta Falcons @ Cleveland Browns\, Tennessee Titans @ Detroit Lions\, Chicago Bears @ Miami Dolphins\, Denver Broncos @ New York Jets\, Indianapolis Colts @ Philadelphia Eagles\, Houston Texans @ Washington Commanders\n8:05am Window\nLos Angeles Chargers @ Las Vegas Raiders\n8:25am Window\nKansas City Chiefs @ Cincinnati Bengals\, New York Giants @ Seattle Seahawks\, Los Angeles Rams @ San Francisco 49ers
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944550524-31894@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261214T122000
+DTEND;TZID=Australia/Sydney:20261214T162000
+SUMMARY:Buffalo Bills @ Green Bay Packers
+URL:https://www.nfl.com/games/bills-at-packers-2026-reg-14
+DESCRIPTION:Week 14
+LOCATION:Lambeau Field\, Green Bay\, Wisconsin
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944586205-61501@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261215T121500
+DTEND;TZID=Australia/Sydney:20261215T161500
+SUMMARY:Pittsburgh Steelers @ Jacksonville Jaguars
+URL:https://www.nfl.com/games/steelers-at-jaguars-2026-reg-14
+DESCRIPTION:Week 14
+LOCATION:Everbank Stadium\, Jacksonville\, Florida
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944709660-31318@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261218T121500
+DTEND;TZID=Australia/Sydney:20261218T161500
+SUMMARY:San Francisco 49ers @ Los Angeles Chargers
+URL:https://www.nfl.com/games/49ers-at-chargers-2026-reg-15
+DESCRIPTION:Week 15
+LOCATION:SoFi Stadium\, Inglewood\, California
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944753462-35049@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261220T090000
+DTEND;TZID=Australia/Sydney:20261220T130000
+SUMMARY:Seattle Seahawks @ Philadelphia Eagles
+URL:https://www.nfl.com/games/seahawks-at-eagles-2026-reg-15
+DESCRIPTION:Week 15
+LOCATION:Lincoln Financial Field\, Philadelphia\, Pennsylvania
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944793574-84105@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261220T122000
+DTEND;TZID=Australia/Sydney:20261220T162000
+SUMMARY:Chicago Bears @ Buffalo Bills
+URL:https://www.nfl.com/games/bears-at-bills-2026-reg-15
+DESCRIPTION:Week 15
+LOCATION:Highmark Stadium\, Orchard Park\, New York
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944833667-67318@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261221T050000
+DTEND;TZID=Australia/Sydney:20261221T120000
+SUMMARY:NFL RedZone
+DESCRIPTION:Week 15\n5:00am Window\nCincinnati Bengals @ Carolina Panthers\, Miami Dolphins @ Green Bay Packers\, Jacksonville Jaguars @ Houston Texans\, Cleveland Browns @ New York Giants\, Baltimore Ravens @ Pittsburgh Steelers\, New Orleans Saints @ Tampa Bay Buccaneers\, Indianapolis Colts @ Tennessee Titans\, Atlanta Falcons @ Washington Commanders\n8:05am Window\nNew York Jets @ Arizona Cardinals\n8:25am Window\nDallas Cowboys @ Los Angeles Rams\, Denver Broncos @ Las Vegas Raiders
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944955299-17515@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261221T122000
+DTEND;TZID=Australia/Sydney:20261221T162000
+SUMMARY:Detroit Lions @ Minnesota Vikings
+URL:https://www.nfl.com/games/lions-at-vikings-2026-reg-15
+DESCRIPTION:Week 15
+LOCATION:U.S. Bank Stadium\, Minneapolis\, Minnesota
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20261014T023057Z
+UID:1791944991479-27173@ical.marudot.com
+DTSTART;TZID=Australia/Sydney:20261222T121500
+DTEND;TZID=Australia/Sydney:20261222T161500
+SUMMARY:New England Patriots @ Kansas City Chiefs
+URL:https://www.nfl.com/games/patriots-at-chiefs-2026-reg-15
+DESCRIPTION:Week 15
+LOCATION:Arrowhead Stadium\, Kansas City\, Missouri
 END:VEVENT
 END:VCALENDAR
