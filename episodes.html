@@ -588,6 +588,231 @@ main {
     font-size: 0.7rem;
   }
 }
+
+/* === Beer Detail Sub-Modal === */
+.beer-detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: calc(70px + 0.5rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  box-sizing: border-box;
+}
+
+.beer-detail-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.beer-detail-modal {
+  background: linear-gradient(160deg, #001537, #002157);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  max-width: 500px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  color: #fff;
+  transform: translateY(20px) scale(0.98);
+  transition: transform 0.25s ease;
+}
+
+.beer-detail-overlay.open .beer-detail-modal {
+  transform: translateY(0) scale(1);
+}
+
+.beer-detail-modal .modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0,0,0,0.4);
+  border: none;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: background 0.15s;
+}
+
+.beer-detail-modal .modal-close:hover { background: rgba(0,0,0,0.7); }
+
+.beer-detail-body {
+  padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  box-sizing: border-box;
+}
+
+.beer-detail-body img {
+  max-height: 170px;
+  max-width: 75%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.9));
+  margin-bottom: 0.4rem;
+}
+
+.bd-style-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffb400;
+}
+
+.bd-name {
+  font-size: 1.35rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0.1rem 0;
+}
+
+.bd-brewery {
+  font-size: 0.9rem;
+  color: #f0f0f0;
+}
+
+.bd-brewery strong { color: #ffb400; }
+
+.bd-stats {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.bd-stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.bd-stat:last-child { border-bottom: none; }
+.bd-stat .key { color: #ffb400; font-weight: 600; }
+.bd-stat .val { color: #f0f0f0; }
+
+.bd-score-breakdown {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+}
+
+.bd-score-breakdown h4 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #ffb400;
+  margin: 0 0 0.5rem;
+  text-align: left;
+}
+
+.bd-score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.bd-score-table th {
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  text-align: center;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.72rem;
+}
+
+.bd-score-table th:first-child { text-align: left; }
+
+.bd-score-table td {
+  text-align: center;
+  padding: 0.25rem 0.3rem;
+  color: #e8eef5;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.bd-score-table td:first-child {
+  text-align: left;
+  color: #c8d4e0;
+  font-weight: 500;
+}
+
+.bd-score-table tr:last-child td { border-bottom: none; }
+
+.bd-score-table tr.bd-total-row td {
+  color: #ffb400;
+  font-weight: 700;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  border-bottom: none;
+  padding-top: 0.35rem;
+}
+
+.bd-btn-row {
+  display: flex;
+  gap: 0.6rem;
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+.bd-untappd-btn {
+  display: inline-block;
+  padding: 0.6em 1.2em;
+  background: transparent;
+  color: #ffb400;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1.5px solid #ffb400;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex: 1;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.bd-untappd-btn:hover { background: #ffb400; color: #002157; }
+.bd-untappd-btn.disabled { border-color: rgba(255,255,255,0.15); color: #666; cursor: default; pointer-events: none; }
+
+.bd-description {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.82rem;
+  color: #d0dce8;
+  line-height: 1.55;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .beer-detail-body { padding: 2rem 1.1rem 1.1rem; gap: 0.8rem; }
+  .bd-name { font-size: 1.15rem; }
+  .bd-btn-row { flex-direction: column; }
+}
   </style>
 
   <meta name="description" content="Three mates from The Border review craft beers from every independent brewery in Australia using the meticulously crafted Border Barrels Beer Review System.">
@@ -655,6 +880,15 @@ main {
       
       <!-- External Links -->
       <div class="modal-footer-links" id="modal-footer-links"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Beer Detail Sub-Modal -->
+<div class="beer-detail-overlay" id="beer-detail-overlay">
+  <div class="beer-detail-modal" id="beer-detail-modal">
+    <button class="modal-close" id="beer-detail-close" aria-label="Close beer detail">✕</button>
+    <div class="beer-detail-body" id="beer-detail-body">
     </div>
   </div>
 </div>
@@ -985,7 +1219,7 @@ function openEpisodeModal(ep) {
     beersSectionTitle.style.display = 'block';
     modalBeersList.style.display = 'flex';
     modalBeersList.innerHTML = episodeBeers.map(beer => `
-      <a href="/beers.html?beer=${beer.id}" class="modal-beer-item">
+      <div class="modal-beer-item" role="button" tabindex="0" data-beer-id="${beer.id}" style="cursor:pointer;">
         <img src="${beer.beerCanUrl || '/media/beers/default.png'}" class="modal-beer-img" alt="${beer.name}" onerror="this.style.display='none'">
         <div class="modal-beer-details">
           <div class="modal-beer-name">${beer.name}</div>
@@ -993,8 +1227,16 @@ function openEpisodeModal(ep) {
             <strong>Brewery:</strong> ${beer.brewery} | <strong>Style:</strong> ${beer.style} | <strong>ABV:</strong> ${beer.abv}% | <strong>BBBRS:</strong> ${beer.bbbrsScore}
           </div>
         </div>
-      </a>
+        <span style="color:#ffb400;font-size:0.8rem;margin-left:auto;padding-left:8px;flex-shrink:0;">View ›</span>
+      </div>
     `).join('');
+
+    // Attach click handlers to open beer detail sub-modal
+    modalBeersList.querySelectorAll('.modal-beer-item').forEach(item => {
+      const handler = () => openBeerDetail(parseInt(item.dataset.beerId));
+      item.addEventListener('click', handler);
+      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
+    });
   } else {
     beersSectionTitle.style.display = 'none';
     modalBeersList.style.display = 'none';
@@ -1070,8 +1312,96 @@ document.getElementById('modal-overlay').addEventListener('click', (e) => {
 });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    closeEpisodeModal();
+    // Close beer detail first if open, then episode modal
+    const beerDetailOverlay = document.getElementById('beer-detail-overlay');
+    if (beerDetailOverlay.classList.contains('open')) {
+      closeBeerDetail();
+    } else {
+      closeEpisodeModal();
+    }
   }
+});
+
+// --- Beer Detail Sub-Modal ---
+function openBeerDetail(beerId) {
+  const beer = (typeof beers !== 'undefined') ? beers.find(b => b.id === beerId) : null;
+  if (!beer) return;
+
+  // Pre-calculate ranks
+  const sortedBBBRS = [...beers].sort((a, b) => b.bbbrsScore - a.bbbrsScore);
+  const sortedUntappd = [...beers].sort((a, b) => b.untappdScore - a.untappdScore);
+  const bbbrsRank = sortedBBBRS.findIndex(b => b.id === beer.id) + 1;
+  const untappdRank = sortedUntappd.findIndex(b => b.id === beer.id) + 1;
+
+  const categories = [
+    { label: 'As Advertised', simon: beer.simonAsAdvertised, zach: beer.zachAsAdvertised, hudson: beer.hudsonAsAdvertised },
+    { label: 'Can Art',       simon: beer.simonCanArt,       zach: beer.zachCanArt,       hudson: beer.hudsonCanArt },
+    { label: 'Blurb',        simon: beer.simonBlurb,        zach: beer.zachBlurb,        hudson: beer.hudsonBlurb },
+    { label: 'Value',         simon: beer.simonValue,        zach: beer.zachValue,        hudson: beer.hudsonValue },
+    { label: 'Untappd',       simon: beer.simonUntappd,      zach: beer.zachUntappd,      hudson: beer.hudsonUntappd },
+  ];
+
+  const rows = categories.map(c => `
+    <tr>
+      <td>${c.label}</td>
+      <td>${c.simon  != null ? c.simon  : '—'}</td>
+      <td>${c.zach   != null ? c.zach   : '—'}</td>
+      <td>${c.hudson != null ? c.hudson : '—'}</td>
+    </tr>
+  `).join('');
+
+  const descHTML = (beer.description && beer.description.trim())
+    ? `<div class="bd-description">${beer.description}</div>`
+    : '';
+
+  const untappdHTML = beer.untappdlink
+    ? `<a class="bd-untappd-btn" href="${beer.untappdlink}" target="_blank" rel="noopener noreferrer">🍺 Untappd</a>`
+    : `<span class="bd-untappd-btn disabled">🍺 Untappd</span>`;
+
+  document.getElementById('beer-detail-body').innerHTML = `
+    ${beer.beerCanUrl ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />` : ''}
+    <div class="bd-style-tag">${beer.style || ''}</div>
+    <div class="bd-name">${beer.name}</div>
+    <div class="bd-brewery"><strong>Brewery:</strong> ${beer.brewery}</div>
+    <div class="bd-stats">
+      <div class="bd-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} &nbsp;•&nbsp; #${bbbrsRank}</span></div>
+      <div class="bd-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} &nbsp;•&nbsp; #${untappdRank}</span></div>
+      <div class="bd-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
+      <div class="bd-stat"><span class="key">Episode</span><span class="val">${beer.epnum || '—'}</span></div>
+    </div>
+    <div class="bd-score-breakdown">
+      <h4>Score Breakdown</h4>
+      <table class="bd-score-table">
+        <thead>
+          <tr><th>Category</th><th>Simon</th><th>Zach</th><th>Hudson</th></tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="bd-total-row">
+            <td>Total</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : '—'}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : '—'}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    ${descHTML}
+    <div class="bd-btn-row">
+      ${untappdHTML}
+    </div>
+  `;
+
+  document.getElementById('beer-detail-overlay').classList.add('open');
+}
+
+function closeBeerDetail() {
+  document.getElementById('beer-detail-overlay').classList.remove('open');
+}
+
+document.getElementById('beer-detail-close').addEventListener('click', closeBeerDetail);
+document.getElementById('beer-detail-overlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeBeerDetail();
 });
 
 async function init() {
