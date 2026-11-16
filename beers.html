@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Browse Beers â€“ Border Barrels</title>
+  <title>Browse Beers – Border Barrels</title>
   <link rel="stylesheet" href="/style.css">
   <script src="/nav.js" defer></script>
   <style>
@@ -557,7 +557,7 @@
 
   <meta name="description" content="Three mates from The Border review craft beers from every independent brewery in Australia using the meticulously crafted Border Barrels Beer Review System.">
   <meta name="keywords" content="Australian craft beer reviews, beer podcast, independent breweries Australia, craft beer ratings, Border Barrels, BBBRS, brewery directory">
-  <meta property="og:title" content="Browse Beers â€“ Border Barrels">
+  <meta property="og:title" content="Browse Beers – Border Barrels">
   <meta property="og:description" content="Three mates from &quot;The Border&quot; have made it their mission to sample beers from every independent brewery in Australia. The approach is a relatively simple one: Provide a history of the showcase brewery in question, bring along a minimum of three beers to sample from that same brewery, and then score them using the unique, meticulously crafted Border Barrels Beer Review System.">
   <meta property="og:image" content="https://borderbarrels.com/logo.png">
   <meta property="og:url" content="https://borderbarrels.com/">
@@ -589,7 +589,7 @@
 
 <div class="commands-wrapper">
   <div id="commands">
-    <input type="text" id="search" placeholder="Search beers or breweriesâ€¦" autocomplete="off" />
+    <input type="text" id="search" placeholder="Search beers or breweries…" autocomplete="off" />
     <button class="btn-attached" onclick="clearSearch()">Clear</button>
   </div>
   <a href="beerstable.html" class="btn-table">View Full Table</a>
@@ -605,16 +605,16 @@
   <div class="sort-wrap">
     <label for="sort">Sort by</label>
     <select id="sort">
-      <option value="name">Name Aâ€“Z</option>
-      <option value="brewery">Brewery Aâ€“Z</option>
-      <option value="bbbrs-desc">BBBRS Score â†“</option>
-      <option value="bbbrs-asc">BBBRS Score â†‘</option>
-      <option value="untappd-desc">Untappd â†“</option>
-      <option value="untappd-asc">Untappd â†‘</option>
-      <option value="abv-desc">ABV â†“</option>
-      <option value="abv-asc">ABV â†‘</option>
-      <option value="ep-desc">Episode â†“</option>
-      <option value="ep-asc">Episode â†‘</option>
+      <option value="name">Name A–Z</option>
+      <option value="brewery">Brewery A–Z</option>
+      <option value="bbbrs-desc">BBBRS Score ↓</option>
+      <option value="bbbrs-asc">BBBRS Score ↑</option>
+      <option value="untappd-desc">Untappd ↓</option>
+      <option value="untappd-asc">Untappd ↑</option>
+      <option value="abv-desc">ABV ↓</option>
+      <option value="abv-asc">ABV ↑</option>
+      <option value="ep-desc">Episode ↓</option>
+      <option value="ep-asc">Episode ↑</option>
     </select>
   </div>
 </div>
@@ -624,7 +624,7 @@
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
-    <button class="modal-close" id="modal-close">âœ•</button>
+    <button class="modal-close" id="modal-close">✕</button>
     <div class="modal-body">
       <div id="modal-img"></div>
       <div class="modal-style-tag" id="modal-style"></div>
@@ -634,8 +634,8 @@
       <div class="modal-score-breakdown" id="modal-score-breakdown"></div>
       <div class="modal-description" id="modal-description"></div>
       <div class="modal-btn-row">
-        <a class="modal-ep-btn" id="modal-ep-btn" href="#">ðŸŽ§ Listen to Episode</a>
-        <a class="modal-untappd-btn" id="modal-untappd-btn" href="#" target="_blank" rel="noopener noreferrer">ðŸº Untappd</a>
+        <a class="modal-ep-btn" id="modal-ep-btn" href="#">🎧 Listen to Episode</a>
+        <a class="modal-untappd-btn" id="modal-untappd-btn" href="#" target="_blank" rel="noopener noreferrer">🍺 Untappd</a>
       </div>
     </div>
   </div>
@@ -643,7 +643,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>Â© 2025 Border Barrels</p>
+    <p>© 2025 Border Barrels</p>
   </div>
 </footer>
 
@@ -743,8 +743,8 @@
           <h3>${beer.name}</h3>
           <p><strong>Style:</strong> ${beer.style}</p>
           <p><strong>ABV:</strong> ${beer.abv}%</p>
-          <p><strong>BBBRS:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">â€¢</span> #${beer.bbbrsRank}</p>
-          <p><strong>Untappd:</strong> ${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">â€¢</span> #${beer.untappdRank}</p>
+          <p><strong>BBBRS:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</p>
+          <p><strong>Untappd:</strong> ${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</p>
         </div>
       </div>
     `).join('');
@@ -778,8 +778,8 @@
     document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
     document.getElementById('modal-stats').innerHTML = `
-      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">â€¢</span> #${beer.bbbrsRank}</span></div>
-      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">â€¢</span> #${beer.untappdRank}</span></div>
+      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
       <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
     `;
@@ -795,9 +795,9 @@
     const rows = categories.map(c => `
       <tr>
         <td>${c.label}</td>
-        <td>${c.simon  != null ? c.simon  : 'â€”'}</td>
-        <td>${c.zach   != null ? c.zach   : 'â€”'}</td>
-        <td>${c.hudson != null ? c.hudson : 'â€”'}</td>
+        <td>${c.simon  != null ? c.simon  : '—'}</td>
+        <td>${c.zach   != null ? c.zach   : '—'}</td>
+        <td>${c.hudson != null ? c.hudson : '—'}</td>
       </tr>
     `).join('');
 
@@ -816,9 +816,9 @@
           ${rows}
           <tr class="total-row">
             <td>Total</td>
-            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : 'â€”'}</td>
-            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : 'â€”'}</td>
-            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : 'â€”'}</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : '—'}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : '—'}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
           </tr>
         </tbody>
       </table>
@@ -832,11 +832,11 @@
       descEl.style.display = 'none';
     }
 
-    // Episode button â€” navigates to episodes.html and highlights the right episode
+    // Episode button — navigates to episodes.html and highlights the right episode
     const epBtn = document.getElementById('modal-ep-btn');
     if (beer.epnum) {
       epBtn.href = `/episodes.html?ep=${beer.epnum}`;
-      epBtn.textContent = `ðŸŽ§ Episode ${beer.epnum}`;
+      epBtn.textContent = `🎧 Episode ${beer.epnum}`;
       epBtn.classList.remove('disabled');
     } else {
       epBtn.href = '#';

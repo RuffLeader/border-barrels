@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -864,8 +864,8 @@ main {
       
       <!-- Player Tabs -->
       <div class="modal-tabs" id="modal-tabs">
-        <button class="modal-tab-btn active" id="tab-video">ðŸ“º Watch Video</button>
-        <button class="modal-tab-btn" id="tab-audio">ðŸŽµ Listen to Audio</button>
+        <button class="modal-tab-btn active" id="tab-video">📺 Watch Video</button>
+        <button class="modal-tab-btn" id="tab-audio">🎵 Listen to Audio</button>
       </div>
       
       <!-- Embed Player -->
@@ -890,14 +890,14 @@ main {
 <!-- Beer Detail Sub-Modal -->
 <div class="beer-detail-overlay" id="beer-detail-overlay">
   <div class="beer-detail-modal" id="beer-detail-modal">
-    <button class="modal-close" id="beer-detail-close" aria-label="Close beer detail">âœ•</button>
+    <button class="modal-close" id="beer-detail-close" aria-label="Close beer detail">✕</button>
     <div class="beer-detail-body" id="beer-detail-body">
     </div>
   </div>
 </div>
 
   <footer class="site-footer">
-    <p>Â© 2025 Border Barrels</p>
+    <p>© 2025 Border Barrels</p>
   </footer>
 
   <script>
@@ -1230,7 +1230,7 @@ function openEpisodeModal(ep) {
             <strong>Brewery:</strong> ${beer.brewery} | <strong>Style:</strong> ${beer.style} | <strong>ABV:</strong> ${beer.abv}% | <strong>BBBRS:</strong> ${beer.bbbrsScore}
           </div>
         </div>
-        <span style="color:#ffb400;font-size:0.8rem;margin-left:auto;padding-left:8px;flex-shrink:0;">View â€º</span>
+        <span style="color:#ffb400;font-size:0.8rem;margin-left:auto;padding-left:8px;flex-shrink:0;">View ›</span>
       </div>
     `).join('');
 
@@ -1280,12 +1280,12 @@ function openEpisodeModal(ep) {
   
   // External footer links
   const modalFooterLinks = document.getElementById('modal-footer-links');
-  let footerLinksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube â†—</a>`;
+  let footerLinksHTML = `<a href="https://www.youtube.com/watch?v=${ep.youtubeId}" target="_blank">YouTube ↗</a>`;
   if (ep.spotifyUrl) {
-    footerLinksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify â†—</a>`;
+    footerLinksHTML += `<a href="${ep.spotifyUrl}" target="_blank">Spotify ↗</a>`;
   }
   if (ep.appleUrl) {
-    footerLinksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple Podcasts â†—</a>`;
+    footerLinksHTML += `<a href="${ep.appleUrl}" target="_blank">Apple Podcasts ↗</a>`;
   }
   modalFooterLinks.innerHTML = footerLinksHTML;
   
@@ -1347,9 +1347,9 @@ function openBeerDetail(beerId) {
   const rows = categories.map(c => `
     <tr>
       <td>${c.label}</td>
-      <td>${c.simon  != null ? c.simon  : 'â€”'}</td>
-      <td>${c.zach   != null ? c.zach   : 'â€”'}</td>
-      <td>${c.hudson != null ? c.hudson : 'â€”'}</td>
+      <td>${c.simon  != null ? c.simon  : '—'}</td>
+      <td>${c.zach   != null ? c.zach   : '—'}</td>
+      <td>${c.hudson != null ? c.hudson : '—'}</td>
     </tr>
   `).join('');
 
@@ -1358,8 +1358,8 @@ function openBeerDetail(beerId) {
     : '';
 
   const untappdHTML = beer.untappdlink
-    ? `<a class="bd-untappd-btn" href="${beer.untappdlink}" target="_blank" rel="noopener noreferrer">ðŸº Untappd</a>`
-    : `<span class="bd-untappd-btn disabled">ðŸº Untappd</span>`;
+    ? `<a class="bd-untappd-btn" href="${beer.untappdlink}" target="_blank" rel="noopener noreferrer">🍺 Untappd</a>`
+    : `<span class="bd-untappd-btn disabled">🍺 Untappd</span>`;
 
   document.getElementById('beer-detail-body').innerHTML = `
     ${beer.beerCanUrl ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />` : ''}
@@ -1367,10 +1367,10 @@ function openBeerDetail(beerId) {
     <div class="bd-name">${beer.name}</div>
     <div class="bd-brewery"><strong>Brewery:</strong> ${beer.brewery}</div>
     <div class="bd-stats">
-      <div class="bd-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} &nbsp;â€¢&nbsp; #${bbbrsRank}</span></div>
-      <div class="bd-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} &nbsp;â€¢&nbsp; #${untappdRank}</span></div>
+      <div class="bd-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} &nbsp;•&nbsp; #${bbbrsRank}</span></div>
+      <div class="bd-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} &nbsp;•&nbsp; #${untappdRank}</span></div>
       <div class="bd-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
-      <div class="bd-stat"><span class="key">Episode</span><span class="val">${beer.epnum || 'â€”'}</span></div>
+      <div class="bd-stat"><span class="key">Episode</span><span class="val">${beer.epnum || '—'}</span></div>
     </div>
     <div class="bd-score-breakdown">
       <h4>Score Breakdown</h4>
@@ -1382,9 +1382,9 @@ function openBeerDetail(beerId) {
           ${rows}
           <tr class="bd-total-row">
             <td>Total</td>
-            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : 'â€”'}</td>
-            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : 'â€”'}</td>
-            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : 'â€”'}</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : '—'}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : '—'}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
           </tr>
         </tbody>
       </table>

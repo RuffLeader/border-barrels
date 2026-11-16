@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -121,16 +121,16 @@ body {
   filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
 }
 
-/* INFO PANEL â€” FIXED HEIGHT & CENTRED */
+/* INFO PANEL — FIXED HEIGHT & CENTRED */
 .beer-info {
-  height: 300px;                  /* ðŸ”’ fixed height */
+  height: 300px;                  /* 🔒 fixed height */
   width: 100%;
   margin-top: auto;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;        /* â†• vertical centering */
-  align-items: center;            /* â†” horizontal centering */
+  justify-content: center;        /* ↕ vertical centering */
+  align-items: center;            /* ↔ horizontal centering */
 
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(6px);
@@ -422,11 +422,11 @@ body {
           });
         });
     </script>
-    <p style="text-align:center"><a class="back-link" href="/blog/">â† Back to Blog</a></p>
+    <p style="text-align:center"><a class="back-link" href="/blog/">← Back to Blog</a></p>
 
 <footer class="site-footer">
   <div class="container">
-    <p>Â© 2025 Border Barrels</p>
+    <p>© 2025 Border Barrels</p>
   </div>
 </footer>
 
@@ -483,7 +483,7 @@ function renderBeer(beer) {
             <p><strong>Brewery:</strong> ${beer.brewery}</p>
             <p class="style-abv">
               <strong>Style:</strong> ${beer.style}
-              <span class="divider">â€¢</span>
+              <span class="divider">•</span>
               <strong>ABV:</strong> ${beer.abv}
             </p>
 
@@ -515,7 +515,7 @@ function renderBeer(beer) {
           <p><strong>Sarah:</strong> ${beer.reviews.sarah}</p>
         </div>
 
-        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">â† Back</button>
+        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
       </div>
 
     </div>
