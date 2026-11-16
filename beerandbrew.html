@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -211,7 +211,7 @@
     align-items: center;     /* horizontal centering */
     text-align: center;      /* center text */
     color: white;
-    max-width: 100%;    /* don’t let it grow wider than the card */
+    max-width: 100%;    /* donâ€™t let it grow wider than the card */
     box-sizing: border-box;
   }
   
@@ -304,22 +304,25 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <h1>Beers & Breweries</h1>
-      <button id="nav-toggle" aria-label="Toggle navigation">
-        <span class="burger"></span>
-        <span class="burger"></span>
-        <span class="burger"></span>
-      </button>
-      <nav id="nav-menu">
-        <a href="/index.html">Home</a>
-        <a href="/beerandbrew.html">Beers & Breweries</a>
-        <a href="/episodes.html">Episodes</a>
-        <a href="/blog/index.html">Blog</a>
-        <a href="/about.html">About Us</a>
-      </nav>
-    </div>
-  </header>
+  <div class="header-inner">
+    <a class="header-brand" href="/index.html">
+      <div class="header-brand-wordmark">Border <span>Barrels</span></div>
+      <div class="header-page-title">Beers & Breweries</div>
+    </a>
+    <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="burger"></span>
+      <span class="burger"></span>
+      <span class="burger"></span>
+    </button>
+    <nav id="nav-menu">
+      <a href="/index.html">Home</a>
+      <a href="/beerandbrew.html">Beers &amp; Breweries</a>
+      <a href="/episodes.html">Episodes</a>
+      <a href="/blog/index.html">Blog</a>
+      <a href="/about.html">About Us</a>
+    </nav>
+  </div>
+</header>
 
   <main class="hub-wrapper">
     <div class="hub-container">
@@ -330,7 +333,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>© 2025 Border Barrels</p>
+    <p>Â© 2025 Border Barrels</p>
   </footer>
 
 <script src="/beers.js"></script>
@@ -380,7 +383,7 @@ function fitTextToOneLine(element, minFontSize = 12) {
         </div>
       `;
 
-      // ✅ Now adjust titles *after* the beer is injected
+      // âœ… Now adjust titles *after* the beer is injected
       const adjustTitles = () => {
         document.querySelectorAll(".featured-beer-info h3, .featured-beer-info h2")
           .forEach(el => {

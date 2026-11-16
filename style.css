@@ -1,6 +1,6 @@
-/* =============================================
-   Global Custom Scrollbar — Manors-inspired
-   Slim, dark navy track · gold gradient thumb
+﻿/* =============================================
+   Global Custom Scrollbar â€” Manors-inspired
+   Slim, dark navy track Â· gold gradient thumb
    ============================================= */
 
 /* Firefox */
@@ -61,71 +61,176 @@ h1, h2, h3 {
   letter-spacing: 1px;
 }
 
-/* === Header/Nav styles === */
+/* =============================================
+   Sitewide Header — Nike-inspired
+   Sticky · Scroll-shrink · Slide underline
+   ============================================= */
+
 header.site-header {
   background-color: #002157;
   color: #ffffff;
-  padding: 1rem 0;
-  position: relative;
-  z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease,
+              border-bottom-color 0.3s ease;
+  border-bottom: 2px solid transparent;
 }
 
-header.site-header .container {
-  max-width: 1100px;
-  width: 95%;
+header.site-header.scrolled {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  background-color: #001540;
+  border-bottom-color: rgba(240, 168, 48, 0.3);
+}
+
+header.site-header .header-inner {
+  max-width: 1200px;
+  width: 94%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 64px;
+  transition: height 0.3s ease;
 }
 
-header.site-header h1 {
-  font-size: 2.5rem;
-  margin: 1rem 0 0.5rem 0;
-  letter-spacing: 1px;
-  font-weight: bold;
+header.site-header.scrolled .header-inner {
+  height: 54px;
+}
+
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.header-brand-wordmark {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.header-brand-wordmark span {
+  color: #f0a830;
+}
+
+.header-brand:hover .header-brand-wordmark {
+  color: #f0a830;
+}
+
+.header-brand:hover .header-brand-wordmark span {
+  color: #ffffff;
+}
+
+.header-page-title {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1;
 }
 
 header.site-header nav#nav-menu {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  gap: 0;
+  align-items: stretch;
 }
 
 header.site-header nav#nav-menu a {
-  margin: 0 1rem;
-  font-size: 1rem;
-  color: #ffffff;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
-  padding: 0.5rem;
-  transition: color 0.3s ease;
+  line-height: 64px;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+header.site-header nav#nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 10px;
+  left: 1rem;
+  right: 1rem;
+  height: 2px;
+  background: #f0a830;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
 }
 
 header.site-header nav#nav-menu a:hover {
-  color: #ffb400;
+  color: #ffffff;
 }
 
-/* === Burger menu button - hidden on desktop === */
+header.site-header nav#nav-menu a:hover::after,
+header.site-header nav#nav-menu a.active::after {
+  transform: scaleX(1);
+}
+
+header.site-header nav#nav-menu a.active {
+  color: #ffffff;
+}
+
 #nav-toggle {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 200; /* above nav */
+  z-index: 1100;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  flex-shrink: 0;
 }
 
-#nav-toggle:focus {
+#nav-toggle:focus-visible {
   outline: 2px solid #f0a830;
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 #nav-toggle .burger {
-  width: 25px;
-  height: 3px;
+  display: block;
+  width: 24px;
+  height: 2px;
   background: white;
   border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease,
+              width 0.3s ease;
+  transform-origin: center center;
+}
+
+#nav-toggle.open .burger:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+#nav-toggle.open .burger:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+#nav-toggle.open .burger:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* === Footer === */
@@ -142,39 +247,62 @@ footer.site-footer {
 
 /* === Mobile Nav === */
 @media (max-width: 768px) {
-  header.site-header h1 {
-    font-size: 1.5rem;
-  }
-
   #nav-toggle {
     display: flex;
   }
 
   header.site-header nav#nav-menu {
-    display: none;
+    display: flex;
     flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: #002157;
-    padding: 10px 0;
-    border-bottom: 2px solid #e0e0e0;
-    text-align: center;
+    background-color: #001540;
+    border-bottom: 2px solid rgba(240, 168, 48, 0.3);
+    text-align: left;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                transform 0.3s ease;
+    pointer-events: none;
   }
 
   header.site-header nav#nav-menu.show {
-    display: flex;
+    max-height: 400px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   header.site-header nav#nav-menu a {
-    padding: 0.75rem 0;
-    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
     display: block;
     width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.8);
+  }
+
+  header.site-header nav#nav-menu a:last-child {
+    border-bottom: none;
+  }
+
+  header.site-header nav#nav-menu a::after {
+    display: none;
+  }
+
+  header.site-header nav#nav-menu a:hover,
+  header.site-header nav#nav-menu a.active {
+    color: #f0a830;
+    background: rgba(240, 168, 48, 0.07);
   }
 }
-
 /* Main Content */
 main h2 {
   font-size: 2rem;

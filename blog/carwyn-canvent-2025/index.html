@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -121,16 +121,16 @@ body {
   filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
 }
 
-/* INFO PANEL — FIXED HEIGHT & CENTRED */
+/* INFO PANEL â€” FIXED HEIGHT & CENTRED */
 .beer-info {
-  height: 300px;                  /* 🔒 fixed height */
+  height: 300px;                  /* ðŸ”’ fixed height */
   width: 100%;
   margin-top: auto;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;        /* ↕ vertical centering */
-  align-items: center;            /* ↔ horizontal centering */
+  justify-content: center;        /* â†• vertical centering */
+  align-items: center;            /* â†” horizontal centering */
 
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(6px);
@@ -379,16 +379,19 @@ body {
 <body>
 
 <header class="site-header">
-  <div class="container">
-    <h1>Blog</h1>
-    <button id="nav-toggle" aria-label="Toggle navigation">
+  <div class="header-inner">
+    <a class="header-brand" href="/index.html">
+      <div class="header-brand-wordmark">Border <span>Barrels</span></div>
+      <div class="header-page-title">Blog</div>
+    </a>
+    <button id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
       <span class="burger"></span>
       <span class="burger"></span>
       <span class="burger"></span>
     </button>
     <nav id="nav-menu">
       <a href="/index.html">Home</a>
-      <a href="/beerandbrew.html">Beers & Breweries</a>
+      <a href="/beerandbrew.html">Beers &amp; Breweries</a>
       <a href="/episodes.html">Episodes</a>
       <a href="/blog/index.html">Blog</a>
       <a href="/about.html">About Us</a>
@@ -420,11 +423,11 @@ body {
           });
         });
     </script>
-    <p style="text-align:center"><a class="back-link" href="/blog/">← Back to Blog</a></p>
+    <p style="text-align:center"><a class="back-link" href="/blog/">â† Back to Blog</a></p>
 
 <footer class="site-footer">
   <div class="container">
-    <p>© 2025 Border Barrels</p>
+    <p>Â© 2025 Border Barrels</p>
   </div>
 </footer>
 
@@ -481,7 +484,7 @@ function renderBeer(beer) {
             <p><strong>Brewery:</strong> ${beer.brewery}</p>
             <p class="style-abv">
               <strong>Style:</strong> ${beer.style}
-              <span class="divider">•</span>
+              <span class="divider">â€¢</span>
               <strong>ABV:</strong> ${beer.abv}
             </p>
 
@@ -513,7 +516,7 @@ function renderBeer(beer) {
           <p><strong>Sarah:</strong> ${beer.reviews.sarah}</p>
         </div>
 
-        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">← Back</button>
+        <button class="back-btn" onclick="this.closest('.flip-card').classList.remove('flipped')">â† Back</button>
       </div>
 
     </div>
@@ -541,8 +544,8 @@ function fitBeerNames() {
   const titles = document.querySelectorAll('.beer-info h3');
 
   titles.forEach(title => {
-    const maxFont = 1.3;   // rem — your current size
-    const minFont = 0.95;  // rem — smallest allowed
+    const maxFont = 1.3;   // rem â€” your current size
+    const minFont = 0.95;  // rem â€” smallest allowed
     const step = 0.05;
 
     let fontSize = maxFont;
