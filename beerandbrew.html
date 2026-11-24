@@ -10,285 +10,598 @@
   body {
     font-family: 'Segoe UI', sans-serif;
     color: #002157;
+    background: #f8fafc;
     margin: 0;
     padding: 0;
     line-height: 1.6;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Full viewport height */
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1rem;
-    text-align: center;
+    min-height: 100vh;
   }
 
   main.hub-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1; /* Take remaining space */
-    padding: 4rem 1rem; /* Vertical spacing above/below cards */
-  }
-
-  .hub-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    width: 90%;
-    max-width: 1200px;
-  }
-
-  .hub-card-brew, .hub-card-beer {
-    border: 2px solid rgba(218,165,32,0.5); /* gold with transparency */
-  }
-
-  .hub-card-brew {
-    flex: 1 1 400px;
-    max-width: 500px;
-    height: 300px;
-    background-image: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/media/generic-brewery.jpg');
-    background-size: cover;   /* make it fill the button */
-    background-position: center; /* center the image */
-    background-repeat: no-repeat;
-    color: white;
-    border-radius: 20px;
+    flex: 1;
+    width: 100%;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 2.75rem 1.25rem 4rem;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 2rem;
-    font-weight: bold;
-    text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    gap: 2.5rem;
+  }
+
+  /* === Hub Intro === */
+  .hub-header {
+    text-align: center;
+  }
+
+  .hub-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #c6860e;
+    margin-bottom: 0.35rem;
+  }
+
+  .hub-header h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #002157;
+    letter-spacing: 0.02em;
+  }
+
+  .hub-header p {
+    margin: 0 auto;
+    max-width: 520px;
+    font-size: 0.95rem;
+    color: #64748b;
+  }
+
+  /* === Browse Selectables === */
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .hub-card {
     position: relative;
+    height: 240px;
+    border-radius: 16px;
     overflow: hidden;
-  }
-
-  .hub-card-brew:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.5);
-  }
-
-  .hub-card-brew::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.05);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .hub-card-brew:hover::after {
-    opacity: 1; /* adds a subtle light sheen on hover */
-  }
-
-  .hub-card-brew span {
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-    letter-spacing: 1px;
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-  
-  .hub-card-brew:hover span {
-    transform: scale(1.05);
-    color: #ffb400; /* golden accent */
-  }
-
-  .hub-card-beer {
-    flex: 1 1 400px;
-    max-width: 500px;
-    height: 300px;
-    background-image: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/media/generic-beer.jpg');
-    background-size: cover;   /* make it fill the button */
-    background-position: center; /* center the image */
-    background-repeat: no-repeat;
-    color: white;
-    border-radius: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 2rem;
-    font-weight: bold;
+    justify-content: flex-end;
+    padding: 1.75rem;
     text-decoration: none;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    position: relative;
-    overflow: hidden;
+    color: #ffffff;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(0, 33, 87, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 33, 87, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-sizing: border-box;
   }
 
-  .hub-card-beer:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+  .hub-card--beer {
+    background-image: linear-gradient(180deg, rgba(0, 21, 64, 0.18) 0%, rgba(0, 21, 64, 0.86) 100%), url('/media/generic-beer.jpg');
   }
 
-  .hub-card-beer::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.05);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  .hub-card-beer:hover::after {
-    opacity: 1; /* adds a subtle light sheen on hover */
+  .hub-card--brew {
+    background-image: linear-gradient(180deg, rgba(0, 21, 64, 0.18) 0%, rgba(0, 21, 64, 0.86) 100%), url('/media/generic-brewery.jpg');
   }
 
-  .hub-card-beer span {
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-    letter-spacing: 1px;
-    transition: transform 0.3s ease, color 0.3s ease;
-  }
-  
-  .hub-card-beer:hover span {
-    transform: scale(1.05);
-    color: #ffb400; /* golden accent */
+  .hub-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 33, 87, 0.16);
+    border-color: rgba(240, 168, 48, 0.6);
   }
 
-  @media (max-width: 768px) {
-    .hub-card-brew, .hub-card-beer {
-      height: 200px;
-      font-size: 1.5rem;
-    }
+  .hub-card-kicker {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #f0a830;
+    margin-bottom: 0.25rem;
+  }
+
+  .hub-card-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    margin: 0 0 0.25rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: #ffffff;
+    text-transform: none;
+  }
+
+  .hub-card-sub {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .hub-card-arrow {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f0a830;
+    transition: transform 0.2s ease;
+  }
+
+  .hub-card:hover .hub-card-arrow {
+    transform: translateX(4px);
+  }
+
+  /* === Random Beer Spotlight === */
+  .spotlight-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .spotlight-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .spotlight-heading {
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0;
+  }
+
+  .shuffle-btn {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #002157;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.38rem 0.85rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+
+  .shuffle-btn:hover {
+    background: #002157;
+    border-color: #002157;
+    color: #ffffff;
   }
 
   .featured-beer-card {
-    margin-top: 0;
-    width: calc(500px * 2 + 40px); /* same width as two cards + gap */
-    max-width: 100%;
-    border: 2px solid rgba(218,165,32,0.5);
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 33, 87, 0.05);
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .featured-beer-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 33, 87, 0.11);
+    border-color: #cbd5e1;
+  }
+
+  .featured-beer-card:focus-visible {
+    outline: 2px solid #f0a830;
+    outline-offset: 2px;
+  }
+
+  .featured-beer-media {
+    background: #f5f7fb;
+    border-right: 1px solid #eef2f7;
     display: flex;
     align-items: center;
-    overflow: hidden;
-    padding-left: 5rem; /* moves content (including image) right */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* include padding in width */
-    background-image: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2)), url('/media/barrel.jpg');
-    background-size: cover;   /* make it fill the button */
-    background-position: center; /* center the image */
-    background-repeat: no-repeat;
+    justify-content: center;
+    padding: 1.75rem 1.25rem;
+    min-height: 220px;
   }
-  
-  .featured-beer-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.3);
-  }
-  
-  .featured-beer-card img {
-    height: 80%;
-    max-height: 300px;
+
+  .featured-beer-media img {
+    max-height: 190px;
+    max-width: 100%;
     width: auto;
-    max-width: 250px;
     object-fit: contain;
-    padding: 0.5rem;
-    top-margin: 2rem;
-    bottom-margin: 2rem;
-    filter: drop-shadow(0 0 15px white);
-    background: none;              
-    border: none;                  
-    transition: filter 0.3s ease;  /* glow still transitions if needed */
+    filter: drop-shadow(0 8px 14px rgba(0, 21, 64, 0.16));
+    transition: transform 0.25s ease;
   }
-  
+
+  .featured-beer-card:hover .featured-beer-media img {
+    transform: scale(1.05);
+  }
+
   .featured-beer-info {
-    flex: 1;
-    padding: 0.5rem;
+    padding: 1.5rem 1.75rem;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* vertical centering */
-    align-items: center;     /* horizontal centering */
-    text-align: center;      /* center text */
-    color: white;
-    max-width: 100%;    /* don’t let it grow wider than the card */
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .featured-beer-brewery {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin: 0 0 0.25rem;
+  }
+
+  .featured-beer-name {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #002157;
+    margin: 0 0 0.35rem;
+    line-height: 1.25;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .featured-beer-meta {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin: 0 0 1.25rem;
+  }
+
+  .featured-beer-scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eef2f7;
+    align-items: center;
+  }
+
+  .featured-score-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .featured-score-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+  }
+
+  .featured-score-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #002157;
+  }
+
+  .featured-score-val--gold {
+    color: #c6860e;
+  }
+
+  .featured-score-rank {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-left: 3px;
+  }
+
+  .featured-cta {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #002157;
+    transition: color 0.18s ease, transform 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .featured-beer-card:hover .featured-cta {
+    color: #c6860e;
+    transform: translateX(3px);
+  }
+
+  /* === Beer Detail Modal === */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    padding-top: calc(var(--header-height, 70px) + 0.5rem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: linear-gradient(160deg, #001537, #002157);
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    color: #fff;
+    transform: translateY(16px);
+    transition: transform 0.2s;
+  }
+
+  .modal-overlay.open .modal { transform: translateY(0); }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0,0,0,0.4);
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background 0.15s;
+  }
+
+  .modal-close:hover { background: rgba(0,0,0,0.7); }
+
+  .modal-body {
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .modal-body img {
+    max-height: 180px;
+    max-width: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.9));
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-style-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffb400;
+  }
+
+  .modal-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0.2rem 0;
+  }
+
+  .modal-brewery {
+    font-size: 0.9rem;
+    color: #f0f0f0;
+    margin-bottom: 0.25rem;
+  }
+
+  .modal-brewery strong { color: #ffb400; }
+
+  .modal-description {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    color: #d0dce8;
+    line-height: 1.55;
+    text-align: left;
     box-sizing: border-box;
   }
-  
-  .featured-beer-info h3 {
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: 0.02em;
-    color: white;
-    margin-bottom: 0; /* was default ~1rem */
-    white-space: nowrap;      /* force single line */
-    display: block;           /* makes sure width is respected */
-    overflow: hidden;         /* prevent spillover */
-  }
 
-  .featured-beer-info h2 {
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: 0.02em;
-    color: white;
-    margin-top: 0; /* remove the gap between h3 and h2 */
-    white-space: nowrap;      /* force single line */
-    display: block;           /* makes sure width is respected */
-    overflow: hidden;         /* prevent spillover */
-  }
-  
-  .featured-beer-info p {
-    margin: 0.25rem 0;
-    font-size: 1rem;
-    color: white;
-  }
-  
-  .featured-beer-info .score {
-    margin-top: 0.6rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: white;
-  }
-  #featured-beer-container {
+  .modal-stats {
     width: 100%;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.3rem;
+    box-sizing: border-box;
   }
 
-  @media (max-width: 1100px) {
-    .featured-beer-card {
-      width: 100%;
-      max-width: 500px; /* matches hub-card upper limit on mobile */
-      margin: 0 auto;
-      flex-direction: column; /* stack image above info */
-      height: auto;
-      padding-left: 0;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      box-sizing: border-box;
-    }
-  
-    .featured-beer-card img {
-      max-width: 80%;
-      max-height: 250px;
-      border-right: none;
-      border-bottom: 2px solid rgba(218,165,32,0.3);
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
-    }
-  
-    .featured-beer-info {
-      text-align: center;
-      padding: 0 1rem;
-      width: 100%;
-      box-sizing: border-box;
+  .modal-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .modal-stat:last-child { border-bottom: none; }
+  .modal-stat .key { color: #ffb400; font-weight: 600; }
+  .modal-stat .val { color: #f0f0f0; }
+
+  .modal-score-breakdown {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    box-sizing: border-box;
+  }
+
+  .modal-score-breakdown h4 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #ffb400;
+    margin: 0 0 0.5rem;
+    text-align: left;
+  }
+
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+  }
+
+  .score-table th {
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    text-align: center;
+    padding: 0.2rem 0.3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+
+  .score-table th:first-child { text-align: left; }
+
+  .score-table td {
+    text-align: center;
+    padding: 0.25rem 0.3rem;
+    color: #e8eef5;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .score-table td:first-child {
+    text-align: left;
+    color: #c8d4e0;
+    font-weight: 500;
+  }
+
+  .score-table tr:last-child td { border-bottom: none; }
+
+  .score-table tr.total-row td {
+    color: #ffb400;
+    font-weight: 700;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    border-bottom: none;
+    padding-top: 0.35rem;
+  }
+
+  .modal-btn-row {
+    display: flex;
+    gap: 0.6rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .modal-ep-btn {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    background: #ffb400;
+    color: #002157;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 6px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex: 1;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .modal-ep-btn:hover { background: #e6a200; color: #002157; }
+  .modal-ep-btn.disabled { background: rgba(255,255,255,0.1); color: #999; cursor: default; pointer-events: none; }
+
+  .modal-untappd-btn {
+    display: inline-block;
+    padding: 0.6em 1.2em;
+    background: transparent;
+    color: #ffb400;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1.5px solid #ffb400;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex: 1;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .modal-untappd-btn:hover { background: #ffb400; color: #002157; }
+  .modal-untappd-btn.disabled { border-color: rgba(255,255,255,0.15); color: #666; cursor: default; pointer-events: none; }
+
+  @media (max-width: 768px) {
+    .hub-grid {
+      grid-template-columns: 1fr;
     }
 
-    .featured-beer-info h3,
-    .featured-beer-info h2 {
-      white-space: normal !important;
-      font-size: 1.5rem !important;
-      word-wrap: break-word;
+    .hub-card {
+      height: 190px;
+      padding: 1.35rem;
+    }
+
+    .featured-beer-card {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-beer-media {
+      border-right: none;
+      border-bottom: 1px solid #eef2f7;
+      min-height: 170px;
+      padding: 1.25rem;
+    }
+
+    .featured-beer-media img {
+      max-height: 150px;
+    }
+
+    .featured-beer-info {
+      padding: 1.25rem;
+    }
+
+    .featured-beer-name {
+      font-size: 1.25rem;
+    }
+
+    .featured-cta {
+      width: 100%;
+      margin-left: 0;
+      padding-top: 0.25rem;
+    }
+
+    .modal-btn-row {
+      flex-direction: column;
     }
   }
 </style>
@@ -325,12 +638,58 @@
 </header>
 
   <main class="hub-wrapper">
-    <div class="hub-container">
-      <a href="/beers.html" class="hub-card-beer">Browse Beers</a>
-      <a href="/breweries/index.html" class="hub-card-brew">Browse Breweries</a>
-      <div id="featured-beer-container"></div>
+    <div class="hub-header">
+      <span class="hub-eyebrow">The Archive</span>
+      <h2>Beers &amp; Breweries</h2>
+      <p>Every independent Australian brewery and craft beer reviewed on the Border Barrels podcast.</p>
     </div>
+
+    <div class="hub-grid">
+      <a href="/beers.html" class="hub-card hub-card--beer">
+        <span class="hub-card-kicker">Directory</span>
+        <h3 class="hub-card-title">Browse Beers</h3>
+        <p class="hub-card-sub">
+          <span>Filter by style, score &amp; episode</span>
+          <span class="hub-card-arrow">&rarr;</span>
+        </p>
+      </a>
+      <a href="/breweries/index.html" class="hub-card hub-card--brew">
+        <span class="hub-card-kicker">Directory</span>
+        <h3 class="hub-card-title">Browse Breweries</h3>
+        <p class="hub-card-sub">
+          <span>Explore independent Aussie breweries</span>
+          <span class="hub-card-arrow">&rarr;</span>
+        </p>
+      </a>
+    </div>
+
+    <section class="spotlight-section">
+      <div class="spotlight-topbar">
+        <h3 class="spotlight-heading">Random Pour Spotlight</h3>
+        <button type="button" class="shuffle-btn" id="shuffle-beer-btn">&#x21bb; Shuffle</button>
+      </div>
+      <div id="featured-beer-container"></div>
+    </section>
   </main>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">&#x2715;</button>
+      <div class="modal-body">
+        <div id="modal-img"></div>
+        <div class="modal-style-tag" id="modal-style"></div>
+        <div class="modal-name" id="modal-name"></div>
+        <div class="modal-brewery" id="modal-brewery"></div>
+        <div class="modal-stats" id="modal-stats"></div>
+        <div class="modal-score-breakdown" id="modal-score-breakdown"></div>
+        <div class="modal-description" id="modal-description"></div>
+        <div class="modal-btn-row">
+          <a class="modal-ep-btn" id="modal-ep-btn" href="#">&#x1F3A7; Listen to Episode</a>
+          <a class="modal-untappd-btn" id="modal-untappd-btn" href="#" target="_blank" rel="noopener noreferrer">&#x1F37A; Untappd</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer class="site-footer">
   <div class="footer-inner">
@@ -403,63 +762,170 @@
 
 <script src="/beers.js"></script>
 <script>
-  // Pick random beer from beers.js
-  function getRandomBeer(beers) {
-    const index = Math.floor(Math.random() * beers.length);
-    return beers[index];
+  function getRandomBeer(list, excludeId) {
+    const pool = list.length > 1 && excludeId != null
+      ? list.filter(b => b.id !== excludeId)
+      : list;
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
-  // Calculate rank based on a specific key
   function getRank(array, beer, key) {
     const sorted = [...array].sort((a, b) => b[key] - a[key]);
     return sorted.findIndex(b => b.id === beer.id) + 1;
   }
 
-function fitTextToOneLine(element, minFontSize = 12) {
-  let availableWidth = element.parentElement.clientWidth - 20; 
-  if (availableWidth < 100) availableWidth = 750; // fallback just in case
-  let fontSize = parseInt(window.getComputedStyle(element).fontSize) || 32;
+  let currentFeaturedId = null;
 
-  while (element.scrollWidth > availableWidth && fontSize > minFontSize) {
-    fontSize--;
-    element.style.fontSize = fontSize + "px";
-  }
-}
+  function renderFeaturedBeer() {
+    if (typeof beers === "undefined" || !Array.isArray(beers) || beers.length === 0) return;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (typeof beers !== "undefined" && Array.isArray(beers) && beers.length > 0) {
-      const randomBeer = getRandomBeer(beers);
+    const randomBeer = getRandomBeer(beers, currentFeaturedId);
+    currentFeaturedId = randomBeer.id;
 
-      const bbbrsRank = getRank(beers, randomBeer, "bbbrsScore");
-      const untappdRank = getRank(beers, randomBeer, "untappdScore");
+    const bbbrsRank = randomBeer.bbbrsRank ?? getRank(beers, randomBeer, "bbbrsScore");
+    const untappdRank = randomBeer.untappdRank ?? getRank(beers, randomBeer, "untappdScore");
 
-      const container = document.getElementById("featured-beer-container");
-      container.innerHTML = `
-        <div class="featured-beer-card">
-          <img src="${randomBeer.beerCanUrl}" alt="${randomBeer.name}" />
-          <div class="featured-beer-info">
-            <h3>${randomBeer.brewery}</h3>
-            <h2>${randomBeer.name}</h2>
-            <p>${randomBeer.style} | ABV ${randomBeer.abv}%</p>
-            <p>Episode Number: ${randomBeer.epnum}</p>
-            <p>BBBRS: ${randomBeer.bbbrsScore} | Untappd: ${randomBeer.untappdScore}</p>
-            <p>BBBRS Rank: ${bbbrsRank} | Untappd Rank: ${untappdRank}</p>
+    const container = document.getElementById("featured-beer-container");
+    container.innerHTML = `
+      <div class="featured-beer-card" data-id="${randomBeer.id}" tabindex="0" role="button" aria-label="View details for ${randomBeer.name}">
+        <div class="featured-beer-media">
+          ${randomBeer.beerCanUrl
+            ? `<img src="${randomBeer.beerCanUrl}" alt="${randomBeer.name}" onerror="this.style.display='none'" />`
+            : ''}
+        </div>
+        <div class="featured-beer-info">
+          <p class="featured-beer-brewery">${randomBeer.brewery}</p>
+          <h2 class="featured-beer-name">${randomBeer.name}</h2>
+          <p class="featured-beer-meta">${randomBeer.style} &middot; ${randomBeer.abv}% ABV${randomBeer.epnum ? ` &middot; Episode ${randomBeer.epnum}` : ''}</p>
+          <div class="featured-beer-scores">
+            <div class="featured-score-item">
+              <span class="featured-score-label">BBBRS</span>
+              <span class="featured-score-val featured-score-val--gold">${randomBeer.bbbrsScore}<span class="featured-score-rank">#${bbbrsRank}</span></span>
+            </div>
+            <div class="featured-score-item">
+              <span class="featured-score-label">Untappd</span>
+              <span class="featured-score-val">${randomBeer.untappdScore}<span class="featured-score-rank">#${untappdRank}</span></span>
+            </div>
+            <span class="featured-cta">View full breakdown &rarr;</span>
           </div>
         </div>
-      `;
+      </div>
+    `;
 
-      // ✅ Now adjust titles *after* the beer is injected
-      const adjustTitles = () => {
-        document.querySelectorAll(".featured-beer-info h3, .featured-beer-info h2")
-          .forEach(el => {
-            el.style.fontSize = ""; // reset
-            fitTextToOneLine(el, 14);
-          });
-      };
+    const card = container.querySelector(".featured-beer-card");
+    card.addEventListener("click", () => openModal(randomBeer.id));
+    card.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openModal(randomBeer.id);
+      }
+    });
+  }
 
-      adjustTitles();
-      window.addEventListener("resize", adjustTitles);
+  function openModal(id) {
+    const beer = beers.find(b => b.id === id);
+    if (!beer) return;
+
+    document.getElementById("modal-img").innerHTML = beer.beerCanUrl
+      ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />`
+      : '';
+
+    document.getElementById("modal-style").textContent = beer.style;
+    document.getElementById("modal-name").textContent = beer.name;
+    document.getElementById("modal-brewery").innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
+
+    document.getElementById("modal-stats").innerHTML = `
+      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${beer.bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${beer.untappdRank}</span></div>
+      <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
+      <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
+    `;
+
+    const categories = [
+      { label: "As Advertised", simon: beer.simonAsAdvertised, zach: beer.zachAsAdvertised, hudson: beer.hudsonAsAdvertised },
+      { label: "Can Art",       simon: beer.simonCanArt,       zach: beer.zachCanArt,       hudson: beer.hudsonCanArt },
+      { label: "Blurb",         simon: beer.simonBlurb,        zach: beer.zachBlurb,        hudson: beer.hudsonBlurb },
+      { label: "Value",         simon: beer.simonValue,        zach: beer.zachValue,        hudson: beer.hudsonValue },
+      { label: "Untappd",       simon: beer.simonUntappd,      zach: beer.zachUntappd,      hudson: beer.hudsonUntappd },
+    ];
+
+    const rows = categories.map(c => `
+      <tr>
+        <td>${c.label}</td>
+        <td>${c.simon  != null ? c.simon  : "&mdash;"}</td>
+        <td>${c.zach   != null ? c.zach   : "&mdash;"}</td>
+        <td>${c.hudson != null ? c.hudson : "&mdash;"}</td>
+      </tr>
+    `).join("");
+
+    document.getElementById("modal-score-breakdown").innerHTML = `
+      <h4>Score Breakdown</h4>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Simon</th>
+            <th>Zach</th>
+            <th>Hudson</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="total-row">
+            <td>Total</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : "&mdash;"}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : "&mdash;"}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : "&mdash;"}</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    const descEl = document.getElementById("modal-description");
+    if (beer.description && beer.description.trim()) {
+      descEl.textContent = beer.description;
+      descEl.style.display = "block";
+    } else {
+      descEl.style.display = "none";
     }
+
+    const epBtn = document.getElementById("modal-ep-btn");
+    if (beer.epnum) {
+      epBtn.href = `/episodes.html?ep=${beer.epnum}`;
+      epBtn.textContent = `🎧 Episode ${beer.epnum}`;
+      epBtn.classList.remove("disabled");
+    } else {
+      epBtn.href = "#";
+      epBtn.textContent = "No episode yet";
+      epBtn.classList.add("disabled");
+    }
+
+    const utBtn = document.getElementById("modal-untappd-btn");
+    if (beer.untappdlink) {
+      utBtn.href = beer.untappdlink;
+      utBtn.classList.remove("disabled");
+    } else {
+      utBtn.href = "#";
+      utBtn.classList.add("disabled");
+    }
+
+    document.getElementById("modal-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    document.getElementById("modal-overlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderFeaturedBeer();
+    document.getElementById("shuffle-beer-btn").addEventListener("click", renderFeaturedBeer);
+    document.getElementById("modal-close").addEventListener("click", closeModal);
+    document.getElementById("modal-overlay").addEventListener("click", e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
   });
 </script>
 
