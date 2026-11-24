@@ -826,6 +826,9 @@
     const beer = beers.find(b => b.id === id);
     if (!beer) return;
 
+    const bbbrsRank = beer.bbbrsRank ?? getRank(beers, beer, "bbbrsScore");
+    const untappdRank = beer.untappdRank ?? getRank(beers, beer, "untappdScore");
+
     document.getElementById("modal-img").innerHTML = beer.beerCanUrl
       ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />`
       : '';
@@ -835,8 +838,8 @@
     document.getElementById("modal-brewery").innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
 
     document.getElementById("modal-stats").innerHTML = `
-      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${beer.bbbrsRank}</span></div>
-      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${beer.untappdRank}</span></div>
+      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">&bull;</span> #${untappdRank}</span></div>
       <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
       <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
     `;
