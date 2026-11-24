@@ -650,3 +650,207 @@ section {
   background-color: #004080;
   border-color: #004080;
 }
+
+/* =============================================
+   Clean Minimal Beer Grid Cards
+   Used on beers.html & breweries/brewery.html
+   ============================================= */
+
+#beer-grid .beer-card,
+#beers-grid .beer-card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 33, 87, 0.05);
+  overflow: hidden;
+  text-align: left;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  cursor: pointer;
+  height: auto;
+  padding: 0;
+  position: relative;
+}
+
+#beer-grid .beer-card:hover,
+#beers-grid .beer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 33, 87, 0.11);
+  border-color: #cbd5e1;
+}
+
+#beer-grid .beer-card:focus-visible,
+#beers-grid .beer-card:focus-visible {
+  outline: 2px solid #f0a830;
+  outline-offset: 2px;
+}
+
+#beer-grid .beer-card-media,
+#beers-grid .beer-card-media {
+  background: #f5f7fb;
+  height: 175px;
+  padding: 1.15rem 1rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 1px solid #eef2f7;
+  box-sizing: border-box;
+}
+
+#beer-grid .beer-card-media img,
+#beers-grid .beer-card-media img {
+  max-width: 100%;
+  max-height: 145px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 21, 64, 0.16));
+  transition: transform 0.25s ease;
+}
+
+#beer-grid .beer-card:hover .beer-card-media img,
+#beers-grid .beer-card:hover .beer-card-media img {
+  transform: scale(1.05);
+}
+
+#beer-grid .beer-card .beer-info,
+#beers-grid .beer-card .beer-info {
+  margin-top: 0;
+  width: 100%;
+  color: #002157;
+  background: transparent;
+  backdrop-filter: none;
+  padding: 0.95rem 1rem 1rem;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#beer-grid .beer-card .card-brewery,
+#beers-grid .beer-card .card-brewery {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0 0 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#beer-grid .beer-card .beer-info h3,
+#beers-grid .beer-card .beer-info h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: #002157;
+  line-height: 1.3;
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
+  min-height: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#beer-grid .beer-card .card-meta,
+#beers-grid .beer-card .card-meta {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0 0 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#beer-grid .beer-card .card-scores,
+#beers-grid .beer-card .card-scores {
+  margin-top: auto;
+  padding-top: 0.65rem;
+  border-top: 1px solid #eef2f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+#beer-grid .beer-card .card-score,
+#beers-grid .beer-card .card-score {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+#beer-grid .beer-card .card-score--right,
+#beers-grid .beer-card .card-score--right {
+  text-align: right;
+}
+
+#beer-grid .beer-card .score-label,
+#beers-grid .beer-card .score-label {
+  font-size: 0.63rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+#beer-grid .beer-card .score-val,
+#beers-grid .beer-card .score-val {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #002157;
+}
+
+#beer-grid .beer-card .score-val--gold,
+#beers-grid .beer-card .score-val--gold {
+  color: #c6860e;
+}
+
+#beer-grid .beer-card .score-rank,
+#beers-grid .beer-card .score-rank {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-left: 2px;
+}
+
+@media (max-width: 600px) {
+  #beer-grid .beer-card-media,
+  #beers-grid .beer-card-media {
+    height: 135px;
+    padding: 0.85rem 0.75rem 0.65rem;
+  }
+
+  #beer-grid .beer-card-media img,
+  #beers-grid .beer-card-media img {
+    max-height: 112px;
+  }
+
+  #beer-grid .beer-card .beer-info,
+  #beers-grid .beer-card .beer-info {
+    padding: 0.75rem 0.8rem 0.85rem;
+  }
+
+  #beer-grid .beer-card .beer-info h3,
+  #beers-grid .beer-card .beer-info h3 {
+    font-size: 0.88rem;
+  }
+
+  #beer-grid .beer-card .card-meta,
+  #beers-grid .beer-card .card-meta {
+    font-size: 0.72rem;
+    margin-bottom: 0.65rem;
+  }
+
+  #beer-grid .beer-card .score-val,
+  #beers-grid .beer-card .score-val {
+    font-size: 0.82rem;
+  }
+}

@@ -50,86 +50,265 @@
     /* Beer grid cards */
     #beers-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, 260px);
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
       justify-content: center;
-      gap: 18px;
-      margin-top: 30px;
+      gap: 20px;
+      margin: 24px auto 0;
+      max-width: 1100px;
       width: 100%;
     }
 
-    .beer-card {
+    @media (max-width: 600px) {
+      #beers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+
+    /* === Beer Detail Modal === */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
       align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      padding-top: calc(var(--header-height, 70px) + 0.5rem);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
       background: linear-gradient(160deg, #001537, #002157);
       border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-      padding: 20px 16px;
-      text-align: center;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      height: 420px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .beer-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
-    }
-
-    .beer-card img {
-      max-width: 100%;
-      max-height: 160px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.95));
-      transition: transform 0.25s ease;
-    }
-
-    .beer-card:hover img {
-      transform: scale(1.05);
-    }
-
-    .beer-info {
-      margin-top: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      max-width: 520px;
       width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
       color: #fff;
-      background: rgba(255, 255, 255, 0.08); /* frosted overlay */
-      backdrop-filter: blur(6px);
-      padding: 12px;
-      border-radius: 10px;
+      transform: translateY(16px);
+      transition: transform 0.2s;
     }
 
-    .beer-info h3 {
-      margin: 6px 0 8px;
-      font-size: 1.1rem;
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.4);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      transition: background 0.15s;
+    }
+
+    .modal-close:hover { background: rgba(0,0,0,0.7); }
+
+    .modal-body {
+      padding: 2rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .modal-body img {
+      max-height: 180px;
+      max-width: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(255,255,255,0.9));
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-style-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffb400;
+    }
+
+    .modal-name {
+      font-size: 1.4rem;
       font-weight: bold;
       color: #fff;
-      line-height: 1.3em;
-      text-align: center;
-      min-height: 2.6em;
-      display: flex;
-      align-items: center;  /* vertically center if only 1 line */
-      justify-content: center;
-      text-align: center;
-    }
-  
-    .beer-info p {
-      margin: 3px 0;
-      font-size: 0.9rem;
-      color: #f0f0f0;
+      line-height: 1.2;
+      margin: 0.2rem 0;
     }
 
-    .beer-info p strong {
-      color: #ffb400; /* gold highlight */
+    .modal-brewery {
+      font-size: 0.9rem;
+      color: #f0f0f0;
+      margin-bottom: 0.25rem;
     }
-  
-    /* subtle divider line */
-    .beer-info p + p {
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
-      padding-top: 4px;
-      margin-top: 6px;
+
+    .modal-brewery strong { color: #ffb400; }
+
+    .modal-description {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #d0dce8;
+      line-height: 1.55;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    .modal-stats {
+      width: 100%;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      box-sizing: border-box;
+    }
+
+    .modal-stat {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .modal-stat:last-child { border-bottom: none; }
+    .modal-stat .key { color: #ffb400; font-weight: 600; }
+    .modal-stat .val { color: #f0f0f0; }
+
+    .modal-score-breakdown {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      box-sizing: border-box;
+    }
+
+    .modal-score-breakdown h4 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #ffb400;
+      margin: 0 0 0.5rem;
+      text-align: left;
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+    }
+
+    .score-table th {
+      color: rgba(255,255,255,0.5);
+      font-weight: 600;
+      text-align: center;
+      padding: 0.2rem 0.3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+    }
+
+    .score-table th:first-child { text-align: left; }
+
+    .score-table td {
+      text-align: center;
+      padding: 0.25rem 0.3rem;
+      color: #e8eef5;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .score-table td:first-child {
+      text-align: left;
+      color: #c8d4e0;
+      font-weight: 500;
+    }
+
+    .score-table tr:last-child td { border-bottom: none; }
+
+    .score-table tr.total-row td {
+      color: #ffb400;
+      font-weight: 700;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      border-bottom: none;
+      padding-top: 0.35rem;
+    }
+
+    .modal-btn-row {
+      display: flex;
+      gap: 0.6rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .modal-ep-btn {
+      display: inline-block;
+      padding: 0.6em 1.2em;
+      background: #ffb400;
+      color: #002157;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+      flex: 1;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .modal-ep-btn:hover { background: #e6a200; color: #002157; }
+    .modal-ep-btn.disabled { background: rgba(255,255,255,0.1); color: #999; cursor: default; pointer-events: none; }
+
+    .modal-untappd-btn {
+      display: inline-block;
+      padding: 0.6em 1.2em;
+      background: transparent;
+      color: #ffb400;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1.5px solid #ffb400;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      flex: 1;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .modal-untappd-btn:hover { background: #ffb400; color: #002157; }
+    .modal-untappd-btn.disabled { border-color: rgba(255,255,255,0.15); color: #666; cursor: default; pointer-events: none; }
+
+    @media (max-width: 600px) {
+      .modal-btn-row { flex-direction: column; }
     }
   </style>
 
@@ -167,6 +346,25 @@
 
 <div class="container" id="brewery-container">
   Loading brewery...
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+    <div class="modal-body">
+      <div id="modal-img"></div>
+      <div class="modal-style-tag" id="modal-style"></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-brewery" id="modal-brewery"></div>
+      <div class="modal-stats" id="modal-stats"></div>
+      <div class="modal-score-breakdown" id="modal-score-breakdown"></div>
+      <div class="modal-description" id="modal-description"></div>
+      <div class="modal-btn-row">
+        <a class="modal-ep-btn" id="modal-ep-btn" href="#">🎧 Listen to Episode</a>
+        <a class="modal-untappd-btn" id="modal-untappd-btn" href="#" target="_blank" rel="noopener noreferrer">🍺 Untappd</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer class="site-footer">
@@ -323,15 +521,24 @@
       <h2>Beers</h2>
       <div id="beers-grid">
         ${breweryBeers.map(be => `
-          <div class="beer-card">
-            ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}">` : ''}
+          <div class="beer-card" data-id="${be.id}" tabindex="0">
+            <div class="beer-card-media">
+              ${be.beerCanUrl ? `<img src="${be.beerCanUrl}" alt="${be.name}" onerror="this.style.display='none'" loading="lazy">` : ''}
+            </div>
             <div class="beer-info">
+              <p class="card-brewery">${be.brewery}</p>
               <h3>${be.name}</h3>
-              <p><strong>Style:</strong> ${be.style}</p>
-              <p><strong>ABV:</strong> ${be.abv}%</p>
-              <p><strong>BBBRS:</strong> ${be.bbbrsScore} • <strong>Untappd:</strong> ${be.untappdScore}</p>
-              <p><strong>Rank:</strong> BBBRS #${be.bbbrsRank} • Untappd #${be.untappdRank}</p>
-              <p><strong>Episode No.:</strong> ${be.epnum}</p>
+              <p class="card-meta">${be.style} &middot; ${be.abv}%</p>
+              <div class="card-scores">
+                <div class="card-score">
+                  <span class="score-label">BBBRS</span>
+                  <span class="score-val score-val--gold">${be.bbbrsScore}<span class="score-rank">#${be.bbbrsRank}</span></span>
+                </div>
+                <div class="card-score card-score--right">
+                  <span class="score-label">Untappd</span>
+                  <span class="score-val">${be.untappdScore}<span class="score-rank">#${be.untappdRank}</span></span>
+                </div>
+              </div>
             </div>
           </div>`).join('') || '<p>No beers listed for this brewery.</p>'}
       </div>
@@ -384,7 +591,117 @@
         el.style.fontSize = fontSize + 'px';
       }
     });
+
+    // Click / Enter on beer card opens detail modal
+    document.querySelectorAll('#beers-grid .beer-card').forEach(card => {
+      card.addEventListener('click', () => openBeerModal(parseInt(card.dataset.id)));
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter') openBeerModal(parseInt(card.dataset.id));
+      });
+    });
   }
+
+  function openBeerModal(id) {
+    const beer = beers.find(b => b.id === id);
+    if (!beer) return;
+
+    document.getElementById('modal-img').innerHTML = beer.beerCanUrl
+      ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" />`
+      : '';
+
+    document.getElementById('modal-style').textContent = beer.style;
+    document.getElementById('modal-name').textContent = beer.name;
+    document.getElementById('modal-brewery').innerHTML = `<strong>Brewery:</strong> ${beer.brewery}`;
+
+    document.getElementById('modal-stats').innerHTML = `
+      <div class="modal-stat"><span class="key">BBBRS Score</span><span class="val">${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</span></div>
+      <div class="modal-stat"><span class="key">Untappd Score</span><span class="val">${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</span></div>
+      <div class="modal-stat"><span class="key">ABV</span><span class="val">${beer.abv}%</span></div>
+      <div class="modal-stat"><span class="key">Style</span><span class="val">${beer.style}</span></div>
+    `;
+
+    const categories = [
+      { label: 'As Advertised', simon: beer.simonAsAdvertised, zach: beer.zachAsAdvertised, hudson: beer.hudsonAsAdvertised },
+      { label: 'Can Art',       simon: beer.simonCanArt,       zach: beer.zachCanArt,       hudson: beer.hudsonCanArt },
+      { label: 'Blurb',         simon: beer.simonBlurb,        zach: beer.zachBlurb,        hudson: beer.hudsonBlurb },
+      { label: 'Value',         simon: beer.simonValue,        zach: beer.zachValue,        hudson: beer.hudsonValue },
+      { label: 'Untappd',       simon: beer.simonUntappd,      zach: beer.zachUntappd,      hudson: beer.hudsonUntappd },
+    ];
+
+    const rows = categories.map(c => `
+      <tr>
+        <td>${c.label}</td>
+        <td>${c.simon  != null ? c.simon  : '—'}</td>
+        <td>${c.zach   != null ? c.zach   : '—'}</td>
+        <td>${c.hudson != null ? c.hudson : '—'}</td>
+      </tr>
+    `).join('');
+
+    document.getElementById('modal-score-breakdown').innerHTML = `
+      <h4>Score Breakdown</h4>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Simon</th>
+            <th>Zach</th>
+            <th>Hudson</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="total-row">
+            <td>Total</td>
+            <td>${beer.simonBBBRS  != null ? beer.simonBBBRS  : '—'}</td>
+            <td>${beer.zachBBBRS   != null ? beer.zachBBBRS   : '—'}</td>
+            <td>${beer.hudsonBBBRS != null ? beer.hudsonBBBRS : '—'}</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    const descEl = document.getElementById('modal-description');
+    if (beer.description && beer.description.trim()) {
+      descEl.textContent = beer.description;
+      descEl.style.display = 'block';
+    } else {
+      descEl.style.display = 'none';
+    }
+
+    const epBtn = document.getElementById('modal-ep-btn');
+    if (beer.epnum) {
+      epBtn.href = `/episodes.html?ep=${beer.epnum}`;
+      epBtn.textContent = `🎧 Episode ${beer.epnum}`;
+      epBtn.classList.remove('disabled');
+    } else {
+      epBtn.href = '#';
+      epBtn.textContent = 'No episode yet';
+      epBtn.classList.add('disabled');
+    }
+
+    const utBtn = document.getElementById('modal-untappd-btn');
+    if (beer.untappdlink) {
+      utBtn.href = beer.untappdlink;
+      utBtn.classList.remove('disabled');
+    } else {
+      utBtn.href = '#';
+      utBtn.classList.add('disabled');
+    }
+
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBeerModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal-close').addEventListener('click', closeBeerModal);
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeBeerModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBeerModal(); });
 
   document.addEventListener('DOMContentLoaded', renderBreweryPage);
 </script>

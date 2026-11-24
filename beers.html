@@ -190,95 +190,12 @@
     /* === Beer Grid === */
     #beer-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
       justify-content: center;
-      gap: 18px;
+      gap: 20px;
       max-width: 1100px;
       margin: 1rem auto 3rem;
       padding: 0 1rem;
-    }
-
-    /* === Beer Card === */
-    .beer-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      background: linear-gradient(160deg, #001537, #002157);
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      padding: 20px 16px;
-      text-align: center;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      height: 380px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .beer-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.4);
-    }
-
-    .beer-card img {
-      max-width: 100%;
-      max-height: 150px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 15px rgba(255,255,255,0.95));
-      transition: transform 0.25s ease;
-    }
-
-    .beer-card:hover img { transform: scale(1.05); }
-
-    .beer-card .beer-info {
-      margin-top: auto;
-      width: 100%;
-      color: #fff;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(6px);
-      padding: 10px 12px;
-      border-radius: 10px;
-      box-sizing: border-box;
-    }
-
-    .beer-card .beer-info h3 {
-      margin: 4px 0 4px;
-      font-size: 1rem;
-      font-weight: bold;
-      color: #fff;
-      line-height: 1.3em;
-      min-height: 2.6em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .beer-card .beer-info .card-brewery {
-      font-size: 0.72rem;
-      color: #ffb400;
-      font-weight: 600;
-      margin: 0 0 5px;
-      letter-spacing: 0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .beer-card .beer-info p {
-      margin: 3px 0;
-      font-size: 0.85rem;
-      color: #f0f0f0;
-    }
-
-    .beer-card .beer-info p strong { color: #ffb400; }
-
-    .beer-card .beer-info p + p {
-      border-top: 1px solid rgba(255,255,255,0.15);
-      padding-top: 4px;
-      margin-top: 4px;
     }
 
     /* === Modal === */
@@ -534,12 +451,6 @@
         gap: 12px;
         padding: 0 0.75rem;
       }
-
-      .beer-card { height: 320px; padding: 14px 10px; }
-      .beer-card img { max-height: 120px; }
-      .beer-card .beer-info h3 { font-size: 0.85rem; min-height: 2.4em; }
-      .beer-card .beer-info p { font-size: 0.75rem; }
-      .beer-card .beer-info .card-brewery { font-size: 0.65rem; }
 
       #commands { flex-direction: column; gap: 0.5rem; width: 100%; }
 
@@ -798,16 +709,25 @@
 
     grid.innerHTML = list.map(beer => `
       <div class="beer-card" data-id="${beer.id}" tabindex="0">
-        ${beer.beerCanUrl
-          ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" loading="lazy" />`
-          : ''}
+        <div class="beer-card-media">
+          ${beer.beerCanUrl
+            ? `<img src="${beer.beerCanUrl}" alt="${beer.name}" onerror="this.style.display='none'" loading="lazy" />`
+            : ''}
+        </div>
         <div class="beer-info">
           <p class="card-brewery">${beer.brewery}</p>
           <h3>${beer.name}</h3>
-          <p><strong>Style:</strong> ${beer.style}</p>
-          <p><strong>ABV:</strong> ${beer.abv}%</p>
-          <p><strong>BBBRS:</strong> ${beer.bbbrsScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.bbbrsRank}</p>
-          <p><strong>Untappd:</strong> ${beer.untappdScore} <span style="color:rgba(255,255,255,0.4)">•</span> #${beer.untappdRank}</p>
+          <p class="card-meta">${beer.style} &middot; ${beer.abv}%</p>
+          <div class="card-scores">
+            <div class="card-score">
+              <span class="score-label">BBBRS</span>
+              <span class="score-val score-val--gold">${beer.bbbrsScore}<span class="score-rank">#${beer.bbbrsRank}</span></span>
+            </div>
+            <div class="card-score card-score--right">
+              <span class="score-label">Untappd</span>
+              <span class="score-val">${beer.untappdScore}<span class="score-rank">#${beer.untappdRank}</span></span>
+            </div>
+          </div>
         </div>
       </div>
     `).join('');
