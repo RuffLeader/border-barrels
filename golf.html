@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Golf Bag Gapping & Dispersion</title>
+  <title>Bag Gapping & Sim Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -16,13 +16,17 @@
         <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
         <p class="text-sm text-slate-400">Uneekor Session Matrix (Metres / km/h)</p>
       </div>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 rounded text-sm border border-slate-700 cursor-pointer select-none">
+          <input type="checkbox" id="outlierToggle" onchange="renderTableAndCharts()" class="accent-emerald-500 w-4 h-4" />
+          <span>Filter Mishits (Stock Shots)</span>
+        </label>
         <button onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700">Export JSON</button>
         <label class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700 cursor-pointer">
           Import JSON
           <input type="file" id="importFile" class="hidden" onchange="importData(event)" />
         </label>
-        <button onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset</button>
+        <button onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset Session</button>
       </div>
     </header>
 
@@ -38,7 +42,7 @@
           <option value="6 Iron">6 Iron</option>
           <option value="8 Iron">8 Iron</option>
           <option value="PW">Pitching Wedge</option>
-          <option value="60° Wedge" selected>60° Wedge</option>
+          <option value="60° Wedge">60° Wedge</option>
         </select>
         <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
         <input type="number" step="0.1" id="totalInput" placeholder="Total (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
@@ -53,11 +57,11 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
         <h3 class="text-sm font-semibold text-slate-300 mb-2">Carry vs. Total Gapping (Metres)</h3>
-        <canvas id="gappingChart" height="220"></canvas>
+        <canvas id="gappingChart" height="230"></canvas>
       </div>
       <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
         <h3 class="text-sm font-semibold text-slate-300 mb-2">Dispersion Map (Carry vs. Offline m)</h3>
-        <canvas id="dispersionChart" height="220"></canvas>
+        <canvas id="dispersionChart" height="230"></canvas>
       </div>
     </div>
 
@@ -87,153 +91,63 @@
   <script>
     const CLUB_ORDER = ["Driver", "3 Wood", "4 Hybrid", "4 Iron", "6 Iron", "8 Iron", "PW", "60° Wedge"];
     
-    // Pre-populated with your Uneekor 60° Wedge shots from your session
+    // Full Uneekor Session Data
     const DEFAULT_SHOTS = [
-      { club: "60° Wedge", carry: 61.6, total: 66.4, side: -1.6, smash: 1.02, spin: 4606 },
-      { club: "60° Wedge", carry: 54.2, total: 58.5, side: -0.4, smash: 1.00, spin: 4424 },
-      { club: "60° Wedge", carry: 60.5, total: 64.8, side: -2.6, smash: 1.05, spin: 4902 },
-      { club: "60° Wedge", carry: 76.3, total: 78.4, side: -1.6, smash: 1.03, spin: 8134 }
-    ];
+      // Driver
+      { club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, spin: 1621 },
+      { club: "Driver", carry: 189.1, total: 203.3, side: -33.4, smash: 1.50, spin: 1988 },
+      { club: "Driver", carry: 185.2, total: 199.2, side: -0.1, smash: 1.50, spin: 2763 },
+      { club: "Driver", carry: 191.0, total: 203.5, side: 25.9, smash: 1.50, spin: 3293 },
+      { club: "Driver", carry: 193.3, total: 206.6, side: -45.5, smash: 1.49, spin: 2130 },
+      { club: "Driver", carry: 201.0, total: 215.6, side: -23.6, smash: 1.50, spin: 2440 },
+      { club: "Driver", carry: 176.0, total: 187.4, side: 38.5, smash: 1.50, spin: 3563 },
+      { club: "Driver", carry: 191.3, total: 205.0, side: 31.2, smash: 1.50, spin: 2776 },
+      { club: "Driver", carry: 199.7, total: 214.0, side: -35.9, smash: 1.50, spin: 1419 },
+      { club: "Driver", carry: 169.8, total: 180.2, side: 55.4, smash: 1.50, spin: 3518 },
+      { club: "Driver", carry: 170.7, total: 185.0, side: 15.0, smash: 1.44, spin: 2134 },
+      { club: "Driver", carry: 168.7, total: 181.8, side: 42.7, smash: 1.49, spin: 3540 },
+      { club: "Driver", carry: 182.7, total: 196.6, side: -17.2, smash: 1.50, spin: 1483 },
 
-    let shots = JSON.parse(localStorage.getItem('golf_bag_shots')) || DEFAULT_SHOTS;
-    let gappingChart, dispersionChart;
+      // 3 Wood
+      { club: "3 Wood", carry: 166.7, total: 180.0, side: 44.2, smash: 1.43, spin: 2515 },
+      { club: "3 Wood", carry: 170.1, total: 183.0, side: -1.7, smash: 1.44, spin: 2790 },
+      { club: "3 Wood", carry: 173.1, total: 189.1, side: 8.2, smash: 1.48, spin: 1709 },
+      { club: "3 Wood", carry: 188.5, total: 202.7, side: 24.2, smash: 1.50, spin: 2578 },
+      { club: "3 Wood", carry: 134.6, total: 148.9, side: 19.6, smash: 1.40, spin: 1951 },
+      { club: "3 Wood", carry: 163.3, total: 173.6, side: 34.0, smash: 1.48, spin: 4007 },
+      { club: "3 Wood", carry: 179.1, total: 193.5, side: -28.0, smash: 1.50, spin: 2123 },
+      { club: "3 Wood", carry: 118.1, total: 130.4, side: -10.2, smash: 1.41, spin: 2137 },
+      { club: "3 Wood", carry: 170.1, total: 182.4, side: 2.1, smash: 1.47, spin: 2832 },
+      { club: "3 Wood", carry: 132.9, total: 146.7, side: -20.4, smash: 1.50, spin: 1948 },
+      { club: "3 Wood", carry: 197.4, total: 212.3, side: -15.2, smash: 1.50, spin: 2460 },
+      { club: "3 Wood", carry: 188.6, total: 201.3, side: 4.6, smash: 1.50, spin: 2964 },
+      { club: "3 Wood", carry: 140.3, total: 157.2, side: -43.0, smash: 1.49, spin: 1109 },
 
-    function saveAndRender() {
-      localStorage.setItem('golf_bag_shots', JSON.stringify(shots));
-      renderTableAndCharts();
-    }
+      // 4 Hybrid
+      { club: "4 Hybrid", carry: 173.6, total: 184.7, side: 5.0, smash: 1.49, spin: 3895 },
+      { club: "4 Hybrid", carry: 176.7, total: 191.5, side: -5.7, smash: 1.50, spin: 3975 },
+      { club: "4 Hybrid", carry: 181.6, total: 195.3, side: -4.9, smash: 1.49, spin: 2758 },
+      { club: "4 Hybrid", carry: 181.9, total: 194.7, side: -12.4, smash: 1.50, spin: 3119 },
+      { club: "4 Hybrid", carry: 181.2, total: 194.7, side: -21.3, smash: 1.49, spin: 2737 },
+      { club: "4 Hybrid", carry: 183.6, total: 196.4, side: -11.5, smash: 1.50, spin: 3188 },
+      { club: "4 Hybrid", carry: 169.5, total: 182.4, side: 9.5, smash: 1.48, spin: 2966 },
+      { club: "4 Hybrid", carry: 179.3, total: 192.2, side: -13.7, smash: 1.49, spin: 2973 },
+      { club: "4 Hybrid", carry: 154.7, total: 166.3, side: -4.3, smash: 1.41, spin: 3728 },
+      { club: "4 Hybrid", carry: 175.7, total: 188.9, side: -29.4, smash: 1.49, spin: 2718 },
+      { club: "4 Hybrid", carry: 143.7, total: 157.1, side: -30.5, smash: 1.49, spin: 2079 },
+      { club: "4 Hybrid", carry: 129.6, total: 138.9, side: 27.2, smash: 1.28, spin: 4265 },
+      { club: "4 Hybrid", carry: 158.1, total: 191.3, side: -7.3, smash: 1.50, spin: 3668 },
 
-    document.getElementById('shotForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      shots.push({
-        club: document.getElementById('clubSelect').value,
-        carry: parseFloat(document.getElementById('carryInput').value),
-        total: parseFloat(document.getElementById('totalInput').value),
-        side: parseFloat(document.getElementById('sideInput').value) || 0,
-        smash: parseFloat(document.getElementById('smashInput').value) || null,
-        spin: parseFloat(document.getElementById('spinInput').value) || null
-      });
-      e.target.reset();
-      saveAndRender();
-    });
-
-    function clearClub(club) {
-      shots = shots.filter(s => s.club !== club);
-      saveAndRender();
-    }
-
-    function resetDefault() {
-      shots = [...DEFAULT_SHOTS];
-      saveAndRender();
-    }
-
-    function exportData() {
-      const blob = new Blob([JSON.stringify(shots, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "golf-bag-data.json";
-      a.click();
-    }
-
-    function importData(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        shots = JSON.parse(e.target.result);
-        saveAndRender();
-      };
-      reader.readAsText(file);
-    }
-
-    function renderTableAndCharts() {
-      const tbody = document.getElementById('bagTableBody');
-      tbody.innerHTML = '';
-
-      const summaries = CLUB_ORDER.map(club => {
-        const clubShots = shots.filter(s => s.club === club);
-        if (!clubShots.length) return { club, count: 0 };
-        const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
-        const validSmash = clubShots.filter(s => s.smash).map(s => s.smash);
-        const validSpin = clubShots.filter(s => s.spin).map(s => s.spin);
-        return {
-          club,
-          count: clubShots.length,
-          carry: avg(clubShots.map(s => s.carry)),
-          total: avg(clubShots.map(s => s.total)),
-          side: avg(clubShots.map(s => s.side)),
-          smash: validSmash.length ? avg(validSmash).toFixed(2) : '-',
-          spin: validSpin.length ? Math.round(avg(validSpin)) : '-'
-        };
-      });
-
-      let prevCarry = null;
-      summaries.forEach(row => {
-        if (!row.count) return;
-        const gap = prevCarry !== null ? (prevCarry - row.carry).toFixed(1) + ' m' : '-';
-        prevCarry = row.carry;
-        const sideLabel = row.side === 0 ? '0.0 m' : `${Math.abs(row.side).toFixed(1)}m ${row.side < 0 ? 'L' : 'R'}`;
-
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-800/40">
-            <td class="px-4 py-3 font-semibold text-emerald-400">${row.club}</td>
-            <td class="px-4 py-3">${row.count}</td>
-            <td class="px-4 py-3 font-medium">${row.carry.toFixed(1)} m</td>
-            <td class="px-4 py-3 text-slate-300">${row.total.toFixed(1)} m</td>
-            <td class="px-4 py-3 text-amber-400">${gap}</td>
-            <td class="px-4 py-3">${sideLabel}</td>
-            <td class="px-4 py-3">${row.smash}</td>
-            <td class="px-4 py-3">${row.spin}</td>
-            <td class="px-4 py-3 text-right">
-              <button onclick="clearClub('${row.club}')" class="text-xs text-rose-400 hover:underline">Clear</button>
-            </td>
-          </tr>
-        `;
-      });
-
-      const activeClubs = summaries.filter(s => s.count > 0);
-      
-      if (gappingChart) gappingChart.destroy();
-      gappingChart = new Chart(document.getElementById('gappingChart'), {
-        type: 'bar',
-        data: {
-          labels: activeClubs.map(c => c.club),
-          datasets: [
-            { label: 'Avg Carry (m)', data: activeClubs.map(c => c.carry.toFixed(1)), backgroundColor: '#10b981' },
-            { label: 'Avg Total (m)', data: activeClubs.map(c => c.total.toFixed(1)), backgroundColor: '#3b82f6' }
-          ]
-        },
-        options: {
-          indexAxis: 'y',
-          scales: {
-            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { grid: { display: false }, ticks: { color: '#f8fafc' } }
-          },
-          plugins: { legend: { labels: { color: '#cbd5e1' } } }
-        }
-      });
-
-      if (dispersionChart) dispersionChart.destroy();
-      dispersionChart = new Chart(document.getElementById('dispersionChart'), {
-        type: 'scatter',
-        data: {
-          datasets: CLUB_ORDER.map((club, idx) => {
-            const pts = shots.filter(s => s.club === club).map(s => ({ x: s.side, y: s.carry }));
-            const colors = ['#f43f5e', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899'];
-            return { label: club, data: pts, backgroundColor: colors[idx % colors.length], pointRadius: 5 };
-          }).filter(ds => ds.data.length > 0)
-        },
-        options: {
-          scales: {
-            x: { title: { display: true, text: 'Left (-) / Right (+) Metres', color: '#94a3b8' }, min: -30, max: 30, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { title: { display: true, text: 'Carry (Metres)', color: '#94a3b8' }, beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
-          },
-          plugins: { legend: { labels: { color: '#cbd5e1' } } }
-        }
-      });
-    }
-
-    renderTableAndCharts();
-  </script>
-</body>
-</html>
+      // 4 Iron
+      { club: "4 Iron", carry: 153.2, total: 163.6, side: 8.3, smash: 1.48, spin: 3990 },
+      { club: "4 Iron", carry: 165.7, total: 177.8, side: -14.1, smash: 1.49, spin: 3219 },
+      { club: "4 Iron", carry: 153.8, total: 164.5, side: 2.5, smash: 1.49, spin: 3841 },
+      { club: "4 Iron", carry: 135.5, total: 148.3, side: 18.6, smash: 1.42, spin: 3205 },
+      { club: "4 Iron", carry: 156.3, total: 165.9, side: 20.6, smash: 1.48, spin: 3839 },
+      { club: "4 Iron", carry: 153.3, total: 163.0, side: 20.4, smash: 1.49, spin: 3930 },
+      { club: "4 Iron", carry: 152.4, total: 162.8, side: 20.9, smash: 1.49, spin: 3943 },
+      { club: "4 Iron", carry: 149.8, total: 160.5, side: -15.3, smash: 1.44, spin: 3663 },
+      { club: "4 Iron", carry: 153.3, total: 164.2, side: 1.1, smash: 1.49, spin: 3665 },
+      { club: "4 Iron", carry: 153.7, total: 163.8, side: 34.9, smash: 1.48, spin: 4223 },
+      { club: "4 Iron", carry: 142.4, total: 153.4, side: -21.7, smash: 1.41, spin: 3274 },
+      { club: "4 Iron", carry:
