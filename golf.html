@@ -21,12 +21,12 @@
           <input type="checkbox" id="outlierToggle" onchange="renderTableAndCharts()" class="accent-emerald-500 w-4 h-4" />
           <span>Filter Mishits (Stock Shots)</span>
         </label>
-        <button onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700">Export JSON</button>
+        <button type="button" onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700">Export JSON</button>
         <label class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700 cursor-pointer">
           Import JSON
           <input type="file" id="importFile" class="hidden" onchange="importData(event)" />
         </label>
-        <button onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset Session</button>
+        <button type="button" onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset Session</button>
       </div>
     </header>
 
@@ -34,120 +34,3 @@
     <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
       <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-3">Log Shot or Session Average</h2>
       <form id="shotForm" class="grid grid-cols-2 md:grid-cols-7 gap-3">
-        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm col-span-2 md:col-span-1">
-          <option value="Driver">Driver</option>
-          <option value="3 Wood">3 Wood</option>
-          <option value="4 Hybrid">4 Hybrid</option>
-          <option value="4 Iron">4 Iron</option>
-          <option value="6 Iron">6 Iron</option>
-          <option value="8 Iron">8 Iron</option>
-          <option value="PW">Pitching Wedge</option>
-          <option value="60° Wedge">60° Wedge</option>
-        </select>
-        <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
-        <input type="number" step="0.1" id="totalInput" placeholder="Total (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
-        <input type="number" step="0.1" id="sideInput" placeholder="Side (-L / +R m)" value="0" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
-        <input type="number" step="0.01" id="smashInput" placeholder="Smash (opt)" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
-        <input type="number" step="1" id="spinInput" placeholder="Back Spin (opt)" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
-        <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-4 py-2 text-sm col-span-2 md:col-span-1">Add Entry</button>
-      </form>
-    </section>
-
-    <!-- Visual Charts -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-        <h3 class="text-sm font-semibold text-slate-300 mb-2">Carry vs. Total Gapping (Metres)</h3>
-        <canvas id="gappingChart" height="230"></canvas>
-      </div>
-      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-        <h3 class="text-sm font-semibold text-slate-300 mb-2">Dispersion Map (Carry vs. Offline m)</h3>
-        <canvas id="dispersionChart" height="230"></canvas>
-      </div>
-    </div>
-
-    <!-- Summary Table -->
-    <section class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-slate-800/70 text-slate-400 uppercase text-xs">
-            <tr>
-              <th class="px-4 py-3">Club</th>
-              <th class="px-4 py-3">Shots</th>
-              <th class="px-4 py-3">Avg Carry</th>
-              <th class="px-4 py-3">Avg Total</th>
-              <th class="px-4 py-3">Gap (Carry)</th>
-              <th class="px-4 py-3">Avg Offline</th>
-              <th class="px-4 py-3">Avg Smash</th>
-              <th class="px-4 py-3">Avg Spin</th>
-              <th class="px-4 py-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody id="bagTableBody" class="divide-y divide-slate-800"></tbody>
-        </table>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const CLUB_ORDER = ["Driver", "3 Wood", "4 Hybrid", "4 Iron", "6 Iron", "8 Iron", "PW", "60° Wedge"];
-    
-    // Full Uneekor Session Data
-    const DEFAULT_SHOTS = [
-      // Driver
-      { club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, spin: 1621 },
-      { club: "Driver", carry: 189.1, total: 203.3, side: -33.4, smash: 1.50, spin: 1988 },
-      { club: "Driver", carry: 185.2, total: 199.2, side: -0.1, smash: 1.50, spin: 2763 },
-      { club: "Driver", carry: 191.0, total: 203.5, side: 25.9, smash: 1.50, spin: 3293 },
-      { club: "Driver", carry: 193.3, total: 206.6, side: -45.5, smash: 1.49, spin: 2130 },
-      { club: "Driver", carry: 201.0, total: 215.6, side: -23.6, smash: 1.50, spin: 2440 },
-      { club: "Driver", carry: 176.0, total: 187.4, side: 38.5, smash: 1.50, spin: 3563 },
-      { club: "Driver", carry: 191.3, total: 205.0, side: 31.2, smash: 1.50, spin: 2776 },
-      { club: "Driver", carry: 199.7, total: 214.0, side: -35.9, smash: 1.50, spin: 1419 },
-      { club: "Driver", carry: 169.8, total: 180.2, side: 55.4, smash: 1.50, spin: 3518 },
-      { club: "Driver", carry: 170.7, total: 185.0, side: 15.0, smash: 1.44, spin: 2134 },
-      { club: "Driver", carry: 168.7, total: 181.8, side: 42.7, smash: 1.49, spin: 3540 },
-      { club: "Driver", carry: 182.7, total: 196.6, side: -17.2, smash: 1.50, spin: 1483 },
-
-      // 3 Wood
-      { club: "3 Wood", carry: 166.7, total: 180.0, side: 44.2, smash: 1.43, spin: 2515 },
-      { club: "3 Wood", carry: 170.1, total: 183.0, side: -1.7, smash: 1.44, spin: 2790 },
-      { club: "3 Wood", carry: 173.1, total: 189.1, side: 8.2, smash: 1.48, spin: 1709 },
-      { club: "3 Wood", carry: 188.5, total: 202.7, side: 24.2, smash: 1.50, spin: 2578 },
-      { club: "3 Wood", carry: 134.6, total: 148.9, side: 19.6, smash: 1.40, spin: 1951 },
-      { club: "3 Wood", carry: 163.3, total: 173.6, side: 34.0, smash: 1.48, spin: 4007 },
-      { club: "3 Wood", carry: 179.1, total: 193.5, side: -28.0, smash: 1.50, spin: 2123 },
-      { club: "3 Wood", carry: 118.1, total: 130.4, side: -10.2, smash: 1.41, spin: 2137 },
-      { club: "3 Wood", carry: 170.1, total: 182.4, side: 2.1, smash: 1.47, spin: 2832 },
-      { club: "3 Wood", carry: 132.9, total: 146.7, side: -20.4, smash: 1.50, spin: 1948 },
-      { club: "3 Wood", carry: 197.4, total: 212.3, side: -15.2, smash: 1.50, spin: 2460 },
-      { club: "3 Wood", carry: 188.6, total: 201.3, side: 4.6, smash: 1.50, spin: 2964 },
-      { club: "3 Wood", carry: 140.3, total: 157.2, side: -43.0, smash: 1.49, spin: 1109 },
-
-      // 4 Hybrid
-      { club: "4 Hybrid", carry: 173.6, total: 184.7, side: 5.0, smash: 1.49, spin: 3895 },
-      { club: "4 Hybrid", carry: 176.7, total: 191.5, side: -5.7, smash: 1.50, spin: 3975 },
-      { club: "4 Hybrid", carry: 181.6, total: 195.3, side: -4.9, smash: 1.49, spin: 2758 },
-      { club: "4 Hybrid", carry: 181.9, total: 194.7, side: -12.4, smash: 1.50, spin: 3119 },
-      { club: "4 Hybrid", carry: 181.2, total: 194.7, side: -21.3, smash: 1.49, spin: 2737 },
-      { club: "4 Hybrid", carry: 183.6, total: 196.4, side: -11.5, smash: 1.50, spin: 3188 },
-      { club: "4 Hybrid", carry: 169.5, total: 182.4, side: 9.5, smash: 1.48, spin: 2966 },
-      { club: "4 Hybrid", carry: 179.3, total: 192.2, side: -13.7, smash: 1.49, spin: 2973 },
-      { club: "4 Hybrid", carry: 154.7, total: 166.3, side: -4.3, smash: 1.41, spin: 3728 },
-      { club: "4 Hybrid", carry: 175.7, total: 188.9, side: -29.4, smash: 1.49, spin: 2718 },
-      { club: "4 Hybrid", carry: 143.7, total: 157.1, side: -30.5, smash: 1.49, spin: 2079 },
-      { club: "4 Hybrid", carry: 129.6, total: 138.9, side: 27.2, smash: 1.28, spin: 4265 },
-      { club: "4 Hybrid", carry: 158.1, total: 191.3, side: -7.3, smash: 1.50, spin: 3668 },
-
-      // 4 Iron
-      { club: "4 Iron", carry: 153.2, total: 163.6, side: 8.3, smash: 1.48, spin: 3990 },
-      { club: "4 Iron", carry: 165.7, total: 177.8, side: -14.1, smash: 1.49, spin: 3219 },
-      { club: "4 Iron", carry: 153.8, total: 164.5, side: 2.5, smash: 1.49, spin: 3841 },
-      { club: "4 Iron", carry: 135.5, total: 148.3, side: 18.6, smash: 1.42, spin: 3205 },
-      { club: "4 Iron", carry: 156.3, total: 165.9, side: 20.6, smash: 1.48, spin: 3839 },
-      { club: "4 Iron", carry: 153.3, total: 163.0, side: 20.4, smash: 1.49, spin: 3930 },
-      { club: "4 Iron", carry: 152.4, total: 162.8, side: 20.9, smash: 1.49, spin: 3943 },
-      { club: "4 Iron", carry: 149.8, total: 160.5, side: -15.3, smash: 1.44, spin: 3663 },
-      { club: "4 Iron", carry: 153.3, total: 164.2, side: 1.1, smash: 1.49, spin: 3665 },
-      { club: "4 Iron", carry: 153.7, total: 163.8, side: 34.9, smash: 1.48, spin: 4223 },
-      { club: "4 Iron", carry: 142.4, total: 153.4, side: -21.7, smash: 1.41, spin: 3274 },
-      { club: "4 Iron", carry:
