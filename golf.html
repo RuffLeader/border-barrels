@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golf Bag Gapping & Dispersion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
+  <div class="max-w-6xl mx-auto space-y-6">
+    
+    <!-- Header -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
+        <p class="text-sm text-slate-400">Uneekor Session Matrix (Metres / km/h)</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700">Export JSON</button>
+        <label class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700 cursor-pointer">
+          Import JSON
+          <input type="file" id="importFile" class="hidden" onchange="importData(event)" />
+        </label>
+        <button onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset</button>
+      </div>
+    </header>
+
+    <!-- Add Shot / Session Form -->
+    <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+      <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-3">Log Shot or Session Average</h2>
+      <form id="shotForm" class="grid grid-cols-2 md:grid-cols-7 gap-3">
+        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm col-span-2 md:col-span-1">
+          <option value="Driver">Driver</option>
+          <option value="3 Wood">3 Wood</option>
+          <option value="4 Hybrid">4 Hybrid</option>
+          <option value="4 Iron">4 Iron</option>
+          <option value="6 Iron">6 Iron</option>
+          <option value="8 Iron">8 Iron</option>
+          <option value="PW">Pitching Wedge</option>
+          <option value="60° Wedge" selected>60° Wedge</option>
+        </select>
+        <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+        <input type="number" step="0.1" id="totalInput" placeholder="Total (m)" required class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+        <input type="number" step="0.1" id="sideInput" placeholder="Side (-L / +R m)" value="0" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+        <input type="number" step="0.01" id="smashInput" placeholder="Smash (opt)" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+        <input type="number" step="1" id="spinInput" placeholder="Back Spin (opt)" class="bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+        <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-4 py-2 text-sm col-span-2 md:col-span-1">Add Entry</button>
+      </form>
+    </section>
+
+    <!-- Visual Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+        <h3 class="text-sm font-semibold text-slate-300 mb-2">Carry vs. Total Gapping (Metres)</h3>
+        <canvas id="gappingChart" height="220"></canvas>
+      </div>
+      <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+        <h3 class="text-sm font-semibold text-slate-300 mb-2">Dispersion Map (Carry vs. Offline m)</h3>
+        <canvas id="dispersionChart" height="220"></canvas>
+      </div>
+    </div>
+
+    <!-- Summary Table -->
+    <section class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-800/70 text-slate-400 uppercase text-xs">
+            <tr>
+              <th class="px-4 py-3">Club</th>
+              <th class="px-4 py-3">Shots</th>
+              <th class="px-4 py-3">Avg Carry</th>
+              <th class="px-4 py-3">Avg Total</th>
+              <th class="px-4 py-3">Gap (Carry)</th>
+              <th class="px-4 py-3">Avg Offline</th>
+              <th class="px-4 py-3">Avg Smash</th>
+              <th class="px-4 py-3">Avg Spin</th>
+              <th class="px-4 py-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody id="bagTableBody" class="divide-y divide-slate-800"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const CLUB_ORDER = ["Driver", "3 Wood", "4 Hybrid", "4 Iron", "6 Iron", "8 Iron", "PW", "60° Wedge"];
+    
+    // Pre-populated with your Uneekor 60° Wedge shots from your session
+    const DEFAULT_SHOTS = [
+      { club: "60° Wedge", carry: 61.6, total: 66.4, side: -1.6, smash: 1.02, spin: 4606 },
+      { club: "60° Wedge", carry: 54.2, total: 58.5, side: -0.4, smash: 1.00, spin: 4424 },
+      { club: "60° Wedge", carry: 60.5, total: 64.8, side: -2.6, smash: 1.05, spin: 4902 },
+      { club: "60° Wedge", carry: 76.3, total: 78.4, side: -1.6, smash: 1.03, spin: 8134 }
+    ];
+
+    let shots = JSON.parse(localStorage.getItem('golf_bag_shots')) || DEFAULT_SHOTS;
+    let gappingChart, dispersionChart;
+
+    function saveAndRender() {
+      localStorage.setItem('golf_bag_shots', JSON.stringify(shots));
+      renderTableAndCharts();
+    }
+
+    document.getElementById('shotForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      shots.push({
+        club: document.getElementById('clubSelect').value,
+        carry: parseFloat(document.getElementById('carryInput').value),
+        total: parseFloat(document.getElementById('totalInput').value),
+        side: parseFloat(document.getElementById('sideInput').value) || 0,
+        smash: parseFloat(document.getElementById('smashInput').value) || null,
+        spin: parseFloat(document.getElementById('spinInput').value) || null
+      });
+      e.target.reset();
+      saveAndRender();
+    });
+
+    function clearClub(club) {
+      shots = shots.filter(s => s.club !== club);
+      saveAndRender();
+    }
+
+    function resetDefault() {
+      shots = [...DEFAULT_SHOTS];
+      saveAndRender();
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(shots, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "golf-bag-data.json";
+      a.click();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        shots = JSON.parse(e.target.result);
+        saveAndRender();
+      };
+      reader.readAsText(file);
+    }
+
+    function renderTableAndCharts() {
+      const tbody = document.getElementById('bagTableBody');
+      tbody.innerHTML = '';
+
+      const summaries = CLUB_ORDER.map(club => {
+        const clubShots = shots.filter(s => s.club === club);
+        if (!clubShots.length) return { club, count: 0 };
+        const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+        const validSmash = clubShots.filter(s => s.smash).map(s => s.smash);
+        const validSpin = clubShots.filter(s => s.spin).map(s => s.spin);
+        return {
+          club,
+          count: clubShots.length,
+          carry: avg(clubShots.map(s => s.carry)),
+          total: avg(clubShots.map(s => s.total)),
+          side: avg(clubShots.map(s => s.side)),
+          smash: validSmash.length ? avg(validSmash).toFixed(2) : '-',
+          spin: validSpin.length ? Math.round(avg(validSpin)) : '-'
+        };
+      });
+
+      let prevCarry = null;
+      summaries.forEach(row => {
+        if (!row.count) return;
+        const gap = prevCarry !== null ? (prevCarry - row.carry).toFixed(1) + ' m' : '-';
+        prevCarry = row.carry;
+        const sideLabel = row.side === 0 ? '0.0 m' : `${Math.abs(row.side).toFixed(1)}m ${row.side < 0 ? 'L' : 'R'}`;
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-800/40">
+            <td class="px-4 py-3 font-semibold text-emerald-400">${row.club}</td>
+            <td class="px-4 py-3">${row.count}</td>
+            <td class="px-4 py-3 font-medium">${row.carry.toFixed(1)} m</td>
+            <td class="px-4 py-3 text-slate-300">${row.total.toFixed(1)} m</td>
+            <td class="px-4 py-3 text-amber-400">${gap}</td>
+            <td class="px-4 py-3">${sideLabel}</td>
+            <td class="px-4 py-3">${row.smash}</td>
+            <td class="px-4 py-3">${row.spin}</td>
+            <td class="px-4 py-3 text-right">
+              <button onclick="clearClub('${row.club}')" class="text-xs text-rose-400 hover:underline">Clear</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      const activeClubs = summaries.filter(s => s.count > 0);
+      
+      if (gappingChart) gappingChart.destroy();
+      gappingChart = new Chart(document.getElementById('gappingChart'), {
+        type: 'bar',
+        data: {
+          labels: activeClubs.map(c => c.club),
+          datasets: [
+            { label: 'Avg Carry (m)', data: activeClubs.map(c => c.carry.toFixed(1)), backgroundColor: '#10b981' },
+            { label: 'Avg Total (m)', data: activeClubs.map(c => c.total.toFixed(1)), backgroundColor: '#3b82f6' }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { grid: { display: false }, ticks: { color: '#f8fafc' } }
+          },
+          plugins: { legend: { labels: { color: '#cbd5e1' } } }
+        }
+      });
+
+      if (dispersionChart) dispersionChart.destroy();
+      dispersionChart = new Chart(document.getElementById('dispersionChart'), {
+        type: 'scatter',
+        data: {
+          datasets: CLUB_ORDER.map((club, idx) => {
+            const pts = shots.filter(s => s.club === club).map(s => ({ x: s.side, y: s.carry }));
+            const colors = ['#f43f5e', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#a855f7', '#ec4899'];
+            return { label: club, data: pts, backgroundColor: colors[idx % colors.length], pointRadius: 5 };
+          }).filter(ds => ds.data.length > 0)
+        },
+        options: {
+          scales: {
+            x: { title: { display: true, text: 'Left (-) / Right (+) Metres', color: '#94a3b8' }, min: -30, max: 30, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { title: { display: true, text: 'Carry (Metres)', color: '#94a3b8' }, beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          },
+          plugins: { legend: { labels: { color: '#cbd5e1' } } }
+        }
+      });
+    }
+
+    renderTableAndCharts();
+  </script>
+</body>
+</html>
