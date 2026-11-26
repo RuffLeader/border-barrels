@@ -45,14 +45,13 @@
         <p class="text-xs text-slate-400">Signed in as <span id="userEmailLabel" class="text-slate-200 font-medium"></span></p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <!-- Session Date Filter -->
         <select id="sessionFilter" onchange="renderTableAndCharts()" class="px-3 py-1.5 bg-slate-900 text-slate-200 rounded text-xs border border-slate-700">
           <option value="ALL">All Sessions (Combined)</option>
         </select>
 
         <label class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 rounded text-xs border border-slate-700 cursor-pointer select-none">
           <input type="checkbox" id="outlierToggle" onchange="renderTableAndCharts()" class="accent-emerald-500 w-4 h-4" />
-          <span>Filter Mishits</span>
+          <span>Filter Mishits (Table)</span>
         </label>
 
         <button type="button" onclick="togglePhotoModal(true)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded text-xs shadow">
@@ -94,7 +93,6 @@
 
         <div id="photoStatus" class="hidden text-xs p-3 rounded border bg-slate-950 border-slate-800 text-sky-300"></div>
 
-        <!-- Parsed Preview Table -->
         <div id="parsedPreviewWrap" class="hidden flex-1 overflow-auto border border-slate-800 rounded-lg">
           <table class="w-full text-left text-xs whitespace-nowrap">
             <thead class="bg-slate-800 text-slate-400 uppercase text-[11px] sticky top-0">
@@ -123,52 +121,56 @@
       </div>
     </div>
 
-    <!-- Add Single Shot / Session Average Form -->
-    <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Manual Entry (Single Shot or Session Average)</h2>
-        <span class="text-xs text-slate-500">Directional values: negative (-) for Left, positive (+) for Right</span>
+    <!-- LANDING ZONE & MISHIT VARIANCE SIMULATOR -->
+    <section class="bg-slate-900 p-4 md:p-5 rounded-xl border border-slate-800 space-y-4">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-base font-bold text-emerald-400">Club Landing Patch & Mishit Dispersion Simulator</h2>
+          <p class="text-xs text-slate-400">Compare your <span class="text-slate-200 font-semibold">Clean Stock Patch</span> (solid) vs. <span class="text-slate-200 font-semibold">Full Variance incl. Mishits</span> (dashed) against a target pin.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
+            <label class="text-xs text-slate-400">Target Pin:</label>
+            <input type="number" id="targetPinInput" value="100" step="5" min="30" max="260" oninput="renderLandingZone()" class="w-16 bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-bold text-amber-400 text-center" />
+            <span class="text-xs text-slate-400">m</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+            <label class="text-xs text-slate-400">Club 1:</label>
+            <select id="lzClub1" onchange="renderLandingZone()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-semibold text-emerald-300"></select>
+          </div>
+
+          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
+            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span>
+            <label class="text-xs text-slate-400">Compare:</label>
+            <select id="lzClub2" onchange="renderLandingZone()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-semibold text-sky-300">
+              <option value="">None</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <form id="shotForm" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-        <input type="date" id="dateInput" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-slate-200" />
-        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs font-medium text-emerald-300"></select>
-        <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="totalInput" placeholder="Total (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="sideInput" placeholder="Side Dist (-L/+R m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.01" id="smashInput" placeholder="Smash Factor" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="ballSpeedInput" placeholder="Ball Speed (km/h)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="clubSpeedInput" placeholder="Club Speed (km/h)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="1" id="backSpinInput" placeholder="Back Spin (rpm)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="1" id="sideSpinInput" placeholder="Side Spin (-L/+R)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="launchInput" placeholder="Launch Ang (°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="sideAngleInput" placeholder="Side Ang (-L/+R°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="descentInput" placeholder="Descent Ang (°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="apexInput" placeholder="Apex (m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="timeInput" placeholder="Flight Time (s)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <select id="typeInput" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs">
-          <option value="Straight">Straight</option>
-          <option value="Fade">Fade</option>
-          <option value="Draw">Draw</option>
-          <option value="Slice">Slice</option>
-          <option value="Hook">Hook</option>
-          <option value="Push">Push</option>
-          <option value="Push Slice">Push Slice</option>
-          <option value="Push Draw">Push Draw</option>
-          <option value="Pull Hook">Pull Hook</option>
-          <option value="Pull Slice">Pull Slice</option>
-        </select>
-        <button type="submit" id="addShotBtn" class="sm:col-span-2 lg:col-span-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
-      </form>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center">
+        <!-- Interactive Green & Dispersion Canvas -->
+        <div class="lg:col-span-2 bg-slate-950 p-3 rounded-xl border border-slate-800">
+          <canvas id="landingZoneChart" height="260"></canvas>
+        </div>
+
+        <!-- Dispersion Footprint Stats Card -->
+        <div id="lzStatsPanel" class="space-y-3 text-xs"></div>
+      </div>
     </section>
 
-    <!-- Visual Charts -->
+    <!-- Visual Bag Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
         <h3 class="text-sm font-semibold text-slate-300 mb-2">Carry vs. Total Gapping (Metres)</h3>
         <canvas id="gappingChart" height="220"></canvas>
       </div>
       <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
-        <h3 class="text-sm font-semibold text-slate-300 mb-2">Dispersion Map (Carry vs. Side Distance m)</h3>
+        <h3 class="text-sm font-semibold text-slate-300 mb-2">Full Bag Dispersion Map (Carry vs. Side Distance m)</h3>
         <canvas id="dispersionChart" height="220"></canvas>
       </div>
     </div>
@@ -238,6 +240,44 @@
       </div>
     </section>
 
+    <!-- Add Single Shot / Session Average Form -->
+    <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Manual Entry (Single Shot or Session Average)</h2>
+        <span class="text-xs text-slate-500">Directional values: negative (-) for Left, positive (+) for Right</span>
+      </div>
+      <form id="shotForm" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+        <input type="date" id="dateInput" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-slate-200" />
+        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs font-medium text-emerald-300"></select>
+        <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="totalInput" placeholder="Total (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="sideInput" placeholder="Side Dist (-L/+R m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.01" id="smashInput" placeholder="Smash Factor" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="ballSpeedInput" placeholder="Ball Speed (km/h)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="clubSpeedInput" placeholder="Club Speed (km/h)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="1" id="backSpinInput" placeholder="Back Spin (rpm)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="1" id="sideSpinInput" placeholder="Side Spin (-L/+R)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="launchInput" placeholder="Launch Ang (°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="sideAngleInput" placeholder="Side Ang (-L/+R°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="descentInput" placeholder="Descent Ang (°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="apexInput" placeholder="Apex (m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="number" step="0.1" id="timeInput" placeholder="Flight Time (s)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <select id="typeInput" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs">
+          <option value="Straight">Straight</option>
+          <option value="Fade">Fade</option>
+          <option value="Draw">Draw</option>
+          <option value="Slice">Slice</option>
+          <option value="Hook">Hook</option>
+          <option value="Push">Push</option>
+          <option value="Push Slice">Push Slice</option>
+          <option value="Push Draw">Push Draw</option>
+          <option value="Pull Hook">Pull Hook</option>
+          <option value="Pull Slice">Pull Slice</option>
+        </select>
+        <button type="submit" id="addShotBtn" class="sm:col-span-2 lg:col-span-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
+      </form>
+    </section>
+
   </div>
 
   <script>
@@ -278,7 +318,7 @@
     const CLUB_ORDER = ALL_CLUBS.map(c => c.value);
 
     function getTodayISO() {
-      return new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local timezone
+      return new Date().toLocaleDateString('en-CA');
     }
 
     (function initFormDefaults() {
@@ -373,11 +413,293 @@
     let activeDetailClub = null;
     let gappingChart = null;
     let dispersionChart = null;
+    let landingZoneChart = null;
 
     function formatDisplayDate(isoDate) {
       if (!isoDate) return '-';
       const [y, m, d] = isoDate.split('-');
       return `${d}/${m}/${y}`;
+    }
+
+    // --- BIVARIATE DISPERSION ELLIPSE MATH ---
+    function getClubSessionShots(club, filterMishits) {
+      const selectedSession = document.getElementById('sessionFilter').value;
+      let clubShots = shots.filter(s => s.club === club);
+      if (selectedSession !== 'ALL') {
+        clubShots = clubShots.filter(s => s.session_date === selectedSession);
+      }
+      if (!filterMishits || clubShots.length < 3) return clubShots;
+
+      const sorted = [...clubShots].map(s => Number(s.carry)).sort((a, b) => a - b);
+      const median = sorted[Math.floor(sorted.length / 2)];
+      return clubShots.filter(s => Number(s.carry) >= median * 0.80 && Number(s.carry) <= median * 1.25);
+    }
+
+    function computeDispersionEllipse(pts) {
+      if (!pts.length) return null;
+      const n = pts.length;
+      const meanX = pts.reduce((a, p) => a + p.x, 0) / n;
+      const meanY = pts.reduce((a, p) => a + p.y, 0) / n;
+
+      if (n === 1) {
+        return {
+          meanX, meanY, width: 6, depth: 6,
+          polygon: Array.from({ length: 61 }, (_, i) => {
+            const t = (i / 60) * 2 * Math.PI;
+            return { x: meanX + 3 * Math.cos(t), y: meanY + 3 * Math.sin(t) };
+          })
+        };
+      }
+
+      let sxx = 0, syy = 0, sxy = 0;
+      pts.forEach(p => {
+        const dx = p.x - meanX;
+        const dy = p.y - meanY;
+        sxx += dx * dx;
+        syy += dy * dy;
+        sxy += dx * dy;
+      });
+      sxx /= (n - 1);
+      syy /= (n - 1);
+      sxy /= (n - 1);
+
+      // Eigenvalues of 2x2 covariance matrix for tilted shot dispersion
+      const trace = sxx + syy;
+      const det = sxx * syy - sxy * sxy;
+      const disc = Math.sqrt(Math.max(0, (trace * trace) / 4 - det));
+      const l1 = Math.max(1.5, trace / 2 + disc);
+      const l2 = Math.max(1.5, trace / 2 - disc);
+
+      // ~85-90% containment scale factor (chi-square 2 dof ~ 4.0 -> r = 2.0)
+      const scale = 1.95;
+      const r1 = Math.sqrt(l1) * scale;
+      const r2 = Math.sqrt(l2) * scale;
+      const angle = Math.abs(sxy) < 1e-6 && sxx >= syy ? 0 : Math.atan2(l1 - sxx, sxy);
+
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+      const polygon = [];
+      for (let i = 0; i <= 72; i++) {
+        const theta = (i / 72) * 2 * Math.PI;
+        const u = r1 * Math.cos(theta);
+        const v = r2 * Math.sin(theta);
+        polygon.push({
+          x: Number((meanX + u * cosA - v * sinA).toFixed(2)),
+          y: Number((meanY + u * sinA + v * cosA).toFixed(2))
+        });
+      }
+
+      const xs = polygon.map(p => p.x);
+      const ys = polygon.map(p => p.y);
+      return {
+        meanX,
+        meanY,
+        width: Math.max(...xs) - Math.min(...xs),
+        depth: Math.max(...ys) - Math.min(...ys),
+        minY: Math.min(...ys),
+        maxY: Math.max(...ys),
+        polygon
+      };
+    }
+
+    function syncLandingZoneSelectors() {
+      const sel1 = document.getElementById('lzClub1');
+      const sel2 = document.getElementById('lzClub2');
+      const prev1 = sel1.value;
+      const prev2 = sel2.value;
+
+      const activeClubs = CLUB_ORDER.filter(c => getClubSessionShots(c, false).length > 0);
+      sel1.innerHTML = '';
+      sel2.innerHTML = '<option value="">None</option>';
+
+      activeClubs.forEach(c => {
+        sel1.add(new Option(c, c));
+        sel2.add(new Option(c, c));
+      });
+
+      if (activeClubs.includes(prev1)) sel1.value = prev1;
+      else if (activeClubs.includes('PW')) sel1.value = 'PW';
+      else if (activeClubs.length) sel1.value = activeClubs[activeClubs.length - 1];
+
+      if (activeClubs.includes(prev2)) sel2.value = prev2;
+      else if (activeClubs.includes('8 Iron')) sel2.value = '8 Iron';
+    }
+
+    function renderLandingZone() {
+      const canvas = document.getElementById('landingZoneChart');
+      const statsPanel = document.getElementById('lzStatsPanel');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      const targetPin = Number(document.getElementById('targetPinInput').value) || 100;
+      const club1 = document.getElementById('lzClub1').value;
+      const club2 = document.getElementById('lzClub2').value;
+
+      // Green perimeter (~26m wide x 26m deep centered on pin)
+      const greenPoly = [];
+      for (let i = 0; i <= 60; i++) {
+        const t = (i / 60) * 2 * Math.PI;
+        greenPoly.push({
+          x: Number((13 * Math.cos(t)).toFixed(2)),
+          y: Number((targetPin + 13 * Math.sin(t)).toFixed(2))
+        });
+      }
+
+      const datasets = [
+        {
+          label: `Target Green (${targetPin}m Pin)`,
+          data: greenPoly,
+          showLine: true,
+          fill: true,
+          backgroundColor: 'rgba(16, 185, 129, 0.08)',
+          borderColor: 'rgba(52, 211, 153, 0.45)',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          order: 10
+        },
+        {
+          label: `Pin (${targetPin}m)`,
+          data: [{ x: 0, y: targetPin }],
+          backgroundColor: '#fbbf24',
+          borderColor: '#0f172a',
+          borderWidth: 2,
+          pointStyle: 'triangle',
+          pointRadius: 8,
+          order: 1
+        }
+      ];
+
+      const configs = [
+        { club: club1, rgb: '16, 185, 129', hex: '#10b981', textClass: 'text-emerald-400', borderClass: 'border-emerald-800/70' },
+        { club: club2, rgb: '56, 189, 248', hex: '#38bdf8', textClass: 'text-sky-400', borderClass: 'border-sky-800/70' }
+      ].filter(cfg => cfg.club && cfg.club !== '');
+
+      let statsHtml = '';
+      const allYValues = [targetPin - 20, targetPin + 20];
+      const allXValues = [-25, 25];
+
+      configs.forEach(cfg => {
+        const allRaw = getClubSessionShots(cfg.club, false);
+        const stockRaw = getClubSessionShots(cfg.club, true);
+        if (!allRaw.length) return;
+
+        const allPts = allRaw.map(s => ({ x: Number(s.side), y: Number(s.carry) }));
+        const stockPts = stockRaw.map(s => ({ x: Number(s.side), y: Number(s.carry) }));
+
+        const allEll = computeDispersionEllipse(allPts);
+        const stockEll = computeDispersionEllipse(stockPts);
+        const mishitCount = allRaw.length - stockRaw.length;
+
+        allPts.forEach(p => { allXValues.push(p.x); allYValues.push(p.y); });
+        if (allEll) {
+          allEll.polygon.forEach(p => { allXValues.push(p.x); allYValues.push(p.y); });
+        }
+
+        // Full Variance Ellipse (incl. Mishits)
+        if (allEll) {
+          datasets.push({
+            label: `${cfg.club} Full Variance (incl. Mishits)`,
+            data: allEll.polygon,
+            showLine: true,
+            fill: true,
+            backgroundColor: `rgba(${cfg.rgb}, 0.08)`,
+            borderColor: `rgba(${cfg.rgb}, 0.85)`,
+            borderDash: [6, 4],
+            borderWidth: 2,
+            pointRadius: 0,
+            order: 6
+          });
+        }
+
+        // Clean Stock Ellipse
+        if (stockEll) {
+          datasets.push({
+            label: `${cfg.club} Clean Stock Patch`,
+            data: stockEll.polygon,
+            showLine: true,
+            fill: true,
+            backgroundColor: `rgba(${cfg.rgb}, 0.24)`,
+            borderColor: cfg.hex,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            order: 5
+          });
+        }
+
+        // Actual Shots Scatter
+        datasets.push({
+          label: `${cfg.club} Shots (${allPts.length})`,
+          data: allPts,
+          backgroundColor: cfg.hex,
+          borderColor: '#020617',
+          borderWidth: 1,
+          pointRadius: 4.5,
+          order: 2
+        });
+
+        const shortLongDiff = (stockEll.meanY - targetPin).toFixed(1);
+        const diffLabel = Number(shortLongDiff) >= 0 ? `+${shortLongDiff}m long` : `${shortLongDiff}m short`;
+
+        statsHtml += `
+          <div class="bg-slate-950 p-3.5 rounded-lg border ${cfg.borderClass} space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm ${cfg.textClass}">${cfg.club}</span>
+              <span class="text-[11px] text-slate-400">${allRaw.length} shots (${mishitCount} mishit${mishitCount === 1 ? '' : 's'})</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800/80">
+              <div>
+                <div class="text-[10px] uppercase text-slate-500">Clean Stock Patch</div>
+                <div class="font-semibold text-slate-200">${stockEll.width.toFixed(0)}m W × ${stockEll.depth.toFixed(0)}m D</div>
+                <div class="text-[11px] text-slate-400">Avg Carry: ${stockEll.meanY.toFixed(1)}m (${diffLabel})</div>
+              </div>
+              <div>
+                <div class="text-[10px] uppercase text-slate-500">Incl. Mishits (Dashed)</div>
+                <div class="font-semibold text-amber-300">${allEll.width.toFixed(0)}m W × ${allEll.depth.toFixed(0)}m D</div>
+                <div class="text-[11px] text-slate-400">Range: ${allEll.minY.toFixed(0)}m – ${allEll.maxY.toFixed(0)}m</div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      statsPanel.innerHTML = statsHtml || `<div class="text-slate-500 p-4">Upload or load shots to view landing zone dispersion.</div>`;
+
+      const minX = Math.floor(Math.min(...allXValues) - 8);
+      const maxX = Math.ceil(Math.max(...allXValues) + 8);
+      const minY = Math.max(0, Math.floor(Math.min(...allYValues) - 10));
+      const maxY = Math.ceil(Math.max(...allYValues) + 10);
+
+      if (landingZoneChart) landingZoneChart.destroy();
+      landingZoneChart = new Chart(canvas, {
+        type: 'scatter',
+        data: { datasets },
+        options: {
+          animation: false,
+          scales: {
+            x: {
+              title: { display: true, text: 'Offline Dispersion: Left (-) / Right (+) Metres', color: '#94a3b8' },
+              min: minX,
+              max: maxX,
+              grid: { color: (ctx) => ctx.tick.value === 0 ? '#475569' : '#1e293b' },
+              ticks: { color: '#94a3b8' }
+            },
+            y: {
+              title: { display: true, text: 'Carry Distance (Metres)', color: '#94a3b8' },
+              min: minY,
+              max: maxY,
+              grid: { color: '#1e293b' },
+              ticks: { color: '#94a3b8' }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#cbd5e1', boxWidth: 12, font: { size: 11 } } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}m carry, ${formatDir(ctx.parsed.x, 'm', 1)}`
+              }
+            }
+          }
+        }
+      });
     }
 
     // --- PHOTO SCANNER & EDGE FUNCTION ---
@@ -698,20 +1020,9 @@
       a.click();
     }
 
-    // --- FILTERING & RENDERING ---
+    // --- TABLE & BAG CHARTS ---
     function getFilteredShots(club) {
-      const selectedSession = document.getElementById('sessionFilter').value;
-      let clubShots = shots.filter(s => s.club === club);
-      if (selectedSession !== 'ALL') {
-        clubShots = clubShots.filter(s => s.session_date === selectedSession);
-      }
-
-      const filterMishits = document.getElementById('outlierToggle').checked;
-      if (!filterMishits || clubShots.length < 3) return clubShots;
-
-      const sorted = [...clubShots].map(s => Number(s.carry)).sort((a, b) => a - b);
-      const median = sorted[Math.floor(sorted.length / 2)];
-      return clubShots.filter(s => Number(s.carry) >= median * 0.80 && Number(s.carry) <= median * 1.25);
+      return getClubSessionShots(club, document.getElementById('outlierToggle').checked);
     }
 
     function avgMetric(arr, key, decimals = 1) {
@@ -781,6 +1092,9 @@
     }
 
     function renderTableAndCharts() {
+      syncLandingZoneSelectors();
+      renderLandingZone();
+
       const tbody = document.getElementById('bagTableBody');
       tbody.innerHTML = '';
 
