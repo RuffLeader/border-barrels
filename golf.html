@@ -10,7 +10,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
 
-  <!-- AUTH SCREEN (Shown when logged out) -->
+  <!-- AUTH SCREEN -->
   <div id="authView" class="max-w-md mx-auto mt-16 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
     <div class="text-center">
       <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
@@ -35,7 +35,7 @@
     </form>
   </div>
 
-  <!-- MAIN APP VIEW (Shown when logged in) -->
+  <!-- MAIN APP VIEW -->
   <div id="appView" class="hidden max-w-[1400px] mx-auto space-y-6">
     
     <!-- Header -->
@@ -49,33 +49,77 @@
           <input type="checkbox" id="outlierToggle" onchange="renderTableAndCharts()" class="accent-emerald-500 w-4 h-4" />
           <span>Filter Mishits (Stock Shots)</span>
         </label>
-        <button type="button" id="seedBtn" onclick="seedDefaultSession()" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 text-sky-200 rounded text-xs border border-sky-800">Load Sample Uneekor Session</button>
+        <button type="button" onclick="togglePhotoModal(true)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded text-xs shadow">
+          + Upload Sim Photos
+        </button>
+        <button type="button" id="seedBtn" onclick="seedDefaultSession()" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 text-sky-200 rounded text-xs border border-sky-800">Load Sample Session</button>
         <button type="button" onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-xs border border-slate-700">Export JSON</button>
         <button type="button" onclick="handleLogout()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-xs border border-rose-800">Log Out</button>
       </div>
     </header>
 
-    <!-- Add Shot / Session Form (All 14 Metrics) -->
+    <!-- PHOTO UPLOAD & PARSE MODAL -->
+    <div id="photoModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-3xl w-full p-5 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-emerald-400">Scan Uneekor Screen Photos</h3>
+            <p class="text-xs text-slate-400">Select one or more photos of your Uneekor shot tables to extract all 14 metrics automatically.</p>
+          </div>
+          <button type="button" onclick="togglePhotoModal(false)" class="text-slate-400 hover:text-white text-sm px-2">✕</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+          <div class="sm:col-span-2">
+            <label class="block text-xs text-slate-400 mb-1">Choose Photos (JPG / PNG / HEIC)</label>
+            <input type="file" id="photoInput" accept="image/*" multiple class="w-full text-xs text-slate-300 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-emerald-400 hover:file:bg-slate-700 bg-slate-950 border border-slate-700 rounded p-1" />
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Club Override (Optional)</label>
+            <select id="photoClubOverride" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-slate-200">
+              <option value="">Auto-detect from screen</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="photoStatus" class="hidden text-xs p-3 rounded border bg-slate-950 border-slate-800 text-sky-300"></div>
+
+        <!-- Parsed Preview Table -->
+        <div id="parsedPreviewWrap" class="hidden flex-1 overflow-auto border border-slate-800 rounded-lg">
+          <table class="w-full text-left text-xs whitespace-nowrap">
+            <thead class="bg-slate-800 text-slate-400 uppercase text-[11px] sticky top-0">
+              <tr>
+                <th class="px-2.5 py-2">Club</th>
+                <th class="px-2.5 py-2">Carry</th>
+                <th class="px-2.5 py-2">Total</th>
+                <th class="px-2.5 py-2">Side</th>
+                <th class="px-2.5 py-2">Smash</th>
+                <th class="px-2.5 py-2">Ball/Club Spd</th>
+                <th class="px-2.5 py-2">Spin (Back/Side)</th>
+                <th class="px-2.5 py-2">Flight</th>
+                <th class="px-2.5 py-2 text-right">Drop</th>
+              </tr>
+            </thead>
+            <tbody id="parsedPreviewBody" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="togglePhotoModal(false)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs">Cancel</button>
+          <button type="button" id="scanPhotosBtn" onclick="processSelectedPhotos()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold rounded text-xs">1. Scan Photos</button>
+          <button type="button" id="saveParsedBtn" onclick="saveParsedShots()" class="hidden px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded text-xs">2. Save to My Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Single Shot / Session Average Form -->
     <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Log Shot or Session Average</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Manual Entry (Single Shot or Session Average)</h2>
         <span class="text-xs text-slate-500">Directional values: negative (-) for Left, positive (+) for Right</span>
       </div>
       <form id="shotForm" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs font-medium text-emerald-300">
-          <option value="Driver">Driver</option>
-          <option value="3 Wood">3 Wood</option>
-          <option value="4 Hybrid">4 Hybrid</option>
-          <option value="4 Iron">4 Iron</option>
-          <option value="5 Iron">5 Iron</option>
-          <option value="6 Iron">6 Iron</option>
-          <option value="7 Iron">7 Iron</option>
-          <option value="8 Iron">8 Iron</option>
-          <option value="9 Iron">9 Iron</option>
-          <option value="PW">Pitching Wedge</option>
-          <option value="SW">Sand Wedge</option>
-          <option value="60° Wedge">60° Wedge</option>
-        </select>
+        <select id="clubSelect" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs font-medium text-emerald-300"></select>
         <input type="number" step="0.1" id="carryInput" placeholder="Carry (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
         <input type="number" step="0.1" id="totalInput" placeholder="Total (m)*" required class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
         <input type="number" step="0.1" id="sideInput" placeholder="Side Dist (-L/+R m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
@@ -184,16 +228,52 @@
   </div>
 
   <script>
-    // 1. PASTE YOUR SUPABASE CREDENTIALS HERE
     const SUPABASE_URL = "https://omvoddwpcmvfodsmdrkw.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_fMXAzhTgv8cWT80-ZjWLAA_jREeCfvq";
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const CLUB_ORDER = [
-      "Driver", "3 Wood", "4 Hybrid",
-      "4 Iron", "5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron",
-      "PW", "SW", "60° Wedge"
+    // Master list covering any bag configuration (only logged clubs appear in each user's table)
+    const ALL_CLUBS = [
+      { value: "Driver", label: "Driver" },
+      { value: "2 Wood", label: "2 Wood / Mini Driver" },
+      { value: "3 Wood", label: "3 Wood" },
+      { value: "4 Wood", label: "4 Wood" },
+      { value: "5 Wood", label: "5 Wood" },
+      { value: "7 Wood", label: "7 Wood" },
+      { value: "2 Hybrid", label: "2 Hybrid" },
+      { value: "3 Hybrid", label: "3 Hybrid" },
+      { value: "4 Hybrid", label: "4 Hybrid" },
+      { value: "5 Hybrid", label: "5 Hybrid" },
+      { value: "6 Hybrid", label: "6 Hybrid" },
+      { value: "2 Iron", label: "2 Iron / Driving Iron" },
+      { value: "3 Iron", label: "3 Iron" },
+      { value: "4 Iron", label: "4 Iron" },
+      { value: "5 Iron", label: "5 Iron" },
+      { value: "6 Iron", label: "6 Iron" },
+      { value: "7 Iron", label: "7 Iron" },
+      { value: "8 Iron", label: "8 Iron" },
+      { value: "9 Iron", label: "9 Iron" },
+      { value: "PW", label: "Pitching Wedge (PW)" },
+      { value: "GW", label: "Gap Wedge (GW)" },
+      { value: "50° Wedge", label: "50° Wedge" },
+      { value: "52° Wedge", label: "52° Wedge" },
+      { value: "54° Wedge", label: "54° Wedge" },
+      { value: "SW", label: "Sand Wedge (SW)" },
+      { value: "56° Wedge", label: "56° Wedge" },
+      { value: "58° Wedge", label: "58° Wedge" },
+      { value: "60° Wedge", label: "60° Wedge (LW)" }
     ];
+    const CLUB_ORDER = ALL_CLUBS.map(c => c.value);
+
+    // Populate dropdowns dynamically from master club list
+    (function initClubDropdowns() {
+      const mainSel = document.getElementById('clubSelect');
+      const overSel = document.getElementById('photoClubOverride');
+      ALL_CLUBS.forEach(c => {
+        mainSel.add(new Option(c.label, c.value));
+        overSel.add(new Option(c.label, c.value));
+      });
+    })();
 
     const SAMPLE_SESSION = [
       { club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, ball_speed: 198.5, club_speed: 137.7, back_spin: 1621, side_spin: -486, launch: 16.3, side_angle: 1.3, descent: 35.9, apex: 25.6, time: 5.8, type: "Hook" },
@@ -273,9 +353,159 @@
 
     let currentUser = null;
     let shots = [];
+    let parsedBatch = [];
     let activeDetailClub = null;
     let gappingChart = null;
     let dispersionChart = null;
+
+    // --- PHOTO SCANNER & EDGE FUNCTION ---
+    function togglePhotoModal(show) {
+      document.getElementById('photoModal').classList.toggle('hidden', !show);
+      if (!show) {
+        parsedBatch = [];
+        document.getElementById('parsedPreviewWrap').classList.add('hidden');
+        document.getElementById('saveParsedBtn').classList.add('hidden');
+        document.getElementById('photoStatus').classList.add('hidden');
+      }
+    }
+
+    function compressImageToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const maxDim = 1600;
+            let w = img.width, h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+              else { w = Math.round((w * maxDim) / h); h = maxDim; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function processSelectedPhotos() {
+      const files = document.getElementById('photoInput').files;
+      if (!files.length) return alert("Select at least one Uneekor photo first.");
+
+      const btn = document.getElementById('scanPhotosBtn');
+      const statusBox = document.getElementById('photoStatus');
+      const overrideClub = document.getElementById('photoClubOverride').value;
+
+      btn.disabled = true;
+      parsedBatch = [];
+      statusBox.classList.remove('hidden');
+
+      try {
+        for (let i = 0; i < files.length; i++) {
+          statusBox.textContent = `Scanning photo ${i + 1} of ${files.length} (${files[i].name})...`;
+          const { base64, mimeType } = await compressImageToBase64(files[i]);
+
+          const { data, error } = await sb.functions.invoke('parse-uneekor', {
+            body: { imageBase64: base64, mimeType, overrideClub }
+          });
+
+          if (error) throw new Error(error.message);
+          if (data?.error) throw new Error(data.error);
+          if (Array.isArray(data?.shots)) {
+            parsedBatch.push(...data.shots);
+          }
+        }
+
+        statusBox.textContent = `Extracted ${parsedBatch.length} shots across ${files.length} photo(s). Review below and click Save.`;
+        renderParsedPreview();
+      } catch (err) {
+        statusBox.textContent = `Scan error: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function renderParsedPreview() {
+      const wrap = document.getElementById('parsedPreviewWrap');
+      const tbody = document.getElementById('parsedPreviewBody');
+      const saveBtn = document.getElementById('saveParsedBtn');
+      tbody.innerHTML = '';
+
+      if (!parsedBatch.length) {
+        wrap.classList.add('hidden');
+        saveBtn.classList.add('hidden');
+        return;
+      }
+
+      parsedBatch.forEach((s, idx) => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="px-2.5 py-1.5 font-semibold text-emerald-400">${s.club}</td>
+            <td class="px-2.5 py-1.5">${Number(s.carry).toFixed(1)} m</td>
+            <td class="px-2.5 py-1.5">${Number(s.total).toFixed(1)} m</td>
+            <td class="px-2.5 py-1.5">${formatDir(s.side, 'm', 1)}</td>
+            <td class="px-2.5 py-1.5">${s.smash ?? '-'}</td>
+            <td class="px-2.5 py-1.5">${s.ball_speed ?? '-'} / ${s.club_speed ?? '-'}</td>
+            <td class="px-2.5 py-1.5">${s.back_spin ?? '-'} / ${formatDir(s.side_spin, '', 0)}</td>
+            <td class="px-2.5 py-1.5">${s.type || 'Straight'}</td>
+            <td class="px-2.5 py-1.5 text-right">
+              <button type="button" onclick="removeParsedRow(${idx})" class="text-rose-400 hover:underline">✕</button>
+            </td>
+          </tr>
+        `;
+      });
+
+      wrap.classList.remove('hidden');
+      saveBtn.classList.remove('hidden');
+    }
+
+    function removeParsedRow(idx) {
+      parsedBatch.splice(idx, 1);
+      renderParsedPreview();
+    }
+
+    async function saveParsedShots() {
+      if (!parsedBatch.length) return;
+      const btn = document.getElementById('saveParsedBtn');
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      const payload = parsedBatch.map(s => ({
+        user_id: currentUser.id,
+        club: CLUB_ORDER.includes(s.club) ? s.club : "Driver",
+        carry: Number(s.carry),
+        total: Number(s.total),
+        side: Number(s.side ?? 0),
+        smash: s.smash !== null ? Number(s.smash) : null,
+        ball_speed: s.ball_speed !== null ? Number(s.ball_speed) : null,
+        club_speed: s.club_speed !== null ? Number(s.club_speed) : null,
+        back_spin: s.back_spin !== null ? Number(s.back_spin) : null,
+        side_spin: s.side_spin !== null ? Number(s.side_spin) : null,
+        launch: s.launch !== null ? Number(s.launch) : null,
+        side_angle: s.side_angle !== null ? Number(s.side_angle) : null,
+        descent: s.descent !== null ? Number(s.descent) : null,
+        apex: s.apex !== null ? Number(s.apex) : null,
+        time: s.time !== null ? Number(s.time) : null,
+        type: s.type || "Straight"
+      }));
+
+      const { error } = await sb.from('golf_shots').insert(payload);
+      btn.disabled = false;
+      btn.textContent = "2. Save to My Bag";
+      if (error) return alert("Save failed: " + error.message);
+
+      document.getElementById('photoInput').value = '';
+      togglePhotoModal(false);
+      await fetchShots();
+    }
 
     // --- AUTHENTICATION ---
     function showAuthAlert(msg, isError = true) {
@@ -347,7 +577,7 @@
       const payload = SAMPLE_SESSION.map(s => ({ ...s, user_id: currentUser.id }));
       const { error } = await sb.from('golf_shots').insert(payload);
       btn.disabled = false;
-      btn.textContent = "Load Sample Uneekor Session";
+      btn.textContent = "Load Sample Session";
       if (error) return alert("Import failed: " + error.message);
       await fetchShots();
     }
@@ -575,14 +805,15 @@
       dispersionChart = new Chart(document.getElementById('dispersionChart'), {
         type: 'scatter',
         data: {
-          datasets: CLUB_ORDER.map((club, idx) => {
-            const pts = getFilteredShots(club).map(s => ({ x: Number(s.side), y: Number(s.carry) }));
+          datasets: activeClubs.map((clubObj, idx) => {
+            const pts = getFilteredShots(clubObj.club).map(s => ({ x: Number(s.side), y: Number(s.carry) }));
             const colors = [
               '#f43f5e', '#f97316', '#eab308', '#84cc16', '#22c55e', '#10b981',
-              '#06b6d4', '#0ea5e9', '#3b82f6', '#8b5cf6', '#d946ef', '#ec4899'
+              '#06b6d4', '#0ea5e9', '#3b82f6', '#8b5cf6', '#d946ef', '#ec4899',
+              '#fb7185', '#fbbf24', '#34d399', '#38bdf8'
             ];
-            return { label: club, data: pts, backgroundColor: colors[idx % colors.length], pointRadius: 4 };
-          }).filter(ds => ds.data.length > 0)
+            return { label: clubObj.club, data: pts, backgroundColor: colors[idx % colors.length], pointRadius: 4 };
+          })
         },
         options: {
           scales: {
