@@ -6,27 +6,52 @@
   <title>Bag Gapping & Sim Tracker</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
-  <div class="max-w-[1400px] mx-auto space-y-6">
+
+  <!-- AUTH SCREEN (Shown when logged out) -->
+  <div id="authView" class="max-w-md mx-auto mt-16 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
+    <div class="text-center">
+      <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
+      <p class="text-xs text-slate-400 mt-1">Sign in to access your personal golf bag & Uneekor stats</p>
+    </div>
+
+    <div id="authAlert" class="hidden text-xs p-3 rounded border"></div>
+
+    <form id="authForm" class="space-y-3">
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Email</label>
+        <input type="email" id="authEmail" required placeholder="you@example.com" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Password</label>
+        <input type="password" id="authPassword" required minlength="6" placeholder="Min 6 characters" class="w-full bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm" />
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button type="submit" id="loginBtn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded py-2 text-sm">Log In</button>
+        <button type="button" onclick="handleSignUp()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded py-2 text-sm border border-slate-700">Create Account</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- MAIN APP VIEW (Shown when logged in) -->
+  <div id="appView" class="hidden max-w-[1400px] mx-auto space-y-6">
     
     <!-- Header -->
     <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
       <div>
         <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
-        <p class="text-sm text-slate-400">Full 14-Metric Uneekor Session Matrix (Metres / km/h / rpm)</p>
+        <p class="text-xs text-slate-400">Signed in as <span id="userEmailLabel" class="text-slate-200 font-medium"></span></p>
       </div>
       <div class="flex flex-wrap items-center gap-2">
-        <label class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 rounded text-sm border border-slate-700 cursor-pointer select-none">
+        <label class="flex items-center gap-2 px-3 py-1.5 bg-slate-900 rounded text-xs border border-slate-700 cursor-pointer select-none">
           <input type="checkbox" id="outlierToggle" onchange="renderTableAndCharts()" class="accent-emerald-500 w-4 h-4" />
           <span>Filter Mishits (Stock Shots)</span>
         </label>
-        <button type="button" onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700">Export JSON</button>
-        <label class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-sm border border-slate-700 cursor-pointer">
-          Import JSON
-          <input type="file" id="importFile" class="hidden" onchange="importData(event)" />
-        </label>
-        <button type="button" onclick="resetDefault()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-sm border border-rose-800">Reset Session</button>
+        <button type="button" id="seedBtn" onclick="seedDefaultSession()" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 text-sky-200 rounded text-xs border border-sky-800">Load Sample Uneekor Session</button>
+        <button type="button" onclick="exportData()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded text-xs border border-slate-700">Export JSON</button>
+        <button type="button" onclick="handleLogout()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-200 rounded text-xs border border-rose-800">Log Out</button>
       </div>
     </header>
 
@@ -76,7 +101,7 @@
           <option value="Pull Hook">Pull Hook</option>
           <option value="Pull Slice">Pull Slice</option>
         </select>
-        <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
+        <button type="submit" id="addShotBtn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
       </form>
     </section>
 
@@ -159,122 +184,172 @@
   </div>
 
   <script>
+    // 1. PASTE YOUR SUPABASE CREDENTIALS HERE
+    const SUPABASE_URL = "https://omvoddwpcmvfodsmdrkw.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_fMXAzhTgv8cWT80-ZjWLAA_jREeCfvq";
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const CLUB_ORDER = [
       "Driver", "3 Wood", "4 Hybrid",
       "4 Iron", "5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron",
       "PW", "SW", "60° Wedge"
     ];
-    
-    // Complete 14-metric dataset extracted from your Uneekor session screens
-    const DEFAULT_SHOTS = [
-      // Driver (13 shots)
-      { id: 1, club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, ballSpeed: 198.5, clubSpeed: 137.7, backSpin: 1621, sideSpin: -486, launch: 16.3, sideAngle: 1.3, descent: 35.9, apex: 25.6, time: 5.8, type: "Hook" },
-      { id: 2, club: "Driver", carry: 189.1, total: 203.3, side: -33.4, smash: 1.50, ballSpeed: 211.7, clubSpeed: 141.0, backSpin: 1988, sideSpin: -245, launch: 10.8, sideAngle: -7.0, descent: 25.3, apex: 16.0, time: 5.1, type: "Draw" },
-      { id: 3, club: "Driver", carry: 185.2, total: 199.2, side: -0.1, smash: 1.50, ballSpeed: 217.9, clubSpeed: 144.8, backSpin: 2763, sideSpin: 125, launch: 7.7, sideAngle: -1.1, descent: 26.0, apex: 14.1, time: 5.1, type: "Straight" },
-      { id: 4, club: "Driver", carry: 191.0, total: 203.5, side: 25.9, smash: 1.50, ballSpeed: 219.7, clubSpeed: 146.3, backSpin: 3293, sideSpin: 1101, launch: 11.6, sideAngle: -1.5, descent: 36.6, apex: 22.9, time: 5.9, type: "Slice" },
-      { id: 5, club: "Driver", carry: 193.3, total: 206.6, side: -45.5, smash: 1.49, ballSpeed: 210.9, clubSpeed: 140.9, backSpin: 2130, sideSpin: -341, launch: 12.7, sideAngle: -9.0, descent: 31.1, apex: 20.1, time: 5.5, type: "Pull Hook" },
-      { id: 6, club: "Driver", carry: 201.0, total: 215.6, side: -23.6, smash: 1.50, ballSpeed: 220.1, clubSpeed: 146.5, backSpin: 2440, sideSpin: -88, launch: 10.7, sideAngle: -5.5, descent: 31.0, apex: 19.8, time: 5.7, type: "Straight" },
-      { id: 7, club: "Driver", carry: 176.0, total: 187.4, side: 38.5, smash: 1.50, ballSpeed: 215.6, clubSpeed: 143.7, backSpin: 3563, sideSpin: 1516, launch: 9.4, sideAngle: 1.4, descent: 32.1, apex: 17.3, time: 5.3, type: "Slice" },
-      { id: 8, club: "Driver", carry: 191.3, total: 205.0, side: 31.2, smash: 1.50, ballSpeed: 215.2, clubSpeed: 143.5, backSpin: 2776, sideSpin: 835, launch: 12.2, sideAngle: 1.4, descent: 34.7, apex: 21.9, time: 5.8, type: "Slice" },
-      { id: 9, club: "Driver", carry: 199.7, total: 214.0, side: -35.9, smash: 1.50, ballSpeed: 222.1, clubSpeed: 147.6, backSpin: 1419, sideSpin: -612, launch: 10.1, sideAngle: -3.5, descent: 20.7, apex: 12.6, time: 4.5, type: "Hook" },
-      { id: 10, club: "Driver", carry: 169.8, total: 180.2, side: 55.4, smash: 1.50, ballSpeed: 210.7, clubSpeed: 140.7, backSpin: 3518, sideSpin: 2138, launch: 12.1, sideAngle: 4.0, descent: 35.6, apex: 19.4, time: 5.3, type: "Slice" },
-      { id: 11, club: "Driver", carry: 170.7, total: 185.0, side: 15.0, smash: 1.44, ballSpeed: 200.9, clubSpeed: 139.3, backSpin: 2134, sideSpin: 324, launch: 10.3, sideAngle: 1.7, descent: 25.1, apex: 13.7, time: 4.6, type: "Fade" },
-      { id: 12, club: "Driver", carry: 168.7, total: 181.8, side: 42.7, smash: 1.49, ballSpeed: 200.1, clubSpeed: 134.0, backSpin: 3540, sideSpin: 1929, launch: 17.3, sideAngle: 2.5, descent: 43.3, apex: 25.2, time: 6.0, type: "Slice" },
-      { id: 13, club: "Driver", carry: 182.7, total: 196.6, side: -17.2, smash: 1.50, ballSpeed: 204.6, clubSpeed: 136.5, backSpin: 1483, sideSpin: -89, launch: 12.8, sideAngle: -3.9, descent: 24.7, apex: 15.6, time: 4.9, type: "Draw" },
 
-      // 3 Wood (13 shots)
-      { id: 14, club: "3 Wood", carry: 166.7, total: 180.0, side: 44.2, smash: 1.43, ballSpeed: 193.7, clubSpeed: 135.0, backSpin: 2515, sideSpin: 489, launch: 12.7, sideAngle: 10.0, descent: 30.6, apex: 17.4, time: 5.1, type: "Push Slice" },
-      { id: 15, club: "3 Wood", carry: 170.1, total: 183.0, side: -1.7, smash: 1.44, ballSpeed: 203.3, clubSpeed: 141.0, backSpin: 2790, sideSpin: 545, launch: 9.4, sideAngle: -5.0, descent: 27.0, apex: 14.3, time: 4.9, type: "Slice" },
-      { id: 16, club: "3 Wood", carry: 173.1, total: 189.1, side: 8.2, smash: 1.48, ballSpeed: 190.8, clubSpeed: 128.5, backSpin: 1709, sideSpin: 86, launch: 15.1, sideAngle: 1.6, descent: 30.1, apex: 18.7, time: 5.1, type: "Straight" },
-      { id: 17, club: "3 Wood", carry: 188.5, total: 202.7, side: 24.2, smash: 1.50, ballSpeed: 207.3, clubSpeed: 138.2, backSpin: 2578, sideSpin: 216, launch: 13.2, sideAngle: 4.9, descent: 34.7, apex: 22.2, time: 5.8, type: "Fade" },
-      { id: 18, club: "3 Wood", carry: 134.6, total: 148.9, side: 19.6, smash: 1.40, ballSpeed: 165.2, clubSpeed: 118.4, backSpin: 1951, sideSpin: -186, launch: 16.6, sideAngle: 9.4, descent: 26.8, apex: 13.4, time: 4.2, type: "Push Draw" },
-      { id: 19, club: "3 Wood", carry: 163.3, total: 173.6, side: 34.0, smash: 1.48, ballSpeed: 207.6, clubSpeed: 140.1, backSpin: 4007, sideSpin: 1921, launch: 8.6, sideAngle: -0.3, descent: 32.1, apex: 16.2, time: 5.1, type: "Slice" },
-      { id: 20, club: "3 Wood", carry: 179.1, total: 193.5, side: -28.0, smash: 1.50, ballSpeed: 213.2, clubSpeed: 142.0, backSpin: 2123, sideSpin: -339, launch: 8.4, sideAngle: -4.1, descent: 22.2, apex: 12.1, time: 4.7, type: "Hook" },
-      { id: 21, club: "3 Wood", carry: 118.1, total: 130.4, side: -10.2, smash: 1.41, ballSpeed: 197.9, clubSpeed: 140.0, backSpin: 2137, sideSpin: 562, launch: 3.9, sideAngle: -8.5, descent: 9.0, apex: 3.3, time: 2.8, type: "Pull Slice" },
-      { id: 22, club: "3 Wood", carry: 170.1, total: 182.4, side: 2.1, smash: 1.47, ballSpeed: 207.3, clubSpeed: 141.1, backSpin: 2832, sideSpin: 337, launch: 7.8, sideAngle: -2.1, descent: 24.3, apex: 12.4, time: 4.8, type: "Fade" },
-      { id: 23, club: "3 Wood", carry: 132.9, total: 146.7, side: -20.4, smash: 1.50, ballSpeed: 199.1, clubSpeed: 133.0, backSpin: 1948, sideSpin: -1796, launch: 6.7, sideAngle: 3.9, descent: 17.5, apex: 7.7, time: 3.4, type: "Hook" },
-      { id: 24, club: "3 Wood", carry: 197.4, total: 212.3, side: -15.2, smash: 1.50, ballSpeed: 211.3, clubSpeed: 141.2, backSpin: 2460, sideSpin: -439, launch: 15.6, sideAngle: 0.9, descent: 38.7, apex: 27.5, time: 6.2, type: "Hook" },
-      { id: 25, club: "3 Wood", carry: 188.6, total: 201.3, side: 4.6, smash: 1.50, ballSpeed: 218.4, clubSpeed: 145.4, backSpin: 2964, sideSpin: 203, launch: 8.3, sideAngle: -0.4, descent: 26.6, apex: 15.0, time: 5.3, type: "Fade" },
-      { id: 26, club: "3 Wood", carry: 140.3, total: 157.2, side: -43.0, smash: 1.49, ballSpeed: 192.4, clubSpeed: 129.5, backSpin: 1109, sideSpin: -1010, launch: 12.1, sideAngle: -6.4, descent: 19.7, apex: 10.0, time: 3.6, type: "Hook" },
-
-      // 4 Hybrid (13 shots)
-      { id: 27, club: "4 Hybrid", carry: 173.6, total: 184.7, side: 5.0, smash: 1.49, ballSpeed: 202.4, clubSpeed: 135.5, backSpin: 3895, sideSpin: 596, launch: 14.2, sideAngle: -2.8, descent: 40.2, apex: 25.0, time: 5.9, type: "Fade" },
-      { id: 28, club: "4 Hybrid", carry: 176.7, total: 191.5, side: -5.7, smash: 1.50, ballSpeed: 205.6, clubSpeed: 137.5, backSpin: 3975, sideSpin: -79, launch: 12.1, sideAngle: -1.2, descent: 37.6, apex: 22.4, time: 5.8, type: "Straight" },
-      { id: 29, club: "4 Hybrid", carry: 181.6, total: 195.3, side: -4.9, smash: 1.49, ballSpeed: 201.4, clubSpeed: 134.9, backSpin: 2758, sideSpin: 50, launch: 14.2, sideAngle: -2.0, descent: 36.3, apex: 23.0, time: 5.8, type: "Straight" },
-      { id: 30, club: "4 Hybrid", carry: 181.9, total: 194.7, side: -12.4, smash: 1.50, ballSpeed: 204.4, clubSpeed: 136.7, backSpin: 3119, sideSpin: -195, launch: 13.7, sideAngle: -2.0, descent: 37.4, apex: 23.7, time: 5.9, type: "Draw" },
-      { id: 31, club: "4 Hybrid", carry: 181.2, total: 194.7, side: -21.3, smash: 1.49, ballSpeed: 201.4, clubSpeed: 134.8, backSpin: 2737, sideSpin: -415, launch: 14.7, sideAngle: -2.6, descent: 36.8, apex: 23.7, time: 5.8, type: "Draw" },
-      { id: 32, club: "4 Hybrid", carry: 183.6, total: 196.4, side: -11.5, smash: 1.50, ballSpeed: 205.9, clubSpeed: 137.7, backSpin: 3188, sideSpin: -43, launch: 14.0, sideAngle: -3.0, descent: 38.3, apex: 24.6, time: 6.0, type: "Straight" },
-      { id: 33, club: "4 Hybrid", carry: 169.5, total: 182.4, side: 9.5, smash: 1.48, ballSpeed: 191.3, clubSpeed: 129.0, backSpin: 2966, sideSpin: -1, launch: 16.3, sideAngle: 3.1, descent: 38.7, apex: 24.2, time: 5.8, type: "Straight" },
-      { id: 34, club: "4 Hybrid", carry: 179.3, total: 192.2, side: -13.7, smash: 1.49, ballSpeed: 201.4, clubSpeed: 134.8, backSpin: 2973, sideSpin: -127, launch: 14.0, sideAngle: -3.1, descent: 36.7, apex: 23.1, time: 5.8, type: "Straight" },
-      { id: 35, club: "4 Hybrid", carry: 154.7, total: 166.3, side: -4.3, smash: 1.41, ballSpeed: 189.2, clubSpeed: 134.3, backSpin: 3728, sideSpin: 718, launch: 12.6, sideAngle: -6.3, descent: 33.3, apex: 17.2, time: 5.1, type: "Slice" },
-      { id: 36, club: "4 Hybrid", carry: 175.7, total: 188.9, side: -29.4, smash: 1.49, ballSpeed: 200.8, clubSpeed: 134.4, backSpin: 2718, sideSpin: -730, launch: 13.3, sideAngle: -2.6, descent: 33.9, apex: 20.2, time: 5.5, type: "Hook" },
-      { id: 37, club: "4 Hybrid", carry: 143.7, total: 157.1, side: -30.5, smash: 1.49, ballSpeed: 190.8, clubSpeed: 127.7, backSpin: 2079, sideSpin: -1355, launch: 10.6, sideAngle: -0.8, descent: 22.8, apex: 10.9, time: 4.0, type: "Hook" },
-      { id: 38, club: "4 Hybrid", carry: 129.6, total: 138.9, side: 27.2, smash: 1.28, ballSpeed: 162.7, clubSpeed: 126.8, backSpin: 4265, sideSpin: 785, launch: 22.7, sideAngle: 7.0, descent: 44.2, apex: 24.7, time: 5.4, type: "Slice" },
-      { id: 39, club: "4 Hybrid", carry: 158.1, total: 191.3, side: -7.3, smash: 1.50, ballSpeed: 202.5, clubSpeed: 135.3, backSpin: 3668, sideSpin: -57, launch: 6.5, sideAngle: -2.1, descent: 24.5, apex: 11.1, time: 4.6, type: "Straight" },
-
-      // 4 Iron (13 shots)
-      { id: 40, club: "4 Iron", carry: 153.2, total: 163.6, side: 8.3, smash: 1.48, ballSpeed: 184.5, clubSpeed: 124.7, backSpin: 3990, sideSpin: 577, launch: 15.5, sideAngle: -0.8, descent: 38.9, apex: 21.8, time: 5.5, type: "Fade" },
-      { id: 41, club: "4 Iron", carry: 165.7, total: 177.8, side: -14.1, smash: 1.49, ballSpeed: 190.8, clubSpeed: 128.3, backSpin: 3219, sideSpin: -68, launch: 14.9, sideAngle: -4.0, descent: 37.1, apex: 21.9, time: 5.6, type: "Straight" },
-      { id: 42, club: "4 Iron", carry: 153.8, total: 164.5, side: 2.5, smash: 1.49, ballSpeed: 183.1, clubSpeed: 123.1, backSpin: 3841, sideSpin: 169, launch: 16.6, sideAngle: -0.5, descent: 40.0, apex: 23.1, time: 5.6, type: "Straight" },
-      { id: 43, club: "4 Iron", carry: 135.5, total: 148.3, side: 18.6, smash: 1.42, ballSpeed: 178.1, clubSpeed: 125.5, backSpin: 3205, sideSpin: 1161, launch: 11.2, sideAngle: 0.1, descent: 26.8, apex: 12.0, time: 4.3, type: "Slice" },
-      { id: 44, club: "4 Iron", carry: 156.3, total: 165.9, side: 20.6, smash: 1.48, ballSpeed: 186.2, clubSpeed: 125.9, backSpin: 3839, sideSpin: 892, launch: 17.3, sideAngle: 1.3, descent: 41.5, apex: 24.8, time: 5.7, type: "Slice" },
-      { id: 45, club: "4 Iron", carry: 153.3, total: 163.0, side: 20.4, smash: 1.49, ballSpeed: 189.1, clubSpeed: 127.0, backSpin: 3930, sideSpin: 908, launch: 17.8, sideAngle: 0.9, descent: 42.3, apex: 26.0, time: 5.8, type: "Slice" },
-      { id: 46, club: "4 Iron", carry: 152.4, total: 162.8, side: 20.9, smash: 1.49, ballSpeed: 183.5, clubSpeed: 124.2, backSpin: 3943, sideSpin: 695, launch: 16.6, sideAngle: 1.7, descent: 40.5, apex: 23.2, time: 5.6, type: "Slice" },
-      { id: 47, club: "4 Iron", carry: 149.8, total: 160.5, side: -15.3, smash: 1.44, ballSpeed: 180.6, clubSpeed: 125.3, backSpin: 3663, sideSpin: -430, launch: 15.2, sideAngle: -2.7, descent: 36.7, apex: 19.8, time: 5.3, type: "Draw" },
-      { id: 48, club: "4 Iron", carry: 153.3, total: 164.2, side: 1.1, smash: 1.49, ballSpeed: 182.6, clubSpeed: 123.1, backSpin: 3665, sideSpin: 112, launch: 15.4, sideAngle: -0.5, descent: 37.8, apex: 21.0, time: 5.4, type: "Straight" },
-      { id: 49, club: "4 Iron", carry: 153.7, total: 163.8, side: 34.9, smash: 1.48, ballSpeed: 186.4, clubSpeed: 125.6, backSpin: 4223, sideSpin: 1289, launch: 18.5, sideAngle: 4.3, descent: 43.6, apex: 26.5, time: 5.8, type: "Slice" },
-      { id: 50, club: "4 Iron", carry: 142.4, total: 153.4, side: -21.7, smash: 1.41, ballSpeed: 175.4, clubSpeed: 124.0, backSpin: 3274, sideSpin: -833, launch: 14.6, sideAngle: -2.6, descent: 33.6, apex: 17.0, time: 4.9, type: "Hook" },
-      { id: 51, club: "4 Iron", carry: 144.3, total: 156.3, side: -30.8, smash: 1.48, ballSpeed: 179.2, clubSpeed: 120.9, backSpin: 2890, sideSpin: -1174, launch: 14.2, sideAngle: -3.6, descent: 31.8, apex: 15.9, time: 4.7, type: "Hook" },
-      { id: 52, club: "4 Iron", carry: 140.0, total: 152.3, side: -17.6, smash: 1.41, ballSpeed: 171.2, clubSpeed: 121.3, backSpin: 2576, sideSpin: -851, launch: 16.0, sideAngle: 0.0, descent: 32.5, apex: 16.5, time: 4.7, type: "Hook" },
-
-      // 6 Iron (5 shots)
-      { id: 53, club: "6 Iron", carry: 153.1, total: 162.3, side: -3.8, smash: 1.48, ballSpeed: 185.8, clubSpeed: 125.3, backSpin: 4840, sideSpin: 63, launch: 18.8, sideAngle: -1.7, descent: 45.1, apex: 28.1, time: 6.0, type: "Straight" },
-      { id: 54, club: "6 Iron", carry: 148.3, total: 158.3, side: -38.8, smash: 1.48, ballSpeed: 179.2, clubSpeed: 121.1, backSpin: 3574, sideSpin: -1095, launch: 17.9, sideAngle: -6.8, descent: 40.0, apex: 22.6, time: 5.4, type: "Hook" },
-      { id: 55, club: "6 Iron", carry: 143.8, total: 152.3, side: 4.6, smash: 1.43, ballSpeed: 178.3, clubSpeed: 125.0, backSpin: 5094, sideSpin: 416, launch: 18.2, sideAngle: -0.5, descent: 43.4, apex: 24.7, time: 5.7, type: "Fade" },
-      { id: 56, club: "6 Iron", carry: 130.5, total: 141.1, side: 1.3, smash: 1.41, ballSpeed: 176.6, clubSpeed: 125.6, backSpin: 3176, sideSpin: 426, launch: 8.8, sideAngle: -2.2, descent: 22.1, apex: 9.2, time: 4.0, type: "Fade" },
-      { id: 57, club: "6 Iron", carry: 154.9, total: 165.2, side: -13.4, smash: 1.47, ballSpeed: 184.5, clubSpeed: 125.7, backSpin: 4155, sideSpin: -134, launch: 18.0, sideAngle: -3.9, descent: 42.9, apex: 26.1, time: 5.8, type: "Straight" },
-
-      // 8 Iron (6 shots)
-      { id: 58, club: "8 Iron", carry: 134.2, total: 140.6, side: -13.1, smash: 1.36, ballSpeed: 173.2, clubSpeed: 127.7, backSpin: 6397, sideSpin: -164, launch: 23.0, sideAngle: -4.6, descent: 49.0, apex: 30.0, time: 6.0, type: "Straight" },
-      { id: 59, club: "8 Iron", carry: 66.2, total: 107.7, side: -6.1, smash: 1.34, ballSpeed: 133.9, clubSpeed: 99.9, backSpin: 3765, sideSpin: -374, launch: 25.7, sideAngle: -1.5, descent: 41.4, apex: 19.2, time: 4.5, type: "Draw" },
-      { id: 60, club: "8 Iron", carry: 121.6, total: 127.3, side: -3.3, smash: 1.32, ballSpeed: 160.9, clubSpeed: 121.9, backSpin: 6675, sideSpin: -148, launch: 23.7, sideAngle: -0.9, descent: 47.6, apex: 26.4, time: 5.6, type: "Straight" },
-      { id: 61, club: "8 Iron", carry: 114.1, total: 118.9, side: 10.6, smash: 1.26, ballSpeed: 154.2, clubSpeed: 122.2, backSpin: 7150, sideSpin: 1087, launch: 22.6, sideAngle: 1.4, descent: 45.5, apex: 22.7, time: 5.2, type: "Fade" },
-      { id: 62, club: "8 Iron", carry: 122.2, total: 127.9, side: 3.6, smash: 1.35, ballSpeed: 161.0, clubSpeed: 119.5, backSpin: 6633, sideSpin: 377, launch: 23.2, sideAngle: 0.2, descent: 47.2, apex: 25.8, time: 5.5, type: "Fade" },
-      { id: 63, club: "8 Iron", carry: 127.6, total: 134.1, side: -10.4, smash: 1.37, ballSpeed: 166.5, clubSpeed: 122.0, backSpin: 6349, sideSpin: -299, launch: 23.3, sideAngle: -3.3, descent: 48.0, apex: 27.6, time: 5.7, type: "Straight" },
-
-      // Pitching Wedge (6 shots)
-      { id: 64, club: "PW", carry: 101.1, total: 105.6, side: -3.2, smash: 1.36, ballSpeed: 141.8, clubSpeed: 104.2, backSpin: 6871, sideSpin: 78, launch: 30.4, sideAngle: -2.1, descent: 50.6, apex: 26.4, time: 5.3, type: "Straight" },
-      { id: 65, club: "PW", carry: 97.6, total: 100.7, side: 1.7, smash: 1.25, ballSpeed: 139.5, clubSpeed: 111.6, backSpin: 8195, sideSpin: 340, launch: 28.6, sideAngle: -0.1, descent: 49.3, apex: 24.0, time: 5.1, type: "Straight" },
-      { id: 66, club: "PW", carry: 94.7, total: 97.5, side: 5.0, smash: 1.29, ballSpeed: 137.5, clubSpeed: 106.8, backSpin: 8090, sideSpin: 1301, launch: 31.3, sideAngle: -0.6, descent: 51.4, apex: 26.3, time: 5.2, type: "Slice" },
-      { id: 67, club: "PW", carry: 100.9, total: 104.2, side: -3.6, smash: 1.21, ballSpeed: 142.9, clubSpeed: 118.6, backSpin: 7929, sideSpin: 401, launch: 29.0, sideAngle: -3.3, descent: 50.3, apex: 25.5, time: 5.3, type: "Straight" },
-      { id: 68, club: "PW", carry: 88.1, total: 91.3, side: 9.3, smash: 1.12, ballSpeed: 128.3, clubSpeed: 114.6, backSpin: 7604, sideSpin: 1535, launch: 28.8, sideAngle: 1.7, descent: 48.6, apex: 19.5, time: 4.5, type: "Slice" },
-      { id: 69, club: "PW", carry: 97.2, total: 100.6, side: 0.8, smash: 1.15, ballSpeed: 137.5, clubSpeed: 120.1, backSpin: 7009, sideSpin: 59, launch: 27.4, sideAngle: 0.3, descent: 47.7, apex: 22.1, time: 5.0, type: "Straight" },
-
-      // 60° Wedge (4 shots)
-      { id: 70, club: "60° Wedge", carry: 61.6, total: 66.4, side: -1.6, smash: 1.02, ballSpeed: 103.8, clubSpeed: 101.7, backSpin: 4606, sideSpin: 255, launch: 44.1, sideAngle: -2.2, descent: 55.3, apex: 21.0, time: 4.4, type: "Fade" },
-      { id: 71, club: "60° Wedge", carry: 54.2, total: 58.5, side: -0.4, smash: 1.00, ballSpeed: 99.6, clubSpeed: 99.9, backSpin: 4424, sideSpin: -69, launch: 43.2, sideAngle: -0.2, descent: 55.9, apex: 19.2, time: 4.2, type: "Straight" },
-      { id: 72, club: "60° Wedge", carry: 60.5, total: 64.8, side: -2.6, smash: 1.05, ballSpeed: 103.6, clubSpeed: 99.0, backSpin: 4902, sideSpin: -39, launch: 44.6, sideAngle: -2.3, descent: 55.6, apex: 21.1, time: 4.4, type: "Straight" },
-      { id: 73, club: "60° Wedge", carry: 76.3, total: 78.4, side: -1.6, smash: 1.03, ballSpeed: 116.8, clubSpeed: 113.9, backSpin: 8134, sideSpin: 827, launch: 31.1, sideAngle: -3.2, descent: 47.4, apex: 17.9, time: 4.4, type: "Fade" }
+    const SAMPLE_SESSION = [
+      { club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, ball_speed: 198.5, club_speed: 137.7, back_spin: 1621, side_spin: -486, launch: 16.3, side_angle: 1.3, descent: 35.9, apex: 25.6, time: 5.8, type: "Hook" },
+      { club: "Driver", carry: 189.1, total: 203.3, side: -33.4, smash: 1.50, ball_speed: 211.7, club_speed: 141.0, back_spin: 1988, side_spin: -245, launch: 10.8, side_angle: -7.0, descent: 25.3, apex: 16.0, time: 5.1, type: "Draw" },
+      { club: "Driver", carry: 185.2, total: 199.2, side: -0.1, smash: 1.50, ball_speed: 217.9, club_speed: 144.8, back_spin: 2763, side_spin: 125, launch: 7.7, side_angle: -1.1, descent: 26.0, apex: 14.1, time: 5.1, type: "Straight" },
+      { club: "Driver", carry: 191.0, total: 203.5, side: 25.9, smash: 1.50, ball_speed: 219.7, club_speed: 146.3, back_spin: 3293, side_spin: 1101, launch: 11.6, side_angle: -1.5, descent: 36.6, apex: 22.9, time: 5.9, type: "Slice" },
+      { club: "Driver", carry: 193.3, total: 206.6, side: -45.5, smash: 1.49, ball_speed: 210.9, club_speed: 140.9, back_spin: 2130, side_spin: -341, launch: 12.7, side_angle: -9.0, descent: 31.1, apex: 20.1, time: 5.5, type: "Pull Hook" },
+      { club: "Driver", carry: 201.0, total: 215.6, side: -23.6, smash: 1.50, ball_speed: 220.1, club_speed: 146.5, back_spin: 2440, side_spin: -88, launch: 10.7, side_angle: -5.5, descent: 31.0, apex: 19.8, time: 5.7, type: "Straight" },
+      { club: "Driver", carry: 176.0, total: 187.4, side: 38.5, smash: 1.50, ball_speed: 215.6, club_speed: 143.7, back_spin: 3563, side_spin: 1516, launch: 9.4, side_angle: 1.4, descent: 32.1, apex: 17.3, time: 5.3, type: "Slice" },
+      { club: "Driver", carry: 191.3, total: 205.0, side: 31.2, smash: 1.50, ball_speed: 215.2, club_speed: 143.5, back_spin: 2776, side_spin: 835, launch: 12.2, side_angle: 1.4, descent: 34.7, apex: 21.9, time: 5.8, type: "Slice" },
+      { club: "Driver", carry: 199.7, total: 214.0, side: -35.9, smash: 1.50, ball_speed: 222.1, club_speed: 147.6, back_spin: 1419, side_spin: -612, launch: 10.1, side_angle: -3.5, descent: 20.7, apex: 12.6, time: 4.5, type: "Hook" },
+      { club: "Driver", carry: 169.8, total: 180.2, side: 55.4, smash: 1.50, ball_speed: 210.7, club_speed: 140.7, back_spin: 3518, side_spin: 2138, launch: 12.1, side_angle: 4.0, descent: 35.6, apex: 19.4, time: 5.3, type: "Slice" },
+      { club: "Driver", carry: 170.7, total: 185.0, side: 15.0, smash: 1.44, ball_speed: 200.9, club_speed: 139.3, back_spin: 2134, side_spin: 324, launch: 10.3, side_angle: 1.7, descent: 25.1, apex: 13.7, time: 4.6, type: "Fade" },
+      { club: "Driver", carry: 168.7, total: 181.8, side: 42.7, smash: 1.49, ball_speed: 200.1, club_speed: 134.0, back_spin: 3540, side_spin: 1929, launch: 17.3, side_angle: 2.5, descent: 43.3, apex: 25.2, time: 6.0, type: "Slice" },
+      { club: "Driver", carry: 182.7, total: 196.6, side: -17.2, smash: 1.50, ball_speed: 204.6, club_speed: 136.5, back_spin: 1483, side_spin: -89, launch: 12.8, side_angle: -3.9, descent: 24.7, apex: 15.6, time: 4.9, type: "Draw" },
+      { club: "3 Wood", carry: 166.7, total: 180.0, side: 44.2, smash: 1.43, ball_speed: 193.7, club_speed: 135.0, back_spin: 2515, side_spin: 489, launch: 12.7, side_angle: 10.0, descent: 30.6, apex: 17.4, time: 5.1, type: "Push Slice" },
+      { club: "3 Wood", carry: 170.1, total: 183.0, side: -1.7, smash: 1.44, ball_speed: 203.3, club_speed: 141.0, back_spin: 2790, side_spin: 545, launch: 9.4, side_angle: -5.0, descent: 27.0, apex: 14.3, time: 4.9, type: "Slice" },
+      { club: "3 Wood", carry: 173.1, total: 189.1, side: 8.2, smash: 1.48, ball_speed: 190.8, club_speed: 128.5, back_spin: 1709, side_spin: 86, launch: 15.1, side_angle: 1.6, descent: 30.1, apex: 18.7, time: 5.1, type: "Straight" },
+      { club: "3 Wood", carry: 188.5, total: 202.7, side: 24.2, smash: 1.50, ball_speed: 207.3, club_speed: 138.2, back_spin: 2578, side_spin: 216, launch: 13.2, side_angle: 4.9, descent: 34.7, apex: 22.2, time: 5.8, type: "Fade" },
+      { club: "3 Wood", carry: 134.6, total: 148.9, side: 19.6, smash: 1.40, ball_speed: 165.2, club_speed: 118.4, back_spin: 1951, side_spin: -186, launch: 16.6, side_angle: 9.4, descent: 26.8, apex: 13.4, time: 4.2, type: "Push Draw" },
+      { club: "3 Wood", carry: 163.3, total: 173.6, side: 34.0, smash: 1.48, ball_speed: 207.6, club_speed: 140.1, back_spin: 4007, side_spin: 1921, launch: 8.6, side_angle: -0.3, descent: 32.1, apex: 16.2, time: 5.1, type: "Slice" },
+      { club: "3 Wood", carry: 179.1, total: 193.5, side: -28.0, smash: 1.50, ball_speed: 213.2, club_speed: 142.0, back_spin: 2123, side_spin: -339, launch: 8.4, side_angle: -4.1, descent: 22.2, apex: 12.1, time: 4.7, type: "Hook" },
+      { club: "3 Wood", carry: 118.1, total: 130.4, side: -10.2, smash: 1.41, ball_speed: 197.9, club_speed: 140.0, back_spin: 2137, side_spin: 562, launch: 3.9, side_angle: -8.5, descent: 9.0, apex: 3.3, time: 2.8, type: "Pull Slice" },
+      { club: "3 Wood", carry: 170.1, total: 182.4, side: 2.1, smash: 1.47, ball_speed: 207.3, club_speed: 141.1, back_spin: 2832, side_spin: 337, launch: 7.8, side_angle: -2.1, descent: 24.3, apex: 12.4, time: 4.8, type: "Fade" },
+      { club: "3 Wood", carry: 132.9, total: 146.7, side: -20.4, smash: 1.50, ball_speed: 199.1, club_speed: 133.0, back_spin: 1948, side_spin: -1796, launch: 6.7, side_angle: 3.9, descent: 17.5, apex: 7.7, time: 3.4, type: "Hook" },
+      { club: "3 Wood", carry: 197.4, total: 212.3, side: -15.2, smash: 1.50, ball_speed: 211.3, club_speed: 141.2, back_spin: 2460, side_spin: -439, launch: 15.6, side_angle: 0.9, descent: 38.7, apex: 27.5, time: 6.2, type: "Hook" },
+      { club: "3 Wood", carry: 188.6, total: 201.3, side: 4.6, smash: 1.50, ball_speed: 218.4, club_speed: 145.4, back_spin: 2964, side_spin: 203, launch: 8.3, side_angle: -0.4, descent: 26.6, apex: 15.0, time: 5.3, type: "Fade" },
+      { club: "3 Wood", carry: 140.3, total: 157.2, side: -43.0, smash: 1.49, ball_speed: 192.4, club_speed: 129.5, back_spin: 1109, side_spin: -1010, launch: 12.1, side_angle: -6.4, descent: 19.7, apex: 10.0, time: 3.6, type: "Hook" },
+      { club: "4 Hybrid", carry: 173.6, total: 184.7, side: 5.0, smash: 1.49, ball_speed: 202.4, club_speed: 135.5, back_spin: 3895, side_spin: 596, launch: 14.2, side_angle: -2.8, descent: 40.2, apex: 25.0, time: 5.9, type: "Fade" },
+      { club: "4 Hybrid", carry: 176.7, total: 191.5, side: -5.7, smash: 1.50, ball_speed: 205.6, club_speed: 137.5, back_spin: 3975, side_spin: -79, launch: 12.1, side_angle: -1.2, descent: 37.6, apex: 22.4, time: 5.8, type: "Straight" },
+      { club: "4 Hybrid", carry: 181.6, total: 195.3, side: -4.9, smash: 1.49, ball_speed: 201.4, club_speed: 134.9, back_spin: 2758, side_spin: 50, launch: 14.2, side_angle: -2.0, descent: 36.3, apex: 23.0, time: 5.8, type: "Straight" },
+      { club: "4 Hybrid", carry: 181.9, total: 194.7, side: -12.4, smash: 1.50, ball_speed: 204.4, club_speed: 136.7, back_spin: 3119, side_spin: -195, launch: 13.7, side_angle: -2.0, descent: 37.4, apex: 23.7, time: 5.9, type: "Draw" },
+      { club: "4 Hybrid", carry: 181.2, total: 194.7, side: -21.3, smash: 1.49, ball_speed: 201.4, club_speed: 134.8, back_spin: 2737, side_spin: -415, launch: 14.7, side_angle: -2.6, descent: 36.8, apex: 23.7, time: 5.8, type: "Draw" },
+      { club: "4 Hybrid", carry: 183.6, total: 196.4, side: -11.5, smash: 1.50, ball_speed: 205.9, club_speed: 137.7, back_spin: 3188, side_spin: -43, launch: 14.0, side_angle: -3.0, descent: 38.3, apex: 24.6, time: 6.0, type: "Straight" },
+      { club: "4 Hybrid", carry: 169.5, total: 182.4, side: 9.5, smash: 1.48, ball_speed: 191.3, club_speed: 129.0, back_spin: 2966, side_spin: -1, launch: 16.3, side_angle: 3.1, descent: 38.7, apex: 24.2, time: 5.8, type: "Straight" },
+      { club: "4 Hybrid", carry: 179.3, total: 192.2, side: -13.7, smash: 1.49, ball_speed: 201.4, club_speed: 134.8, back_spin: 2973, side_spin: -127, launch: 14.0, side_angle: -3.1, descent: 36.7, apex: 23.1, time: 5.8, type: "Straight" },
+      { club: "4 Hybrid", carry: 154.7, total: 166.3, side: -4.3, smash: 1.41, ball_speed: 189.2, club_speed: 134.3, back_spin: 3728, side_spin: 718, launch: 12.6, side_angle: -6.3, descent: 33.3, apex: 17.2, time: 5.1, type: "Slice" },
+      { club: "4 Hybrid", carry: 175.7, total: 188.9, side: -29.4, smash: 1.49, ball_speed: 200.8, club_speed: 134.4, back_spin: 2718, side_spin: -730, launch: 13.3, side_angle: -2.6, descent: 33.9, apex: 20.2, time: 5.5, type: "Hook" },
+      { club: "4 Hybrid", carry: 143.7, total: 157.1, side: -30.5, smash: 1.49, ball_speed: 190.8, club_speed: 127.7, back_spin: 2079, side_spin: -1355, launch: 10.6, side_angle: -0.8, descent: 22.8, apex: 10.9, time: 4.0, type: "Hook" },
+      { club: "4 Hybrid", carry: 129.6, total: 138.9, side: 27.2, smash: 1.28, ball_speed: 162.7, club_speed: 126.8, back_spin: 4265, side_spin: 785, launch: 22.7, side_angle: 7.0, descent: 44.2, apex: 24.7, time: 5.4, type: "Slice" },
+      { club: "4 Hybrid", carry: 158.1, total: 191.3, side: -7.3, smash: 1.50, ball_speed: 202.5, club_speed: 135.3, back_spin: 3668, side_spin: -57, launch: 6.5, side_angle: -2.1, descent: 24.5, apex: 11.1, time: 4.6, type: "Straight" },
+      { club: "4 Iron", carry: 153.2, total: 163.6, side: 8.3, smash: 1.48, ball_speed: 184.5, club_speed: 124.7, back_spin: 3990, side_spin: 577, launch: 15.5, side_angle: -0.8, descent: 38.9, apex: 21.8, time: 5.5, type: "Fade" },
+      { club: "4 Iron", carry: 165.7, total: 177.8, side: -14.1, smash: 1.49, ball_speed: 190.8, club_speed: 128.3, back_spin: 3219, side_spin: -68, launch: 14.9, side_angle: -4.0, descent: 37.1, apex: 21.9, time: 5.6, type: "Straight" },
+      { club: "4 Iron", carry: 153.8, total: 164.5, side: 2.5, smash: 1.49, ball_speed: 183.1, club_speed: 123.1, back_spin: 3841, side_spin: 169, launch: 16.6, side_angle: -0.5, descent: 40.0, apex: 23.1, time: 5.6, type: "Straight" },
+      { club: "4 Iron", carry: 135.5, total: 148.3, side: 18.6, smash: 1.42, ball_speed: 178.1, club_speed: 125.5, back_spin: 3205, side_spin: 1161, launch: 11.2, side_angle: 0.1, descent: 26.8, apex: 12.0, time: 4.3, type: "Slice" },
+      { club: "4 Iron", carry: 156.3, total: 165.9, side: 20.6, smash: 1.48, ball_speed: 186.2, club_speed: 125.9, back_spin: 3839, side_spin: 892, launch: 17.3, side_angle: 1.3, descent: 41.5, apex: 24.8, time: 5.7, type: "Slice" },
+      { club: "4 Iron", carry: 153.3, total: 163.0, side: 20.4, smash: 1.49, ball_speed: 189.1, club_speed: 127.0, back_spin: 3930, side_spin: 908, launch: 17.8, side_angle: 0.9, descent: 42.3, apex: 26.0, time: 5.8, type: "Slice" },
+      { club: "4 Iron", carry: 152.4, total: 162.8, side: 20.9, smash: 1.49, ball_speed: 183.5, club_speed: 124.2, back_spin: 3943, side_spin: 695, launch: 16.6, side_angle: 1.7, descent: 40.5, apex: 23.2, time: 5.6, type: "Slice" },
+      { club: "4 Iron", carry: 149.8, total: 160.5, side: -15.3, smash: 1.44, ball_speed: 180.6, club_speed: 125.3, back_spin: 3663, side_spin: -430, launch: 15.2, side_angle: -2.7, descent: 36.7, apex: 19.8, time: 5.3, type: "Draw" },
+      { club: "4 Iron", carry: 153.3, total: 164.2, side: 1.1, smash: 1.49, ball_speed: 182.6, club_speed: 123.1, back_spin: 3665, side_spin: 112, launch: 15.4, side_angle: -0.5, descent: 37.8, apex: 21.0, time: 5.4, type: "Straight" },
+      { club: "4 Iron", carry: 153.7, total: 163.8, side: 34.9, smash: 1.48, ball_speed: 186.4, club_speed: 125.6, back_spin: 4223, side_spin: 1289, launch: 18.5, side_angle: 4.3, descent: 43.6, apex: 26.5, time: 5.8, type: "Slice" },
+      { club: "4 Iron", carry: 142.4, total: 153.4, side: -21.7, smash: 1.41, ball_speed: 175.4, club_speed: 124.0, back_spin: 3274, side_spin: -833, launch: 14.6, side_angle: -2.6, descent: 33.6, apex: 17.0, time: 4.9, type: "Hook" },
+      { club: "4 Iron", carry: 144.3, total: 156.3, side: -30.8, smash: 1.48, ball_speed: 179.2, club_speed: 120.9, back_spin: 2890, side_spin: -1174, launch: 14.2, side_angle: -3.6, descent: 31.8, apex: 15.9, time: 4.7, type: "Hook" },
+      { club: "4 Iron", carry: 140.0, total: 152.3, side: -17.6, smash: 1.41, ball_speed: 171.2, club_speed: 121.3, back_spin: 2576, side_spin: -851, launch: 16.0, side_angle: 0.0, descent: 32.5, apex: 16.5, time: 4.7, type: "Hook" },
+      { club: "6 Iron", carry: 153.1, total: 162.3, side: -3.8, smash: 1.48, ball_speed: 185.8, club_speed: 125.3, back_spin: 4840, side_spin: 63, launch: 18.8, side_angle: -1.7, descent: 45.1, apex: 28.1, time: 6.0, type: "Straight" },
+      { club: "6 Iron", carry: 148.3, total: 158.3, side: -38.8, smash: 1.48, ball_speed: 179.2, club_speed: 121.1, back_spin: 3574, side_spin: -1095, launch: 17.9, side_angle: -6.8, descent: 40.0, apex: 22.6, time: 5.4, type: "Hook" },
+      { club: "6 Iron", carry: 143.8, total: 152.3, side: 4.6, smash: 1.43, ball_speed: 178.3, club_speed: 125.0, back_spin: 5094, side_spin: 416, launch: 18.2, side_angle: -0.5, descent: 43.4, apex: 24.7, time: 5.7, type: "Fade" },
+      { club: "6 Iron", carry: 130.5, total: 141.1, side: 1.3, smash: 1.41, ball_speed: 176.6, club_speed: 125.6, back_spin: 3176, side_spin: 426, launch: 8.8, side_angle: -2.2, descent: 22.1, apex: 9.2, time: 4.0, type: "Fade" },
+      { club: "6 Iron", carry: 154.9, total: 165.2, side: -13.4, smash: 1.47, ball_speed: 184.5, club_speed: 125.7, back_spin: 4155, side_spin: -134, launch: 18.0, side_angle: -3.9, descent: 42.9, apex: 26.1, time: 5.8, type: "Straight" },
+      { club: "8 Iron", carry: 134.2, total: 140.6, side: -13.1, smash: 1.36, ball_speed: 173.2, club_speed: 127.7, back_spin: 6397, side_spin: -164, launch: 23.0, side_angle: -4.6, descent: 49.0, apex: 30.0, time: 6.0, type: "Straight" },
+      { club: "8 Iron", carry: 66.2, total: 107.7, side: -6.1, smash: 1.34, ball_speed: 133.9, club_speed: 99.9, back_spin: 3765, side_spin: -374, launch: 25.7, side_angle: -1.5, descent: 41.4, apex: 19.2, time: 4.5, type: "Draw" },
+      { club: "8 Iron", carry: 121.6, total: 127.3, side: -3.3, smash: 1.32, ball_speed: 160.9, club_speed: 121.9, back_spin: 6675, side_spin: -148, launch: 23.7, side_angle: -0.9, descent: 47.6, apex: 26.4, time: 5.6, type: "Straight" },
+      { club: "8 Iron", carry: 114.1, total: 118.9, side: 10.6, smash: 1.26, ball_speed: 154.2, club_speed: 122.2, back_spin: 7150, side_spin: 1087, launch: 22.6, side_angle: 1.4, descent: 45.5, apex: 22.7, time: 5.2, type: "Fade" },
+      { club: "8 Iron", carry: 122.2, total: 127.9, side: 3.6, smash: 1.35, ball_speed: 161.0, club_speed: 119.5, back_spin: 6633, side_spin: 377, launch: 23.2, side_angle: 0.2, descent: 47.2, apex: 25.8, time: 5.5, type: "Fade" },
+      { club: "8 Iron", carry: 127.6, total: 134.1, side: -10.4, smash: 1.37, ball_speed: 166.5, club_speed: 122.0, back_spin: 6349, side_spin: -299, launch: 23.3, side_angle: -3.3, descent: 48.0, apex: 27.6, time: 5.7, type: "Straight" },
+      { club: "PW", carry: 101.1, total: 105.6, side: -3.2, smash: 1.36, ball_speed: 141.8, club_speed: 104.2, back_spin: 6871, side_spin: 78, launch: 30.4, side_angle: -2.1, descent: 50.6, apex: 26.4, time: 5.3, type: "Straight" },
+      { club: "PW", carry: 97.6, total: 100.7, side: 1.7, smash: 1.25, ball_speed: 139.5, club_speed: 111.6, back_spin: 8195, side_spin: 340, launch: 28.6, side_angle: -0.1, descent: 49.3, apex: 24.0, time: 5.1, type: "Straight" },
+      { club: "PW", carry: 94.7, total: 97.5, side: 5.0, smash: 1.29, ball_speed: 137.5, club_speed: 106.8, back_spin: 8090, side_spin: 1301, launch: 31.3, side_angle: -0.6, descent: 51.4, apex: 26.3, time: 5.2, type: "Slice" },
+      { club: "PW", carry: 100.9, total: 104.2, side: -3.6, smash: 1.21, ball_speed: 142.9, club_speed: 118.6, back_spin: 7929, side_spin: 401, launch: 29.0, side_angle: -3.3, descent: 50.3, apex: 25.5, time: 5.3, type: "Straight" },
+      { club: "PW", carry: 88.1, total: 91.3, side: 9.3, smash: 1.12, ball_speed: 128.3, club_speed: 114.6, back_spin: 7604, side_spin: 1535, launch: 28.8, side_angle: 1.7, descent: 48.6, apex: 19.5, time: 4.5, type: "Slice" },
+      { club: "PW", carry: 97.2, total: 100.6, side: 0.8, smash: 1.15, ball_speed: 137.5, club_speed: 120.1, back_spin: 7009, side_spin: 59, launch: 27.4, side_angle: 0.3, descent: 47.7, apex: 22.1, time: 5.0, type: "Straight" },
+      { club: "60° Wedge", carry: 61.6, total: 66.4, side: -1.6, smash: 1.02, ball_speed: 103.8, club_speed: 101.7, back_spin: 4606, side_spin: 255, launch: 44.1, side_angle: -2.2, descent: 55.3, apex: 21.0, time: 4.4, type: "Fade" },
+      { club: "60° Wedge", carry: 54.2, total: 58.5, side: -0.4, smash: 1.00, ball_speed: 99.6, club_speed: 99.9, back_spin: 4424, side_spin: -69, launch: 43.2, side_angle: -0.2, descent: 55.9, apex: 19.2, time: 4.2, type: "Straight" },
+      { club: "60° Wedge", carry: 60.5, total: 64.8, side: -2.6, smash: 1.05, ball_speed: 103.6, club_speed: 99.0, back_spin: 4902, side_spin: -39, launch: 44.6, side_angle: -2.3, descent: 55.6, apex: 21.1, time: 4.4, type: "Straight" },
+      { club: "60° Wedge", carry: 76.3, total: 78.4, side: -1.6, smash: 1.03, ball_speed: 116.8, club_speed: 113.9, back_spin: 8134, side_spin: 827, launch: 31.1, side_angle: -3.2, descent: 47.4, apex: 17.9, time: 4.4, type: "Fade" }
     ];
 
-    function loadShots() {
-      try {
-        const saved = JSON.parse(localStorage.getItem('golf_bag_shots_full_v1'));
-        return Array.isArray(saved) && saved.length > 0 ? saved : [...DEFAULT_SHOTS];
-      } catch (e) {
-        return [...DEFAULT_SHOTS];
-      }
-    }
-
-    let shots = loadShots();
+    let currentUser = null;
+    let shots = [];
     let activeDetailClub = null;
     let gappingChart = null;
     let dispersionChart = null;
 
-    function saveAndRender() {
-      localStorage.setItem('golf_bag_shots_full_v1', JSON.stringify(shots));
+    // --- AUTHENTICATION ---
+    function showAuthAlert(msg, isError = true) {
+      const box = document.getElementById('authAlert');
+      box.textContent = msg;
+      box.className = `text-xs p-3 rounded border ${isError ? 'bg-rose-950/70 border-rose-800 text-rose-200' : 'bg-emerald-950/70 border-emerald-800 text-emerald-200'}`;
+      box.classList.remove('hidden');
+    }
+
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) showAuthAlert(error.message);
+    });
+
+    async function handleSignUp() {
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      if (!email || !password) return showAuthAlert("Enter an email and password first.");
+      const { data, error } = await sb.auth.signUp({ email, password });
+      if (error) return showAuthAlert(error.message);
+      if (data.session) {
+        showAuthAlert("Account created!", false);
+      } else {
+        showAuthAlert("Check your email for a confirmation link, then log in.", false);
+      }
+    }
+
+    async function handleLogout() {
+      await sb.auth.signOut();
+    }
+
+    sb.auth.onAuthStateChange(async (_event, session) => {
+      currentUser = session?.user || null;
+      if (currentUser) {
+        document.getElementById('authView').classList.add('hidden');
+        document.getElementById('appView').classList.remove('hidden');
+        document.getElementById('userEmailLabel').textContent = currentUser.email;
+        await fetchShots();
+      } else {
+        document.getElementById('appView').classList.add('hidden');
+        document.getElementById('authView').classList.remove('hidden');
+        shots = [];
+      }
+    });
+
+    // --- DATABASE OPERATIONS ---
+    async function fetchShots() {
+      const { data, error } = await sb
+        .from('golf_shots')
+        .select('*')
+        .order('created_at', { ascending: true });
+      if (error) {
+        alert("Error loading shots: " + error.message);
+        return;
+      }
+      shots = data || [];
+      document.getElementById('seedBtn').classList.toggle('hidden', shots.length > 0);
       renderTableAndCharts();
       if (activeDetailClub) openShotDetails(activeDetailClub);
+    }
+
+    async function seedDefaultSession() {
+      const btn = document.getElementById('seedBtn');
+      btn.disabled = true;
+      btn.textContent = "Importing 73 shots...";
+      const payload = SAMPLE_SESSION.map(s => ({ ...s, user_id: currentUser.id }));
+      const { error } = await sb.from('golf_shots').insert(payload);
+      btn.disabled = false;
+      btn.textContent = "Load Sample Uneekor Session";
+      if (error) return alert("Import failed: " + error.message);
+      await fetchShots();
     }
 
     function parseOptFloat(id) {
@@ -282,89 +357,85 @@
       return val === '' ? null : parseFloat(val);
     }
 
-    document.getElementById('shotForm').addEventListener('submit', (e) => {
+    document.getElementById('shotForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      shots.push({
-        id: Date.now(),
+      const btn = document.getElementById('addShotBtn');
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+
+      const newShot = {
+        user_id: currentUser.id,
         club: document.getElementById('clubSelect').value,
         carry: parseFloat(document.getElementById('carryInput').value),
         total: parseFloat(document.getElementById('totalInput').value),
         side: parseOptFloat('sideInput') ?? 0,
         smash: parseOptFloat('smashInput'),
-        ballSpeed: parseOptFloat('ballSpeedInput'),
-        clubSpeed: parseOptFloat('clubSpeedInput'),
-        backSpin: parseOptFloat('backSpinInput'),
-        sideSpin: parseOptFloat('sideSpinInput'),
+        ball_speed: parseOptFloat('ballSpeedInput'),
+        club_speed: parseOptFloat('clubSpeedInput'),
+        back_spin: parseOptFloat('backSpinInput'),
+        side_spin: parseOptFloat('sideSpinInput'),
         launch: parseOptFloat('launchInput'),
-        sideAngle: parseOptFloat('sideAngleInput'),
+        side_angle: parseOptFloat('sideAngleInput'),
         descent: parseOptFloat('descentInput'),
         apex: parseOptFloat('apexInput'),
         time: parseOptFloat('timeInput'),
         type: document.getElementById('typeInput').value || 'Straight'
-      });
+      };
+
+      const { error } = await sb.from('golf_shots').insert([newShot]);
+      btn.disabled = false;
+      btn.textContent = "Add Shot";
+      if (error) return alert("Error saving shot: " + error.message);
       e.target.reset();
-      saveAndRender();
+      await fetchShots();
     });
 
-    function clearClub(club) {
-      shots = shots.filter(s => s.club !== club);
+    async function clearClub(club) {
+      if (!confirm(`Delete all ${club} shots from your account?`)) return;
+      const { error } = await sb.from('golf_shots').delete().eq('club', club);
+      if (error) return alert(error.message);
       if (activeDetailClub === club) closeShotDetails();
-      saveAndRender();
+      await fetchShots();
     }
 
-    function deleteSingleShot(id) {
-      shots = shots.filter(s => s.id !== id);
-      saveAndRender();
-    }
-
-    function resetDefault() {
-      shots = [...DEFAULT_SHOTS];
-      localStorage.removeItem('golf_bag_shots_full_v1');
-      if (activeDetailClub) openShotDetails(activeDetailClub);
-      renderTableAndCharts();
+    async function deleteSingleShot(id) {
+      const { error } = await sb.from('golf_shots').delete().eq('id', id);
+      if (error) return alert(error.message);
+      await fetchShots();
     }
 
     function exportData() {
       const blob = new Blob([JSON.stringify(shots, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "golf-bag-full-data.json";
+      a.download = `${currentUser.email.split('@')[0]}-golf-bag.json`;
       a.click();
     }
 
-    function importData(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        shots = JSON.parse(e.target.result);
-        saveAndRender();
-      };
-      reader.readAsText(file);
-    }
-
+    // --- FILTERING & RENDERING ---
     function getFilteredShots(club) {
       const clubShots = shots.filter(s => s.club === club);
       const filterMishits = document.getElementById('outlierToggle').checked;
       if (!filterMishits || clubShots.length < 3) return clubShots;
 
-      const sorted = [...clubShots].map(s => s.carry).sort((a, b) => a - b);
+      const sorted = [...clubShots].map(s => Number(s.carry)).sort((a, b) => a - b);
       const median = sorted[Math.floor(sorted.length / 2)];
-      return clubShots.filter(s => s.carry >= median * 0.80 && s.carry <= median * 1.25);
+      return clubShots.filter(s => Number(s.carry) >= median * 0.80 && Number(s.carry) <= median * 1.25);
     }
 
     function avgMetric(arr, key, decimals = 1) {
-      const valid = arr.map(s => s[key]).filter(v => v !== null && v !== undefined && !isNaN(v));
+      const valid = arr.map(s => s[key]).filter(v => v !== null && v !== undefined && v !== '').map(Number);
       if (!valid.length) return null;
       const mean = valid.reduce((a, b) => a + b, 0) / valid.length;
       return decimals === 0 ? Math.round(mean) : Number(mean.toFixed(decimals));
     }
 
     function formatDir(val, unit = '', decimals = 1) {
-      if (val === null || val === undefined) return '-';
-      if (val === 0) return `0.0${unit}`;
-      const dir = val < 0 ? 'L' : 'R';
-      const num = decimals === 0 ? Math.round(Math.abs(val)) : Math.abs(val).toFixed(decimals);
+      if (val === null || val === undefined || val === '') return '-';
+      const numVal = Number(val);
+      if (numVal === 0) return `0.0${unit}`;
+      const dir = numVal < 0 ? 'L' : 'R';
+      const num = decimals === 0 ? Math.round(Math.abs(numVal)) : Math.abs(numVal).toFixed(decimals);
       return `${num}${unit} ${dir}`;
     }
 
@@ -387,22 +458,22 @@
         tbody.innerHTML += `
           <tr class="hover:bg-slate-800/40">
             <td class="px-3 py-2 text-slate-400">${idx + 1}</td>
-            <td class="px-2.5 py-2 font-medium text-emerald-300">${s.carry.toFixed(1)} m</td>
-            <td class="px-2.5 py-2">${s.total.toFixed(1)} m</td>
+            <td class="px-2.5 py-2 font-medium text-emerald-300">${Number(s.carry).toFixed(1)} m</td>
+            <td class="px-2.5 py-2">${Number(s.total).toFixed(1)} m</td>
             <td class="px-2.5 py-2">${formatDir(s.side, 'm', 1)}</td>
-            <td class="px-2.5 py-2">${s.smash !== null ? s.smash.toFixed(2) : '-'}</td>
-            <td class="px-2.5 py-2">${s.ballSpeed !== null ? s.ballSpeed.toFixed(1) : '-'}</td>
-            <td class="px-2.5 py-2">${s.clubSpeed !== null ? s.clubSpeed.toFixed(1) : '-'}</td>
-            <td class="px-2.5 py-2">${s.backSpin !== null ? Math.round(s.backSpin) : '-'}</td>
-            <td class="px-2.5 py-2">${formatDir(s.sideSpin, '', 0)}</td>
-            <td class="px-2.5 py-2">${s.launch !== null ? s.launch.toFixed(1) + '°' : '-'}</td>
-            <td class="px-2.5 py-2">${formatDir(s.sideAngle, '°', 1)}</td>
-            <td class="px-2.5 py-2">${s.descent !== null ? s.descent.toFixed(1) + '°' : '-'}</td>
-            <td class="px-2.5 py-2">${s.apex !== null ? s.apex.toFixed(1) + ' m' : '-'}</td>
-            <td class="px-2.5 py-2">${s.time !== null ? s.time.toFixed(1) + 's' : '-'}</td>
+            <td class="px-2.5 py-2">${s.smash !== null ? Number(s.smash).toFixed(2) : '-'}</td>
+            <td class="px-2.5 py-2">${s.ball_speed !== null ? Number(s.ball_speed).toFixed(1) : '-'}</td>
+            <td class="px-2.5 py-2">${s.club_speed !== null ? Number(s.club_speed).toFixed(1) : '-'}</td>
+            <td class="px-2.5 py-2">${s.back_spin !== null ? Math.round(Number(s.back_spin)) : '-'}</td>
+            <td class="px-2.5 py-2">${formatDir(s.side_spin, '', 0)}</td>
+            <td class="px-2.5 py-2">${s.launch !== null ? Number(s.launch).toFixed(1) + '°' : '-'}</td>
+            <td class="px-2.5 py-2">${formatDir(s.side_angle, '°', 1)}</td>
+            <td class="px-2.5 py-2">${s.descent !== null ? Number(s.descent).toFixed(1) + '°' : '-'}</td>
+            <td class="px-2.5 py-2">${s.apex !== null ? Number(s.apex).toFixed(1) + ' m' : '-'}</td>
+            <td class="px-2.5 py-2">${s.time !== null ? Number(s.time).toFixed(1) + 's' : '-'}</td>
             <td class="px-2.5 py-2 text-slate-300">${s.type || '-'}</td>
             <td class="px-3 py-2 text-right">
-              <button type="button" onclick="deleteSingleShot(${s.id})" class="text-rose-400 hover:underline">Remove</button>
+              <button type="button" onclick="deleteSingleShot('${s.id}')" class="text-rose-400 hover:underline">Remove</button>
             </td>
           </tr>
         `;
@@ -431,12 +502,12 @@
           total: avgMetric(clubShots, 'total', 1),
           side: avgMetric(clubShots, 'side', 1),
           smash: avgMetric(clubShots, 'smash', 2),
-          ballSpeed: avgMetric(clubShots, 'ballSpeed', 1),
-          clubSpeed: avgMetric(clubShots, 'clubSpeed', 1),
-          backSpin: avgMetric(clubShots, 'backSpin', 0),
-          sideSpin: avgMetric(clubShots, 'sideSpin', 0),
+          ballSpeed: avgMetric(clubShots, 'ball_speed', 1),
+          clubSpeed: avgMetric(clubShots, 'club_speed', 1),
+          backSpin: avgMetric(clubShots, 'back_spin', 0),
+          sideSpin: avgMetric(clubShots, 'side_spin', 0),
           launch: avgMetric(clubShots, 'launch', 1),
-          sideAngle: avgMetric(clubShots, 'sideAngle', 1),
+          sideAngle: avgMetric(clubShots, 'side_angle', 1),
           descent: avgMetric(clubShots, 'descent', 1),
           apex: avgMetric(clubShots, 'apex', 1),
           time: avgMetric(clubShots, 'time', 1),
@@ -505,7 +576,7 @@
         type: 'scatter',
         data: {
           datasets: CLUB_ORDER.map((club, idx) => {
-            const pts = getFilteredShots(club).map(s => ({ x: s.side, y: s.carry }));
+            const pts = getFilteredShots(club).map(s => ({ x: Number(s.side), y: Number(s.carry) }));
             const colors = [
               '#f43f5e', '#f97316', '#eab308', '#84cc16', '#22c55e', '#10b981',
               '#06b6d4', '#0ea5e9', '#3b82f6', '#8b5cf6', '#d946ef', '#ec4899'
@@ -522,8 +593,6 @@
         }
       });
     }
-
-    renderTableAndCharts();
   </script>
 </body>
 </html>
