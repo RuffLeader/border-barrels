@@ -14,7 +14,7 @@
   <div id="authView" class="max-w-md mx-auto mt-16 bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
     <div class="text-center">
       <h1 class="text-2xl font-bold text-emerald-400">Bag Gapping & Sim Tracker</h1>
-      <p class="text-xs text-slate-400 mt-1">Sign in to access your personal golf bag & Uneekor stats</p>
+      <p class="text-xs text-slate-400 mt-1">Sign in to access your personal golf bag & launch monitor stats</p>
     </div>
 
     <div id="authAlert" class="hidden text-xs p-3 rounded border"></div>
@@ -63,149 +63,45 @@
       </div>
     </header>
 
-    <!-- PHOTO UPLOAD & PARSE MODAL -->
-    <div id="photoModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-      <div class="bg-slate-900 border border-slate-700 rounded-xl max-w-4xl w-full p-5 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div>
-            <h3 class="text-base font-bold text-emerald-400">Scan Uneekor Screen Photos</h3>
-            <p class="text-xs text-slate-400">Automatically reads shot metrics and uses the photo's taken date (or your chosen date below).</p>
-          </div>
-          <button type="button" onclick="togglePhotoModal(false)" class="text-slate-400 hover:text-white text-sm px-2">✕</button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
-          <div class="sm:col-span-2">
-            <label class="block text-xs text-slate-400 mb-1">Choose Photos (JPG / PNG / HEIC)</label>
-            <input type="file" id="photoInput" accept="image/*" multiple class="w-full text-xs text-slate-300 file:mr-3 file:py-2 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-emerald-400 hover:file:bg-slate-700 bg-slate-950 border border-slate-700 rounded p-1" />
-          </div>
-          <div>
-            <label class="block text-xs text-slate-400 mb-1">Session Date Override</label>
-            <input type="date" id="photoDateOverride" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs text-slate-400 mb-1">Club Override (Optional)</label>
-            <select id="photoClubOverride" class="w-full bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs text-slate-200">
-              <option value="">Auto-detect from screen</option>
-            </select>
-          </div>
-        </div>
-
-        <div id="photoStatus" class="hidden text-xs p-3 rounded border bg-slate-950 border-slate-800 text-sky-300"></div>
-
-        <div id="parsedPreviewWrap" class="hidden flex-1 overflow-auto border border-slate-800 rounded-lg">
-          <table class="w-full text-left text-xs whitespace-nowrap">
-            <thead class="bg-slate-800 text-slate-400 uppercase text-[11px] sticky top-0">
-              <tr>
-                <th class="px-2.5 py-2">Date</th>
-                <th class="px-2.5 py-2">Club</th>
-                <th class="px-2.5 py-2">Carry</th>
-                <th class="px-2.5 py-2">Total</th>
-                <th class="px-2.5 py-2">Side</th>
-                <th class="px-2.5 py-2">Smash</th>
-                <th class="px-2.5 py-2">Ball/Club Spd</th>
-                <th class="px-2.5 py-2">Spin (Back/Side)</th>
-                <th class="px-2.5 py-2">Flight</th>
-                <th class="px-2.5 py-2 text-right">Drop</th>
-              </tr>
-            </thead>
-            <tbody id="parsedPreviewBody" class="divide-y divide-slate-800"></tbody>
-          </table>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
-          <button type="button" onclick="togglePhotoModal(false)" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-xs">Cancel</button>
-          <button type="button" id="scanPhotosBtn" onclick="processSelectedPhotos()" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold rounded text-xs">1. Scan Photos</button>
-          <button type="button" id="saveParsedBtn" onclick="saveParsedShots()" class="hidden px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded text-xs">2. Save to My Bag</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- FEATURE 4: AUTOMATED BAG AUDIT & SCORE KILLERS -->
-    <section id="bagAuditSection" class="grid grid-cols-1 md:grid-cols-3 gap-4"></section>
-
-    <!-- FEATURE 1: LANDING ZONE, AIM OFFSET & GREEN HIT % SIMULATOR -->
+    <!-- MY BAG SECTION (CLUB MODELS, LOFTS & SHAFTS) -->
     <section class="bg-slate-900 p-4 md:p-5 rounded-xl border border-slate-800 space-y-4">
-      <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-slate-800 pb-3">
-        <div>
-          <h2 class="text-base font-bold text-emerald-400">Club Landing Patch, Aim Offset & Green Hit % Simulator</h2>
-          <p class="text-xs text-slate-400">Shift your <span class="text-amber-300 font-semibold">Aim Offset</span> left or right to maximize Green Hit % across <span class="text-slate-200 font-semibold">Clean Stock</span> (solid) and <span class="text-slate-200 font-semibold">Full Variance incl. Mishits</span> (dashed).</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-3">
+          <div>
+            <h2 class="text-base font-bold text-emerald-400">My Bag — Current Clubs & Specs</h2>
+            <p class="text-xs text-slate-400">Track your exact club models, lofts, and shafts alongside live stock carry averages</p>
+          </div>
+          <span id="bagCountBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">0 / 14 Clubs</span>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5">
-          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
-            <label class="text-xs text-slate-400">Pin:</label>
-            <input type="number" id="targetPinInput" value="100" step="5" min="30" max="260" oninput="renderLandingZone()" class="w-16 bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-bold text-amber-400 text-center" />
-            <span class="text-xs text-slate-400">m</span>
-          </div>
-
-          <div class="flex items-center gap-2 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
-            <label class="text-xs text-slate-400">Aim Offset:</label>
-            <input type="range" id="aimOffsetSlider" min="-25" max="25" step="1" value="0" oninput="updateAimLabel(); renderLandingZone()" class="w-24 accent-amber-400 cursor-pointer" />
-            <span id="aimOffsetLabel" class="text-xs font-bold text-amber-300 w-14 text-right">0m (Pin)</span>
-            <button type="button" onclick="autoOptimizeAim()" class="px-2 py-0.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 rounded text-[11px] font-semibold" title="Find aim line with highest Green Hit % for Club 1">Optimize</button>
-          </div>
-
-          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
-            <label class="text-xs text-slate-400">Club 1:</label>
-            <select id="lzClub1" onchange="renderLandingZone()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-semibold text-emerald-300"></select>
-          </div>
-
-          <div class="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded border border-slate-800">
-            <span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span>
-            <label class="text-xs text-slate-400">Compare:</label>
-            <select id="lzClub2" onchange="renderLandingZone()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-semibold text-sky-300">
-              <option value="">None</option>
-            </select>
-          </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="seedBagBtn" onclick="seedDefaultBag()" class="px-3 py-1.5 bg-sky-950 hover:bg-sky-900 text-sky-200 rounded text-xs border border-sky-800">Load My Current Bag</button>
+          <button type="button" onclick="toggleBagForm()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs border border-slate-700">+ Add / Edit Club</button>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center">
-        <div class="lg:col-span-2 bg-slate-950 p-3 rounded-xl border border-slate-800">
-          <canvas id="landingZoneChart" height="260"></canvas>
+      <!-- Add / Edit Club Form -->
+      <form id="bagForm" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5 bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+        <input type="hidden" id="bagEditId" />
+        <select id="bagClubSelect" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs font-semibold text-emerald-300"></select>
+        <input type="text" id="bagModelInput" required placeholder="Brand & Model (e.g. Callaway Ai Smoke MAX)*" class="sm:col-span-2 bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="text" id="bagLoftInput" placeholder="Loft (e.g. 15° or 9°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <input type="text" id="bagShaftInput" placeholder="Shaft (e.g. Tensei Blue 65 S)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
+        <div class="flex items-center gap-2">
+          <select id="bagStatusInput" class="bg-slate-800 border border-slate-700 rounded px-2 py-2 text-xs text-slate-200 flex-1">
+            <option value="true">In Bag</option>
+            <option value="false">Benched / Testing</option>
+          </select>
+          <button type="submit" id="saveBagBtn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Save</button>
         </div>
-        <div id="lzStatsPanel" class="space-y-3 text-xs"></div>
-      </div>
+      </form>
+
+      <!-- Bag Grid -->
+      <div id="myBagGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3"></div>
     </section>
 
-    <!-- FEATURE 3 & 5: TRAJECTORY / STOPPING POWER & SESSION A/B COMPARISON -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Feature 3: Trajectory & Stopping Power -->
-      <section class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <h3 class="text-sm font-bold text-slate-200">2D Trajectory & Stopping Power Window</h3>
-            <p class="text-[11px] text-slate-400">Peak apex, carry, rollout & landing angle (<span class="text-emerald-400">≥45° Holds</span>, <span class="text-amber-400">38–45° Medium</span>, <span class="text-rose-400">&lt;38° Runout</span>)</p>
-          </div>
-          <label class="flex items-center gap-1.5 text-[11px] text-slate-300 cursor-pointer">
-            <input type="checkbox" id="trajFilterMishits" checked onchange="renderTrajectoryChart()" class="accent-emerald-500" />
-            <span>Stock Strikes</span>
-          </label>
-        </div>
-        <canvas id="trajectoryChart" height="220"></canvas>
-        <div id="stoppingPowerBadges" class="flex flex-wrap gap-1.5 pt-1"></div>
-      </section>
-
-      <!-- Feature 5: Session A vs Session B Comparison -->
-      <section class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h3 class="text-sm font-bold text-slate-200">Session A vs. Session B Club Comparison</h3>
-            <p class="text-[11px] text-slate-400">Compare two dates or equipment setups head-to-head for a single club</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-1.5">
-            <select id="abClubSelect" onchange="renderABComparison()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs font-semibold text-emerald-300"></select>
-            <select id="abDateA" onchange="renderABComparison()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-sky-300"></select>
-            <span class="text-xs text-slate-500">vs</span>
-            <select id="abDateB" onchange="renderABComparison()" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-amber-300"></select>
-          </div>
-        </div>
-        <canvas id="abCompareChart" height="190"></canvas>
-        <div id="abDeltaPanel" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs"></div>
-      </section>
-    </div>
+    <!-- AUTOMATED BAG AUDIT & SCORE KILLERS -->
+    <section id="bagAuditSection" class="grid grid-cols-1 md:grid-cols-3 gap-4"></section>
 
     <!-- Visual Bag Overview Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -219,13 +115,13 @@
       </div>
     </div>
 
-    <!-- Full 14-Metric Summary Table -->
+    <!-- Full Summary Table -->
     <section class="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs whitespace-nowrap">
           <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px]">
             <tr>
-              <th class="px-3 py-3 sticky left-0 bg-slate-800 z-10">Club</th>
+              <th class="px-3 py-3 sticky left-0 bg-slate-800 z-10">Club & Model</th>
               <th class="px-2.5 py-3">Shots</th>
               <th class="px-2.5 py-3 text-emerald-400">Carry</th>
               <th class="px-2.5 py-3 text-blue-400">Total</th>
@@ -238,11 +134,9 @@
               <th class="px-2.5 py-3">Back Spin</th>
               <th class="px-2.5 py-3">Side Spin</th>
               <th class="px-2.5 py-3">Launch</th>
-              <th class="px-2.5 py-3">Side Ang</th>
               <th class="px-2.5 py-3">Descent</th>
               <th class="px-2.5 py-3">Apex</th>
               <th class="px-2.5 py-3">Common Flight</th>
-              <th class="px-3 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody id="bagTableBody" class="divide-y divide-slate-800"></tbody>
@@ -250,41 +144,7 @@
       </div>
     </section>
 
-    <!-- FEATURE 2: SHOT-BY-SHOT DRAWER WITH ROOT-CAUSE MISS & STRIKE DIAGNOSTIC -->
-    <section id="shotDetailSection" class="hidden bg-slate-900 rounded-xl border border-slate-700 overflow-hidden">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-3 bg-slate-800/90 border-b border-slate-700">
-        <div>
-          <h3 id="shotDetailTitle" class="text-sm font-bold text-emerald-400">Individual Shots</h3>
-          <p id="shotDiagnosticSummary" class="text-[11px] text-slate-300 mt-0.5"></p>
-        </div>
-        <button type="button" onclick="closeShotDetails()" class="text-xs text-slate-300 hover:text-white px-2.5 py-1 bg-slate-700 rounded self-start sm:self-auto">Close</button>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs whitespace-nowrap">
-          <thead class="bg-slate-800/50 text-slate-400 uppercase text-[11px]">
-            <tr>
-              <th class="px-3 py-2.5">#</th>
-              <th class="px-2.5 py-2.5">Date</th>
-              <th class="px-2.5 py-2.5">Strike Diagnostic</th>
-              <th class="px-2.5 py-2.5">Miss Root Cause</th>
-              <th class="px-2.5 py-2.5">Carry</th>
-              <th class="px-2.5 py-2.5">Total</th>
-              <th class="px-2.5 py-2.5">Side Dist</th>
-              <th class="px-2.5 py-2.5">Smash</th>
-              <th class="px-2.5 py-2.5">Ball/Club Spd</th>
-              <th class="px-2.5 py-2.5">Back/Side Spin</th>
-              <th class="px-2.5 py-2.5">Launch / Side°</th>
-              <th class="px-2.5 py-2.5">Descent / Apex</th>
-              <th class="px-2.5 py-2.5">Flight</th>
-              <th class="px-3 py-2.5 text-right">Delete</th>
-            </tr>
-          </thead>
-          <tbody id="shotDetailBody" class="divide-y divide-slate-800"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Add Single Shot / Session Average Form -->
+    <!-- Manual Shot Entry Form -->
     <section class="bg-slate-900 p-4 rounded-xl border border-slate-800">
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Manual Entry (Single Shot or Session Average)</h2>
@@ -305,7 +165,6 @@
         <input type="number" step="0.1" id="sideAngleInput" placeholder="Side Ang (-L/+R°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
         <input type="number" step="0.1" id="descentInput" placeholder="Descent Ang (°)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
         <input type="number" step="0.1" id="apexInput" placeholder="Apex (m)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
-        <input type="number" step="0.1" id="timeInput" placeholder="Flight Time (s)" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs" />
         <select id="typeInput" class="bg-slate-800 border border-slate-700 rounded px-2.5 py-2 text-xs">
           <option value="Straight">Straight</option>
           <option value="Fade">Fade</option>
@@ -314,11 +173,9 @@
           <option value="Hook">Hook</option>
           <option value="Push">Push</option>
           <option value="Push Slice">Push Slice</option>
-          <option value="Push Draw">Push Draw</option>
           <option value="Pull Hook">Pull Hook</option>
-          <option value="Pull Slice">Pull Slice</option>
         </select>
-        <button type="submit" id="addShotBtn" class="sm:col-span-2 lg:col-span-8 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
+        <button type="submit" id="addShotBtn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded px-3 py-2 text-xs">Add Shot</button>
       </form>
     </section>
 
@@ -357,1271 +214,261 @@
       { value: "SW", label: "Sand Wedge (SW)" },
       { value: "56° Wedge", label: "56° Wedge" },
       { value: "58° Wedge", label: "58° Wedge" },
-      { value: "60° Wedge", label: "60° Wedge (LW)" }
+      { value: "60° Wedge", label: "60° Wedge (LW)" },
+      { value: "Putter", label: "Putter" }
     ];
     const CLUB_ORDER = ALL_CLUBS.map(c => c.value);
 
-    function getTodayISO() {
-      return new Date().toLocaleDateString('en-CA');
-    }
-
-    (function initFormDefaults() {
-      const mainSel = document.getElementById('clubSelect');
-      const overSel = document.getElementById('photoClubOverride');
-      ALL_CLUBS.forEach(c => {
-        mainSel.add(new Option(c.label, c.value));
-        overSel.add(new Option(c.label, c.value));
-      });
-      document.getElementById('dateInput').value = getTodayISO();
-    })();
-
-    const SAMPLE_SESSION = [
-      { session_date: "2026-11-25", club: "Driver", carry: 189.1, total: 206.4, side: -17.5, smash: 1.44, ball_speed: 198.5, club_speed: 137.7, back_spin: 1621, side_spin: -486, launch: 16.3, side_angle: 1.3, descent: 35.9, apex: 25.6, time: 5.8, type: "Hook" },
-      { session_date: "2026-11-25", club: "Driver", carry: 189.1, total: 203.3, side: -33.4, smash: 1.50, ball_speed: 211.7, club_speed: 141.0, back_spin: 1988, side_spin: -245, launch: 10.8, side_angle: -7.0, descent: 25.3, apex: 16.0, time: 5.1, type: "Draw" },
-      { session_date: "2026-11-25", club: "Driver", carry: 185.2, total: 199.2, side: -0.1, smash: 1.50, ball_speed: 217.9, club_speed: 144.8, back_spin: 2763, side_spin: 125, launch: 7.7, side_angle: -1.1, descent: 26.0, apex: 14.1, time: 5.1, type: "Straight" },
-      { session_date: "2026-11-25", club: "Driver", carry: 191.0, total: 203.5, side: 25.9, smash: 1.50, ball_speed: 219.7, club_speed: 146.3, back_spin: 3293, side_spin: 1101, launch: 11.6, side_angle: -1.5, descent: 36.6, apex: 22.9, time: 5.9, type: "Slice" },
-      { session_date: "2026-11-25", club: "Driver", carry: 193.3, total: 206.6, side: -45.5, smash: 1.49, ball_speed: 210.9, club_speed: 140.9, back_spin: 2130, side_spin: -341, launch: 12.7, side_angle: -9.0, descent: 31.1, apex: 20.1, time: 5.5, type: "Pull Hook" },
-      { session_date: "2026-11-25", club: "Driver", carry: 201.0, total: 215.6, side: -23.6, smash: 1.50, ball_speed: 220.1, club_speed: 146.5, back_spin: 2440, side_spin: -88, launch: 10.7, side_angle: -5.5, descent: 31.0, apex: 19.8, time: 5.7, type: "Straight" },
-      { session_date: "2026-11-25", club: "Driver", carry: 176.0, total: 187.4, side: 38.5, smash: 1.50, ball_speed: 215.6, club_speed: 143.7, back_spin: 3563, side_spin: 1516, launch: 9.4, side_angle: 1.4, descent: 32.1, apex: 17.3, time: 5.3, type: "Slice" },
-      { session_date: "2026-11-25", club: "Driver", carry: 191.3, total: 205.0, side: 31.2, smash: 1.50, ball_speed: 215.2, club_speed: 143.5, back_spin: 2776, side_spin: 835, launch: 12.2, side_angle: 1.4, descent: 34.7, apex: 21.9, time: 5.8, type: "Slice" },
-      { session_date: "2026-11-25", club: "Driver", carry: 199.7, total: 214.0, side: -35.9, smash: 1.50, ball_speed: 222.1, club_speed: 147.6, back_spin: 1419, side_spin: -612, launch: 10.1, side_angle: -3.5, descent: 20.7, apex: 12.6, time: 4.5, type: "Hook" },
-      { session_date: "2026-11-25", club: "Driver", carry: 169.8, total: 180.2, side: 55.4, smash: 1.50, ball_speed: 210.7, club_speed: 140.7, back_spin: 3518, side_spin: 2138, launch: 12.1, side_angle: 4.0, descent: 35.6, apex: 19.4, time: 5.3, type: "Slice" },
-      { session_date: "2026-11-25", club: "Driver", carry: 170.7, total: 185.0, side: 15.0, smash: 1.44, ball_speed: 200.9, club_speed: 139.3, back_spin: 2134, side_spin: 324, launch: 10.3, side_angle: 1.7, descent: 25.1, apex: 13.7, time: 4.6, type: "Fade" },
-      { session_date: "2026-11-25", club: "Driver", carry: 168.7, total: 181.8, side: 42.7, smash: 1.49, ball_speed: 200.1, club_speed: 134.0, back_spin: 3540, side_spin: 1929, launch: 17.3, side_angle: 2.5, descent: 43.3, apex: 25.2, time: 6.0, type: "Slice" },
-      { session_date: "2026-11-25", club: "Driver", carry: 182.7, total: 196.6, side: -17.2, smash: 1.50, ball_speed: 204.6, club_speed: 136.5, back_spin: 1483, side_spin: -89, launch: 12.8, side_angle: -3.9, descent: 24.7, apex: 15.6, time: 4.9, type: "Draw" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 166.7, total: 180.0, side: 44.2, smash: 1.43, ball_speed: 193.7, club_speed: 135.0, back_spin: 2515, side_spin: 489, launch: 12.7, side_angle: 10.0, descent: 30.6, apex: 17.4, time: 5.1, type: "Push Slice" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 170.1, total: 183.0, side: -1.7, smash: 1.44, ball_speed: 203.3, club_speed: 141.0, back_spin: 2790, side_spin: 545, launch: 9.4, side_angle: -5.0, descent: 27.0, apex: 14.3, time: 4.9, type: "Slice" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 173.1, total: 189.1, side: 8.2, smash: 1.48, ball_speed: 190.8, club_speed: 128.5, back_spin: 1709, side_spin: 86, launch: 15.1, side_angle: 1.6, descent: 30.1, apex: 18.7, time: 5.1, type: "Straight" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 188.5, total: 202.7, side: 24.2, smash: 1.50, ball_speed: 207.3, club_speed: 138.2, back_spin: 2578, side_spin: 216, launch: 13.2, side_angle: 4.9, descent: 34.7, apex: 22.2, time: 5.8, type: "Fade" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 134.6, total: 148.9, side: 19.6, smash: 1.40, ball_speed: 165.2, club_speed: 118.4, back_spin: 1951, side_spin: -186, launch: 16.6, side_angle: 9.4, descent: 26.8, apex: 13.4, time: 4.2, type: "Push Draw" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 163.3, total: 173.6, side: 34.0, smash: 1.48, ball_speed: 207.6, club_speed: 140.1, back_spin: 4007, side_spin: 1921, launch: 8.6, side_angle: -0.3, descent: 32.1, apex: 16.2, time: 5.1, type: "Slice" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 179.1, total: 193.5, side: -28.0, smash: 1.50, ball_speed: 213.2, club_speed: 142.0, back_spin: 2123, side_spin: -339, launch: 8.4, side_angle: -4.1, descent: 22.2, apex: 12.1, time: 4.7, type: "Hook" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 118.1, total: 130.4, side: -10.2, smash: 1.41, ball_speed: 197.9, club_speed: 140.0, back_spin: 2137, side_spin: 562, launch: 3.9, side_angle: -8.5, descent: 9.0, apex: 3.3, time: 2.8, type: "Pull Slice" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 170.1, total: 182.4, side: 2.1, smash: 1.47, ball_speed: 207.3, club_speed: 141.1, back_spin: 2832, side_spin: 337, launch: 7.8, side_angle: -2.1, descent: 24.3, apex: 12.4, time: 4.8, type: "Fade" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 132.9, total: 146.7, side: -20.4, smash: 1.50, ball_speed: 199.1, club_speed: 133.0, back_spin: 1948, side_spin: -1796, launch: 6.7, side_angle: 3.9, descent: 17.5, apex: 7.7, time: 3.4, type: "Hook" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 197.4, total: 212.3, side: -15.2, smash: 1.50, ball_speed: 211.3, club_speed: 141.2, back_spin: 2460, side_spin: -439, launch: 15.6, side_angle: 0.9, descent: 38.7, apex: 27.5, time: 6.2, type: "Hook" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 188.6, total: 201.3, side: 4.6, smash: 1.50, ball_speed: 218.4, club_speed: 145.4, back_spin: 2964, side_spin: 203, launch: 8.3, side_angle: -0.4, descent: 26.6, apex: 15.0, time: 5.3, type: "Fade" },
-      { session_date: "2026-11-25", club: "3 Wood", carry: 140.3, total: 157.2, side: -43.0, smash: 1.49, ball_speed: 192.4, club_speed: 129.5, back_spin: 1109, side_spin: -1010, launch: 12.1, side_angle: -6.4, descent: 19.7, apex: 10.0, time: 3.6, type: "Hook" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 173.6, total: 184.7, side: 5.0, smash: 1.49, ball_speed: 202.4, club_speed: 135.5, back_spin: 3895, side_spin: 596, launch: 14.2, side_angle: -2.8, descent: 40.2, apex: 25.0, time: 5.9, type: "Fade" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 176.7, total: 191.5, side: -5.7, smash: 1.50, ball_speed: 205.6, club_speed: 137.5, back_spin: 3975, side_spin: -79, launch: 12.1, side_angle: -1.2, descent: 37.6, apex: 22.4, time: 5.8, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 181.6, total: 195.3, side: -4.9, smash: 1.49, ball_speed: 201.4, club_speed: 134.9, back_spin: 2758, side_spin: 50, launch: 14.2, side_angle: -2.0, descent: 36.3, apex: 23.0, time: 5.8, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 181.9, total: 194.7, side: -12.4, smash: 1.50, ball_speed: 204.4, club_speed: 136.7, back_spin: 3119, side_spin: -195, launch: 13.7, side_angle: -2.0, descent: 37.4, apex: 23.7, time: 5.9, type: "Draw" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 181.2, total: 194.7, side: -21.3, smash: 1.49, ball_speed: 201.4, club_speed: 134.8, back_spin: 2737, side_spin: -415, launch: 14.7, side_angle: -2.6, descent: 36.8, apex: 23.7, time: 5.8, type: "Draw" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 183.6, total: 196.4, side: -11.5, smash: 1.50, ball_speed: 205.9, club_speed: 137.7, back_spin: 3188, side_spin: -43, launch: 14.0, side_angle: -3.0, descent: 38.3, apex: 24.6, time: 6.0, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 169.5, total: 182.4, side: 9.5, smash: 1.48, ball_speed: 191.3, club_speed: 129.0, back_spin: 2966, side_spin: -1, launch: 16.3, side_angle: 3.1, descent: 38.7, apex: 24.2, time: 5.8, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 179.3, total: 192.2, side: -13.7, smash: 1.49, ball_speed: 201.4, club_speed: 134.8, back_spin: 2973, side_spin: -127, launch: 14.0, side_angle: -3.1, descent: 36.7, apex: 23.1, time: 5.8, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 154.7, total: 166.3, side: -4.3, smash: 1.41, ball_speed: 189.2, club_speed: 134.3, back_spin: 3728, side_spin: 718, launch: 12.6, side_angle: -6.3, descent: 33.3, apex: 17.2, time: 5.1, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 175.7, total: 188.9, side: -29.4, smash: 1.49, ball_speed: 200.8, club_speed: 134.4, back_spin: 2718, side_spin: -730, launch: 13.3, side_angle: -2.6, descent: 33.9, apex: 20.2, time: 5.5, type: "Hook" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 143.7, total: 157.1, side: -30.5, smash: 1.49, ball_speed: 190.8, club_speed: 127.7, back_spin: 2079, side_spin: -1355, launch: 10.6, side_angle: -0.8, descent: 22.8, apex: 10.9, time: 4.0, type: "Hook" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 129.6, total: 138.9, side: 27.2, smash: 1.28, ball_speed: 162.7, club_speed: 126.8, back_spin: 4265, side_spin: 785, launch: 22.7, side_angle: 7.0, descent: 44.2, apex: 24.7, time: 5.4, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Hybrid", carry: 158.1, total: 191.3, side: -7.3, smash: 1.50, ball_speed: 202.5, club_speed: 135.3, back_spin: 3668, side_spin: -57, launch: 6.5, side_angle: -2.1, descent: 24.5, apex: 11.1, time: 4.6, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 153.2, total: 163.6, side: 8.3, smash: 1.48, ball_speed: 184.5, club_speed: 124.7, back_spin: 3990, side_spin: 577, launch: 15.5, side_angle: -0.8, descent: 38.9, apex: 21.8, time: 5.5, type: "Fade" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 165.7, total: 177.8, side: -14.1, smash: 1.49, ball_speed: 190.8, club_speed: 128.3, back_spin: 3219, side_spin: -68, launch: 14.9, side_angle: -4.0, descent: 37.1, apex: 21.9, time: 5.6, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 153.8, total: 164.5, side: 2.5, smash: 1.49, ball_speed: 183.1, club_speed: 123.1, back_spin: 3841, side_spin: 169, launch: 16.6, side_angle: -0.5, descent: 40.0, apex: 23.1, time: 5.6, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 135.5, total: 148.3, side: 18.6, smash: 1.42, ball_speed: 178.1, club_speed: 125.5, back_spin: 3205, side_spin: 1161, launch: 11.2, side_angle: 0.1, descent: 26.8, apex: 12.0, time: 4.3, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 156.3, total: 165.9, side: 20.6, smash: 1.48, ball_speed: 186.2, club_speed: 125.9, back_spin: 3839, side_spin: 892, launch: 17.3, side_angle: 1.3, descent: 41.5, apex: 24.8, time: 5.7, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 153.3, total: 163.0, side: 20.4, smash: 1.49, ball_speed: 189.1, club_speed: 127.0, back_spin: 3930, side_spin: 908, launch: 17.8, side_angle: 0.9, descent: 42.3, apex: 26.0, time: 5.8, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 152.4, total: 162.8, side: 20.9, smash: 1.49, ball_speed: 183.5, club_speed: 124.2, back_spin: 3943, side_spin: 695, launch: 16.6, side_angle: 1.7, descent: 40.5, apex: 23.2, time: 5.6, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 149.8, total: 160.5, side: -15.3, smash: 1.44, ball_speed: 180.6, club_speed: 125.3, back_spin: 3663, side_spin: -430, launch: 15.2, side_angle: -2.7, descent: 36.7, apex: 19.8, time: 5.3, type: "Draw" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 153.3, total: 164.2, side: 1.1, smash: 1.49, ball_speed: 182.6, club_speed: 123.1, back_spin: 3665, side_spin: 112, launch: 15.4, side_angle: -0.5, descent: 37.8, apex: 21.0, time: 5.4, type: "Straight" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 153.7, total: 163.8, side: 34.9, smash: 1.48, ball_speed: 186.4, club_speed: 125.6, back_spin: 4223, side_spin: 1289, launch: 18.5, side_angle: 4.3, descent: 43.6, apex: 26.5, time: 5.8, type: "Slice" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 142.4, total: 153.4, side: -21.7, smash: 1.41, ball_speed: 175.4, club_speed: 124.0, back_spin: 3274, side_spin: -833, launch: 14.6, side_angle: -2.6, descent: 33.6, apex: 17.0, time: 4.9, type: "Hook" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 144.3, total: 156.3, side: -30.8, smash: 1.48, ball_speed: 179.2, club_speed: 120.9, back_spin: 2890, side_spin: -1174, launch: 14.2, side_angle: -3.6, descent: 31.8, apex: 15.9, time: 4.7, type: "Hook" },
-      { session_date: "2026-11-25", club: "4 Iron", carry: 140.0, total: 152.3, side: -17.6, smash: 1.41, ball_speed: 171.2, club_speed: 121.3, back_spin: 2576, side_spin: -851, launch: 16.0, side_angle: 0.0, descent: 32.5, apex: 16.5, time: 4.7, type: "Hook" },
-      { session_date: "2026-11-25", club: "6 Iron", carry: 153.1, total: 162.3, side: -3.8, smash: 1.48, ball_speed: 185.8, club_speed: 125.3, back_spin: 4840, side_spin: 63, launch: 18.8, side_angle: -1.7, descent: 45.1, apex: 28.1, time: 6.0, type: "Straight" },
-      { session_date: "2026-11-25", club: "6 Iron", carry: 148.3, total: 158.3, side: -38.8, smash: 1.48, ball_speed: 179.2, club_speed: 121.1, back_spin: 3574, side_spin: -1095, launch: 17.9, side_angle: -6.8, descent: 40.0, apex: 22.6, time: 5.4, type: "Hook" },
-      { session_date: "2026-11-25", club: "6 Iron", carry: 143.8, total: 152.3, side: 4.6, smash: 1.43, ball_speed: 178.3, club_speed: 125.0, back_spin: 5094, side_spin: 416, launch: 18.2, side_angle: -0.5, descent: 43.4, apex: 24.7, time: 5.7, type: "Fade" },
-      { session_date: "2026-11-25", club: "6 Iron", carry: 130.5, total: 141.1, side: 1.3, smash: 1.41, ball_speed: 176.6, club_speed: 125.6, back_spin: 3176, side_spin: 426, launch: 8.8, side_angle: -2.2, descent: 22.1, apex: 9.2, time: 4.0, type: "Fade" },
-      { session_date: "2026-11-25", club: "6 Iron", carry: 154.9, total: 165.2, side: -13.4, smash: 1.47, ball_speed: 184.5, club_speed: 125.7, back_spin: 4155, side_spin: -134, launch: 18.0, side_angle: -3.9, descent: 42.9, apex: 26.1, time: 5.8, type: "Straight" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 134.2, total: 140.6, side: -13.1, smash: 1.36, ball_speed: 173.2, club_speed: 127.7, back_spin: 6397, side_spin: -164, launch: 23.0, side_angle: -4.6, descent: 49.0, apex: 30.0, time: 6.0, type: "Straight" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 66.2, total: 107.7, side: -6.1, smash: 1.34, ball_speed: 133.9, club_speed: 99.9, back_spin: 3765, side_spin: -374, launch: 25.7, side_angle: -1.5, descent: 41.4, apex: 19.2, time: 4.5, type: "Draw" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 121.6, total: 127.3, side: -3.3, smash: 1.32, ball_speed: 160.9, club_speed: 121.9, back_spin: 6675, side_spin: -148, launch: 23.7, side_angle: -0.9, descent: 47.6, apex: 26.4, time: 5.6, type: "Straight" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 114.1, total: 118.9, side: 10.6, smash: 1.26, ball_speed: 154.2, club_speed: 122.2, back_spin: 7150, side_spin: 1087, launch: 22.6, side_angle: 1.4, descent: 45.5, apex: 22.7, time: 5.2, type: "Fade" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 122.2, total: 127.9, side: 3.6, smash: 1.35, ball_speed: 161.0, club_speed: 119.5, back_spin: 6633, side_spin: 377, launch: 23.2, side_angle: 0.2, descent: 47.2, apex: 25.8, time: 5.5, type: "Fade" },
-      { session_date: "2026-11-25", club: "8 Iron", carry: 127.6, total: 134.1, side: -10.4, smash: 1.37, ball_speed: 166.5, club_speed: 122.0, back_spin: 6349, side_spin: -299, launch: 23.3, side_angle: -3.3, descent: 48.0, apex: 27.6, time: 5.7, type: "Straight" },
-      { session_date: "2026-11-25", club: "PW", carry: 101.1, total: 105.6, side: -3.2, smash: 1.36, ball_speed: 141.8, club_speed: 104.2, back_spin: 6871, side_spin: 78, launch: 30.4, side_angle: -2.1, descent: 50.6, apex: 26.4, time: 5.3, type: "Straight" },
-      { session_date: "2026-11-25", club: "PW", carry: 97.6, total: 100.7, side: 1.7, smash: 1.25, ball_speed: 139.5, club_speed: 111.6, back_spin: 8195, side_spin: 340, launch: 28.6, side_angle: -0.1, descent: 49.3, apex: 24.0, time: 5.1, type: "Straight" },
-      { session_date: "2026-11-25", club: "PW", carry: 94.7, total: 97.5, side: 5.0, smash: 1.29, ball_speed: 137.5, club_speed: 106.8, back_spin: 8090, side_spin: 1301, launch: 31.3, side_angle: -0.6, descent: 51.4, apex: 26.3, time: 5.2, type: "Slice" },
-      { session_date: "2026-11-25", club: "PW", carry: 100.9, total: 104.2, side: -3.6, smash: 1.21, ball_speed: 142.9, club_speed: 118.6, back_spin: 7929, side_spin: 401, launch: 29.0, side_angle: -3.3, descent: 50.3, apex: 25.5, time: 5.3, type: "Straight" },
-      { session_date: "2026-11-25", club: "PW", carry: 88.1, total: 91.3, side: 9.3, smash: 1.12, ball_speed: 128.3, club_speed: 114.6, back_spin: 7604, side_spin: 1535, launch: 28.8, side_angle: 1.7, descent: 48.6, apex: 19.5, time: 4.5, type: "Slice" },
-      { session_date: "2026-11-25", club: "PW", carry: 97.2, total: 100.6, side: 0.8, smash: 1.15, ball_speed: 137.5, club_speed: 120.1, back_spin: 7009, side_spin: 59, launch: 27.4, side_angle: 0.3, descent: 47.7, apex: 22.1, time: 5.0, type: "Straight" },
-      { session_date: "2026-11-25", club: "60° Wedge", carry: 61.6, total: 66.4, side: -1.6, smash: 1.02, ball_speed: 103.8, club_speed: 101.7, back_spin: 4606, side_spin: 255, launch: 44.1, side_angle: -2.2, descent: 55.3, apex: 21.0, time: 4.4, type: "Fade" },
-      { session_date: "2026-11-25", club: "60° Wedge", carry: 54.2, total: 58.5, side: -0.4, smash: 1.00, ball_speed: 99.6, club_speed: 99.9, back_spin: 4424, side_spin: -69, launch: 43.2, side_angle: -0.2, descent: 55.9, apex: 19.2, time: 4.2, type: "Straight" },
-      { session_date: "2026-11-25", club: "60° Wedge", carry: 60.5, total: 64.8, side: -2.6, smash: 1.05, ball_speed: 103.6, club_speed: 99.0, back_spin: 4902, side_spin: -39, launch: 44.6, side_angle: -2.3, descent: 55.6, apex: 21.1, time: 4.4, type: "Straight" },
-      { session_date: "2026-11-25", club: "60° Wedge", carry: 76.3, total: 78.4, side: -1.6, smash: 1.03, ball_speed: 116.8, club_speed: 113.9, back_spin: 8134, side_spin: 827, launch: 31.1, side_angle: -3.2, descent: 47.4, apex: 17.9, time: 4.4, type: "Fade" }
+    const DEFAULT_BAG = [
+      { club: "Driver", brand_model: "Callaway Paradym Ai Smoke Triple Diamond", loft: "9°", shaft: "Aldila Synergy 50.5", in_bag: true },
+      { club: "3 Wood", brand_model: "Wilson Fairway Wood", loft: "15°", shaft: "Regular Flex", in_bag: true },
+      { club: "4 Hybrid", brand_model: "Callaway Paradym Ai Smoke", loft: "21°", shaft: "Project X Cypher Fifty 5.0 Stiff", in_bag: true },
+      { club: "4 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "5 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "6 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "7 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "8 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "9 Iron", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "PW", brand_model: "Wilson Staff D300", loft: "", shaft: "KBS Tour 80", in_bag: true },
+      { club: "60° Wedge", brand_model: "Lob Wedge", loft: "60°", shaft: "KBS Tour 80", in_bag: true }
     ];
 
     let currentUser = null;
     let shots = [];
-    let parsedBatch = [];
-    let activeDetailClub = null;
+    let bagItems = [];
     let gappingChart = null;
     let dispersionChart = null;
-    let landingZoneChart = null;
-    let trajectoryChart = null;
-    let abCompareChart = null;
 
-    function formatDisplayDate(isoDate) {
-      if (!isoDate) return '-';
-      const [y, m, d] = isoDate.split('-');
-      return `${d}/${m}/${y}`;
+    (function initSelects() {
+      const mainSel = document.getElementById('clubSelect');
+      const bagSel = document.getElementById('bagClubSelect');
+      ALL_CLUBS.forEach(c => {
+        if (c.value !== 'Putter') mainSel.add(new Option(c.label, c.value));
+        bagSel.add(new Option(c.label, c.value));
+      });
+      document.getElementById('dateInput').value = new Date().toLocaleDateString('en-CA');
+    })();
+
+    function avgMetric(arr, key, decimals = 1) {
+      const valid = arr.map(s => Number(s[key])).filter(v => !isNaN(v) && v !== null);
+      if (!valid.length) return 0;
+      const mean = valid.reduce((a, b) => a + b, 0) / valid.length;
+      return Number(mean.toFixed(decimals));
     }
 
     function stdDev(values) {
       if (values.length < 2) return 0;
       const mean = values.reduce((a, b) => a + b, 0) / values.length;
-      const variance = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / (values.length - 1);
-      return Math.sqrt(variance);
+      return Math.sqrt(values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / (values.length - 1));
     }
 
-    function getClubSessionShots(club, filterMishits, specificDate = null) {
-      const selectedSession = specificDate || document.getElementById('sessionFilter').value;
+    function formatDir(val, unit = 'm', decimals = 1) {
+      const num = Number(val) || 0;
+      if (Math.abs(num) < 0.05) return `0${unit}`;
+      return `${Math.abs(num).toFixed(decimals)}${unit} ${num < 0 ? 'L' : 'R'}`;
+    }
+
+    // --- MY BAG CRUD ---
+    function toggleBagForm(forceShow = null) {
+      const form = document.getElementById('bagForm');
+      const shouldShow = forceShow !== null ? forceShow : form.classList.contains('hidden');
+      form.classList.toggle('hidden', !shouldShow);
+      if (!shouldShow) {
+        form.reset();
+        document.getElementById('bagEditId').value = '';
+      }
+    }
+
+    async function fetchBag() {
+      const { data, error } = await sb.from('golf_bag').select('*');
+      if (error) {
+        console.warn("Bag table notice:", error.message);
+        bagItems = [];
+      } else {
+        bagItems = data || [];
+      }
+      document.getElementById('seedBagBtn').classList.toggle('hidden', bagItems.length > 0);
+      renderMyBag();
+      renderTableAndCharts();
+    }
+
+    async function seedDefaultBag() {
+      const btn = document.getElementById('seedBagBtn');
+      btn.disabled = true;
+      btn.textContent = "Loading Bag...";
+      const payload = DEFAULT_BAG.map(item => ({ ...item, user_id: currentUser.id }));
+      const { error } = await sb.from('golf_bag').insert(payload);
+      btn.disabled = false;
+      btn.textContent = "Load My Current Bag";
+      if (error) return alert("Run the golf_bag SQL in Supabase first: " + error.message);
+      await fetchBag();
+    }
+
+    document.getElementById('bagForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('saveBagBtn');
+      btn.disabled = true;
+      btn.textContent = "...";
+
+      const editId = document.getElementById('bagEditId').value;
+      const payload = {
+        user_id: currentUser.id,
+        club: document.getElementById('bagClubSelect').value,
+        brand_model: document.getElementById('bagModelInput').value.trim(),
+        loft: document.getElementById('bagLoftInput').value.trim() || null,
+        shaft: document.getElementById('bagShaftInput').value.trim() || null,
+        in_bag: document.getElementById('bagStatusInput').value === 'true'
+      };
+
+      const { error } = editId
+        ? await sb.from('golf_bag').update(payload).eq('id', editId)
+        : await sb.from('golf_bag').insert([payload]);
+
+      btn.disabled = false;
+      btn.textContent = "Save";
+      if (error) return alert("Save club failed: " + error.message);
+
+      toggleBagForm(false);
+      await fetchBag();
+    });
+
+    function editBagItem(id) {
+      const item = bagItems.find(b => b.id === id);
+      if (!item) return;
+      document.getElementById('bagEditId').value = item.id;
+      document.getElementById('bagClubSelect').value = item.club;
+      document.getElementById('bagModelInput').value = item.brand_model;
+      document.getElementById('bagLoftInput').value = item.loft || '';
+      document.getElementById('bagShaftInput').value = item.shaft || '';
+      document.getElementById('bagStatusInput').value = String(item.in_bag);
+      toggleBagForm(true);
+    }
+
+    async function toggleBagActive(id, currentStatus) {
+      const { error } = await sb.from('golf_bag').update({ in_bag: !currentStatus }).eq('id', id);
+      if (error) return alert(error.message);
+      await fetchBag();
+    }
+
+    async function deleteBagItem(id) {
+      if (!confirm("Remove this club from your equipment locker?")) return;
+      const { error } = await sb.from('golf_bag').delete().eq('id', id);
+      if (error) return alert(error.message);
+      await fetchBag();
+    }
+
+    function getBagModelForClub(club) {
+      const match = bagItems.find(b => b.club === club && b.in_bag) || bagItems.find(b => b.club === club);
+      return match ? `${match.brand_model}${match.loft ? ' (' + match.loft + ')' : ''}` : '';
+    }
+
+    function renderMyBag() {
+      const grid = document.getElementById('myBagGrid');
+      const badge = document.getElementById('bagCountBadge');
+      const inBagCount = bagItems.filter(b => b.in_bag).length;
+
+      badge.textContent = `${inBagCount} / 14 Clubs`;
+      badge.className = `px-2.5 py-1 rounded-full text-xs font-bold border ${
+        inBagCount > 14
+          ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+          : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+      }`;
+
+      if (!bagItems.length) {
+        grid.innerHTML = `<div class="col-span-full text-xs text-slate-500 py-2">No clubs added yet. Click <strong>Load My Current Bag</strong> or <strong>+ Add / Edit Club</strong> above.</div>`;
+        return;
+      }
+
+      const sorted = [...bagItems].sort((a, b) => {
+        if (a.in_bag !== b.in_bag) return a.in_bag ? -1 : 1;
+        return CLUB_ORDER.indexOf(a.club) - CLUB_ORDER.indexOf(b.club);
+      });
+
+      grid.innerHTML = sorted.map(item => {
+        const stockShots = getClubSessionShots(item.club, true);
+        const stockCarry = stockShots.length ? avgMetric(stockShots, 'carry', 1) + ' m' : 'No data';
+        const cardBorder = item.in_bag ? 'border-slate-800 bg-slate-950' : 'border-amber-900/50 bg-slate-950/50 opacity-75';
+
+        return `
+          <div class="p-3 rounded-lg border ${cardBorder} flex flex-col justify-between space-y-2">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-xs font-bold text-emerald-400">${item.club} ${item.loft ? `<span class="text-slate-400 font-normal">(${item.loft})</span>` : ''}</span>
+                <button type="button" onclick="toggleBagActive('${item.id}', ${item.in_bag})" class="text-[10px] px-1.5 py-0.5 rounded border ${
+                  item.in_bag ? 'border-emerald-800/70 text-emerald-300 bg-emerald-950/40' : 'border-amber-800/70 text-amber-300 bg-amber-950/40'
+                }">${item.in_bag ? 'In Bag' : 'Benched'}</button>
+              </div>
+              <div class="text-xs font-semibold text-slate-100 mt-1 leading-snug">${item.brand_model}</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">${item.shaft || 'Standard Shaft'}</div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[11px]">
+              <span class="text-slate-400">Stock: <strong class="text-slate-200">${stockCarry}</strong></span>
+              <div class="space-x-2">
+                <button type="button" onclick="editBagItem('${item.id}')" class="text-sky-400 hover:underline">Edit</button>
+                <button type="button" onclick="deleteBagItem('${item.id}')" class="text-rose-400 hover:underline">✕</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- SHOTS & CHARTS ---
+    function getClubSessionShots(club, filterMishits) {
+      const selectedSession = document.getElementById('sessionFilter').value;
       let clubShots = shots.filter(s => s.club === club);
       if (selectedSession && selectedSession !== 'ALL') {
         clubShots = clubShots.filter(s => s.session_date === selectedSession);
       }
       if (!filterMishits || clubShots.length < 3) return clubShots;
-
       const sorted = [...clubShots].map(s => Number(s.carry)).sort((a, b) => a - b);
       const median = sorted[Math.floor(sorted.length / 2)];
       return clubShots.filter(s => Number(s.carry) >= median * 0.80 && Number(s.carry) <= median * 1.25);
     }
 
-    // --- FEATURE 4: AUTOMATED BAG AUDIT & SCORE KILLERS ---
-    function renderBagAudit() {
-      const container = document.getElementById('bagAuditSection');
-      if (!shots.length) {
-        container.innerHTML = '';
-        return;
-      }
-
-      const activeClubs = CLUB_ORDER.map(club => {
-        const all = getClubSessionShots(club, false);
-        const stock = getClubSessionShots(club, true);
-        if (!all.length) return null;
-        const stockCarries = stock.map(s => Number(s.carry));
-        const allSides = all.map(s => Number(s.side));
-        const severeMisses = allSides.filter(x => Math.abs(x) > 20).length;
-        return {
-          club,
-          count: all.length,
-          stockCarry: avgMetric(stock, 'carry', 1),
-          carrySD: stdDev(stockCarries),
-          offlineWidth: Math.max(...allSides) - Math.min(...allSides),
-          severeRate: Math.round((severeMisses / all.length) * 100),
-          severeCount: severeMisses
-        };
-      }).filter(Boolean);
-
-      if (!activeClubs.length) {
-        container.innerHTML = '';
-        return;
-      }
-
-      // 1. Most Reliable Club (lowest Carry SD among clubs with >= 3 shots)
-      const multiShotClubs = activeClubs.filter(c => c.count >= 3);
-      const reliablePool = multiShotClubs.length ? multiShotClubs : activeClubs;
-      const mostReliable = [...reliablePool].sort((a, b) => a.carrySD - b.carrySD)[0];
-
-      // 2. Biggest Dispersion Liability (widest offline spread / severe miss rate)
-      const biggestLiability = [...reliablePool].sort((a, b) => b.offlineWidth - a.offlineWidth)[0];
-
-      // 3. Bag Gapping Gaps & Overlaps
-      const gapAlerts = [];
-      for (let i = 0; i < activeClubs.length - 1; i++) {
-        const upper = activeClubs[i];
-        const lower = activeClubs[i + 1];
-        const diff = upper.stockCarry - lower.stockCarry;
-        if (diff < 6) {
-          gapAlerts.push(`<span class="text-amber-300 font-semibold">Overlap:</span> ${upper.club} (${upper.stockCarry}m) & ${lower.club} (${lower.stockCarry}m) are only ${diff.toFixed(1)}m apart.`);
-        } else if (diff > 22) {
-          gapAlerts.push(`<span class="text-rose-300 font-semibold">Dead Zone:</span> ${diff.toFixed(0)}m gap between ${upper.club} (${upper.stockCarry}m) & ${lower.club} (${lower.stockCarry}m).`);
-        }
-      }
-
-      container.innerHTML = `
-        <div class="bg-slate-900 p-4 rounded-xl border border-emerald-900/60 space-y-1.5">
-          <div class="text-[11px] uppercase tracking-wider text-emerald-400 font-bold">Most Reliable Go-To Club</div>
-          <div class="text-lg font-bold text-white">${mostReliable.club} <span class="text-xs font-normal text-slate-400">(±${mostReliable.carrySD.toFixed(1)}m carry SD)</span></div>
-          <p class="text-xs text-slate-400">Stock carry <span class="text-slate-200 font-semibold">${mostReliable.stockCarry}m</span> across ${mostReliable.count} shots with ${mostReliable.offlineWidth.toFixed(0)}m total left-right spread.</p>
-        </div>
-
-        <div class="bg-slate-900 p-4 rounded-xl border border-rose-900/60 space-y-1.5">
-          <div class="text-[11px] uppercase tracking-wider text-rose-400 font-bold">Biggest Dispersion Liability</div>
-          <div class="text-lg font-bold text-white">${biggestLiability.club} <span class="text-xs font-normal text-slate-400">(${biggestLiability.offlineWidth.toFixed(0)}m L-R spread)</span></div>
-          <p class="text-xs text-slate-400">${biggestLiability.severeCount} of ${biggestLiability.count} shots (${biggestLiability.severeRate}%) finished &gt;20m offline—high penalty risk on tight holes.</p>
-        </div>
-
-        <div class="bg-slate-900 p-4 rounded-xl border border-amber-900/60 space-y-1.5">
-          <div class="text-[11px] uppercase tracking-wider text-amber-400 font-bold">Bag Gapping & Overlap Audit</div>
-          <div class="text-xs text-slate-300 space-y-1">
-            ${gapAlerts.length ? gapAlerts.slice(0, 2).map(a => `<div>• ${a}</div>`).join('') : `<div>• Clean gapping across all active clubs (6m–22m steps).</div>`}
-          </div>
-        </div>
-      `;
-    }
-
-    // --- FEATURE 1: LANDING ZONE, AIM OFFSET & GREEN HIT % ---
-    function updateAimLabel() {
-      const val = Number(document.getElementById('aimOffsetSlider').value);
-      const lbl = document.getElementById('aimOffsetLabel');
-      if (val === 0) lbl.textContent = '0m (Pin)';
-      else if (val < 0) lbl.textContent = `${Math.abs(val)}m Left`;
-      else lbl.textContent = `${val}m Right`;
-    }
-
-    function autoOptimizeAim() {
-      const club1 = document.getElementById('lzClub1').value;
-      const targetPin = Number(document.getElementById('targetPinInput').value) || 100;
-      const allRaw = getClubSessionShots(club1, false);
-      if (!allRaw.length) return;
-
-      let bestOffset = 0;
-      let bestHits = -1;
-      let bestDistToCenter = Infinity;
-
-      for (let offset = -25; offset <= 25; offset++) {
-        let hits = 0;
-        let sumDist = 0;
-        allRaw.forEach(s => {
-          const x = Number(s.side) + offset;
-          const y = Number(s.carry);
-          const dist = Math.hypot(x, y - targetPin);
-          if (dist <= 13) hits++;
-          sumDist += dist;
-        });
-        if (hits > bestHits || (hits === bestHits && sumDist < bestDistToCenter)) {
-          bestHits = hits;
-          bestOffset = offset;
-          bestDistToCenter = sumDist;
-        }
-      }
-
-      document.getElementById('aimOffsetSlider').value = bestOffset;
-      updateAimLabel();
-      renderLandingZone();
-    }
-
-    function computeDispersionEllipse(pts) {
-      if (!pts.length) return null;
-      const n = pts.length;
-      const meanX = pts.reduce((a, p) => a + p.x, 0) / n;
-      const meanY = pts.reduce((a, p) => a + p.y, 0) / n;
-
-      if (n === 1) {
-        return {
-          meanX, meanY, width: 6, depth: 6, minY: meanY - 3, maxY: meanY + 3,
-          polygon: Array.from({ length: 61 }, (_, i) => {
-            const t = (i / 60) * 2 * Math.PI;
-            return { x: meanX + 3 * Math.cos(t), y: meanY + 3 * Math.sin(t) };
-          })
-        };
-      }
-
-      let sxx = 0, syy = 0, sxy = 0;
-      pts.forEach(p => {
-        const dx = p.x - meanX;
-        const dy = p.y - meanY;
-        sxx += dx * dx;
-        syy += dy * dy;
-        sxy += dx * dy;
-      });
-      sxx /= (n - 1);
-      syy /= (n - 1);
-      sxy /= (n - 1);
-
-      const trace = sxx + syy;
-      const det = sxx * syy - sxy * sxy;
-      const disc = Math.sqrt(Math.max(0, (trace * trace) / 4 - det));
-      const l1 = Math.max(1.5, trace / 2 + disc);
-      const l2 = Math.max(1.5, trace / 2 - disc);
-
-      const scale = 1.95;
-      const r1 = Math.sqrt(l1) * scale;
-      const r2 = Math.sqrt(l2) * scale;
-      const angle = Math.abs(sxy) < 1e-6 && sxx >= syy ? 0 : Math.atan2(l1 - sxx, sxy);
-
-      const cosA = Math.cos(angle);
-      const sinA = Math.sin(angle);
-      const polygon = [];
-      for (let i = 0; i <= 72; i++) {
-        const theta = (i / 72) * 2 * Math.PI;
-        const u = r1 * Math.cos(theta);
-        const v = r2 * Math.sin(theta);
-        polygon.push({
-          x: Number((meanX + u * cosA - v * sinA).toFixed(2)),
-          y: Number((meanY + u * sinA + v * cosA).toFixed(2))
-        });
-      }
-
-      const xs = polygon.map(p => p.x);
-      const ys = polygon.map(p => p.y);
-      return {
-        meanX, meanY,
-        width: Math.max(...xs) - Math.min(...xs),
-        depth: Math.max(...ys) - Math.min(...ys),
-        minY: Math.min(...ys),
-        maxY: Math.max(...ys),
-        polygon
-      };
-    }
-
-    function syncLandingZoneSelectors() {
-      const sel1 = document.getElementById('lzClub1');
-      const sel2 = document.getElementById('lzClub2');
-      const prev1 = sel1.value;
-      const prev2 = sel2.value;
-
-      const activeClubs = CLUB_ORDER.filter(c => getClubSessionShots(c, false).length > 0);
-      sel1.innerHTML = '';
-      sel2.innerHTML = '<option value="">None</option>';
-
-      activeClubs.forEach(c => {
-        sel1.add(new Option(c, c));
-        sel2.add(new Option(c, c));
-      });
-
-      if (activeClubs.includes(prev1)) sel1.value = prev1;
-      else if (activeClubs.includes('PW')) sel1.value = 'PW';
-      else if (activeClubs.length) sel1.value = activeClubs[activeClubs.length - 1];
-
-      if (activeClubs.includes(prev2)) sel2.value = prev2;
-      else if (activeClubs.includes('8 Iron')) sel2.value = '8 Iron';
-    }
-
-    function evaluateGreenHits(pts, targetPin) {
-      let onGreen = 0, short = 0, long = 0, left = 0, right = 0;
-      pts.forEach(p => {
-        const dist = Math.hypot(p.x, p.y - targetPin);
-        if (dist <= 13) {
-          onGreen++;
-        } else {
-          if (p.y < targetPin - 9) short++;
-          else if (p.y > targetPin + 9) long++;
-          if (p.x < -9) left++;
-          else if (p.x > 9) right++;
-        }
-      });
-      return {
-        onGreen,
-        pct: pts.length ? Math.round((onGreen / pts.length) * 100) : 0,
-        short, long, left, right
-      };
-    }
-
-    function renderLandingZone() {
-      const canvas = document.getElementById('landingZoneChart');
-      const statsPanel = document.getElementById('lzStatsPanel');
-      if (!canvas || typeof Chart === 'undefined') return;
-
-      const targetPin = Number(document.getElementById('targetPinInput').value) || 100;
-      const aimOffset = Number(document.getElementById('aimOffsetSlider').value) || 0;
-      const club1 = document.getElementById('lzClub1').value;
-      const club2 = document.getElementById('lzClub2').value;
-
-      const greenPoly = [];
-      for (let i = 0; i <= 60; i++) {
-        const t = (i / 60) * 2 * Math.PI;
-        greenPoly.push({
-          x: Number((13 * Math.cos(t)).toFixed(2)),
-          y: Number((targetPin + 13 * Math.sin(t)).toFixed(2))
-        });
-      }
-
-      const datasets = [
-        {
-          label: `Target Green (${targetPin}m Pin)`,
-          data: greenPoly,
-          showLine: true,
-          fill: true,
-          backgroundColor: 'rgba(16, 185, 129, 0.08)',
-          borderColor: 'rgba(52, 211, 153, 0.45)',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          order: 10
-        },
-        {
-          label: `Pin (${targetPin}m)`,
-          data: [{ x: 0, y: targetPin }],
-          backgroundColor: '#fbbf24',
-          borderColor: '#0f172a',
-          borderWidth: 2,
-          pointStyle: 'triangle',
-          pointRadius: 8,
-          order: 1
-        }
-      ];
-
-      if (aimOffset !== 0) {
-        datasets.push({
-          label: `Aim Point (${formatDir(aimOffset, 'm', 0)})`,
-          data: [{ x: aimOffset, y: targetPin }],
-          backgroundColor: '#f43f5e',
-          borderColor: '#ffffff',
-          borderWidth: 1.5,
-          pointStyle: 'crossRot',
-          pointRadius: 8,
-          order: 1
-        });
-      }
-
-      const configs = [
-        { club: club1, rgb: '16, 185, 129', hex: '#10b981', textClass: 'text-emerald-400', borderClass: 'border-emerald-800/70' },
-        { club: club2, rgb: '56, 189, 248', hex: '#38bdf8', textClass: 'text-sky-400', borderClass: 'border-sky-800/70' }
-      ].filter(cfg => cfg.club && cfg.club !== '');
-
-      let statsHtml = '';
-      const allYValues = [targetPin - 20, targetPin + 20];
-      const allXValues = [-25, 25];
-
-      configs.forEach(cfg => {
-        const allRaw = getClubSessionShots(cfg.club, false);
-        const stockRaw = getClubSessionShots(cfg.club, true);
-        if (!allRaw.length) return;
-
-        // Shift horizontal landing points by Aim Offset
-        const allPts = allRaw.map(s => ({ x: Number(s.side) + aimOffset, y: Number(s.carry) }));
-        const stockPts = stockRaw.map(s => ({ x: Number(s.side) + aimOffset, y: Number(s.carry) }));
-
-        const allEll = computeDispersionEllipse(allPts);
-        const stockEll = computeDispersionEllipse(stockPts);
-        const stockGIR = evaluateGreenHits(stockPts, targetPin);
-        const allGIR = evaluateGreenHits(allPts, targetPin);
-
-        allPts.forEach(p => { allXValues.push(p.x); allYValues.push(p.y); });
-        if (allEll) allEll.polygon.forEach(p => { allXValues.push(p.x); allYValues.push(p.y); });
-
-        if (allEll) {
-          datasets.push({
-            label: `${cfg.club} Full Variance (incl. Mishits)`,
-            data: allEll.polygon,
-            showLine: true,
-            fill: true,
-            backgroundColor: `rgba(${cfg.rgb}, 0.08)`,
-            borderColor: `rgba(${cfg.rgb}, 0.85)`,
-            borderDash: [6, 4],
-            borderWidth: 2,
-            pointRadius: 0,
-            order: 6
-          });
-        }
-
-        if (stockEll) {
-          datasets.push({
-            label: `${cfg.club} Clean Stock Patch`,
-            data: stockEll.polygon,
-            showLine: true,
-            fill: true,
-            backgroundColor: `rgba(${cfg.rgb}, 0.24)`,
-            borderColor: cfg.hex,
-            borderWidth: 2.5,
-            pointRadius: 0,
-            order: 5
-          });
-        }
-
-        datasets.push({
-          label: `${cfg.club} Shots (${allPts.length})`,
-          data: allPts,
-          backgroundColor: cfg.hex,
-          borderColor: '#020617',
-          borderWidth: 1,
-          pointRadius: 4.5,
-          order: 2
-        });
-
-        statsHtml += `
-          <div class="bg-slate-950 p-3.5 rounded-lg border ${cfg.borderClass} space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-sm ${cfg.textClass}">${cfg.club}</span>
-              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold text-[11px]">Green Hit: ${allGIR.pct}% (${stockGIR.pct}% Stock)</span>
-            </div>
-            <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-800/80">
-              <div>
-                <div class="text-[10px] uppercase text-slate-500">Clean Stock Patch</div>
-                <div class="font-semibold text-slate-200">${stockEll.width.toFixed(0)}m W × ${stockEll.depth.toFixed(0)}m D</div>
-                <div class="text-[11px] text-slate-400">Avg Carry: ${stockEll.meanY.toFixed(1)}m</div>
-              </div>
-              <div>
-                <div class="text-[10px] uppercase text-slate-500">Miss Breakdown (All)</div>
-                <div class="font-semibold text-amber-300">${allGIR.short} Short · ${allGIR.long} Long</div>
-                <div class="text-[11px] text-slate-400">${allGIR.left} Left · ${allGIR.right} Right</div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-
-      statsPanel.innerHTML = statsHtml || `<div class="text-slate-500 p-4">Upload or load shots to view landing zone dispersion.</div>`;
-
-      const minX = Math.floor(Math.min(...allXValues) - 8);
-      const maxX = Math.ceil(Math.max(...allXValues) + 8);
-      const minY = Math.max(0, Math.floor(Math.min(...allYValues) - 10));
-      const maxY = Math.ceil(Math.max(...allYValues) + 10);
-
-      if (landingZoneChart) landingZoneChart.destroy();
-      landingZoneChart = new Chart(canvas, {
-        type: 'scatter',
-        data: { datasets },
-        options: {
-          animation: false,
-          scales: {
-            x: {
-              title: { display: true, text: 'Offline Dispersion vs. Pin: Left (-) / Right (+) Metres', color: '#94a3b8' },
-              min: minX,
-              max: maxX,
-              grid: { color: (ctx) => ctx.tick.value === 0 ? '#475569' : '#1e293b' },
-              ticks: { color: '#94a3b8' }
-            },
-            y: {
-              title: { display: true, text: 'Carry Distance (Metres)', color: '#94a3b8' },
-              min: minY,
-              max: maxY,
-              grid: { color: '#1e293b' },
-              ticks: { color: '#94a3b8' }
-            }
-          },
-          plugins: {
-            legend: { labels: { color: '#cbd5e1', boxWidth: 12, font: { size: 11 } } },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}m carry, ${formatDir(ctx.parsed.x, 'm', 1)}`
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // --- FEATURE 3: 2D TRAJECTORY & STOPPING POWER ---
-    function renderTrajectoryChart() {
-      const canvas = document.getElementById('trajectoryChart');
-      const badgesBox = document.getElementById('stoppingPowerBadges');
-      if (!canvas || typeof Chart === 'undefined') return;
-
-      const useStock = document.getElementById('trajFilterMishits').checked;
-      const colors = ['#f43f5e', '#f97316', '#eab308', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'];
-
-      const datasets = [];
-      let badgeHtml = '';
-
-      CLUB_ORDER.forEach((club, idx) => {
-        const clubShots = getClubSessionShots(club, useStock);
-        if (!clubShots.length) return;
-
-        const carry = avgMetric(clubShots, 'carry', 1);
-        const total = avgMetric(clubShots, 'total', 1);
-        const apex = avgMetric(clubShots, 'apex', 1) ?? (carry * 0.15);
-        const descent = avgMetric(clubShots, 'descent', 1);
-        const rollout = Math.max(0, total - carry);
-        const color = colors[idx % colors.length];
-
-        // Smooth asymmetric golf trajectory curve peaking around 62% of carry
-        const peakX = carry * 0.62;
-        const curvePts = [];
-        for (let step = 0; step <= 24; step++) {
-          const t = step / 24;
-          const x = t * carry;
-          let y;
-          if (x <= peakX) {
-            const u = x / peakX;
-            y = apex * (1 - Math.pow(1 - u, 1.85));
-          } else {
-            const u = (x - peakX) / (carry - peakX);
-            y = apex * (1 - Math.pow(u, 1.55));
-          }
-          curvePts.push({ x: Number(x.toFixed(1)), y: Number(Math.max(0, y).toFixed(1)) });
-        }
-        // Add ground rollout segment
-        if (total > carry) {
-          curvePts.push({ x: Number(total.toFixed(1)), y: 0 });
-        }
-
-        datasets.push({
-          label: `${club} (${descent ? descent + '°' : rollout.toFixed(1) + 'm roll'})`,
-          data: curvePts,
-          showLine: true,
-          borderColor: color,
-          backgroundColor: color,
-          borderWidth: 2,
-          pointRadius: (ctx) => ctx.dataIndex === curvePts.length - 1 ? 4 : 0,
-          tension: 0.35
-        });
-
-        let badgeColor = 'border-amber-700/70 text-amber-300 bg-amber-950/30';
-        let holdLabel = 'Medium Hold';
-        if (descent !== null) {
-          if (descent >= 45) {
-            badgeColor = 'border-emerald-700/70 text-emerald-300 bg-emerald-950/30';
-            holdLabel = 'Pin-Seeking';
-          } else if (descent < 38) {
-            badgeColor = 'border-rose-700/70 text-rose-300 bg-rose-950/30';
-            holdLabel = 'Runout';
-          }
-        }
-
-        badgeHtml += `
-          <span class="px-2 py-1 rounded border text-[11px] ${badgeColor}">
-            <strong>${club}:</strong> ${descent ? descent + '°' : '-'} · +${rollout.toFixed(1)}m roll (${holdLabel})
-          </span>
-        `;
-      });
-
-      badgesBox.innerHTML = badgeHtml;
-
-      if (trajectoryChart) trajectoryChart.destroy();
-      trajectoryChart = new Chart(canvas, {
-        type: 'scatter',
-        data: { datasets },
-        options: {
-          animation: false,
-          scales: {
-            x: { title: { display: true, text: 'Distance Downrange (Metres)', color: '#94a3b8' }, beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { title: { display: true, text: 'Apex Height (Metres)', color: '#94a3b8' }, beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
-          },
-          plugins: {
-            legend: { labels: { color: '#cbd5e1', boxWidth: 10, font: { size: 11 } } }
-          }
-        }
-      });
-    }
-
-    // --- FEATURE 5: SESSION A vs SESSION B COMPARISON ---
-    function syncABSelectors() {
-      const clubSel = document.getElementById('abClubSelect');
-      const dateASel = document.getElementById('abDateA');
-      const dateBSel = document.getElementById('abDateB');
-
-      const prevClub = clubSel.value;
-      const prevA = dateASel.value;
-      const prevB = dateBSel.value;
-
-      const activeClubs = CLUB_ORDER.filter(c => shots.some(s => s.club === c));
-      clubSel.innerHTML = '';
-      activeClubs.forEach(c => clubSel.add(new Option(c, c)));
-      if (activeClubs.includes(prevClub)) clubSel.value = prevClub;
-      else if (activeClubs.includes('3 Wood')) clubSel.value = '3 Wood';
-      else if (activeClubs.length) clubSel.value = activeClubs[0];
-
-      const uniqueDates = [...new Set(shots.map(s => s.session_date).filter(Boolean))].sort().reverse();
-      dateASel.innerHTML = '';
-      dateBSel.innerHTML = '';
-      uniqueDates.forEach(d => {
-        dateASel.add(new Option(formatDisplayDate(d), d));
-        dateBSel.add(new Option(formatDisplayDate(d), d));
-      });
-
-      if (uniqueDates.includes(prevA)) dateASel.value = prevA;
-      else if (uniqueDates.length) dateASel.value = uniqueDates[0];
-
-      if (uniqueDates.includes(prevB)) dateBSel.value = prevB;
-      else if (uniqueDates.length > 1) dateBSel.value = uniqueDates[1];
-      else if (uniqueDates.length) dateBSel.value = uniqueDates[0];
-    }
-
-    function renderABComparison() {
-      const canvas = document.getElementById('abCompareChart');
-      const deltaPanel = document.getElementById('abDeltaPanel');
-      if (!canvas || typeof Chart === 'undefined') return;
-
-      const club = document.getElementById('abClubSelect').value;
-      const dateA = document.getElementById('abDateA').value;
-      const dateB = document.getElementById('abDateB').value;
-
-      const shotsA = getClubSessionShots(club, false, dateA);
-      const shotsB = getClubSessionShots(club, false, dateB);
-
-      const ptsA = shotsA.map(s => ({ x: Number(s.side), y: Number(s.carry) }));
-      const ptsB = shotsB.map(s => ({ x: Number(s.side), y: Number(s.carry) }));
-
-      const ellA = computeDispersionEllipse(ptsA);
-      const ellB = computeDispersionEllipse(ptsB);
-
-      const datasets = [];
-      if (ellA) {
-        datasets.push({
-          label: `Session A (${formatDisplayDate(dateA)}) Zone`,
-          data: ellA.polygon,
-          showLine: true,
-          fill: true,
-          backgroundColor: 'rgba(56, 189, 248, 0.14)',
-          borderColor: '#38bdf8',
-          borderWidth: 2,
-          pointRadius: 0
-        });
-        datasets.push({
-          label: `Session A Shots (${ptsA.length})`,
-          data: ptsA,
-          backgroundColor: '#38bdf8',
-          pointRadius: 5
-        });
-      }
-
-      if (ellB && dateB !== dateA) {
-        datasets.push({
-          label: `Session B (${formatDisplayDate(dateB)}) Zone`,
-          data: ellB.polygon,
-          showLine: true,
-          fill: true,
-          backgroundColor: 'rgba(251, 191, 36, 0.14)',
-          borderColor: '#fbbf24',
-          borderDash: [5, 4],
-          borderWidth: 2,
-          pointRadius: 0
-        });
-        datasets.push({
-          label: `Session B Shots (${ptsB.length})`,
-          data: ptsB,
-          backgroundColor: '#fbbf24',
-          pointRadius: 5
-        });
-      }
-
-      if (abCompareChart) abCompareChart.destroy();
-      abCompareChart = new Chart(canvas, {
-        type: 'scatter',
-        data: { datasets },
-        options: {
-          animation: false,
-          scales: {
-            x: { title: { display: true, text: 'Left (-) / Right (+) Metres', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { title: { display: true, text: 'Carry (Metres)', color: '#94a3b8' }, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
-          },
-          plugins: { legend: { labels: { color: '#cbd5e1', boxWidth: 10, font: { size: 11 } } } }
-        }
-      });
-
-      if (!shotsA.length) {
-        deltaPanel.innerHTML = `<div class="col-span-4 text-slate-500">No ${club} shots logged for ${formatDisplayDate(dateA)}.</div>`;
-        return;
-      }
-
-      const cA = avgMetric(shotsA, 'carry', 1);
-      const sA = avgMetric(shotsA, 'smash', 2);
-      const spA = avgMetric(shotsA, 'back_spin', 0);
-      const wA = ellA ? ellA.width : 0;
-
-      if (!shotsB.length || dateA === dateB) {
-        deltaPanel.innerHTML = `
-          <div class="bg-slate-950 p-2.5 rounded border border-slate-800"><div class="text-[10px] text-slate-500">AVG CARRY</div><div class="font-bold text-sky-300">${cA} m</div></div>
-          <div class="bg-slate-950 p-2.5 rounded border border-slate-800"><div class="text-[10px] text-slate-500">SMASH FACTOR</div><div class="font-bold text-sky-300">${sA ?? '-'}</div></div>
-          <div class="bg-slate-950 p-2.5 rounded border border-slate-800"><div class="text-[10px] text-slate-500">BACK SPIN</div><div class="font-bold text-sky-300">${spA ?? '-'} rpm</div></div>
-          <div class="bg-slate-950 p-2.5 rounded border border-slate-800"><div class="text-[10px] text-slate-500">PATCH WIDTH</div><div class="font-bold text-sky-300">${wA.toFixed(0)} m</div></div>
-        `;
-        return;
-      }
-
-      const cB = avgMetric(shotsB, 'carry', 1);
-      const sB = avgMetric(shotsB, 'smash', 2);
-      const spB = avgMetric(shotsB, 'back_spin', 0);
-      const wB = ellB ? ellB.width : 0;
-
-      const dCarry = (cA - cB).toFixed(1);
-      const dSmash = sA && sB ? (sA - sB).toFixed(2) : null;
-      const dSpin = spA && spB ? Math.round(spA - spB) : null;
-      const dWidth = (wA - wB).toFixed(0);
-
-      deltaPanel.innerHTML = `
-        <div class="bg-slate-950 p-2.5 rounded border border-slate-800">
-          <div class="text-[10px] text-slate-500">CARRY (A vs B)</div>
-          <div class="font-bold text-white">${cA}m <span class="${Number(dCarry) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">(${Number(dCarry) >= 0 ? '+' : ''}${dCarry}m)</span></div>
-        </div>
-        <div class="bg-slate-950 p-2.5 rounded border border-slate-800">
-          <div class="text-[10px] text-slate-500">SMASH (A vs B)</div>
-          <div class="font-bold text-white">${sA ?? '-'} <span class="text-slate-400">${dSmash !== null ? '(' + (Number(dSmash) >= 0 ? '+' : '') + dSmash + ')' : ''}</span></div>
-        </div>
-        <div class="bg-slate-950 p-2.5 rounded border border-slate-800">
-          <div class="text-[10px] text-slate-500">SPIN (A vs B)</div>
-          <div class="font-bold text-white">${spA ?? '-'} <span class="text-slate-400">${dSpin !== null ? '(' + (dSpin >= 0 ? '+' : '') + dSpin + ')' : ''}</span></div>
-        </div>
-        <div class="bg-slate-950 p-2.5 rounded border border-slate-800">
-          <div class="text-[10px] text-slate-500">SPREAD WIDTH</div>
-          <div class="font-bold text-white">${wA.toFixed(0)}m <span class="${Number(dWidth) <= 0 ? 'text-emerald-400' : 'text-rose-400'}">(${Number(dWidth) > 0 ? '+' : ''}${dWidth}m)</span></div>
-        </div>
-      `;
-    }
-
-    // --- FEATURE 2: ROOT-CAUSE MISS & STRIKE DIAGNOSTIC ---
-    function diagnoseShot(shot, clubMedians) {
-      const carryRatio = clubMedians.carry > 0 ? Number(shot.carry) / clubMedians.carry : 1;
-      const smashDiff = clubMedians.smash && shot.smash ? Number(shot.smash) - clubMedians.smash : 0;
-      const launchDiff = clubMedians.launch && shot.launch ? Number(shot.launch) - clubMedians.launch : 0;
-
-      let strikeTag = 'Pure Strike';
-      let strikeClass = 'bg-emerald-500/15 text-emerald-300 border-emerald-700/50';
-
-      if (carryRatio < 0.85 || smashDiff < -0.06) {
-        if (launchDiff < -3.5) {
-          strikeTag = 'Thin / Low Strike';
-          strikeClass = 'bg-rose-500/15 text-rose-300 border-rose-700/50';
-        } else if (launchDiff > 4.0) {
-          strikeTag = 'High / Floater';
-          strikeClass = 'bg-amber-500/15 text-amber-300 border-amber-700/50';
-        } else {
-          strikeTag = 'Off-Center / Heel-Toe';
-          strikeClass = 'bg-rose-500/15 text-rose-300 border-rose-700/50';
-        }
-      } else if (launchDiff < -4.0) {
-        strikeTag = 'Low Bullet';
-        strikeClass = 'bg-amber-500/15 text-amber-300 border-amber-700/50';
-      }
-
-      const side = Number(shot.side ?? 0);
-      const sideAng = Number(shot.side_angle ?? 0);
-      const sideSpin = Number(shot.side_spin ?? 0);
-
-      let causeTag = 'On-Line (<10m)';
-      let causeClass = 'text-slate-300';
-
-      if (Math.abs(side) >= 10) {
-        const sameSign = (sideAng > 1.5 && sideSpin > 250) || (sideAng < -1.5 && sideSpin < -250);
-        const oppositeSign = (sideAng > 2.0 && sideSpin < -350) || (sideAng < -2.0 && sideSpin > 350);
-
-        if (oppositeSign) {
-          causeTag = 'Double-Cross (Start vs Spin)';
-          causeClass = 'text-amber-300';
-        } else if (Math.abs(sideSpin) >= 500 && !sameSign) {
-          causeTag = `Curve Miss (${sideSpin > 0 ? 'Slice' : 'Hook'} Spin)`;
-          causeClass = 'text-rose-300';
-        } else if (Math.abs(sideAng) >= 2.5 && Math.abs(sideSpin) < 450) {
-          causeTag = `Start-Line Miss (${sideAng > 0 ? 'Push' : 'Pull'})`;
-          causeClass = 'text-sky-300';
-        } else {
-          causeTag = `Path + Face (${side > 0 ? 'Right' : 'Left'})`;
-          causeClass = 'text-rose-300';
-        }
-      }
-
-      return { strikeTag, strikeClass, causeTag, causeClass };
-    }
-
-    // --- PHOTO SCANNER & EDGE FUNCTION ---
-    function togglePhotoModal(show) {
-      document.getElementById('photoModal').classList.toggle('hidden', !show);
-      if (!show) {
-        parsedBatch = [];
-        document.getElementById('parsedPreviewWrap').classList.add('hidden');
-        document.getElementById('saveParsedBtn').classList.add('hidden');
-        document.getElementById('photoStatus').classList.add('hidden');
-      }
-    }
-
-    function compressImageToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const maxDim = 1600;
-            let w = img.width, h = img.height;
-            if (w > maxDim || h > maxDim) {
-              if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
-              else { w = Math.round((w * maxDim) / h); h = maxDim; }
-            }
-            const canvas = document.createElement('canvas');
-            canvas.width = w;
-            canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-            resolve({ base64: dataUrl.split(',')[1], mimeType: 'image/jpeg' });
-          };
-          img.onerror = reject;
-          img.src = e.target.result;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    async function processSelectedPhotos() {
-      const files = document.getElementById('photoInput').files;
-      if (!files.length) return alert("Select at least one Uneekor photo first.");
-
-      const btn = document.getElementById('scanPhotosBtn');
-      const statusBox = document.getElementById('photoStatus');
-      const overrideClub = document.getElementById('photoClubOverride').value;
-      const overrideDate = document.getElementById('photoDateOverride').value;
-
-      btn.disabled = true;
-      parsedBatch = [];
-      statusBox.classList.remove('hidden');
-
-      try {
-        for (let i = 0; i < files.length; i++) {
-          statusBox.textContent = `Scanning photo ${i + 1} of ${files.length} (${files[i].name})...`;
-          const fileTakenDate = new Date(files[i].lastModified).toLocaleDateString('en-CA');
-          const fallbackDate = overrideDate || fileTakenDate || getTodayISO();
-          const { base64, mimeType } = await compressImageToBase64(files[i]);
-
-          const { data, error } = await sb.functions.invoke('parse-uneekor', {
-            body: { imageBase64: base64, mimeType, overrideClub, fallbackDate }
-          });
-
-          if (error) throw new Error(error.message);
-          if (data?.error) throw new Error(data.error);
-          if (Array.isArray(data?.shots)) {
-            const stamped = data.shots.map(s => ({
-              ...s,
-              session_date: overrideDate || s.session_date || fallbackDate
-            }));
-            parsedBatch.push(...stamped);
-          }
-        }
-
-        statusBox.textContent = `Extracted ${parsedBatch.length} shots across ${files.length} photo(s). Review below and click Save.`;
-        renderParsedPreview();
-      } catch (err) {
-        statusBox.textContent = `Scan error: ${err.message}`;
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    function renderParsedPreview() {
-      const wrap = document.getElementById('parsedPreviewWrap');
-      const tbody = document.getElementById('parsedPreviewBody');
-      const saveBtn = document.getElementById('saveParsedBtn');
-      tbody.innerHTML = '';
-
-      if (!parsedBatch.length) {
-        wrap.classList.add('hidden');
-        saveBtn.classList.add('hidden');
-        return;
-      }
-
-      parsedBatch.forEach((s, idx) => {
-        tbody.innerHTML += `
-          <tr>
-            <td class="px-2.5 py-1.5 text-slate-400">${formatDisplayDate(s.session_date)}</td>
-            <td class="px-2.5 py-1.5 font-semibold text-emerald-400">${s.club}</td>
-            <td class="px-2.5 py-1.5">${Number(s.carry).toFixed(1)} m</td>
-            <td class="px-2.5 py-1.5">${Number(s.total).toFixed(1)} m</td>
-            <td class="px-2.5 py-1.5">${formatDir(s.side, 'm', 1)}</td>
-            <td class="px-2.5 py-1.5">${s.smash ?? '-'}</td>
-            <td class="px-2.5 py-1.5">${s.ball_speed ?? '-'} / ${s.club_speed ?? '-'}</td>
-            <td class="px-2.5 py-1.5">${s.back_spin ?? '-'} / ${formatDir(s.side_spin, '', 0)}</td>
-            <td class="px-2.5 py-1.5">${s.type || 'Straight'}</td>
-            <td class="px-2.5 py-1.5 text-right">
-              <button type="button" onclick="removeParsedRow(${idx})" class="text-rose-400 hover:underline">✕</button>
-            </td>
-          </tr>
-        `;
-      });
-
-      wrap.classList.remove('hidden');
-      saveBtn.classList.remove('hidden');
-    }
-
-    function removeParsedRow(idx) {
-      parsedBatch.splice(idx, 1);
-      renderParsedPreview();
-    }
-
-    async function saveParsedShots() {
-      if (!parsedBatch.length) return;
-      const btn = document.getElementById('saveParsedBtn');
-      btn.disabled = true;
-      btn.textContent = "Saving...";
-
-      const payload = parsedBatch.map(s => ({
-        user_id: currentUser.id,
-        session_date: s.session_date || getTodayISO(),
-        club: CLUB_ORDER.includes(s.club) ? s.club : "Driver",
-        carry: Number(s.carry),
-        total: Number(s.total),
-        side: Number(s.side ?? 0),
-        smash: s.smash !== null ? Number(s.smash) : null,
-        ball_speed: s.ball_speed !== null ? Number(s.ball_speed) : null,
-        club_speed: s.club_speed !== null ? Number(s.club_speed) : null,
-        back_spin: s.back_spin !== null ? Number(s.back_spin) : null,
-        side_spin: s.side_spin !== null ? Number(s.side_spin) : null,
-        launch: s.launch !== null ? Number(s.launch) : null,
-        side_angle: s.side_angle !== null ? Number(s.side_angle) : null,
-        descent: s.descent !== null ? Number(s.descent) : null,
-        apex: s.apex !== null ? Number(s.apex) : null,
-        time: s.time !== null ? Number(s.time) : null,
-        type: s.type || "Straight"
-      }));
-
-      const { error } = await sb.from('golf_shots').insert(payload);
-      btn.disabled = false;
-      btn.textContent = "2. Save to My Bag";
-      if (error) return alert("Save failed: " + error.message);
-
-      document.getElementById('photoInput').value = '';
-      togglePhotoModal(false);
-      await fetchShots();
-    }
-
-    // --- AUTHENTICATION ---
-    function showAuthAlert(msg, isError = true) {
-      const box = document.getElementById('authAlert');
-      box.textContent = msg;
-      box.className = `text-xs p-3 rounded border ${isError ? 'bg-rose-950/70 border-rose-800 text-rose-200' : 'bg-emerald-950/70 border-emerald-800 text-emerald-200'}`;
-      box.classList.remove('hidden');
-    }
-
-    document.getElementById('authForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      const { error } = await sb.auth.signInWithPassword({ email, password });
-      if (error) showAuthAlert(error.message);
-    });
-
-    async function handleSignUp() {
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      if (!email || !password) return showAuthAlert("Enter an email and password first.");
-      const { data, error } = await sb.auth.signUp({ email, password });
-      if (error) return showAuthAlert(error.message);
-      if (data.session) {
-        showAuthAlert("Account created!", false);
-      } else {
-        showAuthAlert("Check your email for a confirmation link, then log in.", false);
-      }
-    }
-
-    async function handleLogout() {
-      await sb.auth.signOut();
-    }
-
-    sb.auth.onAuthStateChange(async (_event, session) => {
-      currentUser = session?.user || null;
-      if (currentUser) {
-        document.getElementById('authView').classList.add('hidden');
-        document.getElementById('appView').classList.remove('hidden');
-        document.getElementById('userEmailLabel').textContent = currentUser.email;
-        await fetchShots();
-      } else {
-        document.getElementById('appView').classList.add('hidden');
-        document.getElementById('authView').classList.remove('hidden');
-        shots = [];
-      }
-    });
-
-    // --- DATABASE OPERATIONS ---
-    function updateSessionDropdown() {
-      const sel = document.getElementById('sessionFilter');
-      const prev = sel.value;
-      const uniqueDates = [...new Set(shots.map(s => s.session_date).filter(Boolean))].sort().reverse();
-      sel.innerHTML = `<option value="ALL">All Sessions (${shots.length} shots)</option>`;
-      uniqueDates.forEach(d => {
-        const count = shots.filter(s => s.session_date === d).length;
-        sel.add(new Option(`${formatDisplayDate(d)} (${count} shots)`, d));
-      });
-      if ([...sel.options].some(o => o.value === prev)) sel.value = prev;
-    }
-
     async function fetchShots() {
-      const { data, error } = await sb
-        .from('golf_shots')
-        .select('*')
-        .order('session_date', { ascending: false })
-        .order('created_at', { ascending: true });
-      if (error) {
-        alert("Error loading shots: " + error.message);
-        return;
-      }
+      const { data, error } = await sb.from('golf_shots').select('*').order('created_at', { ascending: true });
+      if (error) return alert("Error loading shots: " + error.message);
       shots = data || [];
-      document.getElementById('seedBtn').classList.toggle('hidden', shots.length > 0);
-      updateSessionDropdown();
+      updateSessionFilter();
+      renderMyBag();
       renderTableAndCharts();
-      if (activeDetailClub) openShotDetails(activeDetailClub);
     }
 
-    async function seedDefaultSession() {
-      const btn = document.getElementById('seedBtn');
-      btn.disabled = true;
-      btn.textContent = "Importing 73 shots...";
-      const payload = SAMPLE_SESSION.map(s => ({ ...s, user_id: currentUser.id }));
-      const { error } = await sb.from('golf_shots').insert(payload);
-      btn.disabled = false;
-      btn.textContent = "Load Sample Session";
-      if (error) return alert("Import failed: " + error.message);
-      await fetchShots();
-    }
-
-    function parseOptFloat(id) {
-      const val = document.getElementById(id).value;
-      return val === '' ? null : parseFloat(val);
-    }
-
-    document.getElementById('shotForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('addShotBtn');
-      btn.disabled = true;
-      btn.textContent = "Saving...";
-
-      const savedDate = document.getElementById('dateInput').value || getTodayISO();
-      const newShot = {
-        user_id: currentUser.id,
-        session_date: savedDate,
-        club: document.getElementById('clubSelect').value,
-        carry: parseFloat(document.getElementById('carryInput').value),
-        total: parseFloat(document.getElementById('totalInput').value),
-        side: parseOptFloat('sideInput') ?? 0,
-        smash: parseOptFloat('smashInput'),
-        ball_speed: parseOptFloat('ballSpeedInput'),
-        club_speed: parseOptFloat('clubSpeedInput'),
-        back_spin: parseOptFloat('backSpinInput'),
-        side_spin: parseOptFloat('sideSpinInput'),
-        launch: parseOptFloat('launchInput'),
-        side_angle: parseOptFloat('sideAngleInput'),
-        descent: parseOptFloat('descentInput'),
-        apex: parseOptFloat('apexInput'),
-        time: parseOptFloat('timeInput'),
-        type: document.getElementById('typeInput').value || 'Straight'
-      };
-
-      const { error } = await sb.from('golf_shots').insert([newShot]);
-      btn.disabled = false;
-      btn.textContent = "Add Shot";
-      if (error) return alert("Error saving shot: " + error.message);
-      e.target.reset();
-      document.getElementById('dateInput').value = savedDate;
-      await fetchShots();
-    });
-
-    async function clearClub(club) {
-      const selectedSession = document.getElementById('sessionFilter').value;
-      const scopeMsg = selectedSession === 'ALL'
-        ? `Delete ALL ${club} shots across all sessions?`
-        : `Delete ${club} shots from ${formatDisplayDate(selectedSession)}?`;
-      if (!confirm(scopeMsg)) return;
-
-      let query = sb.from('golf_shots').delete().eq('club', club);
-      if (selectedSession !== 'ALL') query = query.eq('session_date', selectedSession);
-
-      const { error } = await query;
-      if (error) return alert(error.message);
-      if (activeDetailClub === club) closeShotDetails();
-      await fetchShots();
-    }
-
-    async function deleteSingleShot(id) {
-      const { error } = await sb.from('golf_shots').delete().eq('id', id);
-      if (error) return alert(error.message);
-      await fetchShots();
-    }
-
-    function exportData() {
-      const blob = new Blob([JSON.stringify(shots, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `${currentUser.email.split('@')[0]}-golf-bag.json`;
-      a.click();
-    }
-
-    // --- TABLE & BAG CHARTS ---
-    function getFilteredShots(club) {
-      return getClubSessionShots(club, document.getElementById('outlierToggle').checked);
-    }
-
-    function avgMetric(arr, key, decimals = 1) {
-      const valid = arr.map(s => s[key]).filter(v => v !== null && v !== undefined && v !== '').map(Number);
-      if (!valid.length) return null;
-      const mean = valid.reduce((a, b) => a + b, 0) / valid.length;
-      return decimals === 0 ? Math.round(mean) : Number(mean.toFixed(decimals));
-    }
-
-    function formatDir(val, unit = '', decimals = 1) {
-      if (val === null || val === undefined || val === '') return '-';
-      const numVal = Number(val);
-      if (numVal === 0) return `0.0${unit}`;
-      const dir = numVal < 0 ? 'L' : 'R';
-      const num = decimals === 0 ? Math.round(Math.abs(numVal)) : Math.abs(numVal).toFixed(decimals);
-      return `${num}${unit} ${dir}`;
-    }
-
-    function mostCommonFlight(clubShots) {
-      const counts = {};
-      clubShots.forEach(s => { if (s.type) counts[s.type] = (counts[s.type] || 0) + 1; });
-      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-      return entries.length ? entries[0][0] : '-';
-    }
-
-    function openShotDetails(club) {
-      activeDetailClub = club;
-      const clubShots = getFilteredShots(club);
-      const stockBaseline = getClubSessionShots(club, true);
-      const clubMedians = {
-        carry: avgMetric(stockBaseline, 'carry', 1) ?? 0,
-        smash: avgMetric(stockBaseline, 'smash', 2),
-        launch: avgMetric(stockBaseline, 'launch', 1)
-      };
-
-      const section = document.getElementById('shotDetailSection');
-      const tbody = document.getElementById('shotDetailBody');
-      const diagSummary = document.getElementById('shotDiagnosticSummary');
-      document.getElementById('shotDetailTitle').textContent = `${club} — Shot-by-Shot & Root-Cause Diagnostic (${clubShots.length} shots)`;
-      tbody.innerHTML = '';
-
-      let pureCount = 0;
-      const causeCounts = {};
-
-      clubShots.forEach((s, idx) => {
-        const diag = diagnoseShot(s, clubMedians);
-        if (diag.strikeTag === 'Pure Strike') pureCount++;
-        causeCounts[diag.causeTag] = (causeCounts[diag.causeTag] || 0) + 1;
-
-        tbody.innerHTML += `
-          <tr class="hover:bg-slate-800/40">
-            <td class="px-3 py-2 text-slate-400">${idx + 1}</td>
-            <td class="px-2.5 py-2 text-slate-400">${formatDisplayDate(s.session_date)}</td>
-            <td class="px-2.5 py-2"><span class="px-2 py-0.5 rounded border text-[11px] font-medium ${diag.strikeClass}">${diag.strikeTag}</span></td>
-            <td class="px-2.5 py-2 font-medium ${diag.causeClass}">${diag.causeTag}</td>
-            <td class="px-2.5 py-2 font-medium text-emerald-300">${Number(s.carry).toFixed(1)} m</td>
-            <td class="px-2.5 py-2">${Number(s.total).toFixed(1)} m</td>
-            <td class="px-2.5 py-2">${formatDir(s.side, 'm', 1)}</td>
-            <td class="px-2.5 py-2">${s.smash !== null ? Number(s.smash).toFixed(2) : '-'}</td>
-            <td class="px-2.5 py-2">${s.ball_speed !== null ? Number(s.ball_speed).toFixed(1) : '-'} / ${s.club_speed !== null ? Number(s.club_speed).toFixed(1) : '-'}</td>
-            <td class="px-2.5 py-2">${s.back_spin !== null ? Math.round(Number(s.back_spin)) : '-'} / ${formatDir(s.side_spin, '', 0)}</td>
-            <td class="px-2.5 py-2">${s.launch !== null ? Number(s.launch).toFixed(1) + '°' : '-'} / ${formatDir(s.side_angle, '°', 1)}</td>
-            <td class="px-2.5 py-2">${s.descent !== null ? Number(s.descent).toFixed(1) + '°' : '-'} / ${s.apex !== null ? Number(s.apex).toFixed(1) + 'm' : '-'}</td>
-            <td class="px-2.5 py-2 text-slate-300">${s.type || '-'}</td>
-            <td class="px-3 py-2 text-right">
-              <button type="button" onclick="deleteSingleShot('${s.id}')" class="text-rose-400 hover:underline">Remove</button>
-            </td>
-          </tr>
-        `;
+    function updateSessionFilter() {
+      const sel = document.getElementById('sessionFilter');
+      const current = sel.value;
+      const dates = [...new Set(shots.map(s => s.session_date).filter(Boolean))].sort().reverse();
+      sel.innerHTML = `<option value="ALL">All Sessions (${shots.length} shots)</option>`;
+      dates.forEach(d => {
+        const count = shots.filter(s => s.session_date === d).length;
+        sel.add(new Option(`${d} (${count} shots)`, d));
       });
-
-      const topCause = Object.entries(causeCounts).sort((a, b) => b[1] - a[1])[0];
-      diagSummary.textContent = clubShots.length
-        ? `Pure Strike Rate: ${Math.round((pureCount / clubShots.length) * 100)}% (${pureCount}/${clubShots.length}) · Primary Pattern: ${topCause ? topCause[0] + ' (' + topCause[1] + ')' : '-'}`
-        : '';
-
-      section.classList.remove('hidden');
-      section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function closeShotDetails() {
-      activeDetailClub = null;
-      document.getElementById('shotDetailSection').classList.add('hidden');
+      if ([...sel.options].some(o => o.value === current)) sel.value = current;
     }
 
     function renderTableAndCharts() {
-      renderBagAudit();
-      syncLandingZoneSelectors();
-      renderLandingZone();
-      renderTrajectoryChart();
-      syncABSelectors();
-      renderABComparison();
-
       const tbody = document.getElementById('bagTableBody');
+      const filterMishits = document.getElementById('outlierToggle').checked;
       tbody.innerHTML = '';
 
-      const summaries = CLUB_ORDER.map(club => {
-        const clubShots = getFilteredShots(club);
-        if (!clubShots.length) return { club, count: 0 };
-        const carries = clubShots.map(s => Number(s.carry));
-        return {
+      const summary = [];
+      CLUB_ORDER.forEach(club => {
+        const clubShots = getClubSessionShots(club, filterMishits);
+        if (!clubShots.length) return;
+
+        const counts = {};
+        clubShots.forEach(s => { const t = s.type || 'Straight'; counts[t] = (counts[t] || 0) + 1; });
+        const commonFlight = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+
+        summary.push({
           club,
+          model: getBagModelForClub(club),
           count: clubShots.length,
           carry: avgMetric(clubShots, 'carry', 1),
           total: avgMetric(clubShots, 'total', 1),
-          carrySD: stdDev(carries),
+          carrySD: stdDev(clubShots.map(s => Number(s.carry))),
           side: avgMetric(clubShots, 'side', 1),
           smash: avgMetric(clubShots, 'smash', 2),
           ballSpeed: avgMetric(clubShots, 'ball_speed', 1),
@@ -1629,64 +476,58 @@
           backSpin: avgMetric(clubShots, 'back_spin', 0),
           sideSpin: avgMetric(clubShots, 'side_spin', 0),
           launch: avgMetric(clubShots, 'launch', 1),
-          sideAngle: avgMetric(clubShots, 'side_angle', 1),
           descent: avgMetric(clubShots, 'descent', 1),
           apex: avgMetric(clubShots, 'apex', 1),
-          flight: mostCommonFlight(clubShots)
-        };
+          commonFlight
+        });
       });
 
-      let prevCarry = null;
-      summaries.forEach(row => {
-        if (!row.count) return;
-        const gap = prevCarry !== null ? (prevCarry - row.carry).toFixed(1) + ' m' : '-';
-        prevCarry = row.carry;
-
+      summary.forEach((row, idx) => {
+        const prev = summary[idx - 1];
+        const gap = prev ? (prev.carry - row.carry).toFixed(1) + ' m' : '-';
         tbody.innerHTML += `
           <tr class="hover:bg-slate-800/40">
-            <td class="px-3 py-2.5 font-semibold text-emerald-400 sticky left-0 bg-slate-900 z-10">${row.club}</td>
-            <td class="px-2.5 py-2.5">${row.count}</td>
-            <td class="px-2.5 py-2.5 font-semibold text-white">${row.carry.toFixed(1)} m</td>
-            <td class="px-2.5 py-2.5 text-slate-300">${row.total.toFixed(1)} m</td>
-            <td class="px-2.5 py-2.5 text-amber-400">${gap}</td>
-            <td class="px-2.5 py-2.5 text-slate-400">±${row.carrySD.toFixed(1)} m</td>
-            <td class="px-2.5 py-2.5">${formatDir(row.side, 'm', 1)}</td>
-            <td class="px-2.5 py-2.5">${row.smash !== null ? row.smash.toFixed(2) : '-'}</td>
-            <td class="px-2.5 py-2.5">${row.ballSpeed !== null ? row.ballSpeed.toFixed(1) : '-'}</td>
-            <td class="px-2.5 py-2.5">${row.clubSpeed !== null ? row.clubSpeed.toFixed(1) : '-'}</td>
-            <td class="px-2.5 py-2.5">${row.backSpin !== null ? row.backSpin : '-'}</td>
-            <td class="px-2.5 py-2.5">${formatDir(row.sideSpin, '', 0)}</td>
-            <td class="px-2.5 py-2.5">${row.launch !== null ? row.launch.toFixed(1) + '°' : '-'}</td>
-            <td class="px-2.5 py-2.5">${formatDir(row.sideAngle, '°', 1)}</td>
-            <td class="px-2.5 py-2.5">${row.descent !== null ? row.descent.toFixed(1) + '°' : '-'}</td>
-            <td class="px-2.5 py-2.5">${row.apex !== null ? row.apex.toFixed(1) + ' m' : '-'}</td>
-            <td class="px-2.5 py-2.5 text-slate-300">${row.flight}</td>
-            <td class="px-3 py-2.5 text-right space-x-2">
-              <button type="button" onclick="openShotDetails('${row.club}')" class="text-sky-400 hover:underline">View Shots</button>
-              <button type="button" onclick="clearClub('${row.club}')" class="text-rose-400 hover:underline">Clear</button>
+            <td class="px-3 py-2.5 sticky left-0 bg-slate-900 z-10">
+              <div class="font-bold text-slate-100">${row.club}</div>
+              ${row.model ? `<div class="text-[10px] text-emerald-400/90 font-normal truncate max-w-[190px]" title="${row.model}">${row.model}</div>` : ''}
             </td>
+            <td class="px-2.5 py-2.5 text-slate-400">${row.count}</td>
+            <td class="px-2.5 py-2.5 font-semibold text-emerald-400">${row.carry} m</td>
+            <td class="px-2.5 py-2.5 text-blue-400">${row.total} m</td>
+            <td class="px-2.5 py-2.5 text-amber-400">${gap}</td>
+            <td class="px-2.5 py-2.5 text-slate-300">±${row.carrySD.toFixed(1)} m</td>
+            <td class="px-2.5 py-2.5">${formatDir(row.side, 'm', 1)}</td>
+            <td class="px-2.5 py-2.5">${row.smash || '-'}</td>
+            <td class="px-2.5 py-2.5">${row.ballSpeed ? row.ballSpeed + ' km/h' : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.clubSpeed ? row.clubSpeed + ' km/h' : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.backSpin ? row.backSpin + ' rpm' : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.sideSpin ? formatDir(row.sideSpin, ' rpm', 0) : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.launch ? row.launch + '°' : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.descent ? row.descent + '°' : '-'}</td>
+            <td class="px-2.5 py-2.5">${row.apex ? row.apex + ' m' : '-'}</td>
+            <td class="px-2.5 py-2.5"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">${row.commonFlight}</span></td>
           </tr>
         `;
       });
 
-      if (typeof Chart === 'undefined') return;
-      const activeClubs = summaries.filter(s => s.count > 0);
-      
+      renderCharts(summary);
+    }
+
+    function renderCharts(summary) {
       if (gappingChart) gappingChart.destroy();
       gappingChart = new Chart(document.getElementById('gappingChart'), {
         type: 'bar',
         data: {
-          labels: activeClubs.map(c => c.club),
+          labels: summary.map(s => s.club),
           datasets: [
-            { label: 'Avg Carry (m)', data: activeClubs.map(c => c.carry.toFixed(1)), backgroundColor: '#10b981' },
-            { label: 'Avg Total (m)', data: activeClubs.map(c => c.total.toFixed(1)), backgroundColor: '#3b82f6' }
+            { label: 'Carry (m)', data: summary.map(s => s.carry), backgroundColor: '#10b981' },
+            { label: 'Total (m)', data: summary.map(s => s.total), backgroundColor: '#3b82f6' }
           ]
         },
         options: {
-          indexAxis: 'y',
           scales: {
-            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { grid: { display: false }, ticks: { color: '#f8fafc' } }
+            x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
           },
           plugins: { legend: { labels: { color: '#cbd5e1' } } }
         }
@@ -1696,25 +537,92 @@
       dispersionChart = new Chart(document.getElementById('dispersionChart'), {
         type: 'scatter',
         data: {
-          datasets: activeClubs.map((clubObj, idx) => {
-            const pts = getFilteredShots(clubObj.club).map(s => ({ x: Number(s.side), y: Number(s.carry) }));
-            const colors = [
-              '#f43f5e', '#f97316', '#eab308', '#84cc16', '#22c55e', '#10b981',
-              '#06b6d4', '#0ea5e9', '#3b82f6', '#8b5cf6', '#d946ef', '#ec4899',
-              '#fb7185', '#fbbf24', '#34d399', '#38bdf8'
-            ];
-            return { label: clubObj.club, data: pts, backgroundColor: colors[idx % colors.length], pointRadius: 4 };
-          })
+          datasets: summary.map((s, idx) => ({
+            label: s.club,
+            data: getClubSessionShots(s.club, false).map(shot => ({ x: Number(shot.side), y: Number(shot.carry) })),
+            backgroundColor: `hsl(${(idx * 37) % 360}, 75%, 55%)`
+          }))
         },
         options: {
           scales: {
-            x: { title: { display: true, text: 'Left (-) / Right (+) Metres', color: '#94a3b8' }, min: -50, max: 60, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
-            y: { title: { display: true, text: 'Carry (Metres)', color: '#94a3b8' }, beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+            x: { title: { display: true, text: 'Side (-L / +R m)', color: '#94a3b8' }, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+            y: { title: { display: true, text: 'Carry (m)', color: '#94a3b8' }, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
           },
-          plugins: { legend: { labels: { color: '#cbd5e1' } } }
+          plugins: { legend: { labels: { color: '#cbd5e1', boxWidth: 10, font: { size: 10 } } } }
         }
       });
     }
+
+    // --- AUTH & SHOT SUBMISSION ---
+    document.getElementById('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        const alertBox = document.getElementById('authAlert');
+        alertBox.textContent = error.message;
+        alertBox.className = "text-xs p-3 rounded border bg-rose-950 border-rose-800 text-rose-200";
+      }
+    });
+
+    async function handleSignUp() {
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      const { error } = await sb.auth.signUp({ email, password });
+      const alertBox = document.getElementById('authAlert');
+      alertBox.textContent = error ? error.message : "Account created! Check your email or log in.";
+      alertBox.className = `text-xs p-3 rounded border ${error ? 'bg-rose-950 border-rose-800 text-rose-200' : 'bg-emerald-950 border-emerald-800 text-emerald-200'}`;
+    }
+
+    async function handleLogout() {
+      await sb.auth.signOut();
+    }
+
+    document.getElementById('shotForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        user_id: currentUser.id,
+        session_date: document.getElementById('dateInput').value,
+        club: document.getElementById('clubSelect').value,
+        carry: Number(document.getElementById('carryInput').value),
+        total: Number(document.getElementById('totalInput').value),
+        side: Number(document.getElementById('sideInput').value) || 0,
+        smash: Number(document.getElementById('smashInput').value) || null,
+        ball_speed: Number(document.getElementById('ballSpeedInput').value) || null,
+        club_speed: Number(document.getElementById('clubSpeedInput').value) || null,
+        back_spin: Number(document.getElementById('backSpinInput').value) || null,
+        side_spin: Number(document.getElementById('sideSpinInput').value) || null,
+        launch: Number(document.getElementById('launchInput').value) || null,
+        side_angle: Number(document.getElementById('sideAngleInput').value) || null,
+        descent: Number(document.getElementById('descentInput').value) || null,
+        apex: Number(document.getElementById('apexInput').value) || null,
+        type: document.getElementById('typeInput').value
+      };
+      const { error } = await sb.from('golf_shots').insert([payload]);
+      if (error) return alert(error.message);
+      e.target.reset();
+      document.getElementById('dateInput').value = new Date().toLocaleDateString('en-CA');
+      await fetchShots();
+    });
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify({ bag: bagItems, shots }, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `golf-bag-and-shots-${new Date().toLocaleDateString('en-CA')}.json`;
+      a.click();
+    }
+
+    sb.auth.onAuthStateChange(async (_event, session) => {
+      currentUser = session?.user || null;
+      document.getElementById('authView').classList.toggle('hidden', !!currentUser);
+      document.getElementById('appView').classList.toggle('hidden', !currentUser);
+      if (currentUser) {
+        document.getElementById('userEmailLabel').textContent = currentUser.email;
+        await Promise.all([fetchBag(), fetchShots()]);
+      }
+    });
   </script>
 </body>
 </html>
